@@ -27,7 +27,7 @@ h1{font-size:18px}
 .chip::after{content:attr(data-n);position:absolute;left:50%;top:100%;transform:translateX(-50%);margin-top:5px;padding:1px 7px;background:var(--ink);color:var(--bg);border:2px solid var(--acc);font-size:18px;white-space:nowrap;opacity:0;pointer-events:none;z-index:20}
 .chip:hover::after,.chip:focus::after{opacity:1}
 .chip:focus{outline:2px solid var(--acc);outline-offset:2px}
-.res .chip:nth-last-child(-n+4)::after{left:auto;right:0;transform:none}
+.res .chip:nth-last-child(-n+4)::after{left:auto;right:0;transform:none}#res{display:flex;flex-wrap:wrap;gap:6px 14px}#res .chip::after{left:0;right:auto;transform:none}
 .colony{display:flex;justify-content:space-between;align-items:center;gap:8px}.colony .chip::after{left:auto;right:0;transform:none}.colony .chip b{font:400 20px 'VT323',monospace}
 .layout{display:grid;grid-template-columns:200px minmax(0,1fr);gap:12px;align-items:start}
 .layout aside{position:sticky;top:8px;z-index:3}
@@ -141,9 +141,8 @@ dialog::backdrop{background:#000a}
 </div></div>
 <div class="wrap" id="game" hidden>
 <header class="win"><div class="in">
- <button id="menu">Main menu</button>
  <div class="date" id="date"></div>
- <div class="res" id="res"></div>
+ <button id="menu">Main menu</button>
 </div></header>
 
 <nav class="win" aria-label="Time and navigation"><div class="in end">
@@ -152,7 +151,7 @@ dialog::backdrop{background:#000a}
  <span class="dim" id="goal"></span>
 </div></nav>
 
-<div class="layout"><aside class="win" aria-label="Resources"><h2>Resources</h2><div class="in cats" id="stock"></div></aside><main>
+<div class="layout"><aside aria-label="Research and resources"><section class="win"><h2>Research</h2><div class="in res" id="res"></div></section><section class="win" style="margin-top:8px"><h2>Resources</h2><div class="in cats" id="stock"></div></section></aside><main>
 <section class="win" id="scr-base"><h2 class="colony"><span>Moonbase – Mare Tranquillitatis</span><span id="pop"></span></h2>
  <div class="scene" id="scene">
   <span class="ph">Placeholder scene: replace --scene-img in CSS with the main screen image</span>
@@ -266,6 +265,7 @@ function pay(c){for(const k in c)S.res[k]-=c[k]}
 function cost(c){return Object.keys(c).map(k=>c[k]+' '+RN[k].toLowerCase()).join(', ')}
 function build(k){if(S.over||!can(B[k].c))return;pay(B[k].c);S.q.push({k,left:B[k].t});say('Construction started: '+B[k].n+' ('+dur(B[k].t)+').');render()}
 const startCost=k=>S.proj[k]&&S.proj[k].state==='paused'?Math.ceil(T[k].rp/2):T[k].rp;
+const rpRate=()=>eff('lab')*pow().e*(S.cur?.25:1)/20;
 function canResearch(k){const t=T[k];return !S.over&&!S.cur&&work('lab')>0&&!S.tech[k]&&t.req.every(r=>S.tech[r])&&Math.floor(S.rp)>=startCost(k)}
 function research(k){if(!canResearch(k))return;const t=T[k],p=S.proj[k],resume=p&&p.state==='paused',c=startCost(k);S.rp-=c;S.proj[k]={left:p?p.left:t.rp*24,state:'active'};S.cur=k;say((resume?'Research resumed: ':'Research started: ')+t.n+' (cost '+c+' research points up front, then '+t.rp/100+' per day).');render()}
 function pauseResearch(why){if(!S.cur)return;const k=S.cur,t=T[k],c=Math.ceil(t.rp/2);S.proj[k].state='paused';S.cur=null;
@@ -351,7 +351,9 @@ const ICON={
  machinery:`<g fill="#8a94a8"><rect x="6.8" y="1" width="2.4" height="3"/><rect x="6.8" y="12" width="2.4" height="3"/><rect x="1" y="6.8" width="3" height="2.4"/><rect x="12" y="6.8" width="3" height="2.4"/><rect x="6.8" y="1" width="2.4" height="3" transform="rotate(45 8 8)"/><rect x="6.8" y="1" width="2.4" height="3" transform="rotate(135 8 8)"/><rect x="6.8" y="1" width="2.4" height="3" transform="rotate(225 8 8)"/><rect x="6.8" y="1" width="2.4" height="3" transform="rotate(315 8 8)"/><circle cx="8" cy="8" r="4.6"/></g><circle cx="8" cy="8" r="2" fill="#2d3340"/>`,
  software:`<path d="M2 2H12L14 4V14H2Z" fill="#3b4aa0"/><rect x="4" y="2" width="7" height="4.5" fill="#d6dbe6"/><rect x="8.5" y="3" width="1.8" height="2.6" fill="#3b4aa0"/><rect x="4" y="9" width="8" height="5" fill="#e8e4d4"/><path d="M5 11H11M5 12.8H9" stroke="#8a94a8" stroke-width=".8"/>`,
  colonists:`<circle cx="8" cy="4.5" r="3" fill="#f2c9a0"/><path d="M2.5 15C2.5 10 5 8.5 8 8.5S13.5 10 13.5 15Z" fill="#1f2a7a"/>`,
- research:`<path d="M6 1.5H10M7 1.5V6L2.5 13.5Q2 15 3.5 15H12.5Q14 15 13.5 13.5L9 6V1.5" fill="#c58cff" stroke="#6b3fa0"/><path d="M4.5 11H11.5" stroke="#fff" opacity=".7"/>`
+ research:`<path d="M6 1.5H10M7 1.5V6L2.5 13.5Q2 15 3.5 15H12.5Q14 15 13.5 13.5L9 6V1.5" fill="#c58cff" stroke="#6b3fa0"/><path d="M4.5 11H11.5" stroke="#fff" opacity=".7"/>`,
+ gain:`<path d="M8 1.5L14 8H10V14.5H6V8H2Z" fill="#3fbf6a" stroke="#1f7a40"/>`,
+ project:`<circle cx="6.5" cy="6.5" r="4.5" fill="#e8f2ff" stroke="#6b3fa0" stroke-width="1.6"/><path d="M10 10L14.5 14.5" stroke="#6b3fa0" stroke-width="2.2"/>`
 };
 const ico=k=>'<svg viewBox="0 0 16 16" width="22" height="22" aria-hidden="true">'+ICON[k]+'</svg>';
 function chip(k,name,val,dim){return '<span class="chip'+(dim?' dim':'')+'" tabindex="0" data-n="'+name+'" aria-label="'+name+' '+val+'">'+ico(k)+'<b>'+val+'</b></span>'}
@@ -377,14 +379,14 @@ function go(s){S.screen=s;render()}
 function render(){
  SCR.forEach(s=>$('scr-'+s).hidden=S.screen!==s);$('back').hidden=S.screen==='base';
  $('b-build').textContent=S.q.length?S.q.length+' in progress':'Idle';
- $('b-tech').textContent=S.cur?'Project active':Math.floor(S.rp)+' research pts';
+ $('b-tech').textContent=S.cur?T[S.cur].n:'Idle';
  $('b-yard').textContent=S.ships+' in hangar';
  $('b-port').textContent=owned()+'/'+S.slots+' berths';
  $('b-flight').textContent=S.out.length+' in flight';
  $('b-log').textContent=S.log.length+' entries';
  set('pop',chip('colonists','Colonists ('+freeCol()+' free)',S.pop+'/'+S.b.hab*B.hab.cap));
  $('date').textContent=S.y+'-'+pad(S.m)+'-'+pad(S.d)+'  '+pad(S.h)+':00';
- set('res',chip('research','Research points',Math.floor(S.rp)));
+ set('res',chip('research','Research points',Math.floor(S.rp))+chip('gain','Research points gained per day',(rpRate()>0?'+':'')+(+rpRate().toFixed(3))+'/day',rpRate()<=0)+chip('project','Technologies under investigation',Object.values(S.proj).filter(p=>p.state==='active').length));
  set('stock',stock());
  let t='<div class="tile t-port" title="Starport">P</div>';for(const k in B)for(let i=0;i<S.b[k];i++)t+='<div class="tile t-'+k+'" title="'+B[k].n+'">'+B[k].g+'</div>';
  for(const q of S.q)t+='<div class="tile" style="background:transparent;border-style:dashed;color:var(--ink)" title="Under construction: '+BQ(q.k).n+'">'+BQ(q.k).g+'</div>';
