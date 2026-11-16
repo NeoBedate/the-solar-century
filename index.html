@@ -21,7 +21,7 @@ h1,h2{font-family:'Silkscreen','Courier New',monospace;font-weight:700;margin:0;
 .in{padding:8px 10px}
 header.win .in{display:flex;flex-wrap:wrap;gap:6px 18px;align-items:center;justify-content:space-between}
 h1{font-size:18px}
-header.win .in.hdr{flex-direction:column;flex-wrap:nowrap;align-items:stretch;gap:5px;padding:4px 10px}.hdr .r1{display:flex;justify-content:space-between;align-items:center}.hdr .date{font-size:22px;line-height:1}.hdr #menu.clk{padding:2px 8px}
+header.bare{margin-bottom:10px}header.bare .in.hdr{display:flex;flex-direction:column;flex-wrap:nowrap;align-items:stretch;gap:5px;padding:0 2px}.hdr #colbtn{margin-right:auto}.loc.off .nm{color:var(--dim)}.loc.off .ci{opacity:.65}.loc.off .ci svg{filter:grayscale(1)}.loc .nm{position:relative;cursor:default}.loc .nm::after{content:attr(data-d);position:absolute;left:0;top:100%;margin-top:4px;width:min(340px,70vw);padding:4px 8px;background:var(--ink);color:var(--bg);border:2px solid var(--acc);font-size:18px;line-height:1.1;white-space:normal;opacity:0;pointer-events:none;z-index:20}.loc .nm:hover::after,.loc .nm:focus::after{opacity:1}.loc .nm:focus{outline:2px solid var(--acc);outline-offset:2px}.loc.sub>div{margin-left:24px}.pgh{display:flex;justify-content:space-between;align-items:center;padding:0 0 6px}.pgh b{font:700 13px 'Silkscreen',monospace;color:var(--acc)}.loc .ci{display:inline-block;vertical-align:-5px;margin-right:6px}.loc .st{font:700 11px 'Silkscreen',monospace;white-space:nowrap;color:var(--dim)}.loc:not(.off) .st{color:#1f7a40}.hdr .r1{display:flex;justify-content:flex-end;gap:12px;align-items:center}.hdr .r2{flex-wrap:nowrap}.hdr .r2 .seg{margin-left:auto}.hdr .date{font-size:22px;line-height:1}.hdr #menu.clk{padding:2px 8px}
 .date{color:var(--acc);font-size:26px}
 .res{display:flex;flex-wrap:wrap;gap:6px 16px}
 .res{font-size:19px}.chip{position:relative;display:inline-flex;align-items:center;gap:4px;white-space:nowrap;cursor:default}
@@ -36,10 +36,12 @@ header.win .in.hdr{flex-direction:column;flex-wrap:nowrap;align-items:stretch;ga
 .cat{margin-bottom:10px}.cat:last-child{margin-bottom:0}
 .cat-n{position:relative;font:700 11px/1.25 'Silkscreen',monospace;color:var(--acc);border-bottom:2px dashed var(--lo);padding-bottom:3px;margin-bottom:5px;cursor:help}
 .cat-n::after{content:attr(data-n);position:absolute;left:0;top:100%;margin-top:4px;width:max-content;max-width:230px;padding:3px 7px;background:var(--ink);color:var(--bg);border:2px solid var(--acc);font:400 18px/1.1 'VT323',monospace;white-space:normal;opacity:0;pointer-events:none;z-index:30}
+.cat-n{display:flex;align-items:center;gap:6px}.cat-n .ci{flex:none}
 .cat-n:hover::after,.cat-n:focus::after{opacity:1}
 .cat-n:focus{outline:2px solid var(--acc);outline-offset:2px}
 .cat-r{display:grid;grid-template-columns:1fr;gap:4px}
 .cat-r .chip::after{left:0;transform:none}
+.cat-r{gap:2px}.cat-r .chip{font-size:16px}.cat-r .chip svg{width:15px;height:15px}.cat-n{font-size:12px}.cat-n .ci{width:21px;height:21px}
 @media(max-width:800px){.layout{grid-template-columns:1fr}.layout aside{position:static}.cats{display:grid;grid-template-columns:1fr 1fr;gap:8px 14px}.cat{margin:0}}.res b{color:var(--acc);font-weight:400}
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:0 12px}
 @media(max-width:800px){.grid{grid-template-columns:1fr}}
@@ -142,13 +144,14 @@ dialog::backdrop{background:#000a}
  <button id="m-back">Back to main menu</button>
 </div></div>
 <div class="wrap" id="game" hidden>
-<header class="win" aria-label="Date, menu and time controls"><div class="in hdr">
+<header class="bare" aria-label="Moonbase, date, menu and time controls"><div class="in hdr">
  <div class="r1">
+ <button id="back" title="Moonbase main screen">Moonbase</button>
+ <button id="colbtn" title="Planets and colonies">Colonies</button>
  <div class="date" id="date"></div>
  <button id="menu" class="clk" title="Main menu" aria-label="Main menu"><svg viewBox="0 0 16 16" width="20" height="20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="square"><path d="M2 3.5H14M2 8H14M2 12.5H14"/></svg></button>
  </div>
  <div class="end r2">
- <button id="back" hidden>Return to base</button>
  <span class="seg" role="group" aria-label="Game speed"><button data-sp="0" title="Pause" aria-label="Pause" class="clk"><svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="square"><path d="M5 2.5V13.5M11 2.5V13.5"/></svg></button><button id="step" title="Advance 1 hour" aria-label="Advance 1 hour" class="clk"><svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="square"><path d="M3 2.5L9 8L3 13.5Z" fill="currentColor" stroke-width="1"/><path d="M13 2.5V13.5"/></svg></button><button data-sp="30000" title="Very slow: 1 hour per 30 seconds" aria-label="Very slow: 1 hour per 30 seconds" class="clk"><svg viewBox="0 0 8.5 16" width="9" height="16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="square"><path d="M2.0 2.5L6.5 8L2.0 13.5"/></svg></button><button data-sp="15000" title="Slow: 1 hour per 15 seconds" aria-label="Slow: 1 hour per 15 seconds" class="clk"><svg viewBox="0 0 13.0 16" width="13" height="16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="square"><path d="M2.0 2.5L6.5 8L2.0 13.5"/><path d="M6.5 2.5L11.0 8L6.5 13.5"/></svg></button><button data-sp="5000" title="Normal: 1 hour per 5 seconds" aria-label="Normal: 1 hour per 5 seconds" class="clk"><svg viewBox="0 0 17.5 16" width="18" height="16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="square"><path d="M2.0 2.5L6.5 8L2.0 13.5"/><path d="M6.5 2.5L11.0 8L6.5 13.5"/><path d="M11.0 2.5L15.5 8L11.0 13.5"/></svg></button><button data-sp="2000" title="Fast: 1 hour per 2 seconds" aria-label="Fast: 1 hour per 2 seconds" class="clk"><svg viewBox="0 0 22.0 16" width="22" height="16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="square"><path d="M2.0 2.5L6.5 8L2.0 13.5"/><path d="M6.5 2.5L11.0 8L6.5 13.5"/><path d="M11.0 2.5L15.5 8L11.0 13.5"/><path d="M15.5 2.5L20.0 8L15.5 13.5"/></svg></button><button data-sp="500" title="Turbo: 1 hour per half a second" aria-label="Turbo: 1 hour per half a second" class="clk"><svg viewBox="0 0 26.5 16" width="26" height="16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="square"><path d="M2.0 2.5L6.5 8L2.0 13.5"/><path d="M6.5 2.5L11.0 8L6.5 13.5"/><path d="M11.0 2.5L15.5 8L11.0 13.5"/><path d="M15.5 2.5L20.0 8L15.5 13.5"/><path d="M20.0 2.5L24.5 8L20.0 13.5"/></svg></button></span>
  </div>
 </div></header>
@@ -172,6 +175,7 @@ dialog::backdrop{background:#000a}
 <section class="win" id="scr-tech" hidden><h2>Science Labs</h2><div class="in" id="tech"></div></section>
 <section class="win" id="scr-yard" hidden><h2>Shipyard</h2><div class="in" id="yard"></div></section>
 <section class="win" id="scr-port" hidden><h2>Starport</h2><div class="in" id="port"></div></section>
+<section class="win" id="scr-col" hidden><h2>Colonies</h2><div class="in" id="cols"></div></section>
 <section class="win" id="scr-flight" hidden><h2>Flight plans</h2><div class="in" id="flights"></div></section>
 <section class="win" id="scr-log" hidden><h2>Mission Control Log</h2><div class="in end" id="log-tabs" role="group" aria-label="Log sections"><button data-lt="obj">Main Objectives</button><button data-lt="ops">Daily Operations</button></div><div id="objectives" class="in" hidden></div><div id="log" aria-live="polite"></div></section>
 </main></div>
@@ -238,7 +242,7 @@ const JOBN={labourer:'Labourers',scientist:'Scientists',technician:'Technicians'
 const CREW={earth:2,mars:3,belt:3,outer:4,gaia:8};
 const COL={pop:8,water:.8,oxygen:.5,boost:.1};
 let S;
-function init(){S={diff,cur:null,proj:{},screen:'base',y:2200,m:1,d:1,h:0,speed:0,brown:false,q:[],nobuild:false,staff:{solar:2,mine:2,ice:2,elec:0,reactor:0,lab:0,fact:0,shop:0,build:2},res:{hydrogen:30,oxygen:100,water:100,nitrogen:30,methane:5,sulphur:10,titanium:20,aluminium:40,copper:20,silica:60,iron:120,silver:0,chromium:0,platinum:0,uranium:0,components:10,machinery:20,software:10},pop:COL.pop,rp:0,b:{solar:2,mine:1,ice:1,elec:0,fact:0,shop:0,lab:0,hab:2,reactor:0},slots:Math.min(PORT.start,PORT.max),tech:{},ships:1,out:[],over:false,log:[]};
+function init(){S={diff,cur:null,proj:{},screen:'base',y:2200,m:1,d:1,h:0,speed:0,brown:false,q:[],nobuild:false,staff:{solar:2,mine:2,ice:2,elec:0,reactor:0,lab:0,fact:0,shop:0,build:2},res:{hydrogen:30,oxygen:100,water:100,nitrogen:30,methane:5,sulphur:10,titanium:20,aluminium:40,copper:20,silica:60,iron:120,silver:0,chromium:0,platinum:0,uranium:0,components:10,machinery:20,software:10},pop:COL.pop,rp:0,b:{solar:2,mine:1,ice:1,elec:0,fact:0,shop:0,lab:0,hab:2,reactor:0},slots:Math.min(PORT.start,PORT.max),colonies:{moon:1},tech:{},ships:1,out:[],over:false,log:[]};
  say('Year 2200. The asteroid has scorched Earth. The Moon colony is humanity’s last foothold.');
  say('Silver, chromium and uranium cannot be mined on the Moon or in the asteroid belt. Look further out.');
  say('Build industry, research new drives, and launch the Gaia Ark before '+DEADLINE+'.')}
@@ -354,6 +358,12 @@ const ICON={
  software:`<path d="M2 2H12L14 4V14H2Z" fill="#3b4aa0"/><rect x="4" y="2" width="7" height="4.5" fill="#d6dbe6"/><rect x="8.5" y="3" width="1.8" height="2.6" fill="#3b4aa0"/><rect x="4" y="9" width="8" height="5" fill="#e8e4d4"/><path d="M5 11H11M5 12.8H9" stroke="#8a94a8" stroke-width=".8"/>`,
  colonists:`<circle cx="8" cy="4.5" r="3" fill="#f2c9a0"/><path d="M2.5 15C2.5 10 5 8.5 8 8.5S13.5 10 13.5 15Z" fill="#1f2a7a"/>`,
  research:`<path d="M6 1.5H10M7 1.5V6L2.5 13.5Q2 15 3.5 15H12.5Q14 15 13.5 13.5L9 6V1.5" fill="#c58cff" stroke="#6b3fa0"/><path d="M4.5 11H11.5" stroke="#fff" opacity=".7"/>`,
+ colony:`<path d="M2 14.5V11.5A6 6 0 0 1 14 11.5V14.5Z" fill="#7fe0a0" stroke="#1f7a40"/><path d="M8 5.5V1.5L11.5 2.8L8 4.1" fill="#e5484d" stroke="#e5484d" stroke-linejoin="round"/><rect x="6.4" y="10.5" width="3.2" height="4" fill="#1f7a40"/>`,
+ catvol:`<path d="M4.6 13a3.2 3.2 0 0 1-.5-6.3A4.2 4.2 0 0 1 12.2 6a3.5 3.5 0 0 1-.3 7Z" fill="#bfe6ff" stroke="#3b82c4" stroke-width="1.1" stroke-linejoin="round"/><path d="M5.5 10.5H10.5" stroke="#3b82c4" stroke-width="1.1" stroke-linecap="round"/>`,
+ catmin:`<path d="M2 14L4.2 6.5L6.5 14Z" fill="#9fe3e8" stroke="#2f8f98" stroke-linejoin="round"/><path d="M5.5 14L8.8 2L12.2 14Z" fill="#cfeef0" stroke="#2f8f98" stroke-linejoin="round"/><path d="M8.8 2V14" stroke="#2f8f98" stroke-width=".8"/><path d="M11.5 14L13 8.5L14.5 14Z" fill="#9fe3e8" stroke="#2f8f98" stroke-linejoin="round"/>`,
+ catmet:`<path d="M1.5 13.5L3 9.5H9L10.5 13.5Z" fill="#8a94a8" stroke="#4d576b" stroke-linejoin="round"/><path d="M5.5 9L7 5H13L14.5 9Z" fill="#b6c0d2" stroke="#4d576b" stroke-linejoin="round"/>`,
+ catrare:`<path d="M2.5 6L5 2.5H11L13.5 6L8 14Z" fill="#ff9ad5" stroke="#a02a78" stroke-linejoin="round"/><path d="M2.5 6H13.5M5 2.5L6.5 6L8 14L9.5 6L11 2.5" stroke="#a02a78" stroke-width=".8" fill="none" stroke-linejoin="round"/>`,
+ catman:`<path d="M2 14V7.5L5.7 10V7.5L9.4 10V7.5L13 10V14Z" fill="#b6b6c8" stroke="#4d576b" stroke-linejoin="round"/><rect x="10.3" y="2" width="2.6" height="6.5" fill="#8a94a8" stroke="#4d576b"/><rect x="4" y="11.2" width="1.8" height="1.8" fill="#ffd24a"/><rect x="7.3" y="11.2" width="1.8" height="1.8" fill="#ffd24a"/><rect x="10.6" y="11.2" width="1.8" height="1.8" fill="#ffd24a"/>`,
  gain:`<path d="M8 1.5L14 8H10V14.5H6V8H2Z" fill="#3fbf6a" stroke="#1f7a40"/>`,
  project:`<circle cx="6.5" cy="6.5" r="4.5" fill="#e8f2ff" stroke="#6b3fa0" stroke-width="1.6"/><path d="M10 10L14.5 14.5" stroke="#6b3fa0" stroke-width="2.2"/>`
 };
@@ -375,14 +385,50 @@ const CAT=[
  {n:'Rare metals',d:'Platinum comes from the asteroid belt. Silver, chromium and uranium come only from the outer moons.',r:['platinum','silver','chromium','uranium']},
  {n:'Manufactured',d:'Manufactured goods made from raw materials. Components come from the Component factory and machinery from the Machinery workshop. Software has no source yet.',r:['components','machinery','software']}
 ];
-const stock=()=>CAT.map(c=>'<div class="cat"><div class="cat-n" tabindex="0" data-n="'+c.d+'">'+c.n+'</div><div class="cat-r">'+c.r.map(k=>chip(k,RN[k]+(FAR.includes(k)?' (not found on the Moon or in the asteroid belt)':''),Math.floor(S.res[k]),FAR.includes(k))).join('')+'</div></div>').join('');
+const CATI={Volatiles:'catvol',Minerals:'catmin',Metals:'catmet','Rare metals':'catrare',Manufactured:'catman'};
+const stock=()=>CAT.map(c=>'<div class="cat"><div class="cat-n" tabindex="0" data-n="'+c.d+'"><svg class="ci" viewBox="0 0 16 16" width="18" height="18" aria-hidden="true">'+ICON[CATI[c.n]]+'</svg>'+c.n+'</div><div class="cat-r">'+c.r.map(k=>chip(k,RN[k]+(FAR.includes(k)?' (not found on the Moon or in the asteroid belt)':''),Math.floor(S.res[k]),FAR.includes(k))).join('')+'</div></div>').join('');
 let logTab='obj';
-const SCR=['base','build','tech','yard','port','flight','log'];
+const LOCS=[
+ {k:'mercury',n:'Mercury',d:'Scorched, airless world closest to the Sun. Plentiful solar energy and little else.'},
+ {k:'venus',n:'Venus',d:'Crushing, acid-laced atmosphere. Only floating habitats in the cloud tops are realistic.'},
+ {k:'earth',n:'Earth',d:'The home world, scorched by the asteroid. Salvage missions recover materials from its ruins, and the Gaia Ark will rebuild it.'},
+ {k:'moon',p:'earth',n:'Moon',col:'Moonbase',d:'Mare Tranquillitatis. Regolith supplies iron, aluminium, titanium and silica.'},
+ {k:'mars',n:'Mars',d:'Cold desert with water ice and a thin atmosphere. A source of water, nitrogen and sulphur.'},
+ {k:'phobos',n:'Phobos',p:'mars',d:'Small, dark, cratered moon that orbits very close to Mars and circles it in under eight hours.'},
+ {k:'deimos',n:'Deimos',p:'mars',d:'Tiny, smooth outer moon of Mars, a possible waypoint for ships.'},
+ {k:'belt',n:'Asteroid belt',d:'A swarm of rocky and metallic bodies counted as a single location. A source of copper and platinum.'},
+ {k:'jupiter',n:'Jupiter',d:'Giant planet with a family of icy and volcanic moons. The outer moons hold silver, chromium and uranium.'},
+ {k:'io',n:'Io',p:'jupiter',d:'The most volcanic world in the Solar System, bathed in lethal radiation from Jupiter.'},
+ {k:'europa',n:'Europa',p:'jupiter',d:'Ice-shelled moon hiding a global ocean of liquid water.'},
+ {k:'ganymede',n:'Ganymede',p:'jupiter',d:'The largest moon in the Solar System, bigger than Mercury, with its own magnetic field.'},
+ {k:'callisto',n:'Callisto',p:'jupiter',d:'Heavily cratered ice-and-rock moon, outside the worst of the radiation around Jupiter.'},
+ {k:'saturn',n:'Saturn',d:'Ringed giant with many icy moons. The outer moons hold silver, chromium and uranium.'},
+ {k:'titan',n:'Titan',p:'saturn',d:'Large moon with a thick nitrogen atmosphere and lakes of liquid methane.'},
+ {k:'enceladus',n:'Enceladus',p:'saturn',d:'Small, bright, icy moon whose geysers vent water from a hidden ocean.'},
+ {k:'rhea',n:'Rhea',p:'saturn',d:'The second-largest moon of Saturn, a cratered ball of water ice.'},
+ {k:'iapetus',n:'Iapetus',p:'saturn',d:'Two-toned moon with one dark and one bright hemisphere, and a ridge around its equator.'},
+ {k:'dione',n:'Dione',p:'saturn',d:'Icy moon with long bright cliffs and a thin cloud of oxygen.'},
+ {k:'tethys',n:'Tethys',p:'saturn',d:'Almost pure water ice, marked by a huge canyon and a giant crater.'},
+ {k:'mimas',n:'Mimas',p:'saturn',d:'Small icy moon dominated by one enormous crater.'},
+ {k:'uranus',n:'Uranus',d:'Distant ice giant tipped on its side, with a dark, cold system of moons.'},
+ {k:'titania',n:'Titania',p:'uranus',d:'The largest moon of Uranus, with canyons and scarps.'},
+ {k:'oberon',n:'Oberon',p:'uranus',d:'Old, dark, heavily cratered moon at the edge of the Uranian system.'},
+ {k:'umbriel',n:'Umbriel',p:'uranus',d:'Dark, ancient moon with a mysterious bright ring on its surface.'},
+ {k:'ariel',n:'Ariel',p:'uranus',d:'Bright moon with the youngest, most active surface among the moons of Uranus.'},
+ {k:'miranda',n:'Miranda',p:'uranus',d:'Small moon with extreme terrain: huge cliffs and patchwork landscapes.'},
+ {k:'neptune',n:'Neptune',d:'The outermost giant: windswept, frozen and very remote.'},
+ {k:'triton',n:'Triton',p:'neptune',d:'Large frozen moon orbiting backwards, with nitrogen geysers.'},
+ {k:'pluto',n:'Pluto',d:'A small, frozen dwarf planet at the edge of the Kuiper belt, with a large moon, Charon. The most remote location of all.'},
+ {k:'charon',n:'Charon',p:'pluto',d:'The large companion of Pluto, so big that the two orbit a point between them.'}];
+const COLPAGES=['Inner Planets','Middle Planets','Outer Planets'];
+const colPageOf=l=>{const r=l.p||l.k;return ['mercury','venus','earth','mars','belt'].includes(r)?0:['jupiter','saturn'].includes(r)?1:2};let colPage=0;
+const SCR=['base','col','build','tech','yard','port','flight','log'];
 function go(s){S.screen=s;render()}
 function render(){
- SCR.forEach(s=>$('scr-'+s).hidden=S.screen!==s);$('back').hidden=S.screen==='base';
+ SCR.forEach(s=>$('scr-'+s).hidden=S.screen!==s);$('back').setAttribute('aria-pressed',String(S.screen==='base'));
  $('b-build').textContent=S.q.length?S.q.length+' in progress':'Idle';
  $('b-tech').textContent=S.cur?T[S.cur].n:'Idle';
+ $('colbtn').setAttribute('aria-pressed',String(S.screen==='col'));
  $('b-yard').textContent=S.ships+' in hangar';
  $('b-port').textContent=owned()+'/'+S.slots+' berths';
  $('b-flight').textContent=S.out.length+' in flight';
@@ -412,7 +458,8 @@ function render(){
  for(const k in M){const m=M[k];if(m.tech&&!S.tech[m.tech])continue;
   h+='<div class="row"><div>'+m.n+'<small>Brings '+m.d+' · '+Math.round(m.t*30)+' days · '+Math.round(m.risk*100)+'% risk · costs '+cost(m.c)+' · crew '+CREW[k]+(freeCol()<CREW[k]?' <span class="bad">(needs '+CREW[k]+' free colonists)</span>':'')+'</small></div><button '+(S.ships>0&&can(m.c)&&freeCol()>=CREW[k]&&!S.over?'':'disabled')+' onclick="launch(\''+k+'\')">Launch</button></div>'}
  if(S.out.length)h+='<div class="dim" style="padding-top:6px">In flight: '+S.out.map(o=>M[o.k].n+' ('+dur(o.left)+', crew '+o.crew+')').join(', ')+'</div>';
- set('yard',y);set('port',pt);set('flights',h);
+ set('yard',y);set('port',pt);
+ const np=COLPAGES.length;colPage=Math.min(colPage,np-1);const arr=(d,on,t)=>'<button class="clk pgb" data-cp="'+d+'" title="'+t+'" aria-label="'+t+'"'+(on?'':' disabled')+'><svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="square"><path d="'+(d<0?'M10.5 2.5L5 8L10.5 13.5':'M5.5 2.5L11 8L5.5 13.5')+'"/></svg></button>';set('cols','<div class="pgh">'+arr(-1,colPage>0,'Previous page')+'<b>'+COLPAGES[colPage]+'</b>'+arr(1,colPage<np-1,'Next page')+'</div>'+LOCS.filter(l=>colPageOf(l)===colPage).map(l=>{const c=!!S.colonies[l.k];return '<div class="row loc'+(c?'':' off')+(l.p?' sub':'')+'"><div><span class="ci" role="img" title="'+(c?'Colonised':'No colony')+'" aria-label="'+(c?'Colonised':'No colony')+'">'+ico('colony')+'</span><span class="nm" tabindex="0" data-d="'+esc(l.d)+'">'+l.n+'</span>'+(c?'<small>Colony: '+(l.col||l.n)+' · '+S.pop+' colonists</small>':'')+'</div></div>'}).join(''));set('flights',h);
  document.querySelectorAll('[data-lt]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.lt===logTab)));
  $('objectives').hidden=logTab!=='obj';$('log').hidden=logTab!=='ops';
  {const g=M.gaia,ok=!!S.tech[g.tech],left=DEADLINE-S.y;
@@ -430,6 +477,8 @@ let last=performance.now(),acc=0;
 setInterval(()=>{const n=performance.now(),dt=n-last;last=n;if(!S.speed||S.over||mode!=='game'||$('dlg').open||$('dmenu').open){acc=0;return}acc+=dt;let c=0;while(acc>=S.speed&&!S.over&&c<20){acc-=S.speed;tick();c++}acc=Math.min(acc,S.speed);if(c)render()},100);
 document.querySelectorAll('[data-go]').forEach(b=>b.onclick=()=>go(b.dataset.go));
 $('back').onclick=()=>go('base');
+$('colbtn').onclick=()=>go('col');
+$('cols').addEventListener('click',e=>{const b=e.target.closest('[data-cp]');if(b){colPage=Math.max(0,colPage+(+b.dataset.cp));render()}});
 addEventListener('keydown',e=>{if(e.key==='Escape'&&mode==='game'&&S.screen!=='base'&&!$('dlg').open)go('base')});
 $('dok').onclick=()=>$('dlg').close();
 $('drestart').onclick=()=>{$('dlg').close();$('drestart').hidden=true;$('dok').hidden=false;init();render()};
