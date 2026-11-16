@@ -56,7 +56,7 @@ button[aria-pressed=true],button[aria-checked=true]{background:var(--acc);color:
 button.go{background:var(--acc);color:#1a0f00}
 .map{display:flex;flex-wrap:wrap;gap:3px;min-height:64px;padding:10px;background:linear-gradient(var(--lo) 0 40%,var(--reg) 40% 100%);border-bottom:3px solid var(--lo)}
 .tile{width:30px;height:30px;display:grid;place-items:center;font:700 12px 'Silkscreen',monospace;color:#10122c;border:2px solid;border-color:#fff8 #0006 #0006 #fff8}
-.t-solar{background:#6ea8ff}.t-mine{background:#c98a4b}.t-ice{background:#8fe3f0}.t-elec{background:#ff9a2e}.t-lab{background:#c58cff}.t-hab{background:#7fe0a0}.t-reactor{background:#e6e36a}.t-fact{background:#b6b6c8}.t-shop{background:#9fb3c8}
+.t-solar{background:#6ea8ff}.t-mine{background:#c98a4b}.t-ice{background:#8fe3f0}.t-elec{background:#ff9a2e}.t-lab{background:#c58cff}.t-hab{background:#7fe0a0}.t-reactor{background:#e6e36a}.t-fact{background:#b6b6c8}.t-shop{background:#9fb3c8}.t-port{background:#e0a0c8}
 .bar{height:10px;background:var(--lo);margin-top:3px}.bar i{display:block;height:100%;background:var(--ok)}
 .bad{color:var(--bad)}.ok{color:var(--ok)}.dim{color:var(--dim)}
 #log{max-height:60vh;min-height:240px;overflow:auto;padding:8px 10px;font-size:20px}
@@ -159,6 +159,7 @@ dialog::backdrop{background:#000a}
   <button class="hot" data-go="tech" style="left:3%;bottom:30%"><b>Science Labs</b><small id="b-tech"></small></button>
   <button class="hot" data-go="build" style="left:23%;bottom:14%"><b>Construction</b><small id="b-build"></small></button>
   <button class="hot" data-go="yard" style="left:43%;bottom:34%"><b>Shipyard</b><small id="b-yard"></small></button>
+  <button class="hot" data-go="port" style="left:43%;bottom:68%"><b>Starport</b><small id="b-port"></small></button>
   <button class="hot" data-go="flight" style="left:63%;bottom:14%"><b>Flight plans</b><small id="b-flight"></small></button>
   <button class="hot" data-go="log" style="left:81%;bottom:30%"><b>Mission Control Log</b><small id="b-log"></small></button>
  </div>
@@ -169,6 +170,7 @@ dialog::backdrop{background:#000a}
 <section class="win" id="scr-build" hidden><h2>Construction</h2><div class="in" id="build"></div></section>
 <section class="win" id="scr-tech" hidden><h2>Science Labs</h2><div class="in" id="tech"></div></section>
 <section class="win" id="scr-yard" hidden><h2>Shipyard</h2><div class="in" id="yard"></div></section>
+<section class="win" id="scr-port" hidden><h2>Starport</h2><div class="in" id="port"></div></section>
 <section class="win" id="scr-flight" hidden><h2>Flight plans</h2><div class="in" id="flights"></div></section>
 <section class="win" id="scr-log" hidden><h2>Mission Control Log</h2><div id="log" aria-live="polite"></div></section>
 </main></div>
@@ -217,6 +219,7 @@ const M={
 const fmt=o=>Object.keys(o).map(k=>'+'+o[k]+' '+(RN[k]||'research').toLowerCase()).join(', ');
 for(const k in M)M[k].d=M[k].r.win?'Rebuilds Earth and wins the game':fmt(M[k].r);
 const SHIP={iron:16,aluminium:16,titanium:6,copper:6,components:4,software:2};
+const PORT={max:8,start:1,t:96,c:{iron:12,aluminium:8,titanium:2,silica:8,components:2}};
 const WEAR=.05;
 let BOOST=.1;
 const STAFF={
@@ -234,7 +237,7 @@ const JOBN={labourer:'Labourers',scientist:'Scientists',technician:'Technicians'
 const CREW={earth:2,mars:3,belt:3,outer:4,gaia:8};
 const COL={pop:8,water:.8,oxygen:.5,boost:.1};
 let S;
-function init(){S={diff,cur:null,proj:{},screen:'base',y:2200,m:1,d:1,h:0,speed:0,brown:false,q:[],nobuild:false,staff:{solar:2,mine:2,ice:2,elec:0,reactor:0,lab:0,fact:0,shop:0,build:2},res:{hydrogen:30,oxygen:100,water:100,nitrogen:30,methane:5,sulphur:10,titanium:20,aluminium:40,copper:20,silica:60,iron:120,silver:0,chromium:0,platinum:0,uranium:0,components:10,machinery:20,software:10},pop:COL.pop,rp:0,b:{solar:2,mine:1,ice:1,elec:0,fact:0,shop:0,lab:0,hab:2,reactor:0},tech:{},ships:1,out:[],over:false,log:[]};
+function init(){S={diff,cur:null,proj:{},screen:'base',y:2200,m:1,d:1,h:0,speed:0,brown:false,q:[],nobuild:false,staff:{solar:2,mine:2,ice:2,elec:0,reactor:0,lab:0,fact:0,shop:0,build:2},res:{hydrogen:30,oxygen:100,water:100,nitrogen:30,methane:5,sulphur:10,titanium:20,aluminium:40,copper:20,silica:60,iron:120,silver:0,chromium:0,platinum:0,uranium:0,components:10,machinery:20,software:10},pop:COL.pop,rp:0,b:{solar:2,mine:1,ice:1,elec:0,fact:0,shop:0,lab:0,hab:2,reactor:0},slots:Math.min(PORT.start,PORT.max),tech:{},ships:1,out:[],over:false,log:[]};
  say('Year 2200. The asteroid has scorched Earth. The Moon colony is humanity’s last foothold.');
  say('Silver, chromium and uranium cannot be mined on the Moon or in the asteroid belt. Look further out.');
  say('Build industry, research new drives, and launch the Gaia Ark before '+DEADLINE+'.')}
@@ -269,9 +272,17 @@ function pauseResearch(why){if(!S.cur)return;const k=S.cur,t=T[k],c=Math.ceil(t.
  if(why)say('WARNING: development of '+t.n+' has stopped ('+why+'). Progress is kept; resuming costs '+c+' research points.','bad');
  else say('Research paused: '+t.n+'. Progress is kept; resuming costs '+c+' research points.');
  render()}
-function buildShip(){if(S.over||!can(SHIP))return;pay(SHIP);S.ships++;say('A new shuttle rolls out of the hangar.','ok');render()}
+const portSlots=()=>S.slots,owned=()=>S.ships+S.out.length,BQ=k=>k==='berth'?{n:'Starport berth',g:'P'}:B[k],berthsQ=()=>S.q.filter(q=>q.k==='berth');
+function berths(){const qs=berthsQ(),held={};S.out.forEach(o=>{if(o.b!==undefined)held[o.b]=o});let h=S.ships;const a=[];
+ for(let i=0;i<PORT.max;i++){
+  if(i<S.slots){if(held[i])a.push({s:'away',o:held[i]});else if(h>0){h--;a.push({s:'hangar'})}else a.push({s:'empty'})}
+  else if(i<S.slots+qs.length)a.push({s:'queued',q:qs[i-S.slots]});
+  else a.push({s:'locked'})}
+ return a}
+function expand(){if(S.over||!can(PORT.c)||S.slots+berthsQ().length>=PORT.max)return;pay(PORT.c);S.q.push({k:'berth',left:PORT.t});say('Starport expansion started: berth '+(S.slots+berthsQ().length)+' ('+dur(PORT.t)+').');render()}
+function buildShip(){if(S.over||!can(SHIP)||owned()>=portSlots())return;pay(SHIP);S.ships++;say('A new shuttle rolls out and is berthed in the Starport ('+owned()+'/'+portSlots()+' slots).','ok');render()}
 function launch(k){const m=M[k],cr=CREW[k];if(S.over||S.ships<1||!can(m.c)||freeCol()<cr)return;
- pay(m.c);S.ships--;S.out.push({k,left:m.t*720,crew:cr});say('Launched: '+m.n+' ('+Math.round(m.t*30)+' days, crew of '+cr+').');render()}
+ pay(m.c);const bi=berths().findIndex(x=>x.s==='hangar');S.ships--;S.out.push({k,left:m.t*720,crew:cr,b:bi<0?undefined:bi});say('Launched: '+m.n+' ('+Math.round(m.t*30)+' days, crew of '+cr+').');render()}
 function tick(){
  if(S.over)return;fit();const P=pow(),e=P.e,R=S.res,H=720;
  if(e<1&&!S.brown){S.brown=true;say('Power shortfall: machines run at '+Math.round(e*100)+'%.','bad')}
@@ -294,7 +305,7 @@ function tick(){
  const idle=plan.some(x=>x===0);
  if(idle&&!S.nobuild){S.nobuild=true;say('Construction stalled: not enough builders. Assign more in Construction.','bad')}else if(!idle&&S.nobuild){S.nobuild=false;say('Construction has builders again.','ok')}
  const done=S.q.filter(q=>q.left<=0);S.q=S.q.filter(q=>q.left>0);
- for(const q of done){S.b[q.k]++;say('Construction complete: '+B[q.k].n+'.'+(STAFF[q.k]?' Assign at least '+STAFF[q.k].min+' '+JOBN[STAFF[q.k].job].toLowerCase()+' per building to run it.':''),'ok')}
+ for(const q of done){if(q.k==='berth'){S.slots++;say('Starport expanded: berth '+S.slots+' of '+PORT.max+' is ready.','ok');continue}S.b[q.k]++;say('Construction complete: '+B[q.k].n+'.'+(STAFF[q.k]?' Assign at least '+STAFF[q.k].min+' '+JOBN[STAFF[q.k].job].toLowerCase()+' per building to run it.':''),'ok')}
  const back=S.out.filter(o=>o.left<=0);S.out=S.out.filter(o=>o.left>0);
  for(const o of back){const m=M[o.k];
   if(Math.random()<m.risk){say(m.n+': ship lost in transit. The crew of '+(o.crew||2)+' is gone.','bad');S.pop=Math.max(0,S.pop-(o.crew||2));continue}
@@ -361,32 +372,42 @@ const CAT=[
  {n:'Manufactured',d:'Manufactured goods made from raw materials. Components come from the Component factory and machinery from the Machinery workshop. Software has no source yet.',r:['components','machinery','software']}
 ];
 const stock=()=>CAT.map(c=>'<div class="cat"><div class="cat-n" tabindex="0" data-n="'+c.d+'">'+c.n+'</div><div class="cat-r">'+c.r.map(k=>chip(k,RN[k]+(FAR.includes(k)?' (not found on the Moon or in the asteroid belt)':''),Math.floor(S.res[k]),FAR.includes(k))).join('')+'</div></div>').join('');
-const SCR=['base','build','tech','yard','flight','log'];
+const SCR=['base','build','tech','yard','port','flight','log'];
 function go(s){S.screen=s;render()}
 function render(){
  SCR.forEach(s=>$('scr-'+s).hidden=S.screen!==s);$('back').hidden=S.screen==='base';
  $('b-build').textContent=S.q.length?S.q.length+' in progress':'Idle';
  $('b-tech').textContent=S.cur?'Project active':Math.floor(S.rp)+' research pts';
  $('b-yard').textContent=S.ships+' in hangar';
+ $('b-port').textContent=owned()+'/'+S.slots+' berths';
  $('b-flight').textContent=S.out.length+' in flight';
  $('b-log').textContent=S.log.length+' entries';
  set('pop',chip('colonists','Colonists ('+freeCol()+' free)',S.pop+'/'+S.b.hab*B.hab.cap));
  $('date').textContent=S.y+'-'+pad(S.m)+'-'+pad(S.d)+'  '+pad(S.h)+':00';
  set('res',chip('research','Research points',Math.floor(S.rp)));
  set('stock',stock());
- let t='';for(const k in B)for(let i=0;i<S.b[k];i++)t+='<div class="tile t-'+k+'" title="'+B[k].n+'">'+B[k].g+'</div>';
- for(const q of S.q)t+='<div class="tile" style="background:transparent;border-style:dashed;color:var(--ink)" title="Under construction: '+B[q.k].n+'">'+B[q.k].g+'</div>';
+ let t='<div class="tile t-port" title="Starport">P</div>';for(const k in B)for(let i=0;i<S.b[k];i++)t+='<div class="tile t-'+k+'" title="'+B[k].n+'">'+B[k].g+'</div>';
+ for(const q of S.q)t+='<div class="tile" style="background:transparent;border-style:dashed;color:var(--ink)" title="Under construction: '+BQ(q.k).n+'">'+BQ(q.k).g+'</div>';
  set('map',t);const P=pow();
  set('power','Power '+P.p+' made / '+P.u+' needed <span class="'+(P.e<1?'bad':'ok')+'">('+Math.round(P.e*100)+'% efficiency)</span><div class="bar"><i style="width:'+Math.round(P.e*100)+'%"></i></div><div class="dim" style="padding-top:6px">'+jobsLine()+'</div>');
- set('build',builderRow()+Object.keys(B).filter(k=>!B[k].tech||S.tech[B[k].tech]).map(k=>'<div class="row"><div>'+B[k].n+' ×'+S.b[k]+'<small>'+B[k].d+' · power '+(B[k].p>0?'+':'')+B[k].p+' · '+cost(B[k].c)+(B[k].c.machinery?' · upkeep '+(+(B[k].c.machinery*WEAR).toFixed(2))+' machinery / month':'')+' · takes '+dur(B[k].t)+(STAFF[k]?' · staff: '+STAFF[k].min+' '+JOBN[STAFF[k].job].toLowerCase()+' per building, '+STAFF[k].full+' for +'+Math.round(BOOST*100)+'%':'')+'</small></div>'+stf(k)+'<button '+(can(B[k].c)&&!S.over?'':'disabled')+' onclick="build(\''+k+'\')">Build</button></div>').join('')+(S.q.length?'<div class="dim" style="padding-top:6px">Under construction: '+S.q.map((q,i)=>B[q.k].n+' ('+dur(q.left)+(sitePlan()[i]?'':', waiting for builders')+')').join(', ')+'</div>':''));
+ set('build',builderRow()+Object.keys(B).filter(k=>!B[k].tech||S.tech[B[k].tech]).map(k=>'<div class="row"><div>'+B[k].n+' ×'+S.b[k]+'<small>'+B[k].d+' · power '+(B[k].p>0?'+':'')+B[k].p+' · '+cost(B[k].c)+(B[k].c.machinery?' · upkeep '+(+(B[k].c.machinery*WEAR).toFixed(2))+' machinery / month':'')+' · takes '+dur(B[k].t)+(STAFF[k]?' · staff: '+STAFF[k].min+' '+JOBN[STAFF[k].job].toLowerCase()+' per building, '+STAFF[k].full+' for +'+Math.round(BOOST*100)+'%':'')+'</small></div>'+stf(k)+'<button '+(can(B[k].c)&&!S.over?'':'disabled')+' onclick="build(\''+k+'\')">Build</button></div>').join('')+(S.q.length?'<div class="dim" style="padding-top:6px">Under construction: '+S.q.map((q,i)=>BQ(q.k).n+' ('+dur(q.left)+(sitePlan()[i]?'':', waiting for builders')+')').join(', ')+'</div>':''));
  set('tech',labStatus()+Object.keys(T).map(k=>{const x=T[k],ok=x.req.every(r=>S.tech[r]),done=S.tech[k];
   return '<div class="row"><div>'+x.n+(done?' <span class="ok">done</span>':'')+(S.cur===k?' <span class="ok">in progress</span>':S.proj[k]?' <span class="bad">paused, '+Math.ceil(S.proj[k].left/24)+' days left</span>':'')+'<small>'+x.d+(done?'':' · '+x.rp+' points up front + '+x.rp/100+' / day, '+x.rp+' days'+(x.req.length?' · needs '+x.req.map(r=>T[r].n).join(', '):''))+'</small></div>'+(done||S.cur===k?'':'<button '+(canResearch(k)?'':'disabled')+' onclick="research(\''+k+'\')">'+(S.proj[k]?'Resume ('+startCost(k)+' pts)':'Research')+'</button>')+'</div>'}).join(''));
- let y='<div class="row"><div>Shuttles in hangar: '+S.ships+'<small>'+cost(SHIP)+' each</small></div><button '+(can(SHIP)&&!S.over?'':'disabled')+' onclick="buildShip()">Build shuttle</button></div>';
+ let y='<div class="row"><div>Shuttles in hangar: '+S.ships+'<small>'+cost(SHIP)+' each</small><small>Starport: '+owned()+'/'+S.slots+' berths used'+(S.out.length?' ('+S.out.length+' away on missions)':'')+(owned()>=S.slots?' <span class="bad">· no free berth: expand the Starport'+(S.slots>=PORT.max?' (already at the maximum of '+PORT.max+')':'')+'</span>':'')+'</small></div><button '+(can(SHIP)&&!S.over&&owned()<S.slots?'':'disabled')+' onclick="buildShip()">Build shuttle</button></div>';
+ const BS=berths(),nq=berthsQ().length,nx=BS.findIndex(x=>x.s==='locked');
+ let pt='<div class="row"><div>Starport<small>'+S.slots+' of '+PORT.max+' berths built · '+owned()+' occupied. Only the berths grow: each expansion costs '+cost(PORT.c)+' and takes '+dur(PORT.t)+'. New shuttles from the Shipyard are berthed here automatically.</small></div></div>'+
+  BS.map((b,i)=>{const n='Berth '+(i+1);let d,x='';
+   if(b.s==='hangar')d='<b class="ok">Shuttle</b> · in hangar, ready to launch';
+   else if(b.s==='away')d='<b>Shuttle</b> · away on '+M[b.o.k].n+' ('+dur(b.o.left)+' to go, crew '+b.o.crew+')';
+   else if(b.s==='empty')d='<span class="dim">Empty berth</span>';
+   else if(b.s==='queued')d='<span class="dim">Under construction · '+dur(b.q.left)+(sitePlan()[S.q.indexOf(b.q)]?'':' · waiting for builders')+'</span>';
+   else{d='<span class="dim">Not built</span>';if(i===nx)x='<button '+(can(PORT.c)&&!S.over?'':'disabled')+' onclick="expand()">Expand</button>'}
+   return '<div class="row berth"><div>'+n+'<small>'+d+'</small></div>'+x+'</div>'}).join('');
  let h='';
  for(const k in M){const m=M[k];if(m.tech&&!S.tech[m.tech])continue;
   h+='<div class="row"><div>'+m.n+'<small>Brings '+m.d+' · '+Math.round(m.t*30)+' days · '+Math.round(m.risk*100)+'% risk · costs '+cost(m.c)+' · crew '+CREW[k]+(freeCol()<CREW[k]?' <span class="bad">(needs '+CREW[k]+' free colonists)</span>':'')+'</small></div><button '+(S.ships>0&&can(m.c)&&freeCol()>=CREW[k]&&!S.over?'':'disabled')+' onclick="launch(\''+k+'\')">Launch</button></div>'}
  if(S.out.length)h+='<div class="dim" style="padding-top:6px">In flight: '+S.out.map(o=>M[o.k].n+' ('+dur(o.left)+', crew '+o.crew+')').join(', ')+'</div>';
- set('yard',y);set('flights',h);
+ set('yard',y);set('port',pt);set('flights',h);
  set('log',S.log.slice(0,40).map(l=>'<div class="'+l[1]+'">'+l[0]+'</div>').join(''));
  document.querySelectorAll('[data-sp]').forEach(b=>b.setAttribute('aria-pressed',String(+b.dataset.sp===S.speed)));
  $('goal').textContent='Goal: launch the Gaia Ark before '+DEADLINE;
@@ -413,16 +434,17 @@ $('dstay').onclick=()=>$('dmenu').close();
 $('dleave').onclick=()=>{$('dmenu').close();setMode('title')};
 /* ===== Editor ===== */
 const RK=Object.keys(RN);
-const DATA={B,T,M,SHIP,STAFF,CREW,COL},DEF=JSON.stringify(DATA),KEY='solar-century-configs',OKEYS=['B','T','M','SHIP','STAFF','CREW','COL'];
+const DATA={B,T,M,SHIP,STAFF,CREW,COL,PORT},DEF=JSON.stringify(DATA),KEY='solar-century-configs',OKEYS=['B','T','M','SHIP','STAFF','CREW','COL'];
 const lst=o=>Object.keys(o).map(k=>o[k]+' '+RN[k].toLowerCase()).join(' + ');
 function refreshD(){
  for(const k in M)M[k].d=M[k].r.win?'Rebuilds Earth and wins the game':fmt(M[k].r);
  for(const k in B){const b=B[k];
-  if(b.cap!==undefined)b.d='houses '+b.cap+' colonists';
+  if(b.slots!==undefined)b.d='berths '+b.slots+' starships';
+  else if(b.cap!==undefined)b.d='houses '+b.cap+' colonists';
   else if(b.out)b.d=(b.inp?lst(b.inp)+' → '+lst(b.out):fmt(b.out))+' / month';
   else if(b.inp)b.d=(b.p>0?'+'+b.p+' power, ':'')+'burns '+lst(b.inp)+' / month';
   else if(k!=='lab')b.d=b.p>0?'+'+b.p+' power':'No output'}}
-function applyData(d){const dd=JSON.parse(DEF);for(const n in DATA){if(!d[n])continue;const t=DATA[n];for(const k of Object.keys(t))delete t[k];Object.assign(t,dd[n],d[n])}BOOST=COL.boost;refreshD()}
+function applyData(d){const dd=JSON.parse(DEF);for(const n in DATA){const t=DATA[n];for(const k of Object.keys(t))delete t[k];Object.assign(t,dd[n],d[n]||{})}delete B.port;BOOST=COL.boost;refreshD()}
 const CF={list:[],edit:'default',sel:'default'};
 const cfById=id=>id==='default'?{id:'default',name:'Default',d:JSON.parse(DEF)}:CF.list.find(c=>c.id===id);
 const validD=d=>!!d&&OKEYS.every(k=>d[k]&&typeof d[k]==='object');
@@ -449,13 +471,13 @@ function reaches(a,b,seen){seen=seen||{};if(seen[a])return false;seen[a]=1;retur
 function edB(){return Object.keys(B).map(k=>{const b=B[k],P='B.'+k+'.';
  return '<details'+(edOpen===k?' open':'')+'><summary>'+esc(b.n)+'</summary><div class="ef">'+
   fl('Name',txt(P+'n',b.n))+fl('Construction time (hours)',num(P+'t',b.t,{min:1}))+fl('Power (+ makes, − uses)',num(P+'p',b.p,{min:null}))+
-  (b.cap!==undefined?fl('Housing (colonists)',num(P+'cap',b.cap,{int:1})):'')+fl('Requires tech',techSel(P+'tech',b.tech))+'</div>'+
+  (b.cap!==undefined?fl('Housing (colonists)',num(P+'cap',b.cap,{int:1})):'')+(b.slots!==undefined?fl('Starship slots',num(P+'slots',b.slots,{int:1})):'')+fl('Requires tech',techSel(P+'tech',b.tech))+'</div>'+
   '<h4>Construction cost</h4>'+grid(P+'c',b.c)+'<h4>Consumes per month</h4>'+grid(P+'inp',b.inp)+'<h4>Produces per month</h4>'+grid(P+'out',b.out)+'</details>'}).join('')}
 function edT(){return '<div class="ef addt">'+fl('New technology name','<input type="text" id="nt-n" value="New technology">')+fl('Research cost (points)','<input type="number" id="nt-r" value="40" min="1" step="any">')+'<button id="nt-add" class="go">Add technology</button></div><p class="dim">A new technology does nothing by itself: choose it under “Requires tech” on a building or a starship mission to make it unlock that.</p>'+
  Object.keys(T).map(k=>{const t=T[k],P='T.'+k+'.';
   return '<details'+(edOpen===k?' open':'')+'><summary>'+esc(t.n)+(t.custom?' (custom)':'')+'</summary><div class="ef">'+fl('Name',txt(P+'n',t.n))+fl('Research cost (points up front; 1% per day)',num(P+'rp',t.rp,{min:1}))+fl('Description',txt(P+'d',t.d),1)+'</div><h4>Requires</h4><div>'+
   (Object.keys(T).filter(r=>r!==k&&!reaches(r,k)).map(r=>'<label class="ck"><input type="checkbox" data-rq="'+r+'" data-for="'+k+'"'+(t.req.includes(r)?' checked':'')+'>'+esc(T[r].n)+'</label>').join('')||'<span class="dim">no other technologies</span>')+'</div>'+(t.custom?'<p><button data-del="'+k+'">Delete technology</button></p>':'')+'</details>'}).join('')}
-function edS(){return '<details'+(edOpen==='ship'?' open':'')+'><summary>Shuttle (build cost)</summary>'+grid('SHIP',SHIP)+'</details>'+Object.keys(M).map(k=>{const m=M[k],P='M.'+k+'.';
+function edS(){return '<details'+(edOpen==='ship'?' open':'')+'><summary>Shuttle (build cost)</summary>'+grid('SHIP',SHIP)+'</details><details'+(edOpen==='port'?' open':'')+'><summary>Starport (berth expansion)</summary><div class="ef">'+fl('Maximum berths',num('PORT.max',PORT.max,{int:1,min:1}))+fl('Berths at start',num('PORT.start',PORT.start,{int:1,min:1}))+fl('Expansion time (hours)',num('PORT.t',PORT.t,{min:1}))+'</div><h4>Cost per new berth</h4>'+grid('PORT.c',PORT.c)+'</details>'+Object.keys(M).map(k=>{const m=M[k],P='M.'+k+'.';
  return '<details'+(edOpen===k?' open':'')+'><summary>'+esc(m.n)+'</summary><div class="ef">'+fl('Name',txt(P+'n',m.n))+fl('Duration (months)',num(P+'t',m.t,{min:.1}))+fl('Risk of loss (%)',num(P+'risk',m.risk,{pct:1}))+fl('Crew (colonists)',num('CREW.'+k,CREW[k],{int:1}))+fl('Requires tech',techSel(P+'tech',m.tech))+'</div><h4>Launch cost</h4>'+grid(P+'c',m.c)+'<h4>Returns</h4>'+(m.r.win?'<p class="dim">Wins the game when it arrives.</p>':grid(P+'r',m.r,['rp']))+'</details>'}).join('')}
 function edC(){return '<div class="ef">'+fl('Starting colonists',num('COL.pop',COL.pop,{int:1,min:1}))+fl('Water per colonist / month',num('COL.water',COL.water))+fl('Oxygen per colonist / month',num('COL.oxygen',COL.oxygen))+fl('Boost when fully manned (%)',num('COL.boost',COL.boost,{pct:1}))+'</div><h4>Staffing per building (colonists)</h4><div class="eg">'+
  Object.keys(STAFF).map(k=>{const s=STAFF[k],P='STAFF.'+k+'.';return '<div class="sg"><b>'+(k==='build'?'Construction site':esc(B[k].n))+'</b><span class="dim">'+JOBN[s.job]+'</span>'+fl('Minimum to run',num(P+'min',s.min,{int:1,min:1}))+fl('Full crew (boost)',num(P+'full',s.full,{int:1,min:2}))+'</div>'}).join('')+'</div>'}
