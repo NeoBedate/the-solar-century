@@ -12,6 +12,7 @@ box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:en
 :root[data-theme="dark"]{color-scheme:dark}
 html{scroll-padding-top:env(safe-area-inset-top,0px)}
 *{box-sizing:border-box}
+.seg{display:inline-flex}.seg .clk{padding:3px 8px;line-height:0}.seg .clk+.clk{margin-left:-3px}.seg .clk[aria-pressed=true]{position:relative}.clk svg{display:block}#menu.clk{padding:4px 9px}
 body{margin:0;background:var(--bg);color:var(--ink);font:22px/1.15 'VT323',ui-monospace,Menlo,Consolas,monospace}
 h1,h2{font-family:'Silkscreen','Courier New',monospace;font-weight:700;margin:0;letter-spacing:.02em}
 .wrap{max-width:1100px;margin:0 auto;padding:12px}
@@ -20,6 +21,7 @@ h1,h2{font-family:'Silkscreen','Courier New',monospace;font-weight:700;margin:0;
 .in{padding:8px 10px}
 header.win .in{display:flex;flex-wrap:wrap;gap:6px 18px;align-items:center;justify-content:space-between}
 h1{font-size:18px}
+header.win .in.hdr{flex-direction:column;flex-wrap:nowrap;align-items:stretch;gap:5px;padding:4px 10px}.hdr .r1{display:flex;justify-content:space-between;align-items:center}.hdr .date{font-size:22px;line-height:1}.hdr #menu.clk{padding:2px 8px}
 .date{color:var(--acc);font-size:26px}
 .res{display:flex;flex-wrap:wrap;gap:6px 16px}
 .res{font-size:19px}.chip{position:relative;display:inline-flex;align-items:center;gap:4px;white-space:nowrap;cursor:default}
@@ -140,16 +142,16 @@ dialog::backdrop{background:#000a}
  <button id="m-back">Back to main menu</button>
 </div></div>
 <div class="wrap" id="game" hidden>
-<header class="win"><div class="in">
+<header class="win" aria-label="Date, menu and time controls"><div class="in hdr">
+ <div class="r1">
  <div class="date" id="date"></div>
- <button id="menu">Main menu</button>
-</div></header>
-
-<nav class="win" aria-label="Time and navigation"><div class="in end">
+ <button id="menu" class="clk" title="Main menu" aria-label="Main menu"><svg viewBox="0 0 16 16" width="20" height="20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="square"><path d="M2 3.5H14M2 8H14M2 12.5H14"/></svg></button>
+ </div>
+ <div class="end r2">
  <button id="back" hidden>Return to base</button>
- <button data-sp="0">Pause</button><button id="step">+1 hour</button><button data-sp="30000" title="1 hour per 30 seconds">Very slow</button><button data-sp="15000" title="1 hour per 15 seconds">Slow</button><button data-sp="5000" title="1 hour per 5 seconds">Normal</button><button data-sp="2000" title="1 hour per 2 seconds">Fast</button><button data-sp="500" title="1 hour per half a second">Turbo</button>
- <span class="dim" id="goal"></span>
-</div></nav>
+ <span class="seg" role="group" aria-label="Game speed"><button data-sp="0" title="Pause" aria-label="Pause" class="clk"><svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="square"><path d="M5 2.5V13.5M11 2.5V13.5"/></svg></button><button id="step" title="Advance 1 hour" aria-label="Advance 1 hour" class="clk"><svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="square"><path d="M3 2.5L9 8L3 13.5Z" fill="currentColor" stroke-width="1"/><path d="M13 2.5V13.5"/></svg></button><button data-sp="30000" title="Very slow: 1 hour per 30 seconds" aria-label="Very slow: 1 hour per 30 seconds" class="clk"><svg viewBox="0 0 8.5 16" width="9" height="16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="square"><path d="M2.0 2.5L6.5 8L2.0 13.5"/></svg></button><button data-sp="15000" title="Slow: 1 hour per 15 seconds" aria-label="Slow: 1 hour per 15 seconds" class="clk"><svg viewBox="0 0 13.0 16" width="13" height="16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="square"><path d="M2.0 2.5L6.5 8L2.0 13.5"/><path d="M6.5 2.5L11.0 8L6.5 13.5"/></svg></button><button data-sp="5000" title="Normal: 1 hour per 5 seconds" aria-label="Normal: 1 hour per 5 seconds" class="clk"><svg viewBox="0 0 17.5 16" width="18" height="16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="square"><path d="M2.0 2.5L6.5 8L2.0 13.5"/><path d="M6.5 2.5L11.0 8L6.5 13.5"/><path d="M11.0 2.5L15.5 8L11.0 13.5"/></svg></button><button data-sp="2000" title="Fast: 1 hour per 2 seconds" aria-label="Fast: 1 hour per 2 seconds" class="clk"><svg viewBox="0 0 22.0 16" width="22" height="16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="square"><path d="M2.0 2.5L6.5 8L2.0 13.5"/><path d="M6.5 2.5L11.0 8L6.5 13.5"/><path d="M11.0 2.5L15.5 8L11.0 13.5"/><path d="M15.5 2.5L20.0 8L15.5 13.5"/></svg></button><button data-sp="500" title="Turbo: 1 hour per half a second" aria-label="Turbo: 1 hour per half a second" class="clk"><svg viewBox="0 0 26.5 16" width="26" height="16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="square"><path d="M2.0 2.5L6.5 8L2.0 13.5"/><path d="M6.5 2.5L11.0 8L6.5 13.5"/><path d="M11.0 2.5L15.5 8L11.0 13.5"/><path d="M15.5 2.5L20.0 8L15.5 13.5"/><path d="M20.0 2.5L24.5 8L20.0 13.5"/></svg></button></span>
+ </div>
+</div></header>
 
 <div class="layout"><aside aria-label="Research and resources"><section class="win"><h2>Research</h2><div class="in res" id="res"></div></section><section class="win" style="margin-top:8px"><h2>Resources</h2><div class="in cats" id="stock"></div></section></aside><main>
 <section class="win" id="scr-base"><h2 class="colony"><span>Moonbase – Mare Tranquillitatis</span><span id="pop"></span></h2>
@@ -171,7 +173,7 @@ dialog::backdrop{background:#000a}
 <section class="win" id="scr-yard" hidden><h2>Shipyard</h2><div class="in" id="yard"></div></section>
 <section class="win" id="scr-port" hidden><h2>Starport</h2><div class="in" id="port"></div></section>
 <section class="win" id="scr-flight" hidden><h2>Flight plans</h2><div class="in" id="flights"></div></section>
-<section class="win" id="scr-log" hidden><h2>Mission Control Log</h2><div id="log" aria-live="polite"></div></section>
+<section class="win" id="scr-log" hidden><h2>Mission Control Log</h2><div class="in end" id="log-tabs" role="group" aria-label="Log sections"><button data-lt="obj">Main Objectives</button><button data-lt="ops">Daily Operations</button></div><div id="objectives" class="in" hidden></div><div id="log" aria-live="polite"></div></section>
 </main></div>
 </div>
 <div class="wrap" id="editor" hidden>
@@ -374,6 +376,7 @@ const CAT=[
  {n:'Manufactured',d:'Manufactured goods made from raw materials. Components come from the Component factory and machinery from the Machinery workshop. Software has no source yet.',r:['components','machinery','software']}
 ];
 const stock=()=>CAT.map(c=>'<div class="cat"><div class="cat-n" tabindex="0" data-n="'+c.d+'">'+c.n+'</div><div class="cat-r">'+c.r.map(k=>chip(k,RN[k]+(FAR.includes(k)?' (not found on the Moon or in the asteroid belt)':''),Math.floor(S.res[k]),FAR.includes(k))).join('')+'</div></div>').join('');
+let logTab='obj';
 const SCR=['base','build','tech','yard','port','flight','log'];
 function go(s){S.screen=s;render()}
 function render(){
@@ -410,10 +413,17 @@ function render(){
   h+='<div class="row"><div>'+m.n+'<small>Brings '+m.d+' · '+Math.round(m.t*30)+' days · '+Math.round(m.risk*100)+'% risk · costs '+cost(m.c)+' · crew '+CREW[k]+(freeCol()<CREW[k]?' <span class="bad">(needs '+CREW[k]+' free colonists)</span>':'')+'</small></div><button '+(S.ships>0&&can(m.c)&&freeCol()>=CREW[k]&&!S.over?'':'disabled')+' onclick="launch(\''+k+'\')">Launch</button></div>'}
  if(S.out.length)h+='<div class="dim" style="padding-top:6px">In flight: '+S.out.map(o=>M[o.k].n+' ('+dur(o.left)+', crew '+o.crew+')').join(', ')+'</div>';
  set('yard',y);set('port',pt);set('flights',h);
+ document.querySelectorAll('[data-lt]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.lt===logTab)));
+ $('objectives').hidden=logTab!=='obj';$('log').hidden=logTab!=='ops';
+ {const g=M.gaia,ok=!!S.tech[g.tech],left=DEADLINE-S.y;
+  set('objectives','<div class="row"><div><b>Launch the Gaia Ark before '+DEADLINE+'</b><small>The asteroid has scorched Earth. Carry the Gaia Ark to Earth to seed it with new life and win the game. The flight takes '+Math.round(g.t*30)+' days, so it has to leave in time to arrive before the deadline.</small><small>Time left: '+left+' year'+(left===1?'':'s')+' (until '+DEADLINE+').</small></div></div>'+
+   '<div class="row"><div>'+(ok?'<span class="ok">Done</span> · ':'')+'Research '+T[g.tech].n+'<small>'+T[g.tech].d+(ok?'':' · needs '+T[g.tech].req.map(r=>T[r].n+(S.tech[r]?' (done)':'')).join(', '))+'</small></div></div>'+
+   '<div class="row"><div>Gather a crew of '+CREW.gaia+' free colonists<small>Free colonists now: '+freeCol()+'</small></div></div>'+
+   '<div class="row"><div>Stockpile the launch cost<small>'+cost(g.c)+'</small></div></div>')}
  set('log',S.log.slice(0,40).map(l=>'<div class="'+l[1]+'">'+l[0]+'</div>').join(''));
  document.querySelectorAll('[data-sp]').forEach(b=>b.setAttribute('aria-pressed',String(+b.dataset.sp===S.speed)));
- $('goal').textContent='Goal: launch the Gaia Ark before '+DEADLINE;
 }
+document.querySelectorAll('[data-lt]').forEach(b=>b.onclick=()=>{logTab=b.dataset.lt;render()});
 document.querySelectorAll('[data-sp]').forEach(b=>b.onclick=()=>{S.speed=+b.dataset.sp;render()});
 $('step').onclick=()=>{S.speed=0;tick();render()};
 let last=performance.now(),acc=0;
