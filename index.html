@@ -86,6 +86,23 @@ linear-gradient(#02030f 0 76%,#8d8672 76% 100%)}
 .menu button{font-size:26px;padding:6px 12px}
 dialog{background:var(--panel);color:var(--ink);border:3px solid var(--acc);font:inherit;max-width:420px}
 dialog::backdrop{background:#000a}
+#editor details{border-bottom:1px dashed var(--lo);padding:4px 0}
+#editor summary{cursor:pointer;font:700 12px 'Silkscreen',monospace;color:var(--acc);padding:4px 0}
+#editor h4{font:700 11px 'Silkscreen',monospace;margin:10px 0 4px;color:var(--dim)}
+.ef,.eg{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:6px 10px;align-items:end}
+.addt{grid-template-columns:minmax(150px,2fr) minmax(130px,1fr) auto}
+.sg{display:contents}
+#ed-body fieldset{border:0;margin:0;padding:0;min-width:0}
+#editor #cf-sel,#editor #cf-name{width:auto;min-width:150px;flex:1 1 150px}
+.menu select{font:inherit;font-size:24px;padding:4px 8px;background:var(--panel);color:var(--ink);border:3px solid;border-color:var(--hi) var(--lo) var(--lo) var(--hi);width:100%}
+.sg>b,.sg>span{grid-column:1/-1}
+.fl{display:flex;flex-direction:column;font-size:18px;color:var(--dim)}
+.fl.w{grid-column:1/-1}
+#editor input,#editor select,#editor textarea{font:inherit;background:var(--panel);color:var(--ink);border:2px solid var(--lo);padding:1px 4px;width:100%}
+#editor input:focus-visible,#editor select:focus-visible,#editor textarea:focus-visible{outline:2px solid var(--acc)}
+.ck{display:inline-flex;align-items:center;gap:4px;margin-right:12px;font-size:19px}
+#editor .ck input{width:auto}
+#editor textarea{margin-top:8px;font-size:16px}
 </style>
 </head>
 <body>
@@ -96,6 +113,7 @@ dialog::backdrop{background:#000a}
   <button class="go" id="m-new">New Game</button>
   <button id="m-load" disabled title="Coming soon">Load Game</button>
   <button id="m-opt" disabled title="Coming soon">Options</button>
+  <button id="m-edit">Editor</button>
   <button id="m-exit">Exit</button>
  </div></nav>
 </div></div>
@@ -108,6 +126,9 @@ dialog::backdrop{background:#000a}
   <button class="diff" role="radio" aria-checked="false" data-d="hard" disabled title="Coming soon">Hard <small class="dim">coming soon</small></button>
  </div></div>
  <p class="tag" id="d-note" style="margin-top:14px">Normal: the game as balanced right now.</p>
+ <p class="tag" style="margin:14px 0 6px">Select Configuration</p>
+ <div class="win menu"><div class="in"><select id="cf-pick" aria-label="Select Configuration"></select></div></div>
+ <p class="tag" id="cf-note" style="margin-top:14px"></p>
  <div class="win menu"><div class="in">
   <button class="go" id="d-start">Start game</button>
   <button id="d-back">Back</button>
@@ -152,6 +173,13 @@ dialog::backdrop{background:#000a}
 <section class="win" id="scr-log" hidden><h2>Mission Control Log</h2><div id="log" aria-live="polite"></div></section>
 </main></div>
 </div>
+<div class="wrap" id="editor" hidden>
+<header class="win"><div class="in"><button id="ed-back">Main menu</button><h1>EDITOR</h1><span class="dim" id="ed-msg">Edits are saved in the selected configuration.</span></div></header>
+<section class="win"><h2>Configuration</h2><div class="in end"><select id="cf-sel" aria-label="Configuration being edited"></select><input type="text" id="cf-name" aria-label="Configuration name"><button id="cf-new">New</button><button id="cf-dup">Duplicate</button><button id="cf-del">Delete</button></div></section>
+<nav class="win" aria-label="Editor sections"><div class="in end" id="ed-tabs"></div></nav>
+<section class="win"><h2>Game data</h2><div class="in" id="ed-body"></div></section>
+<section class="win"><h2>Data</h2><div class="in"><div class="end"><button id="ed-reset">Reset to Default values</button><button id="ed-exp">Export</button><button id="ed-imp">Import</button></div><textarea id="ed-json" rows="5" spellcheck="false" placeholder="Export fills this box. Paste exported data here and press Import."></textarea></div></section>
+</div>
 <dialog id="dmenu"><p>Return to the main menu? The current game can’t be resumed yet, so its progress will be lost.</p><button id="dstay">Stay</button> <button class="go" id="dleave">Return to main menu</button></dialog>
 <dialog id="dlg"><p id="dmsg"></p><button class="go" id="dok">Close</button> <button id="drestart" hidden>New game</button></dialog>
 
@@ -166,7 +194,7 @@ const B={
  fact:{n:'Component factory',c:{iron:24,aluminium:8,copper:4,silica:8,components:3,machinery:6},p:-3,inp:{iron:8,silica:5,aluminium:2,copper:.5},out:{components:4},d:'8 iron + 5 silica + 2 aluminium + 0.5 copper → 4 components / month',g:'C',t:168},
  shop:{n:'Machinery workshop',c:{iron:24,aluminium:12,copper:4,silica:8,components:4,machinery:6},p:-3,inp:{iron:10,aluminium:4,titanium:1},out:{machinery:2},d:'10 iron + 4 aluminium + 1 titanium → 2 machinery / month',g:'W',t:168},
  lab:{n:'Science lab',c:{aluminium:12,copper:8,silica:8,titanium:4,components:4},p:-3,d:'Research points: 1 per 20 days. While a project is active: −75%. Needed to start any project',g:'L',t:144},
- hab:{n:'Habitat module',c:{aluminium:16,iron:16,nitrogen:8,water:16,components:3},p:-1,d:'houses 6 colonists',g:'H',t:96},
+ hab:{n:'Habitat module',c:{aluminium:16,iron:16,nitrogen:8,water:16,components:3},p:-1,cap:6,d:'houses 6 colonists',g:'H',t:96},
  reactor:{n:'Fission reactor',tech:'fission',c:{iron:32,titanium:16,chromium:8,uranium:8,components:6,machinery:8},p:12,inp:{uranium:.5},d:'+12 power, burns 0.5 uranium / month',g:'R',t:200}
 };
 const T={
@@ -190,7 +218,7 @@ const fmt=o=>Object.keys(o).map(k=>'+'+o[k]+' '+(RN[k]||'research').toLowerCase(
 for(const k in M)M[k].d=M[k].r.win?'Rebuilds Earth and wins the game':fmt(M[k].r);
 const SHIP={iron:16,aluminium:16,titanium:6,copper:6,components:4,software:2};
 const WEAR=.05;
-const BOOST=.1;
+let BOOST=.1;
 const STAFF={
  solar:{job:'labourer',min:1,full:2},
  mine:{job:'labourer',min:2,full:3},
@@ -204,15 +232,16 @@ const STAFF={
 };
 const JOBN={labourer:'Labourers',scientist:'Scientists',technician:'Technicians',builder:'Builders'};
 const CREW={earth:2,mars:3,belt:3,outer:4,gaia:8};
+const COL={pop:8,water:.8,oxygen:.5,boost:.1};
 let S;
-function init(){S={diff,cur:null,proj:{},screen:'base',y:2200,m:1,d:1,h:0,speed:0,brown:false,q:[],nobuild:false,staff:{solar:2,mine:2,ice:2,elec:0,reactor:0,lab:0,fact:0,shop:0,build:2},res:{hydrogen:30,oxygen:100,water:100,nitrogen:30,methane:5,sulphur:10,titanium:20,aluminium:40,copper:20,silica:60,iron:120,silver:0,chromium:0,platinum:0,uranium:0,components:10,machinery:20,software:10},pop:8,rp:0,b:{solar:2,mine:1,ice:1,elec:0,fact:0,shop:0,lab:0,hab:2,reactor:0},tech:{},ships:1,out:[],over:false,log:[]};
+function init(){S={diff,cur:null,proj:{},screen:'base',y:2200,m:1,d:1,h:0,speed:0,brown:false,q:[],nobuild:false,staff:{solar:2,mine:2,ice:2,elec:0,reactor:0,lab:0,fact:0,shop:0,build:2},res:{hydrogen:30,oxygen:100,water:100,nitrogen:30,methane:5,sulphur:10,titanium:20,aluminium:40,copper:20,silica:60,iron:120,silver:0,chromium:0,platinum:0,uranium:0,components:10,machinery:20,software:10},pop:COL.pop,rp:0,b:{solar:2,mine:1,ice:1,elec:0,fact:0,shop:0,lab:0,hab:2,reactor:0},tech:{},ships:1,out:[],over:false,log:[]};
  say('Year 2200. The asteroid has scorched Earth. The Moon colony is humanity’s last foothold.');
  say('Silver, chromium and uranium cannot be mined on the Moon or in the asteroid belt. Look further out.');
  say('Build industry, research new drives, and launch the Gaia Ark before '+DEADLINE+'.')}
 const $=id=>document.getElementById(id);
 function say(t,cls){S.log.unshift([t,cls||''])}
 function work(k){const s=STAFF[k],n=S.b[k];return s?Math.min(n,Math.floor(S.staff[k]/s.min)):n}
-function manned(k){const s=STAFF[k];if(!s)return 0;const w=work(k);return Math.min(w,Math.floor((S.staff[k]-w*s.min)/(s.full-s.min)))}
+function manned(k){const s=STAFF[k];if(!s)return 0;const w=work(k);return Math.min(w,Math.floor((S.staff[k]-w*s.min)/Math.max(1,s.full-s.min)))}
 const eff=k=>work(k)+BOOST*manned(k);
 function crewOut(){return S.out.reduce((a,o)=>a+(o.crew||0),0)}
 function assigned(){let a=0;for(const k in S.staff)a+=S.staff[k];return a}
@@ -227,7 +256,7 @@ function ctl(k,status){const A=S.staff[k],cap=staffCap(k);return '<div class="st
 function stf(k){const s=STAFF[k];if(!s||!S.b[k])return '';const n=S.b[k],w=work(k),m=manned(k);
  return ctl(k,'<span class="'+(w<n?'bad':'ok')+'">'+w+'/'+n+' working</span>'+(m?' <span class="ok">+'+m+' boosted</span>':''))}
 function builderRow(){const s=STAFF.build,plan=sitePlan(),run=plan.filter(x=>x).length;
- return '<div class="row"><div>Builders<small>Each construction site needs '+s.min+' builders to progress, '+s.full+' to build '+BOOST*100+'% faster. Sites are staffed in queue order.</small></div>'+ctl('build',S.q.length?'<span class="'+(run<S.q.length?'bad':'ok')+'">'+run+'/'+S.q.length+' sites working</span>':'<span class="dim">no sites</span>')+'</div>'}
+ return '<div class="row"><div>Builders<small>Each construction site needs '+s.min+' builders to progress, '+s.full+' to build '+Math.round(BOOST*100)+'% faster. Sites are staffed in queue order.</small></div>'+ctl('build',S.q.length?'<span class="'+(run<S.q.length?'bad':'ok')+'">'+run+'/'+S.q.length+' sites working</span>':'<span class="dim">no sites</span>')+'</div>'}
 function pow(){let p=0,u=0;for(const k in B){const b=B[k];if(b.p>0){let x=eff(k)*b.p;if(k==='solar'&&S.tech.fusion)x*=1.5;if(k==='reactor'&&(S.res.uranium<.01||S.res.machinery<.01))x=0;p+=x}else u+=work(k)*-b.p}return{p,u,e:u?Math.min(1,p/u):1}}
 function can(c){return Object.keys(c).every(k=>Math.floor(S.res[k])>=c[k])}
 function pay(c){for(const k in c)S.res[k]-=c[k]}
@@ -258,7 +287,7 @@ function tick(){
   if(work('lab')<1)pauseResearch('no staffed science lab');
   else if(S.rp<dc){S.rp=0;pauseResearch('out of research points')}
   else{S.rp-=dc;const p=S.proj[k];p.left-=e;if(p.left<=0){S.tech[k]=1;delete S.proj[k];S.cur=null;say('Research complete: '+t.n+'. '+t.d+'.','ok')}}}
- R.water-=S.pop*0.8*(S.tech.hydro?.6:1)/H;R.oxygen-=S.pop*0.5/H;
+ R.water-=S.pop*COL.water*(S.tech.hydro?.6:1)/H;R.oxygen-=S.pop*COL.oxygen/H;
  if(R.water<0)R.water=0;if(R.oxygen<0)R.oxygen=0;
  for(const o of S.out)o.left--;
  const plan=sitePlan();S.q.forEach((q,i)=>{q.left-=plan[i]===2?1+BOOST:plan[i]===1?1:0});
@@ -281,7 +310,7 @@ function tick(){
  else if(!S.over&&S.y>=DEADLINE){S.over=true;end('Time is up. Earth’s orbit decays and the colony never launched the Ark.')}
 }
 function daily(){const R=S.res;if(S.pop>0&&(R.water<=.001||R.oxygen<=.001)){S.pop--;say((R.water<=.001?'No water':'No oxygen')+': a colonist dies.','bad')}}
-function monthly(){const R=S.res,cap=S.b.hab*6;
+function monthly(){const R=S.res,cap=S.b.hab*B.hab.cap;
  if(S.pop<cap&&R.water>S.pop*3&&R.oxygen>S.pop*3&&S.pop>0){S.pop++;say('A child is born in the dome. Population '+S.pop+'.')}
  if(Math.random()<.18){const ev=Math.random();
   if(ev<.4){const k=['solar','mine','ice','hab'].filter(x=>S.b[x]>0);if(k.length){const x=k[Math.floor(Math.random()*k.length)];S.b[x]--;say('Meteor strike destroys a '+B[x].n.toLowerCase()+'.','bad')}}
@@ -341,7 +370,7 @@ function render(){
  $('b-yard').textContent=S.ships+' in hangar';
  $('b-flight').textContent=S.out.length+' in flight';
  $('b-log').textContent=S.log.length+' entries';
- set('pop',chip('colonists','Colonists ('+freeCol()+' free)',S.pop+'/'+S.b.hab*6));
+ set('pop',chip('colonists','Colonists ('+freeCol()+' free)',S.pop+'/'+S.b.hab*B.hab.cap));
  $('date').textContent=S.y+'-'+pad(S.m)+'-'+pad(S.d)+'  '+pad(S.h)+':00';
  set('res',chip('research','Research points',Math.floor(S.rp)));
  set('stock',stock());
@@ -349,7 +378,7 @@ function render(){
  for(const q of S.q)t+='<div class="tile" style="background:transparent;border-style:dashed;color:var(--ink)" title="Under construction: '+B[q.k].n+'">'+B[q.k].g+'</div>';
  set('map',t);const P=pow();
  set('power','Power '+P.p+' made / '+P.u+' needed <span class="'+(P.e<1?'bad':'ok')+'">('+Math.round(P.e*100)+'% efficiency)</span><div class="bar"><i style="width:'+Math.round(P.e*100)+'%"></i></div><div class="dim" style="padding-top:6px">'+jobsLine()+'</div>');
- set('build',builderRow()+Object.keys(B).filter(k=>!B[k].tech||S.tech[B[k].tech]).map(k=>'<div class="row"><div>'+B[k].n+' ×'+S.b[k]+'<small>'+B[k].d+' · power '+(B[k].p>0?'+':'')+B[k].p+' · '+cost(B[k].c)+(B[k].c.machinery?' · upkeep '+(+(B[k].c.machinery*WEAR).toFixed(2))+' machinery / month':'')+' · takes '+dur(B[k].t)+(STAFF[k]?' · staff: '+STAFF[k].min+' '+JOBN[STAFF[k].job].toLowerCase()+' per building, '+STAFF[k].full+' for +'+BOOST*100+'%':'')+'</small></div>'+stf(k)+'<button '+(can(B[k].c)&&!S.over?'':'disabled')+' onclick="build(\''+k+'\')">Build</button></div>').join('')+(S.q.length?'<div class="dim" style="padding-top:6px">Under construction: '+S.q.map((q,i)=>B[q.k].n+' ('+dur(q.left)+(sitePlan()[i]?'':', waiting for builders')+')').join(', ')+'</div>':''));
+ set('build',builderRow()+Object.keys(B).filter(k=>!B[k].tech||S.tech[B[k].tech]).map(k=>'<div class="row"><div>'+B[k].n+' ×'+S.b[k]+'<small>'+B[k].d+' · power '+(B[k].p>0?'+':'')+B[k].p+' · '+cost(B[k].c)+(B[k].c.machinery?' · upkeep '+(+(B[k].c.machinery*WEAR).toFixed(2))+' machinery / month':'')+' · takes '+dur(B[k].t)+(STAFF[k]?' · staff: '+STAFF[k].min+' '+JOBN[STAFF[k].job].toLowerCase()+' per building, '+STAFF[k].full+' for +'+Math.round(BOOST*100)+'%':'')+'</small></div>'+stf(k)+'<button '+(can(B[k].c)&&!S.over?'':'disabled')+' onclick="build(\''+k+'\')">Build</button></div>').join('')+(S.q.length?'<div class="dim" style="padding-top:6px">Under construction: '+S.q.map((q,i)=>B[q.k].n+' ('+dur(q.left)+(sitePlan()[i]?'':', waiting for builders')+')').join(', ')+'</div>':''));
  set('tech',labStatus()+Object.keys(T).map(k=>{const x=T[k],ok=x.req.every(r=>S.tech[r]),done=S.tech[k];
   return '<div class="row"><div>'+x.n+(done?' <span class="ok">done</span>':'')+(S.cur===k?' <span class="ok">in progress</span>':S.proj[k]?' <span class="bad">paused, '+Math.ceil(S.proj[k].left/24)+' days left</span>':'')+'<small>'+x.d+(done?'':' · '+x.rp+' points up front + '+x.rp/100+' / day, '+x.rp+' days'+(x.req.length?' · needs '+x.req.map(r=>T[r].n).join(', '):''))+'</small></div>'+(done||S.cur===k?'':'<button '+(canResearch(k)?'':'disabled')+' onclick="research(\''+k+'\')">'+(S.proj[k]?'Resume ('+startCost(k)+' pts)':'Research')+'</button>')+'</div>'}).join(''));
  let y='<div class="row"><div>Shuttles in hangar: '+S.ships+'<small>'+cost(SHIP)+' each</small></div><button '+(can(SHIP)&&!S.over?'':'disabled')+' onclick="buildShip()">Build shuttle</button></div>';
@@ -372,9 +401,9 @@ addEventListener('keydown',e=>{if(e.key==='Escape'&&mode==='game'&&S.screen!=='b
 $('dok').onclick=()=>$('dlg').close();
 $('drestart').onclick=()=>{$('dlg').close();$('drestart').hidden=true;$('dok').hidden=false;init();render()};
 let mode='title',diff='normal';
-function setMode(m){mode=m;$('title').hidden=m!=='title';$('game').hidden=m!=='game';$('bye').hidden=m!=='exit';$('newgame').hidden=m!=='new';if(m==='new')$('d-start').focus();if(m==='title')$('m-new').focus();if(m==='game')render()}
+function setMode(m){mode=m;$('title').hidden=m!=='title';$('game').hidden=m!=='game';$('bye').hidden=m!=='exit';$('newgame').hidden=m!=='new';$('editor').hidden=m!=='editor';if(m==='editor')enterEd();if(m==='new'){cfPick();$('d-start').focus()}if(m==='title')$('m-new').focus();if(m==='game')render()}
 $('m-new').onclick=()=>setMode('new');
-$('d-start').onclick=()=>{init();setMode('game')};
+$('d-start').onclick=()=>{applyData(cfById(CF.sel).d);init();setMode('game')};
 $('d-back').onclick=()=>setMode('title');
 document.querySelectorAll('.diff:not(:disabled)').forEach(b=>b.onclick=()=>{diff=b.dataset.d;document.querySelectorAll('.diff').forEach(x=>x.setAttribute('aria-checked',String(x===b)));$('d-note').textContent=b.dataset.note});
 $('m-exit').onclick=()=>{window.close();setMode('exit')};
@@ -382,6 +411,96 @@ $('m-back').onclick=()=>setMode('title');
 $('menu').onclick=()=>{if(S.over)setMode('title');else $('dmenu').showModal()};
 $('dstay').onclick=()=>$('dmenu').close();
 $('dleave').onclick=()=>{$('dmenu').close();setMode('title')};
+/* ===== Editor ===== */
+const RK=Object.keys(RN);
+const DATA={B,T,M,SHIP,STAFF,CREW,COL},DEF=JSON.stringify(DATA),KEY='solar-century-configs',OKEYS=['B','T','M','SHIP','STAFF','CREW','COL'];
+const lst=o=>Object.keys(o).map(k=>o[k]+' '+RN[k].toLowerCase()).join(' + ');
+function refreshD(){
+ for(const k in M)M[k].d=M[k].r.win?'Rebuilds Earth and wins the game':fmt(M[k].r);
+ for(const k in B){const b=B[k];
+  if(b.cap!==undefined)b.d='houses '+b.cap+' colonists';
+  else if(b.out)b.d=(b.inp?lst(b.inp)+' → '+lst(b.out):fmt(b.out))+' / month';
+  else if(b.inp)b.d=(b.p>0?'+'+b.p+' power, ':'')+'burns '+lst(b.inp)+' / month';
+  else if(k!=='lab')b.d=b.p>0?'+'+b.p+' power':'No output'}}
+function applyData(d){const dd=JSON.parse(DEF);for(const n in DATA){if(!d[n])continue;const t=DATA[n];for(const k of Object.keys(t))delete t[k];Object.assign(t,dd[n],d[n])}BOOST=COL.boost;refreshD()}
+const CF={list:[],edit:'default',sel:'default'};
+const cfById=id=>id==='default'?{id:'default',name:'Default',d:JSON.parse(DEF)}:CF.list.find(c=>c.id===id);
+const validD=d=>!!d&&OKEYS.every(k=>d[k]&&typeof d[k]==='object');
+function cfSave(){try{localStorage.setItem(KEY,JSON.stringify({v:2,list:CF.list,sel:CF.sel}))}catch(e){}}
+function loadConfigs(){let mig=false;try{const s=JSON.parse(localStorage.getItem(KEY)||'null');
+  if(s&&s.v===2){CF.list=(s.list||[]).filter(c=>c&&c.id&&c.name&&validD(c.d));CF.sel=s.sel}
+  else{const o=JSON.parse(localStorage.getItem('solar-century-editor')||'null');if(o&&o.v===1&&validD(o.d)){CF.list=[{id:'c0',name:'Previous edits',d:o.d}];mig=true}}}catch(e){}
+ if(!cfById(CF.sel))CF.sel='default';if(mig)cfSave()}
+function cfBar(){const all=[{id:'default',name:'Default'}].concat(CF.list),def=CF.edit==='default';
+ $('cf-sel').innerHTML=all.map(c=>'<option value="'+c.id+'"'+(c.id===CF.edit?' selected':'')+'>'+esc(c.name)+'</option>').join('');
+ $('cf-name').value=cfById(CF.edit).name;$('cf-name').disabled=def;$('cf-del').disabled=def;$('ed-reset').disabled=def}
+function openConfig(id){if(!cfById(id))id='default';CF.edit=id;applyData(cfById(id).d);renderEd()}
+const enterEd=()=>openConfig(CF.edit);
+function newConfig(d,name){const id='c'+Date.now().toString(36);CF.list.push({id,name,d});cfSave();openConfig(id);$('ed-msg').textContent='Created “'+name+'”. Edit its values below.'}
+function cfPick(){const all=[{id:'default',name:'Default'}].concat(CF.list);$('cf-pick').innerHTML=all.map(c=>'<option value="'+c.id+'"'+(c.id===CF.sel?' selected':'')+'>'+esc(c.name)+'</option>').join('');cfNote()}
+function cfNote(){$('cf-note').textContent=CF.sel==='default'?'Default: the standard Normal balance.':'Custom configuration: the values set in the Editor.'}
+const esc=s=>String(s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;');
+const fl=(t,i,w)=>'<label class="fl'+(w?' w':'')+'"><span>'+t+'</span>'+i+'</label>';
+const num=(p,v,o)=>{o=o||{};return '<input type="number" data-p="'+p+'" value="'+(v===undefined?'':(o.pct?+(v*100).toFixed(2):v))+'" step="'+(o.int?1:'any')+'"'+(o.min===null?'':' min="'+(o.min===undefined?0:o.min)+'"')+(o.int?' data-int="1"':'')+(o.pct?' data-pct="1"':'')+(o.g?' data-g="1"':'')+'>'};
+const txt=(p,v)=>'<input type="text" data-p="'+p+'" value="'+esc(v)+'">';
+const grid=(p,obj,extra)=>'<div class="eg">'+RK.concat(extra||[]).map(r=>fl(r==='rp'?'Research points':RN[r],num(p+'.'+r,obj&&obj[r],{g:1}))).join('')+'</div>';
+const techSel=(p,cur)=>'<select data-p="'+p+'"><option value="">(none)</option>'+Object.keys(T).map(t=>'<option value="'+t+'"'+(cur===t?' selected':'')+'>'+esc(T[t].n)+'</option>').join('')+'</select>';
+function reaches(a,b,seen){seen=seen||{};if(seen[a])return false;seen[a]=1;return T[a].req.some(r=>r===b||reaches(r,b,seen))}
+function edB(){return Object.keys(B).map(k=>{const b=B[k],P='B.'+k+'.';
+ return '<details'+(edOpen===k?' open':'')+'><summary>'+esc(b.n)+'</summary><div class="ef">'+
+  fl('Name',txt(P+'n',b.n))+fl('Construction time (hours)',num(P+'t',b.t,{min:1}))+fl('Power (+ makes, − uses)',num(P+'p',b.p,{min:null}))+
+  (b.cap!==undefined?fl('Housing (colonists)',num(P+'cap',b.cap,{int:1})):'')+fl('Requires tech',techSel(P+'tech',b.tech))+'</div>'+
+  '<h4>Construction cost</h4>'+grid(P+'c',b.c)+'<h4>Consumes per month</h4>'+grid(P+'inp',b.inp)+'<h4>Produces per month</h4>'+grid(P+'out',b.out)+'</details>'}).join('')}
+function edT(){return '<div class="ef addt">'+fl('New technology name','<input type="text" id="nt-n" value="New technology">')+fl('Research cost (points)','<input type="number" id="nt-r" value="40" min="1" step="any">')+'<button id="nt-add" class="go">Add technology</button></div><p class="dim">A new technology does nothing by itself: choose it under “Requires tech” on a building or a starship mission to make it unlock that.</p>'+
+ Object.keys(T).map(k=>{const t=T[k],P='T.'+k+'.';
+  return '<details'+(edOpen===k?' open':'')+'><summary>'+esc(t.n)+(t.custom?' (custom)':'')+'</summary><div class="ef">'+fl('Name',txt(P+'n',t.n))+fl('Research cost (points up front; 1% per day)',num(P+'rp',t.rp,{min:1}))+fl('Description',txt(P+'d',t.d),1)+'</div><h4>Requires</h4><div>'+
+  (Object.keys(T).filter(r=>r!==k&&!reaches(r,k)).map(r=>'<label class="ck"><input type="checkbox" data-rq="'+r+'" data-for="'+k+'"'+(t.req.includes(r)?' checked':'')+'>'+esc(T[r].n)+'</label>').join('')||'<span class="dim">no other technologies</span>')+'</div>'+(t.custom?'<p><button data-del="'+k+'">Delete technology</button></p>':'')+'</details>'}).join('')}
+function edS(){return '<details'+(edOpen==='ship'?' open':'')+'><summary>Shuttle (build cost)</summary>'+grid('SHIP',SHIP)+'</details>'+Object.keys(M).map(k=>{const m=M[k],P='M.'+k+'.';
+ return '<details'+(edOpen===k?' open':'')+'><summary>'+esc(m.n)+'</summary><div class="ef">'+fl('Name',txt(P+'n',m.n))+fl('Duration (months)',num(P+'t',m.t,{min:.1}))+fl('Risk of loss (%)',num(P+'risk',m.risk,{pct:1}))+fl('Crew (colonists)',num('CREW.'+k,CREW[k],{int:1}))+fl('Requires tech',techSel(P+'tech',m.tech))+'</div><h4>Launch cost</h4>'+grid(P+'c',m.c)+'<h4>Returns</h4>'+(m.r.win?'<p class="dim">Wins the game when it arrives.</p>':grid(P+'r',m.r,['rp']))+'</details>'}).join('')}
+function edC(){return '<div class="ef">'+fl('Starting colonists',num('COL.pop',COL.pop,{int:1,min:1}))+fl('Water per colonist / month',num('COL.water',COL.water))+fl('Oxygen per colonist / month',num('COL.oxygen',COL.oxygen))+fl('Boost when fully manned (%)',num('COL.boost',COL.boost,{pct:1}))+'</div><h4>Staffing per building (colonists)</h4><div class="eg">'+
+ Object.keys(STAFF).map(k=>{const s=STAFF[k],P='STAFF.'+k+'.';return '<div class="sg"><b>'+(k==='build'?'Construction site':esc(B[k].n))+'</b><span class="dim">'+JOBN[s.job]+'</span>'+fl('Minimum to run',num(P+'min',s.min,{int:1,min:1}))+fl('Full crew (boost)',num(P+'full',s.full,{int:1,min:2}))+'</div>'}).join('')+'</div>'}
+let edTab='b',edOpen=null;
+const TABS=[['b','Buildings'],['t','Tech'],['s','Starships'],['c','Colonists']];
+function renderEd(){cfBar();$('ed-tabs').innerHTML=TABS.map(t=>'<button data-tab="'+t[0]+'" aria-pressed="'+(edTab===t[0])+'">'+t[1]+'</button>').join('');const ro=CF.edit==='default';$('ed-body').innerHTML='<fieldset'+(ro?' disabled':'')+'>'+(ro?'<p class="dim">The Default configuration is read-only. Press “New” above to create your own configuration.</p>':'')+({b:edB,t:edT,s:edS,c:edC})[edTab]()+'</fieldset>'}
+const getP=p=>p.split('.').reduce((o,k)=>o==null?o:o[k],DATA);
+function setP(p,v){const a=p.split('.'),last=a.pop(),chain=[];let o=DATA;
+ for(const k of a){if(o[k]==null)o[k]={};chain.push([o,k]);o=o[k]}
+ if(v==='')delete o[last];else o[last]=v;
+ for(let i=chain.length-1;i>=0;i--){const par=chain[i][0],k=chain[i][1];if((k==='inp'||k==='out')&&Object.keys(par[k]).length===0)delete par[k]}}
+function done(){refreshD();const c=cfById(CF.edit);if(c&&c.id!=='default')c.d=JSON.parse(JSON.stringify(DATA));cfSave();$('ed-msg').textContent='Saved in “'+(c?c.name:'')+'”. Pick it under New Game, Select Configuration, to play it.'}
+function killTech(id){delete T[id];for(const k in T)T[k].req=T[k].req.filter(x=>x!==id);for(const k in B)if(B[k].tech===id)delete B[k].tech;for(const k in M)if(M[k].tech===id)M[k].tech=null}
+$('editor').addEventListener('change',e=>{const el=e.target;
+ if(el.dataset.rq){const t=T[el.dataset.for];t.req=t.req.filter(x=>x!==el.dataset.rq);if(el.checked)t.req.push(el.dataset.rq);done();return}
+ const p=el.dataset.p;if(!p)return;let v;
+ if(el.tagName==='SELECT')v=el.value;
+ else if(el.type==='text'){v=el.value.trim();if(!v){el.value=getP(p);return}}
+ else{v=parseFloat(el.value);
+  if(el.dataset.g){if(isNaN(v)||v<=0){v='';el.value=''}}
+  else{const cur=getP(p);if(isNaN(v)){el.value=el.dataset.pct?+(cur*100).toFixed(2):cur;return}
+   if(el.dataset.pct)v=Math.min(1,Math.max(0,v/100));
+   else{if(el.dataset.int)v=Math.round(v);v=Math.max(el.min===''?-Infinity:+el.min,v)}
+   el.value=el.dataset.pct?+(v*100).toFixed(2):v}}
+ setP(p,v);
+ if(p==='COL.boost')BOOST=COL.boost;
+ if(p.slice(0,6)==='STAFF.'){const key=p.split('.')[1],s=STAFF[key];if(s.full<=s.min)s.full=s.min+1;for(const f of ['min','full']){const i=$('editor').querySelector('[data-p="STAFF.'+key+'.'+f+'"]');if(i)i.value=s[f]}}
+ if(p.slice(-2)==='.n'&&p.split('.').length===3){const dt=el.closest('details');if(dt)dt.querySelector('summary').textContent=v+(p[0]==='T'&&T[p.split('.')[1]].custom?' (custom)':'')}
+ done()});
+$('editor').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;
+ if(b.dataset.tab){edTab=b.dataset.tab;edOpen=null;renderEd()}
+ else if(b.dataset.del){killTech(b.dataset.del);edOpen=null;renderEd();done()}
+ else if(b.id==='nt-add'){const n=$('nt-n').value.trim()||'New technology',r=Math.max(1,parseFloat($('nt-r').value)||40),id='x'+Date.now().toString(36);T[id]={n,rp:r,req:[],d:'Custom technology.',custom:1};edOpen=id;renderEd();done()}});
+$('ed-back').onclick=()=>setMode('title');
+$('ed-reset').onclick=()=>{if(CF.edit==='default')return;applyData(JSON.parse(DEF));done();renderEd();$('ed-msg').textContent='Values reset to Default.'};
+$('ed-exp').onclick=()=>{$('ed-json').value=JSON.stringify({v:2,name:cfById(CF.edit).name,d:DATA},null,1);$('ed-msg').textContent='Exported below. Copy it somewhere safe.'};
+$('ed-imp').onclick=()=>{try{const s=JSON.parse($('ed-json').value);if(!s||!validD(s.d))throw 0;newConfig(JSON.parse(JSON.stringify(s.d)),s.name?String(s.name)+' (imported)':'Imported configuration')}catch(x){$('ed-msg').textContent='Import failed: that is not valid configuration data.'}};
+$('cf-sel').onchange=()=>openConfig($('cf-sel').value);
+$('cf-name').onchange=()=>{const c=cfById(CF.edit);if(c.id==='default')return;const v=$('cf-name').value.trim();if(v)c.name=v;cfSave();cfBar()};
+$('cf-new').onclick=()=>newConfig(JSON.parse(DEF),'Configuration '+(CF.list.length+1));
+$('cf-dup').onclick=()=>newConfig(JSON.parse(JSON.stringify(DATA)),cfById(CF.edit).name+' copy');
+$('cf-del').onclick=()=>{if(CF.edit==='default')return;CF.list=CF.list.filter(c=>c.id!==CF.edit);if(CF.sel===CF.edit)CF.sel='default';cfSave();openConfig('default')};
+$('cf-pick').onchange=()=>{CF.sel=$('cf-pick').value;cfSave();cfNote()};
+$('m-edit').onclick=()=>setMode('editor');
+refreshD();loadConfigs();
 init();render();setMode('title');
 </script>
 </body>
