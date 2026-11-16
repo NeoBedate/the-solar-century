@@ -43,6 +43,10 @@ h1{font-size:18px}
 @media(max-width:800px){.grid{grid-template-columns:1fr}}
 .row{display:flex;gap:8px;align-items:center;justify-content:space-between;padding:6px 0;border-bottom:1px dashed var(--lo)}
 .row:last-child{border:0}
+.row{flex-wrap:wrap}
+.stf{display:flex;align-items:center;gap:6px;white-space:nowrap;font-size:19px}
+.stf button{padding:0 9px}
+.stf b{min-width:1.4em;text-align:center;color:var(--acc);font-weight:400}
 .row small{display:block;color:var(--dim);font-size:19px}
 button{font:inherit;color:var(--ink);background:var(--panel);border:3px solid;border-color:var(--hi) var(--lo) var(--lo) var(--hi);padding:2px 10px;cursor:pointer;white-space:nowrap}
 button:active:not(:disabled){border-color:var(--lo) var(--hi) var(--hi) var(--lo)}
@@ -186,52 +190,85 @@ const fmt=o=>Object.keys(o).map(k=>'+'+o[k]+' '+(RN[k]||'research').toLowerCase(
 for(const k in M)M[k].d=M[k].r.win?'Rebuilds Earth and wins the game':fmt(M[k].r);
 const SHIP={iron:16,aluminium:16,titanium:6,copper:6,components:4,software:2};
 const WEAR=.05;
+const BOOST=.1;
+const STAFF={
+ solar:{job:'labourer',min:1,full:2},
+ mine:{job:'labourer',min:2,full:3},
+ ice:{job:'labourer',min:2,full:3},
+ elec:{job:'scientist',min:2,full:3},
+ reactor:{job:'scientist',min:3,full:5},
+ lab:{job:'scientist',min:2,full:3},
+ fact:{job:'technician',min:2,full:4},
+ shop:{job:'technician',min:2,full:4},
+ build:{job:'builder',min:2,full:4}
+};
+const JOBN={labourer:'Labourers',scientist:'Scientists',technician:'Technicians',builder:'Builders'};
+const CREW={earth:2,mars:3,belt:3,outer:4,gaia:8};
 let S;
-function init(){S={diff,cur:null,proj:{},screen:'base',y:2200,m:1,d:1,h:0,speed:0,brown:false,q:[],res:{hydrogen:30,oxygen:100,water:100,nitrogen:30,methane:5,sulphur:10,titanium:20,aluminium:40,copper:20,silica:60,iron:120,silver:0,chromium:0,platinum:0,uranium:0,components:10,machinery:20,software:10},pop:8,rp:0,b:{solar:2,mine:1,ice:1,elec:0,fact:0,shop:0,lab:0,hab:2,reactor:0},tech:{},ships:1,out:[],over:false,log:[]};
+function init(){S={diff,cur:null,proj:{},screen:'base',y:2200,m:1,d:1,h:0,speed:0,brown:false,q:[],nobuild:false,staff:{solar:2,mine:2,ice:2,elec:0,reactor:0,lab:0,fact:0,shop:0,build:2},res:{hydrogen:30,oxygen:100,water:100,nitrogen:30,methane:5,sulphur:10,titanium:20,aluminium:40,copper:20,silica:60,iron:120,silver:0,chromium:0,platinum:0,uranium:0,components:10,machinery:20,software:10},pop:8,rp:0,b:{solar:2,mine:1,ice:1,elec:0,fact:0,shop:0,lab:0,hab:2,reactor:0},tech:{},ships:1,out:[],over:false,log:[]};
  say('Year 2200. The asteroid has scorched Earth. The Moon colony is humanity’s last foothold.');
  say('Silver, chromium and uranium cannot be mined on the Moon or in the asteroid belt. Look further out.');
  say('Build industry, research new drives, and launch the Gaia Ark before '+DEADLINE+'.')}
 const $=id=>document.getElementById(id);
 function say(t,cls){S.log.unshift([t,cls||''])}
-function pow(){let p=0,u=0;for(const k in B){const n=S.b[k],b=B[k];if(b.p>0){let x=n*b.p;if(k==='solar'&&S.tech.fusion)x*=1.5;if(k==='reactor'&&(S.res.uranium<.01||S.res.machinery<.01))x=0;p+=x}else u+=n*-b.p}return{p,u,e:u?Math.min(1,p/u):1}}
+function work(k){const s=STAFF[k],n=S.b[k];return s?Math.min(n,Math.floor(S.staff[k]/s.min)):n}
+function manned(k){const s=STAFF[k];if(!s)return 0;const w=work(k);return Math.min(w,Math.floor((S.staff[k]-w*s.min)/(s.full-s.min)))}
+const eff=k=>work(k)+BOOST*manned(k);
+function crewOut(){return S.out.reduce((a,o)=>a+(o.crew||0),0)}
+function assigned(){let a=0;for(const k in S.staff)a+=S.staff[k];return a}
+function freeCol(){return Math.max(0,S.pop-crewOut()-assigned())}
+function jobCount(j){let a=0;for(const k in STAFF)if(STAFF[k].job===j)a+=S.staff[k];return a}
+function staffCap(k){return k==='build'?Math.max(1,S.q.length)*STAFF.build.full:S.b[k]*STAFF[k].full}
+function assign(k,d){if(S.over||!STAFF[k])return;const nv=S.staff[k]+d;if(nv<0||(d>0&&(freeCol()<d||nv>staffCap(k))))return;S.staff[k]=nv;render()}
+function fit(){let over=assigned()+crewOut()-S.pop,lost=0;while(over>0){let kk=null;for(const k in S.staff)if(S.staff[k]>0&&(kk===null||S.staff[k]>S.staff[kk]))kk=k;if(kk===null)break;S.staff[kk]--;over--;lost++}if(lost)say('Fewer colonists than posts: '+lost+' job'+(lost>1?'s':'')+' left empty.','bad')}
+function sitePlan(){let rem=S.staff.build;const s=STAFF.build;return S.q.map(()=>{if(rem>=s.full){rem-=s.full;return 2}if(rem>=s.min){rem-=s.min;return 1}return 0})}
+function jobsLine(){return 'Colonists: '+['labourer','scientist','technician','builder'].map(j=>JOBN[j]+' '+jobCount(j)).join(' · ')+' · Crew '+crewOut()+' · Free '+freeCol()}
+function ctl(k,status){const A=S.staff[k],cap=staffCap(k);return '<div class="stf">'+JOBN[STAFF[k].job]+'<button '+(A>0&&!S.over?'':'disabled')+' onclick="assign(\''+k+'\',-1)" aria-label="Remove one">−</button><b>'+A+'</b><button '+(A<cap&&freeCol()>0&&!S.over?'':'disabled')+' onclick="assign(\''+k+'\',1)" aria-label="Add one">+</button><span>'+status+'</span></div>'}
+function stf(k){const s=STAFF[k];if(!s||!S.b[k])return '';const n=S.b[k],w=work(k),m=manned(k);
+ return ctl(k,'<span class="'+(w<n?'bad':'ok')+'">'+w+'/'+n+' working</span>'+(m?' <span class="ok">+'+m+' boosted</span>':''))}
+function builderRow(){const s=STAFF.build,plan=sitePlan(),run=plan.filter(x=>x).length;
+ return '<div class="row"><div>Builders<small>Each construction site needs '+s.min+' builders to progress, '+s.full+' to build '+BOOST*100+'% faster. Sites are staffed in queue order.</small></div>'+ctl('build',S.q.length?'<span class="'+(run<S.q.length?'bad':'ok')+'">'+run+'/'+S.q.length+' sites working</span>':'<span class="dim">no sites</span>')+'</div>'}
+function pow(){let p=0,u=0;for(const k in B){const b=B[k];if(b.p>0){let x=eff(k)*b.p;if(k==='solar'&&S.tech.fusion)x*=1.5;if(k==='reactor'&&(S.res.uranium<.01||S.res.machinery<.01))x=0;p+=x}else u+=work(k)*-b.p}return{p,u,e:u?Math.min(1,p/u):1}}
 function can(c){return Object.keys(c).every(k=>Math.floor(S.res[k])>=c[k])}
 function pay(c){for(const k in c)S.res[k]-=c[k]}
 function cost(c){return Object.keys(c).map(k=>c[k]+' '+RN[k].toLowerCase()).join(', ')}
 function build(k){if(S.over||!can(B[k].c))return;pay(B[k].c);S.q.push({k,left:B[k].t});say('Construction started: '+B[k].n+' ('+dur(B[k].t)+').');render()}
 const startCost=k=>S.proj[k]&&S.proj[k].state==='paused'?Math.ceil(T[k].rp/2):T[k].rp;
-function canResearch(k){const t=T[k];return !S.over&&!S.cur&&S.b.lab>0&&!S.tech[k]&&t.req.every(r=>S.tech[r])&&Math.floor(S.rp)>=startCost(k)}
+function canResearch(k){const t=T[k];return !S.over&&!S.cur&&work('lab')>0&&!S.tech[k]&&t.req.every(r=>S.tech[r])&&Math.floor(S.rp)>=startCost(k)}
 function research(k){if(!canResearch(k))return;const t=T[k],p=S.proj[k],resume=p&&p.state==='paused',c=startCost(k);S.rp-=c;S.proj[k]={left:p?p.left:t.rp*24,state:'active'};S.cur=k;say((resume?'Research resumed: ':'Research started: ')+t.n+' (cost '+c+' research points up front, then '+t.rp/100+' per day).');render()}
 function pauseResearch(why){if(!S.cur)return;const k=S.cur,t=T[k],c=Math.ceil(t.rp/2);S.proj[k].state='paused';S.cur=null;
  if(why)say('WARNING: development of '+t.n+' has stopped ('+why+'). Progress is kept; resuming costs '+c+' research points.','bad');
  else say('Research paused: '+t.n+'. Progress is kept; resuming costs '+c+' research points.');
  render()}
 function buildShip(){if(S.over||!can(SHIP))return;pay(SHIP);S.ships++;say('A new shuttle rolls out of the hangar.','ok');render()}
-function launch(k){const m=M[k];if(S.over||S.ships<1||!can(m.c))return;
- pay(m.c);S.ships--;S.out.push({k,left:m.t*720});say('Launched: '+m.n+' ('+Math.round(m.t*30)+' days).');render()}
+function launch(k){const m=M[k],cr=CREW[k];if(S.over||S.ships<1||!can(m.c)||freeCol()<cr)return;
+ pay(m.c);S.ships--;S.out.push({k,left:m.t*720,crew:cr});say('Launched: '+m.n+' ('+Math.round(m.t*30)+' days, crew of '+cr+').');render()}
 function tick(){
- if(S.over)return;const P=pow(),e=P.e,R=S.res,H=720;
+ if(S.over)return;fit();const P=pow(),e=P.e,R=S.res,H=720;
  if(e<1&&!S.brown){S.brown=true;say('Power shortfall: machines run at '+Math.round(e*100)+'%.','bad')}
  if(e>=1&&S.brown){S.brown=false;say('Power restored.','ok')}
  let short=false;
  for(const k in B){const b=B[k];if(!b.out&&!b.inp)continue;const mult=k==='mine'&&S.tech.deep?1.5:1;
-  for(let i=0;i<S.b[k];i++){const inp=b.inp||{};if(Object.keys(inp).some(x=>R[x]<inp[x]/H))continue;const w=(b.c.machinery||0)*WEAR/H;if(w){if(R.machinery<w){short=true;continue}R.machinery-=w}
+  const w=work(k),mb=manned(k);for(let i=0;i<w;i++){const bm=i<mb?1+BOOST:1;const inp=b.inp||{};if(Object.keys(inp).some(x=>R[x]<inp[x]/H))continue;const w=(b.c.machinery||0)*WEAR/H;if(w){if(R.machinery<w){short=true;continue}R.machinery-=w}
    for(const x in inp)R[x]-=inp[x]/H;
-   for(const x in b.out||{})R[x]+=b.out[x]*mult*e/H}}
+   for(const x in b.out||{})R[x]+=b.out[x]*mult*bm*e/H}}
  if(short&&!S.nomach){S.nomach=true;say('Machinery shortage: industrial buildings are idle.','bad')}else if(!short&&S.nomach){S.nomach=false;say('Machinery restored: industrial buildings are working again.','ok')}
- S.rp+=S.b.lab*e*(S.cur?.25:1)/(20*24);
+ S.rp+=eff('lab')*e*(S.cur?.25:1)/(20*24);
  if(S.cur){const k=S.cur,t=T[k],dc=t.rp/100/24;
-  if(S.b.lab<1)pauseResearch('no science lab');
+  if(work('lab')<1)pauseResearch('no staffed science lab');
   else if(S.rp<dc){S.rp=0;pauseResearch('out of research points')}
   else{S.rp-=dc;const p=S.proj[k];p.left-=e;if(p.left<=0){S.tech[k]=1;delete S.proj[k];S.cur=null;say('Research complete: '+t.n+'. '+t.d+'.','ok')}}}
  R.water-=S.pop*0.8*(S.tech.hydro?.6:1)/H;R.oxygen-=S.pop*0.5/H;
  if(R.water<0)R.water=0;if(R.oxygen<0)R.oxygen=0;
  for(const o of S.out)o.left--;
- for(const q of S.q)q.left--;
+ const plan=sitePlan();S.q.forEach((q,i)=>{q.left-=plan[i]===2?1+BOOST:plan[i]===1?1:0});
+ const idle=plan.some(x=>x===0);
+ if(idle&&!S.nobuild){S.nobuild=true;say('Construction stalled: not enough builders. Assign more in Construction.','bad')}else if(!idle&&S.nobuild){S.nobuild=false;say('Construction has builders again.','ok')}
  const done=S.q.filter(q=>q.left<=0);S.q=S.q.filter(q=>q.left>0);
- for(const q of done){S.b[q.k]++;say('Construction complete: '+B[q.k].n+'.','ok')}
+ for(const q of done){S.b[q.k]++;say('Construction complete: '+B[q.k].n+'.'+(STAFF[q.k]?' Assign at least '+STAFF[q.k].min+' '+JOBN[STAFF[q.k].job].toLowerCase()+' per building to run it.':''),'ok')}
  const back=S.out.filter(o=>o.left<=0);S.out=S.out.filter(o=>o.left>0);
  for(const o of back){const m=M[o.k];
-  if(Math.random()<m.risk){say(m.n+': ship lost in transit. The crew is gone.','bad');S.pop=Math.max(0,S.pop-2);continue}
+  if(Math.random()<m.risk){say(m.n+': ship lost in transit. The crew of '+(o.crew||2)+' is gone.','bad');S.pop=Math.max(0,S.pop-(o.crew||2));continue}
   S.ships++;
   if(m.r.win){S.over=true;say('The Gaia Ark has reached Earth. Green shoots break the ash.','ok');end('Victory in '+S.y+'! The Gaia Ark has seeded Earth with new life. Humanity has a home again.');continue}
   for(const k in m.r){if(k==='rp')S.rp+=m.r[k];else R[k]+=m.r[k]}
@@ -251,7 +288,7 @@ function monthly(){const R=S.res,cap=S.b.hab*6;
   else if(ev<.7){const g=20+Math.floor(Math.random()*30);R.iron+=g;say('Survey team finds a rich vein: +'+g+' iron.','ok')}
   else{const l=Math.min(Math.floor(R.hydrogen),8);R.hydrogen-=l;say('Solar flare ruins stored hydrogen: −'+l+'.','bad')}}}
 const pad=n=>String(n).padStart(2,'0');
-const dur=h=>h>=24?Math.ceil(h/24)+' d':h+' h';
+const dur=h=>h>=24?Math.ceil(h/24)+' d':Math.ceil(h)+' h';
 const cache={};function set(id,h){if(cache[id]!==h){cache[id]=h;$(id).innerHTML=h}}
 function end(msg){$('dmsg').textContent=msg;$('drestart').hidden=false;$('dok').hidden=true;$('dlg').showModal()}
 const ICON={
@@ -278,11 +315,11 @@ const ICON={
 };
 const ico=k=>'<svg viewBox="0 0 16 16" width="22" height="22" aria-hidden="true">'+ICON[k]+'</svg>';
 function chip(k,name,val,dim){return '<span class="chip'+(dim?' dim':'')+'" tabindex="0" data-n="'+name+'" aria-label="'+name+' '+val+'">'+ico(k)+'<b>'+val+'</b></span>'}
-function labStatus(){const n=S.b.lab,e=pow().e;
+function labStatus(){const n=S.b.lab,w=work('lab'),e=pow().e;
  if(!n)return '<div class="row"><div>No science lab yet<small>Build one in Construction: no research project can start without it.</small></div></div>';
- const rate=n*e*(S.cur?.25:1)/20;
+ const rate=eff('lab')*e*(S.cur?.25:1)/20;
  const rp=rate>0?(rate>=.1?rate.toFixed(2)+' per day':'1 per '+Math.round(1/rate)+' days'):'stopped';
- let h='<div class="row"><div>'+n+' science lab'+(n>1?'s':'')+'<small>Research points: '+rp+(S.cur?' (cut by 75% while a project is active)':' (full pace)')+'</small></div></div>';
+ let h='<div class="row"><div>'+n+' science lab'+(n>1?'s':'')+' ('+w+' staffed)<small>'+(w<n?'Assign scientists in Construction. ':'')+'Research points: '+rp+(S.cur?' (cut by 75% while a project is active)':' (full pace)')+'</small></div></div>';
  if(S.cur){const t=T[S.cur],p=S.proj[S.cur],tot=t.rp*24;h+='<div class="row"><div>Project: '+t.n+'<small>'+Math.ceil(p.left/24)+' days left · costs '+t.rp/100+' research points / day</small><div class="bar"><i style="width:'+Math.min(100,Math.round((1-p.left/tot)*100))+'%"></i></div></div><button onclick="pauseResearch()">Pause</button></div>'}
  else h+='<div class="row dim">No project active. Starting a technology spends its research points up front, then a little every day. Resuming a paused one costs half the upfront points.</div>';
  return h}
@@ -304,22 +341,22 @@ function render(){
  $('b-yard').textContent=S.ships+' in hangar';
  $('b-flight').textContent=S.out.length+' in flight';
  $('b-log').textContent=S.log.length+' entries';
- set('pop',chip('colonists','Colonists',S.pop+'/'+S.b.hab*6));
+ set('pop',chip('colonists','Colonists ('+freeCol()+' free)',S.pop+'/'+S.b.hab*6));
  $('date').textContent=S.y+'-'+pad(S.m)+'-'+pad(S.d)+'  '+pad(S.h)+':00';
  set('res',chip('research','Research points',Math.floor(S.rp)));
  set('stock',stock());
  let t='';for(const k in B)for(let i=0;i<S.b[k];i++)t+='<div class="tile t-'+k+'" title="'+B[k].n+'">'+B[k].g+'</div>';
  for(const q of S.q)t+='<div class="tile" style="background:transparent;border-style:dashed;color:var(--ink)" title="Under construction: '+B[q.k].n+'">'+B[q.k].g+'</div>';
  set('map',t);const P=pow();
- set('power','Power '+P.p+' made / '+P.u+' needed <span class="'+(P.e<1?'bad':'ok')+'">('+Math.round(P.e*100)+'% efficiency)</span><div class="bar"><i style="width:'+Math.round(P.e*100)+'%"></i></div>');
- set('build',Object.keys(B).filter(k=>!B[k].tech||S.tech[B[k].tech]).map(k=>'<div class="row"><div>'+B[k].n+' ×'+S.b[k]+'<small>'+B[k].d+' · power '+(B[k].p>0?'+':'')+B[k].p+' · '+cost(B[k].c)+(B[k].c.machinery?' · upkeep '+(+(B[k].c.machinery*WEAR).toFixed(2))+' machinery / month':'')+' · takes '+dur(B[k].t)+'</small></div><button '+(can(B[k].c)&&!S.over?'':'disabled')+' onclick="build(\''+k+'\')">Build</button></div>').join('')+(S.q.length?'<div class="dim" style="padding-top:6px">Under construction: '+S.q.map(q=>B[q.k].n+' ('+dur(q.left)+')').join(', ')+'</div>':''));
+ set('power','Power '+P.p+' made / '+P.u+' needed <span class="'+(P.e<1?'bad':'ok')+'">('+Math.round(P.e*100)+'% efficiency)</span><div class="bar"><i style="width:'+Math.round(P.e*100)+'%"></i></div><div class="dim" style="padding-top:6px">'+jobsLine()+'</div>');
+ set('build',builderRow()+Object.keys(B).filter(k=>!B[k].tech||S.tech[B[k].tech]).map(k=>'<div class="row"><div>'+B[k].n+' ×'+S.b[k]+'<small>'+B[k].d+' · power '+(B[k].p>0?'+':'')+B[k].p+' · '+cost(B[k].c)+(B[k].c.machinery?' · upkeep '+(+(B[k].c.machinery*WEAR).toFixed(2))+' machinery / month':'')+' · takes '+dur(B[k].t)+(STAFF[k]?' · staff: '+STAFF[k].min+' '+JOBN[STAFF[k].job].toLowerCase()+' per building, '+STAFF[k].full+' for +'+BOOST*100+'%':'')+'</small></div>'+stf(k)+'<button '+(can(B[k].c)&&!S.over?'':'disabled')+' onclick="build(\''+k+'\')">Build</button></div>').join('')+(S.q.length?'<div class="dim" style="padding-top:6px">Under construction: '+S.q.map((q,i)=>B[q.k].n+' ('+dur(q.left)+(sitePlan()[i]?'':', waiting for builders')+')').join(', ')+'</div>':''));
  set('tech',labStatus()+Object.keys(T).map(k=>{const x=T[k],ok=x.req.every(r=>S.tech[r]),done=S.tech[k];
   return '<div class="row"><div>'+x.n+(done?' <span class="ok">done</span>':'')+(S.cur===k?' <span class="ok">in progress</span>':S.proj[k]?' <span class="bad">paused, '+Math.ceil(S.proj[k].left/24)+' days left</span>':'')+'<small>'+x.d+(done?'':' · '+x.rp+' points up front + '+x.rp/100+' / day, '+x.rp+' days'+(x.req.length?' · needs '+x.req.map(r=>T[r].n).join(', '):''))+'</small></div>'+(done||S.cur===k?'':'<button '+(canResearch(k)?'':'disabled')+' onclick="research(\''+k+'\')">'+(S.proj[k]?'Resume ('+startCost(k)+' pts)':'Research')+'</button>')+'</div>'}).join(''));
  let y='<div class="row"><div>Shuttles in hangar: '+S.ships+'<small>'+cost(SHIP)+' each</small></div><button '+(can(SHIP)&&!S.over?'':'disabled')+' onclick="buildShip()">Build shuttle</button></div>';
  let h='';
  for(const k in M){const m=M[k];if(m.tech&&!S.tech[m.tech])continue;
-  h+='<div class="row"><div>'+m.n+'<small>Brings '+m.d+' · '+Math.round(m.t*30)+' days · '+Math.round(m.risk*100)+'% risk · costs '+cost(m.c)+'</small></div><button '+(S.ships>0&&can(m.c)&&!S.over?'':'disabled')+' onclick="launch(\''+k+'\')">Launch</button></div>'}
- if(S.out.length)h+='<div class="dim" style="padding-top:6px">In flight: '+S.out.map(o=>M[o.k].n+' ('+dur(o.left)+')').join(', ')+'</div>';
+  h+='<div class="row"><div>'+m.n+'<small>Brings '+m.d+' · '+Math.round(m.t*30)+' days · '+Math.round(m.risk*100)+'% risk · costs '+cost(m.c)+' · crew '+CREW[k]+(freeCol()<CREW[k]?' <span class="bad">(needs '+CREW[k]+' free colonists)</span>':'')+'</small></div><button '+(S.ships>0&&can(m.c)&&freeCol()>=CREW[k]&&!S.over?'':'disabled')+' onclick="launch(\''+k+'\')">Launch</button></div>'}
+ if(S.out.length)h+='<div class="dim" style="padding-top:6px">In flight: '+S.out.map(o=>M[o.k].n+' ('+dur(o.left)+', crew '+o.crew+')').join(', ')+'</div>';
  set('yard',y);set('flights',h);
  set('log',S.log.slice(0,40).map(l=>'<div class="'+l[1]+'">'+l[0]+'</div>').join(''));
  document.querySelectorAll('[data-sp]').forEach(b=>b.setAttribute('aria-pressed',String(+b.dataset.sp===S.speed)));
