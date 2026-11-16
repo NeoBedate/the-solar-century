@@ -18,21 +18,29 @@ h1,h2{font-family:'Silkscreen','Courier New',monospace;font-weight:700;margin:0;
 .wrap{max-width:1100px;margin:0 auto;padding:12px}
 .win{background:var(--panel);border:3px solid;border-color:var(--hi) var(--lo) var(--lo) var(--hi);margin-bottom:12px}
 .win>h2{background:var(--acc);color:#1a0f00;font-size:14px;padding:5px 8px}
+.win>h2.wh{display:flex;justify-content:space-between;align-items:center;min-height:30px;padding-top:0;padding-bottom:0}.xb{padding:0 6px;line-height:0;height:22px}
 .in{padding:8px 10px}
 header.win .in{display:flex;flex-wrap:wrap;gap:6px 18px;align-items:center;justify-content:space-between}
 h1{font-size:18px}
-header.bare{margin-bottom:10px}header.bare .in.hdr{display:flex;flex-direction:column;flex-wrap:nowrap;align-items:stretch;gap:5px;padding:0 2px}.hdr #dbbtn{margin-right:auto}.loc.off .nm{color:var(--dim)}.loc.off .ci{opacity:.65}.loc.off .ci svg{filter:grayscale(1)}.loc .nm{position:relative;cursor:default}.loc .nm::after{content:attr(data-d);position:absolute;left:0;top:100%;margin-top:4px;width:min(340px,70vw);padding:4px 8px;background:var(--ink);color:var(--bg);border:2px solid var(--acc);font-size:18px;line-height:1.1;white-space:normal;opacity:0;pointer-events:none;z-index:20}.loc .nm:hover::after,.loc .nm:focus::after{opacity:1}.loc .nm:focus{outline:2px solid var(--acc);outline-offset:2px}.sgrid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:8px}.sbox{cursor:pointer;font:inherit;color:inherit;display:flex;flex-direction:column;align-items:center;gap:2px;padding:8px 6px;background:var(--bg);border:3px solid;border-color:var(--lo) var(--hi) var(--hi) var(--lo)}.sbox b{font:400 30px/1 'VT323',monospace;color:var(--acc)}.sbox span{font:700 10px 'Silkscreen',monospace;color:var(--dim);text-align:center}@media(max-width:700px){.sgrid{grid-template-columns:repeat(3,1fr)}}.sbox.dim{opacity:.6}.sbox[aria-pressed=true]{opacity:1}.sbox[aria-pressed=true] b,.sbox[aria-pressed=true] span{color:#1a0f00}.ct.dim>svg{filter:grayscale(1);opacity:.55}.tp .t1{display:block;white-space:normal}.dbe{border-bottom:1px dashed var(--lo);padding:4px 0}.dbe summary{cursor:pointer;padding:3px 0}.dbe .ci{display:inline-block;vertical-align:-5px;margin-right:6px}.dbe .ci svg{width:22px;height:22px}.pend{font:700 10px 'Silkscreen',monospace;color:var(--dim);font-style:normal;margin-left:8px}.dbb{padding:2px 0 6px 30px}.dbb p{margin:0 0 4px}.dbb dl{margin:0;display:grid;grid-template-columns:max-content 1fr;gap:2px 14px}.dbb dt{color:var(--dim)}.dbb dd{margin:0}#dbList{margin-top:8px}.rh{font:700 12px 'Silkscreen',monospace;color:var(--acc);margin:12px 0 2px}#shipsList .ci{display:inline-block;vertical-align:-5px;margin-right:6px}.loc.sub>div:first-child{margin-left:24px}.loc .lc{display:flex;gap:6px;align-items:center;flex:none}.loc .ct{position:relative;display:inline-flex;cursor:help}.loc .tp{position:absolute;right:0;top:100%;margin-top:4px;min-width:310px;padding:5px 8px;background:var(--ink);color:var(--bg);border:2px solid var(--acc);font-size:17px;line-height:1.15;opacity:0;pointer-events:none;z-index:30;display:block}.loc .ct:hover .tp,.loc .ct:focus .tp{opacity:1}.loc .ct:focus{outline:2px solid var(--acc);outline-offset:2px}.loc .th{display:block;font:700 11px 'Silkscreen',monospace;color:#ffb066;margin-bottom:3px}.loc .tr{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:14px;align-items:center;white-space:nowrap}.loc .tr i{font-style:normal;display:flex;align-items:center;gap:4px}.loc .tr i:nth-child(n+2){justify-content:flex-end}.loc .tr.h{color:#ffb066;font-size:15px;border-bottom:1px dashed #6b6b78;margin-bottom:2px}.loc .tr svg{width:14px;height:14px}.loc.off .ct>svg{filter:grayscale(1);opacity:.6}.pgh{display:flex;justify-content:space-between;align-items:center;padding:0 0 6px}.pgh b{font:700 13px 'Silkscreen',monospace;color:var(--acc)}.loc .ci{display:inline-block;vertical-align:-5px;margin-right:6px}.loc .st{font:700 11px 'Silkscreen',monospace;white-space:nowrap;color:var(--dim)}.loc:not(.off) .st{color:#1f7a40}.hdr .r1{display:flex;justify-content:flex-end;gap:12px;align-items:center}.hdr .r2{flex-wrap:nowrap}.hdr .r2 .seg{margin-left:auto}.hdr .date{font-size:22px;line-height:1}.hdr #menu.clk{padding:2px 8px}
+header.bare{margin-bottom:10px}header.bare .in.hdr{display:flex;flex-direction:column;flex-wrap:nowrap;align-items:stretch;gap:5px;padding:0 2px}.hdr #dbbtn{margin-right:auto}.loc.off .nm{color:var(--dim)}.loc.off .ci{opacity:.65}.loc.off .ci svg{filter:grayscale(1)}.loc .nm{position:relative;cursor:default}.loc .nm::after{content:attr(data-d);position:absolute;left:0;top:100%;margin-top:4px;width:340px;padding:4px 8px;background:var(--ink);color:var(--bg);border:2px solid var(--acc);font-size:18px;line-height:1.1;white-space:normal;opacity:0;pointer-events:none;z-index:20}.loc .nm:hover::after,.loc .nm:focus::after{opacity:1}.loc .nm:focus{outline:2px solid var(--acc);outline-offset:2px}.sgrid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:8px}.sgrid.c7{grid-template-columns:repeat(7,1fr)}.sbox{cursor:pointer;font:inherit;color:inherit;display:flex;flex-direction:column;align-items:center;gap:2px;padding:8px 6px;background:var(--bg);border:3px solid;border-color:var(--lo) var(--hi) var(--hi) var(--lo)}.sbox b{font:400 30px/1 'VT323',monospace;color:var(--acc)}.sbox span{font:700 10px 'Silkscreen',monospace;color:var(--dim);text-align:center}.sbox.dim{opacity:.6}.sbox[aria-pressed=true]{opacity:1}.sbox[aria-pressed=true] b,.sbox[aria-pressed=true] span{color:#1a0f00}.ct.dim>svg{filter:grayscale(1);opacity:.55}.tp .t1{display:block;white-space:normal}.dbe{border-bottom:1px dashed var(--lo);padding:4px 0}.dbe summary{cursor:pointer;padding:3px 0}.dbe .ci{display:inline-block;vertical-align:-5px;margin-right:6px}.dbe .ci svg{width:22px;height:22px}.pend{font:700 10px 'Silkscreen',monospace;color:var(--dim);font-style:normal;margin-left:8px}.dbb{padding:2px 0 6px 30px}.dbb p{margin:0 0 4px}.dbb dl{margin:0;display:grid;grid-template-columns:max-content 1fr;gap:2px 14px}.dbb dt{color:var(--dim)}.dbb dd{margin:0}#dbList{margin-top:8px}.rh{font:700 12px 'Silkscreen',monospace;color:var(--acc);margin:12px 0 2px}#shipsList .ci{display:inline-block;vertical-align:-5px;margin-right:6px}.loc.sub>div:first-child{margin-left:24px}.loc .lc{display:flex;gap:6px;align-items:center;flex:none}.loc .ct{position:relative;display:inline-flex;cursor:help}.loc .tp{position:absolute;right:0;top:100%;margin-top:4px;min-width:310px;padding:5px 8px;background:var(--ink);color:var(--bg);border:2px solid var(--acc);font-size:17px;line-height:1.15;opacity:0;pointer-events:none;z-index:30;display:block}.loc .ct:hover .tp,.loc .ct:focus .tp{opacity:1}.loc .ct:focus{outline:2px solid var(--acc);outline-offset:2px}.loc .th{display:block;font:700 11px 'Silkscreen',monospace;color:#ffb066;margin-bottom:3px}.loc .tr{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:14px;align-items:center;white-space:nowrap}.loc .tr i{font-style:normal;display:flex;align-items:center;gap:4px}.loc .tr i:nth-child(n+2){justify-content:flex-end}.loc .tr.h{color:#ffb066;font-size:15px;border-bottom:1px dashed #6b6b78;margin-bottom:2px}.loc .tr svg{width:14px;height:14px}.loc.off .ct>svg{filter:grayscale(1);opacity:.6}.pgh{display:flex;justify-content:space-between;align-items:center;padding:0 0 6px}.pgh b{font:700 13px 'Silkscreen',monospace;color:var(--acc)}.loc .ci{display:inline-block;vertical-align:-5px;margin-right:6px}.loc .st{font:700 11px 'Silkscreen',monospace;white-space:nowrap;color:var(--dim)}.loc:not(.off) .st{color:#1f7a40}.hdr .r1{display:flex;justify-content:flex-end;gap:12px;align-items:center}.hdr .r2{flex-wrap:nowrap}.hdr .r2 .seg{margin-left:auto}.hdr .date{font-size:22px;line-height:1}.hdr #menu.clk{padding:2px 8px}
 .date{color:var(--acc);font-size:26px}
 .res{display:flex;flex-wrap:wrap;gap:6px 16px}
 .res{font-size:19px}.chip{position:relative;display:inline-flex;align-items:center;gap:4px;white-space:nowrap;cursor:default}
 .chip svg{display:block}.chip.dim svg{opacity:.55}
 .chip::after{content:attr(data-n);position:absolute;left:50%;top:100%;transform:translateX(-50%);margin-top:5px;padding:1px 7px;background:var(--ink);color:var(--bg);border:2px solid var(--acc);font-size:18px;white-space:nowrap;opacity:0;pointer-events:none;z-index:20}
 .chip:hover::after,.chip:focus::after{opacity:1}
+.chip.rich::after{content:none}.chip .rt{position:absolute;left:0;top:100%;margin-top:5px;display:flex;align-items:center;gap:5px;padding:1px 7px;background:var(--ink);color:var(--bg);border:2px solid var(--acc);font-size:18px;white-space:nowrap;opacity:0;pointer-events:none;z-index:20}.chip.rich:hover .rt,.chip.rich:focus .rt{opacity:1}
 .chip:focus{outline:2px solid var(--acc);outline-offset:2px}
 .res .chip:nth-last-child(-n+4)::after{left:auto;right:0;transform:none}#res{display:flex;flex-wrap:wrap;gap:6px 14px}#res .chip::after{left:0;right:auto;transform:none}
 .colony{display:flex;justify-content:space-between;align-items:center;gap:8px}.colony .chip::after{left:auto;right:0;transform:none}.colony .chip b{font:400 20px 'VT323',monospace}
-.layout{display:grid;grid-template-columns:200px minmax(0,1fr);gap:12px;align-items:start}
-.layout aside{position:sticky;top:8px;z-index:3}
+.stage{position:fixed;left:50%;top:50%;width:1920px;height:1080px;overflow:hidden;transform-origin:center center;transform:translate(-50%,-50%);background:#02030f}
+.stage .scene{z-index:0}
+.stage header.bare{position:absolute;left:16px;right:16px;top:12px;margin:0;z-index:5}
+.stage aside{position:absolute;left:16px;top:130px;width:300px;z-index:4}
+.stage main>.win{position:absolute;left:332px;right:16px;top:130px;bottom:16px;margin:0;overflow:auto;z-index:4;box-shadow:0 0 0 2px #000a}
+.stage main>#scr-base{left:auto;right:16px;bottom:auto;width:400px;max-height:calc(100% - 146px)}
+.stage aside .win{box-shadow:0 0 0 2px #000a}
+.scene.quiet .hot{display:none}
 .cat{margin-bottom:10px}.cat:last-child{margin-bottom:0}
 .cat-n{position:relative;font:700 11px/1.25 'Silkscreen',monospace;color:var(--acc);border-bottom:2px dashed var(--lo);padding-bottom:3px;margin-bottom:5px;cursor:help}
 .cat-n::after{content:attr(data-n);position:absolute;left:0;top:100%;margin-top:4px;width:max-content;max-width:230px;padding:3px 7px;background:var(--ink);color:var(--bg);border:2px solid var(--acc);font:400 18px/1.1 'VT323',monospace;white-space:normal;opacity:0;pointer-events:none;z-index:30}
@@ -42,15 +50,21 @@ header.bare{margin-bottom:10px}header.bare .in.hdr{display:flex;flex-direction:c
 .cat-r{display:grid;grid-template-columns:1fr;gap:4px}
 .cat-r .chip::after{left:0;transform:none}
 .cat-r{gap:2px}.cat-r .chip{font-size:16px}.cat-r .chip svg{width:15px;height:15px}.cat-n{font-size:12px}.cat-n .ci{width:21px;height:21px}
-@media(max-width:800px){.layout{grid-template-columns:1fr}.layout aside{position:static}.cats{display:grid;grid-template-columns:1fr 1fr;gap:8px 14px}.cat{margin:0}}.res b{color:var(--acc);font-weight:400}
+.res b{color:var(--acc);font-weight:400}
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:0 12px}
-@media(max-width:800px){.grid{grid-template-columns:1fr}}
 .row{display:flex;gap:8px;align-items:center;justify-content:space-between;padding:6px 0;border-bottom:1px dashed var(--lo)}
 .row:last-child{border:0}
 .row{flex-wrap:wrap}
 .stf{display:flex;align-items:center;gap:6px;white-space:nowrap;font-size:19px}
 .stf button{padding:0 9px}
 .stf b{min-width:1.4em;text-align:center;color:var(--acc);font-weight:400}
+.rps{font-size:18px;color:var(--dim)}
+.hdr #back{height:70px}
+.hdr .r1{align-items:flex-start}
+.hdr #menu{height:35px}
+.rpb{display:flex;align-items:center;height:35px;padding:0 12px;background:var(--panel);border:3px solid;border-color:var(--hi) var(--lo) var(--lo) var(--hi);box-shadow:0 0 0 2px #000a}
+.hdr .r2{padding-left:108px;height:35px;align-items:center;margin-top:-35px}
+.hdr .date{display:flex;align-items:center;height:35px;font-size:22px;line-height:1.15}
 .row small{display:block;color:var(--dim);font-size:19px}
 button{font:inherit;color:var(--ink);background:var(--panel);border:3px solid;border-color:var(--hi) var(--lo) var(--lo) var(--hi);padding:2px 10px;cursor:pointer;white-space:nowrap}
 button:active:not(:disabled){border-color:var(--lo) var(--hi) var(--hi) var(--lo)}
@@ -63,16 +77,16 @@ button.go{background:var(--acc);color:#1a0f00}
 .t-solar{background:#6ea8ff}.t-mine{background:#c98a4b}.t-ice{background:#8fe3f0}.t-elec{background:#ff9a2e}.t-lab{background:#c58cff}.t-hab{background:#7fe0a0}.t-reactor{background:#e6e36a}.t-fact{background:#b6b6c8}.t-shop{background:#9fb3c8}.t-port{background:#e0a0c8}
 .bar{height:10px;background:var(--lo);margin-top:3px}.bar i{display:block;height:100%;background:var(--ok)}
 .bad{color:var(--bad)}.ok{color:var(--ok)}.dim{color:var(--dim)}
-#log{max-height:60vh;min-height:240px;overflow:auto;padding:8px 10px;font-size:20px}
+#log{min-height:240px;padding:8px 10px;font-size:20px}
 #log div{padding:1px 0}
 .end{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
-.scene{position:relative;height:330px;overflow:hidden;border-bottom:3px solid var(--lo);
+.scene{position:absolute;inset:0;overflow:hidden;
 background:var(--scene-img,none) center/cover,
-radial-gradient(circle at 90% 16%,#3b82f6 0 20px,transparent 21px),
+radial-gradient(circle at 70% 14%,#3b82f6 0 56px,#1e3a8a 57px 64px,transparent 65px),
 radial-gradient(1.5px 1.5px at 12% 20%,#fff,transparent),radial-gradient(1.5px 1.5px at 34% 9%,#fff,transparent),radial-gradient(1.5px 1.5px at 55% 24%,#fff,transparent),radial-gradient(1.5px 1.5px at 72% 12%,#fff,transparent),radial-gradient(1.5px 1.5px at 24% 38%,#fff,transparent),
 linear-gradient(#02030f 0 66%,var(--reg) 66% 100%)}
-.ph{position:absolute;left:8px;top:6px;font-size:17px;color:#9aa0c8}
-.hot{position:absolute;width:17%;min-width:80px;padding:6px 4px;text-align:center;display:flex;flex-direction:column;gap:2px;background:var(--panel);color:var(--ink)}
+.ph{position:absolute;left:16px;bottom:10px;font-size:17px;color:#9aa0c8}
+.hot{position:absolute;width:240px;padding:6px 4px;text-align:center;display:flex;flex-direction:column;gap:2px;background:var(--panel);color:var(--ink)}
 .hot b{font:700 11px/1.2 'Silkscreen',monospace}
 .hot small{color:var(--acc);font-size:19px}
 .hot:hover,.hot:focus-visible{background:var(--acc);color:#1a0f00}
@@ -143,33 +157,35 @@ dialog::backdrop{background:#000a}
  <p class="tag">The Solar Century has ended. You can close this tab now.</p>
  <button id="m-back">Back to main menu</button>
 </div></div>
-<div class="wrap" id="game" hidden>
+<div class="stage" id="game" hidden>
+ <div class="scene" id="scene" aria-label="Moonbase main screen">
+  <span class="ph">Placeholder scene: replace --scene-img in CSS with the main screen image</span>
+  <button class="hot" data-go="tech" style="left:18%;bottom:30%"><b>Science Labs</b><small id="b-tech"></small></button>
+  <button class="hot" data-go="build" style="left:33.5%;bottom:14%"><b>Construction</b><small id="b-build"></small></button>
+  <button class="hot" data-go="yard" style="left:49%;bottom:30%"><b>Shipyard</b><small id="b-yard"></small></button>
+  <button class="hot" data-go="port" style="left:49%;bottom:62%"><b>Starport</b><small id="b-port"></small></button>
+  <button class="hot" data-go="flight" style="left:64.5%;bottom:14%"><b>Flight plans</b><small id="b-flight"></small></button>
+ </div>
 <header class="bare" aria-label="Moonbase, date, menu and time controls"><div class="in hdr">
  <div class="r1">
  <button id="back" title="Moonbase main screen">Moonbase</button>
  <button id="colbtn" title="Planets and colonies">Colonies</button>
  <button id="shipbtn" title="All starships">Starships</button>
- <button id="rschbtn" title="Research overview">Research</button>
+ <button id="tovbtn" title="Technology overview">Technology</button>
+ <button id="logbtn" title="Mission Control Log">Mission Control</button>
  <button id="dbbtn" title="Compendium of the game">Database</button>
  <div class="date" id="date"></div>
  <button id="menu" class="clk" title="Main menu" aria-label="Main menu"><svg viewBox="0 0 16 16" width="20" height="20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="square"><path d="M2 3.5H14M2 8H14M2 12.5H14"/></svg></button>
  </div>
  <div class="end r2">
+ <div class="rpb" aria-label="Research points"><div id="res"></div></div>
  <span class="seg" role="group" aria-label="Game speed"><button data-sp="0" title="Pause" aria-label="Pause" class="clk"><svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="square"><path d="M5 2.5V13.5M11 2.5V13.5"/></svg></button><button id="step" title="Advance 1 hour" aria-label="Advance 1 hour" class="clk"><svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="square"><path d="M3 2.5L9 8L3 13.5Z" fill="currentColor" stroke-width="1"/><path d="M13 2.5V13.5"/></svg></button><button data-sp="30000" title="Very slow: 1 hour per 30 seconds" aria-label="Very slow: 1 hour per 30 seconds" class="clk"><svg viewBox="0 0 8.5 16" width="9" height="16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="square"><path d="M2.0 2.5L6.5 8L2.0 13.5"/></svg></button><button data-sp="15000" title="Slow: 1 hour per 15 seconds" aria-label="Slow: 1 hour per 15 seconds" class="clk"><svg viewBox="0 0 13.0 16" width="13" height="16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="square"><path d="M2.0 2.5L6.5 8L2.0 13.5"/><path d="M6.5 2.5L11.0 8L6.5 13.5"/></svg></button><button data-sp="5000" title="Normal: 1 hour per 5 seconds" aria-label="Normal: 1 hour per 5 seconds" class="clk"><svg viewBox="0 0 17.5 16" width="18" height="16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="square"><path d="M2.0 2.5L6.5 8L2.0 13.5"/><path d="M6.5 2.5L11.0 8L6.5 13.5"/><path d="M11.0 2.5L15.5 8L11.0 13.5"/></svg></button><button data-sp="2000" title="Fast: 1 hour per 2 seconds" aria-label="Fast: 1 hour per 2 seconds" class="clk"><svg viewBox="0 0 22.0 16" width="22" height="16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="square"><path d="M2.0 2.5L6.5 8L2.0 13.5"/><path d="M6.5 2.5L11.0 8L6.5 13.5"/><path d="M11.0 2.5L15.5 8L11.0 13.5"/><path d="M15.5 2.5L20.0 8L15.5 13.5"/></svg></button><button data-sp="500" title="Turbo: 1 hour per half a second" aria-label="Turbo: 1 hour per half a second" class="clk"><svg viewBox="0 0 26.5 16" width="26" height="16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="square"><path d="M2.0 2.5L6.5 8L2.0 13.5"/><path d="M6.5 2.5L11.0 8L6.5 13.5"/><path d="M11.0 2.5L15.5 8L11.0 13.5"/><path d="M15.5 2.5L20.0 8L15.5 13.5"/><path d="M20.0 2.5L24.5 8L20.0 13.5"/></svg></button></span>
  </div>
 </div></header>
 
-<div class="layout"><aside aria-label="Research and resources"><section class="win"><h2>Research</h2><div class="in res" id="res"></div></section><section class="win" style="margin-top:8px"><h2>Resources</h2><div class="in cats" id="stock"></div></section></aside><main>
+<aside aria-label="Resources"><section class="win"><h2>Resources</h2><div class="in cats" id="stock"></div></section></aside>
+<main>
 <section class="win" id="scr-base"><h2 class="colony"><span>Moonbase – Mare Tranquillitatis</span><span id="pop"></span></h2>
- <div class="scene" id="scene">
-  <span class="ph">Placeholder scene: replace --scene-img in CSS with the main screen image</span>
-  <button class="hot" data-go="tech" style="left:3%;bottom:30%"><b>Science Labs</b><small id="b-tech"></small></button>
-  <button class="hot" data-go="build" style="left:23%;bottom:14%"><b>Construction</b><small id="b-build"></small></button>
-  <button class="hot" data-go="yard" style="left:43%;bottom:34%"><b>Shipyard</b><small id="b-yard"></small></button>
-  <button class="hot" data-go="port" style="left:43%;bottom:68%"><b>Starport</b><small id="b-port"></small></button>
-  <button class="hot" data-go="flight" style="left:63%;bottom:14%"><b>Flight plans</b><small id="b-flight"></small></button>
-  <button class="hot" data-go="log" style="left:81%;bottom:30%"><b>Mission Control Log</b><small id="b-log"></small></button>
- </div>
  <div class="map" id="map"></div>
  <div class="in" id="power"></div>
 </section>
@@ -180,11 +196,11 @@ dialog::backdrop{background:#000a}
 <section class="win" id="scr-port" hidden><h2>Starport</h2><div class="in" id="port"></div></section>
 <section class="win" id="scr-col" hidden><h2>Colonies</h2><div class="in" id="cols"></div></section>
 <section class="win" id="scr-ships" hidden><h2>Starships</h2><div class="in" id="shipsList"></div></section>
-<section class="win" id="scr-rsch" hidden><h2>Research</h2><div class="in" id="rschList"></div></section>
+<section class="win" id="scr-tov" hidden><h2>Technology</h2><div class="in" id="tovList"></div></section>
 <section class="win" id="scr-db" hidden><h2>Database</h2><div class="in"><div class="end" id="db-tabs" role="group" aria-label="Database sections"></div><div id="dbList"></div></div></section>
 <section class="win" id="scr-flight" hidden><h2>Flight plans</h2><div class="in" id="flights"></div></section>
-<section class="win" id="scr-log" hidden><h2>Mission Control Log</h2><div class="in end" id="log-tabs" role="group" aria-label="Log sections"><button data-lt="obj">Main Objectives</button><button data-lt="ops">Daily Operations</button></div><div id="objectives" class="in" hidden></div><div id="log" aria-live="polite"></div></section>
-</main></div>
+<section class="win" id="scr-log" hidden><h2>Mission Control Log</h2><div class="in end" id="log-tabs" role="group" aria-label="Log sections"><button data-lt="obj">Main Objectives</button><button data-lt="ops">Daily Operations</button><button data-lt="inv">Under Investigation</button></div><div id="objectives" class="in" hidden></div><div id="invest" class="in" hidden></div><div id="log" aria-live="polite"></div></section>
+</main>
 </div>
 <div class="wrap" id="editor" hidden>
 <header class="win"><div class="in"><button id="ed-back">Main menu</button><h1>EDITOR</h1><span class="dim" id="ed-msg">Edits are saved in the selected configuration.</span></div></header>
@@ -211,15 +227,16 @@ const B={
  reactor:{n:'Fission reactor',tech:'fission',c:{iron:32,titanium:16,chromium:8,uranium:8,components:6,machinery:8},p:12,inp:{uranium:.5},d:'+12 power, burns 0.5 uranium / month',g:'R',t:200}
 };
 const T={
- deep:{n:'Deep drilling',rp:25,req:[],d:'Regolith mines +50%'},
- hydro:{n:'Hydroponics',rp:30,req:[],d:'Colonists use 40% less water'},
- fusion:{n:'Fusion cells',rp:50,req:['deep'],d:'Solar arrays +50%'},
- ion:{n:'Ion drive',rp:50,req:['deep'],d:'Unlocks Mars survey'},
- fission:{n:'Nuclear power',rp:60,req:['deep'],d:'Unlocks the fission reactor'},
- belt:{n:'Asteroid mining',rp:80,req:['ion'],d:'Unlocks Belt expedition'},
- outer:{n:'Outer-system drive',rp:100,req:['belt'],d:'Unlocks Outer moons expedition'},
- gaia:{n:'Gaia seed',rp:150,req:['hydro','fusion','outer'],d:'Unlocks the Gaia Ark'}
+ deep:{n:'Deep drilling',rp:25,req:[],cat:'mining',d:'Regolith mines +50%'},
+ hydro:{n:'Hydroponics',rp:30,req:[],cat:'life',d:'Colonists use 40% less water'},
+ fusion:{n:'Fusion cells',rp:50,req:['deep'],cat:'energy',d:'Solar arrays +50%'},
+ ion:{n:'Ion drive',rp:50,req:['deep'],cat:'ships',d:'Unlocks Mars survey'},
+ fission:{n:'Nuclear power',rp:60,req:['deep'],cat:'energy',d:'Unlocks the fission reactor'},
+ belt:{n:'Asteroid mining',rp:80,req:['ion'],cat:'mining',d:'Unlocks Belt expedition'},
+ outer:{n:'Outer-system drive',rp:100,req:['belt'],cat:'ships',d:'Unlocks Outer moons expedition'},
+ gaia:{n:'Gaia seed',rp:150,req:['hydro','fusion','outer'],cat:'colony',d:'Unlocks the Gaia Ark'}
 };
+const TCATS=[{k:'colony',n:'Colonization'},{k:'energy',n:'Energy'},{k:'mining',n:'Mining'},{k:'manuf',n:'Manufacturing'},{k:'life',n:'Life Support'},{k:'ships',n:'Starships'},{k:'weapons',n:'Weapons'}],tcn=k=>(TCATS.find(c=>c.k===T[k].cat)||{n:'Uncategorised'}).n;
 const M={
  earth:{n:'Earth salvage',tech:null,c:{hydrogen:10,oxygen:20},t:3,risk:.1,r:{iron:40,copper:15,aluminium:15,silica:10}},
  mars:{n:'Mars survey',tech:'ion',c:{hydrogen:15,oxygen:30},t:5,risk:.15,r:{water:60,nitrogen:30,sulphur:15,methane:10,rp:15}},
@@ -480,44 +497,44 @@ function dbData(){
  for(const k in B){const b=B[k],st=STAFF[k];
   E.bld.push({n:b.n,i:'<span class="tile t-'+k+'" style="width:22px;height:22px;font-size:14px">'+b.g+'</span>',d:b.d||'',f:[['Cost',cost(b.c)],['Build time',dur(b.t)],['Power',(b.p>0?'+':'')+b.p],['Staff',st?st.min+' '+JOBN[st.job].toLowerCase()+' to run, '+st.full+' for full crew':'none'],['Requires',b.tech?T[b.tech].n:'nothing']]})}
  for(const k in T){const t=T[k],un=Object.keys(B).filter(x=>B[x].tech===k).map(x=>B[x].n).concat(Object.keys(M).filter(x=>M[x].tech===k).map(x=>M[x].n));
-  E.tech.push({n:t.n,i:ico('research'),d:t.d||'',f:[['Research cost',t.rp+' points up front, '+t.rp+' days'],['Requires',dbLst(t.req.map(r=>T[r].n))],['Unlocks',dbLst(un)]]})}
+  E.tech.push({n:t.n,i:ico('research'),d:t.d||'',f:[['Category',tcn(k)],['Research cost',t.rp+' points up front, '+t.rp+' days'],['Requires',dbLst(t.req.map(r=>T[r].n))],['Unlocks',dbLst(un)]]})}
  for(const t of SHIPTYPES){const pr=t.k==='probe';
   E.ship.push({n:t.n,i:ico('ship'),d:'',f:pr?[['Built in','Shipyard'],['Build cost',cost(SHIP)],['Berths','Starport, up to '+PORT.max]]:[['Status','not available yet']]})}
  E.col.push({n:'Colonists',i:ico('colonists'),d:'',f:[['At start',COL.pop],['Water',COL.water+' per colonist / month'],['Oxygen',COL.oxygen+' per colonist / month'],['Full crew bonus','+'+Math.round(COL.boost*100)+'% output']]});
  for(const j in JOBN){const bs=Object.keys(STAFF).filter(k=>STAFF[k].job===j).map(k=>k==='build'?'Construction sites':B[k].n);E.col.push({n:JOBN[j],i:ico('colonists'),d:'',f:[['Staff',dbLst(bs)]]})}
  E.col.push({n:'Crew',i:ico('colonists'),d:'',f:[['Role','colonists aboard a starship on a mission; they are not available for jobs until the ship returns']]});
  return E}
-const DBTABS=[['loc','Locations'],['res','Resources'],['bld','Buildings'],['tech','Technologies'],['ship','Starships'],['col','Colonists'],['todo','To do']];
-const DBN={loc:'Locations',res:'Resources',bld:'Buildings',tech:'Technologies',ship:'Starships',col:'Colonists'};
-function dbHtml(){const E=dbData(),pend=k=>E[k].filter(x=>!x.d);let h='';
- const tabs=DBTABS.map(t=>'<button data-dt="'+t[0]+'" aria-pressed="'+(dbTab===t[0])+'">'+t[1]+' ('+(t[0]==='todo'?Object.keys(E).reduce((a,k)=>a+pend(k).length,0):E[t[0]].length)+')</button>').join('');
- if(dbTab==='todo')h='<p class="dim">Entries still waiting for a description:</p>'+Object.keys(E).filter(k=>pend(k).length).map(k=>'<h4 class="rh">'+DBN[k]+' ('+pend(k).length+')</h4><div>'+pend(k).map(x=>esc(x.n)).join(', ')+'</div>').join('')||'<p class="dim">Every entry has a description.</p>';
- else h=E[dbTab].map(x=>'<details class="dbe"><summary><span class="ci">'+x.i+'</span>'+esc(x.n)+(x.d?'':' <em class="pend">description pending</em>')+'</summary><div class="dbb"><p>'+(x.d?esc(x.d):'<span class="dim">Description pending: still to be written.</span>')+'</p><dl>'+x.f.map(f=>'<dt>'+f[0]+'</dt><dd>'+esc(f[1])+'</dd>').join('')+'</dl></div></details>').join('');
+const DBTABS=[['loc','Locations'],['res','Resources'],['bld','Buildings'],['tech','Technologies'],['ship','Starships'],['col','Colonists']];
+function dbHtml(){const E=dbData();let h='';
+ const tabs=DBTABS.map(t=>'<button data-dt="'+t[0]+'" aria-pressed="'+(dbTab===t[0])+'">'+t[1]+' ('+E[t[0]].length+')</button>').join('');
+ h=E[dbTab].map(x=>'<details class="dbe"><summary><span class="ci">'+x.i+'</span>'+esc(x.n)+'</summary><div class="dbb">'+(x.d?'<p>'+esc(x.d)+'</p>':'')+'<dl>'+x.f.map(f=>'<dt>'+f[0]+'</dt><dd>'+esc(f[1])+'</dd>').join('')+'</dl></div></details>').join('');
  return [tabs,h]}
-const SHIPS_PER=12;let shipFilter=null,shipPage=0;
+let tovFilter=null;const SHIPS_PER=12;let shipFilter=null,shipPage=0;
 const pgArr=(attr,d,on,t)=>'<button class="clk pgb" '+attr+'="'+d+'" title="'+t+'" aria-label="'+t+'"'+(on?'':' disabled')+'><svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="square"><path d="'+(d<0?'M10.5 2.5L5 8L10.5 13.5':'M5.5 2.5L11 8L5.5 13.5')+'"/></svg></button>';
 const SHIPTYPES=[{k:'probe',n:'Probes'},{k:'hop',n:'Hop Miners'},{k:'solar',n:'Solar Carriers'},{k:'nuclear',n:'Nuclear Cruisers'},{k:'colony',n:'Colony Ships'}];
-const SCR=['base','col','ships','rsch','db','build','tech','yard','port','flight','log'];
+const SCR=['base','col','ships','tov','db','build','tech','yard','port','flight','log'];
 function go(s){S.screen=s;render()}
+SCR.filter(s=>s!=='base').forEach(s=>{const h=$('scr-'+s).querySelector('h2');h.classList.add('wh');h.insertAdjacentHTML('beforeend','<button class="xb" title="Close (Esc)" aria-label="Close"><svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="square"><path d="M3 3L13 13M13 3L3 13"/></svg></button>');h.querySelector('.xb').onclick=()=>go('base')});
+function fit(){const q=+new URLSearchParams(location.search).get('scale'),k=q>0?q:Math.min(innerWidth/1920,innerHeight/1080);$('game').style.transform='translate(-50%,-50%) scale('+k+')'}
+addEventListener('resize',fit);
 function render(){
- SCR.forEach(s=>$('scr-'+s).hidden=S.screen!==s);$('back').setAttribute('aria-pressed',String(S.screen==='base'));
+ SCR.forEach(s=>$('scr-'+s).hidden=S.screen!==s);$('scene').classList.toggle('quiet',S.screen!=='base');$('back').setAttribute('aria-pressed',String(S.screen==='base'));
  $('b-build').textContent=S.q.length?S.q.length+' in progress':'Idle';
  $('b-tech').textContent=S.cur?T[S.cur].n:'Idle';
- $('colbtn').setAttribute('aria-pressed',String(S.screen==='col'));$('shipbtn').setAttribute('aria-pressed',String(S.screen==='ships'));$('rschbtn').setAttribute('aria-pressed',String(S.screen==='rsch'));$('dbbtn').setAttribute('aria-pressed',String(S.screen==='db'));
+ $('colbtn').setAttribute('aria-pressed',String(S.screen==='col'));$('shipbtn').setAttribute('aria-pressed',String(S.screen==='ships'));$('tovbtn').setAttribute('aria-pressed',String(S.screen==='tov'));$('dbbtn').setAttribute('aria-pressed',String(S.screen==='db'));$('logbtn').setAttribute('aria-pressed',String(S.screen==='log'));
  $('b-yard').textContent=S.ships+' in hangar';
  $('b-port').textContent=owned()+'/'+S.slots+' berths';
  $('b-flight').textContent=S.out.length+' in flight';
- $('b-log').textContent=S.log.length+' entries';
  set('pop',chip('colonists','Colonists ('+freeCol()+' free)',S.pop+'/'+S.b.hab*B.hab.cap));
  $('date').textContent=S.y+'-'+pad(S.m)+'-'+pad(S.d)+'  '+pad(S.h)+':00';
- set('res',chip('research','Research points',Math.floor(S.rp))+chip('gain','Research points gained per day',(rpRate()>0?'+':'')+(+rpRate().toFixed(3))+'/day',rpRate()<=0)+chip('project','Technologies under investigation',Object.values(S.proj).filter(p=>p.state==='active').length));
+ {const g=(rpRate()>0?'+':'')+(+rpRate().toFixed(3))+' per day';set('res','<span class="chip rich" tabindex="0" aria-label="Research points '+Math.floor(S.rp)+', '+g+'">'+ico('research')+'<b>'+Math.floor(S.rp)+'</b><span class="rt'+(rpRate()>0?'':' dim')+'">'+ico('gain')+g+'</span></span>')}
  set('stock',stock());
  let t='<div class="tile t-port" title="Starport">P</div>';for(const k in B)for(let i=0;i<S.b[k];i++)t+='<div class="tile t-'+k+'" title="'+B[k].n+'">'+B[k].g+'</div>';
  for(const q of S.q)t+='<div class="tile" style="background:transparent;border-style:dashed;color:var(--ink)" title="Under construction: '+BQ(q.k).n+'">'+BQ(q.k).g+'</div>';
  set('map',t);const P=pow();
  set('power','Power '+P.p+' made / '+P.u+' needed <span class="'+(P.e<1?'bad':'ok')+'">('+Math.round(P.e*100)+'% efficiency)</span><div class="bar"><i style="width:'+Math.round(P.e*100)+'%"></i></div><div class="dim" style="padding-top:6px">'+jobsLine()+'</div>');
  set('build',builderRow()+Object.keys(B).filter(k=>!B[k].tech||S.tech[B[k].tech]).map(k=>'<div class="row"><div>'+B[k].n+' ×'+S.b[k]+'<small>'+B[k].d+' · power '+(B[k].p>0?'+':'')+B[k].p+' · '+cost(B[k].c)+(B[k].c.machinery?' · upkeep '+(+(B[k].c.machinery*WEAR).toFixed(2))+' machinery / month':'')+' · takes '+dur(B[k].t)+(STAFF[k]?' · staff: '+STAFF[k].min+' '+JOBN[STAFF[k].job].toLowerCase()+' per building, '+STAFF[k].full+' for +'+Math.round(BOOST*100)+'%':'')+'</small></div>'+stf(k)+'<button '+(can(B[k].c)&&!S.over?'':'disabled')+' onclick="build(\''+k+'\')">Build</button></div>').join('')+(S.q.length?'<div class="dim" style="padding-top:6px">Under construction: '+S.q.map((q,i)=>BQ(q.k).n+' ('+dur(q.left)+(sitePlan()[i]?'':', waiting for builders')+')').join(', ')+'</div>':''));
- set('tech',labStatus()+Object.keys(T).map(k=>{const x=T[k],ok=x.req.every(r=>S.tech[r]),done=S.tech[k];
+ set('tech','<div class="row"><div>Research points: '+Math.floor(S.rp)+' <span class="rps">+'+(+rpRate().toFixed(3))+' per day</span></div><div class="rps">Labs working: '+work('lab')+' of '+S.b.lab+'</div></div>'+labStatus()+Object.keys(T).map(k=>{const x=T[k],ok=x.req.every(r=>S.tech[r]),done=S.tech[k];
   return '<div class="row"><div>'+x.n+(done?' <span class="ok">done</span>':'')+(S.cur===k?' <span class="ok">in progress</span>':S.proj[k]?' <span class="bad">paused, '+Math.ceil(S.proj[k].left/24)+' days left</span>':'')+'<small>'+x.d+(done?'':' · '+x.rp+' points up front + '+x.rp/100+' / day, '+x.rp+' days'+(x.req.length?' · needs '+x.req.map(r=>T[r].n).join(', '):''))+'</small></div>'+(done||S.cur===k?'':'<button '+(canResearch(k)?'':'disabled')+' onclick="research(\''+k+'\')">'+(S.proj[k]?'Resume ('+startCost(k)+' pts)':'Research')+'</button>')+'</div>'}).join(''));
  let y='<div class="row"><div>Probes in hangar: '+S.ships+'<small>'+cost(SHIP)+' each</small><small>Starport: '+owned()+'/'+S.slots+' berths used'+(S.out.length?' ('+S.out.length+' away on missions)':'')+(owned()>=S.slots?' <span class="bad">· no free berth: expand the Starport'+(S.slots>=PORT.max?' (already at the maximum of '+PORT.max+')':'')+'</span>':'')+'</small></div><button '+(can(SHIP)&&!S.over&&owned()<S.slots?'':'disabled')+' onclick="buildShip()">Build probe</button></div>';
  const BS=berths(),nq=berthsQ().length,nx=BS.findIndex(x=>x.s==='locked');
@@ -547,13 +564,14 @@ function render(){
   set('shipsList',hdr+'<div class="sgrid">'+SHIPTYPES.map(sb).join('')+'</div>'+(shown.map(x=>x.h).join('')||'<div class="dim">'+(shipFilter?'No '+fn+'.':'No starships. Build one in the Shipyard.')+'</div>'))}
  {const act=Object.keys(S.proj).filter(k=>S.proj[k].state==='active'),pau=Object.keys(S.proj).filter(k=>S.proj[k].state!=='active'),done=Object.keys(S.tech);
   const pr=k=>{const tot=T[k].rp*24,left=S.proj[k].left;return Math.round((1-left/tot)*100)+'% · '+Math.ceil(left/24)+' days left'};
-  const row=(k,st)=>'<div class="row"><div>'+T[k].n+'<small>'+st+'</small></div></div>';
-  set('rschList','<div class="row"><div>Research points: '+Math.floor(S.rp)+'<small>+'+(+rpRate().toFixed(3))+' per day · labs working: '+work('lab')+' of '+S.b.lab+'</small></div></div>'+
-   '<h4 class="rh">Under investigation ('+act.length+')</h4>'+(act.map(k=>row(k,'Moonbase · '+pr(k))).join('')||'<div class="dim">Nothing under investigation.</div>')+
-   (pau.length?'<h4 class="rh">Paused ('+pau.length+')</h4>'+pau.map(k=>row(k,'Moonbase · paused · '+pr(k))).join(''):'')+
-   '<h4 class="rh">Completed ('+done.length+')</h4>'+(done.map(k=>row(k,T[k].d)).join('')||'<div class="dim">No technologies researched yet.</div>'))}
+  const fk=k=>!tovFilter||T[k].cat===tovFilter,fp=pau.filter(fk),fd=done.filter(fk),row=(k,st)=>'<div class="row"><div>'+T[k].n+'<small>'+tcn(k)+' · '+st+'</small></div></div>';
+  const cb=c=>{const n=Object.keys(T).filter(k=>T[k].cat===c.k).length;return '<button class="sbox'+(n?'':' dim')+'" data-rf="'+c.k+'" aria-pressed="'+(tovFilter===c.k)+'" title="'+(tovFilter===c.k?'Show all categories':'Show only '+c.n)+'"><b>'+n+'</b><span>'+c.n+'</span></button>'};
+  set('invest',act.map(k=>row(k,'Moonbase · '+pr(k))).join('')||'<div class="dim">Nothing under investigation.</div>');
+  set('tovList',   '<div class="sgrid c7">'+TCATS.map(cb).join('')+'</div>'+
+   (fp.length?'<h4 class="rh">Paused ('+fp.length+')</h4>'+fp.map(k=>row(k,'Moonbase · paused · '+pr(k))).join(''):'')+
+   '<h4 class="rh">Completed ('+fd.length+')</h4>'+(fd.map(k=>row(k,T[k].d)).join('')||'<div class="dim">No technologies researched yet.</div>'))}
  document.querySelectorAll('[data-lt]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.lt===logTab)));
- $('objectives').hidden=logTab!=='obj';$('log').hidden=logTab!=='ops';
+ $('objectives').hidden=logTab!=='obj';$('log').hidden=logTab!=='ops';$('invest').hidden=logTab!=='inv';
  {const g=M.gaia,ok=!!S.tech[g.tech],left=DEADLINE-S.y;
   set('objectives','<div class="row"><div><b>Launch the Gaia Ark before '+DEADLINE+'</b><small>The asteroid has scorched Earth. Carry the Gaia Ark to Earth to seed it with new life and win the game. The flight takes '+Math.round(g.t*30)+' days, so it has to leave in time to arrive before the deadline.</small><small>Time left: '+left+' year'+(left===1?'':'s')+' (until '+DEADLINE+').</small></div></div>'+
    '<div class="row"><div>'+(ok?'<span class="ok">Done</span> · ':'')+'Research '+T[g.tech].n+'<small>'+T[g.tech].d+(ok?'':' · needs '+T[g.tech].req.map(r=>T[r].n+(S.tech[r]?' (done)':'')).join(', '))+'</small></div></div>'+
@@ -569,22 +587,23 @@ let last=performance.now(),acc=0;
 setInterval(()=>{const n=performance.now(),dt=n-last;last=n;if(!S.speed||S.over||mode!=='game'||$('dlg').open||$('dmenu').open){acc=0;return}acc+=dt;let c=0;while(acc>=S.speed&&!S.over&&c<20){acc-=S.speed;tick();c++}acc=Math.min(acc,S.speed);if(c)render()},100);
 document.querySelectorAll('[data-go]').forEach(b=>b.onclick=()=>go(b.dataset.go));
 $('back').onclick=()=>go('base');
-$('colbtn').onclick=()=>go('col');$('dbbtn').onclick=()=>go('db');
+$('colbtn').onclick=()=>go('col');$('dbbtn').onclick=()=>go('db');$('logbtn').onclick=()=>go('log');
 $('db-tabs').addEventListener('click',e=>{const b=e.target.closest('[data-dt]');if(b){dbTab=b.dataset.dt;render()}});
-$('shipsList').addEventListener('click',e=>{const f=e.target.closest('[data-sf]'),x=e.target.closest('[data-xp]');if(f){shipFilter=shipFilter===f.dataset.sf?null:f.dataset.sf;shipPage=0;render()}else if(x){shipPage=Math.max(0,shipPage+(+x.dataset.xp));render()}});$('shipbtn').onclick=()=>go('ships');$('rschbtn').onclick=()=>go('rsch');
+$('tovList').addEventListener('click',e=>{const f=e.target.closest('[data-rf]');if(f){tovFilter=tovFilter===f.dataset.rf?null:f.dataset.rf;render()}});
+$('shipsList').addEventListener('click',e=>{const f=e.target.closest('[data-sf]'),x=e.target.closest('[data-xp]');if(f){shipFilter=shipFilter===f.dataset.sf?null:f.dataset.sf;shipPage=0;render()}else if(x){shipPage=Math.max(0,shipPage+(+x.dataset.xp));render()}});$('shipbtn').onclick=()=>go('ships');$('tovbtn').onclick=()=>go('tov');
 $('cols').addEventListener('click',e=>{const b=e.target.closest('[data-cp]');if(b){colPage=Math.max(0,colPage+(+b.dataset.cp));render()}});
 addEventListener('keydown',e=>{if(e.key==='Escape'&&mode==='game'&&S.screen!=='base'&&!$('dlg').open)go('base')});
 $('dok').onclick=()=>$('dlg').close();
 $('drestart').onclick=()=>{$('dlg').close();$('drestart').hidden=true;$('dok').hidden=false;init();render()};
 let mode='title',diff='normal';
-function setMode(m){mode=m;$('title').hidden=m!=='title';$('game').hidden=m!=='game';$('bye').hidden=m!=='exit';$('newgame').hidden=m!=='new';$('editor').hidden=m!=='editor';if(m==='editor')enterEd();if(m==='new'){cfPick();$('d-start').focus()}if(m==='title')$('m-new').focus();if(m==='game')render()}
+function setMode(m){mode=m;if(m==='game')fit();$('title').hidden=m!=='title';$('game').hidden=m!=='game';$('bye').hidden=m!=='exit';$('newgame').hidden=m!=='new';$('editor').hidden=m!=='editor';if(m==='editor')enterEd();if(m==='new'){cfPick();$('d-start').focus()}if(m==='title')$('m-new').focus();if(m==='game')render()}
 $('m-new').onclick=()=>setMode('new');
 $('d-start').onclick=()=>{applyData(cfById(CF.sel).d);init();setMode('game')};
 $('d-back').onclick=()=>setMode('title');
 document.querySelectorAll('.diff:not(:disabled)').forEach(b=>b.onclick=()=>{diff=b.dataset.d;document.querySelectorAll('.diff').forEach(x=>x.setAttribute('aria-checked',String(x===b)));$('d-note').textContent=b.dataset.note});
 $('m-exit').onclick=()=>{window.close();setMode('exit')};
 $('m-back').onclick=()=>setMode('title');
-$('menu').onclick=()=>{if(S.over)setMode('title');else $('dmenu').showModal()};
+$('menu').onclick=()=>{S.speed=0;render();if(S.over)setMode('title');else $('dmenu').showModal()};
 $('dstay').onclick=()=>$('dmenu').close();
 $('dleave').onclick=()=>{$('dmenu').close();setMode('title')};
 /* ===== Editor ===== */
@@ -599,7 +618,7 @@ function refreshD(){
   else if(b.out)b.d=(b.inp?lst(b.inp)+' → '+lst(b.out):fmt(b.out))+' / month';
   else if(b.inp)b.d=(b.p>0?'+'+b.p+' power, ':'')+'burns '+lst(b.inp)+' / month';
   else if(k!=='lab')b.d=b.p>0?'+'+b.p+' power':'No output'}}
-function applyData(d){const dd=JSON.parse(DEF);for(const n in DATA){const t=DATA[n];for(const k of Object.keys(t))delete t[k];Object.assign(t,dd[n],d[n]||{})}delete B.port;BOOST=COL.boost;refreshD()}
+function applyData(d){const dd=JSON.parse(DEF);for(const n in DATA){const t=DATA[n];for(const k of Object.keys(t))delete t[k];Object.assign(t,dd[n],d[n]||{})}for(const k in T)if(!T[k].cat&&dd.T[k])T[k].cat=dd.T[k].cat;delete B.port;BOOST=COL.boost;refreshD()}
 const CF={list:[],edit:'default',sel:'default'};
 const cfById=id=>id==='default'?{id:'default',name:'Default',d:JSON.parse(DEF)}:CF.list.find(c=>c.id===id);
 const validD=d=>!!d&&OKEYS.every(k=>d[k]&&typeof d[k]==='object');
@@ -630,7 +649,7 @@ function edB(){return Object.keys(B).map(k=>{const b=B[k],P='B.'+k+'.';
   '<h4>Construction cost</h4>'+grid(P+'c',b.c)+'<h4>Consumes per month</h4>'+grid(P+'inp',b.inp)+'<h4>Produces per month</h4>'+grid(P+'out',b.out)+'</details>'}).join('')}
 function edT(){return '<div class="ef addt">'+fl('New technology name','<input type="text" id="nt-n" value="New technology">')+fl('Research cost (points)','<input type="number" id="nt-r" value="40" min="1" step="any">')+'<button id="nt-add" class="go">Add technology</button></div><p class="dim">A new technology does nothing by itself: choose it under “Requires tech” on a building or a starship mission to make it unlock that.</p>'+
  Object.keys(T).map(k=>{const t=T[k],P='T.'+k+'.';
-  return '<details'+(edOpen===k?' open':'')+'><summary>'+esc(t.n)+(t.custom?' (custom)':'')+'</summary><div class="ef">'+fl('Name',txt(P+'n',t.n))+fl('Research cost (points up front; 1% per day)',num(P+'rp',t.rp,{min:1}))+fl('Description',txt(P+'d',t.d),1)+'</div><h4>Requires</h4><div>'+
+  return '<details'+(edOpen===k?' open':'')+'><summary>'+esc(t.n)+(t.custom?' (custom)':'')+'</summary><div class="ef">'+fl('Name',txt(P+'n',t.n))+fl('Category','<select data-p="'+P+'cat">'+TCATS.map(c=>'<option value="'+c.k+'"'+(t.cat===c.k?' selected':'')+'>'+c.n+'</option>').join('')+'</select>')+fl('Research cost (points up front; 1% per day)',num(P+'rp',t.rp,{min:1}))+fl('Description',txt(P+'d',t.d),1)+'</div><h4>Requires</h4><div>'+
   (Object.keys(T).filter(r=>r!==k&&!reaches(r,k)).map(r=>'<label class="ck"><input type="checkbox" data-rq="'+r+'" data-for="'+k+'"'+(t.req.includes(r)?' checked':'')+'>'+esc(T[r].n)+'</label>').join('')||'<span class="dim">no other technologies</span>')+'</div>'+(t.custom?'<p><button data-del="'+k+'">Delete technology</button></p>':'')+'</details>'}).join('')}
 function edS(){return '<details'+(edOpen==='ship'?' open':'')+'><summary>Probe (build cost)</summary>'+grid('SHIP',SHIP)+'</details><details'+(edOpen==='port'?' open':'')+'><summary>Starport (berth expansion)</summary><div class="ef">'+fl('Maximum berths',num('PORT.max',PORT.max,{int:1,min:1}))+fl('Berths at start',num('PORT.start',PORT.start,{int:1,min:1}))+fl('Expansion time (hours)',num('PORT.t',PORT.t,{min:1}))+'</div><h4>Cost per new berth</h4>'+grid('PORT.c',PORT.c)+'</details>'+Object.keys(M).map(k=>{const m=M[k],P='M.'+k+'.';
  return '<details'+(edOpen===k?' open':'')+'><summary>'+esc(m.n)+'</summary><div class="ef">'+fl('Name',txt(P+'n',m.n))+fl('Duration (months)',num(P+'t',m.t,{min:.1}))+fl('Risk of loss (%)',num(P+'risk',m.risk,{pct:1}))+fl('Crew (colonists)',num('CREW.'+k,CREW[k],{int:1}))+fl('Requires tech',techSel(P+'tech',m.tech))+'</div><h4>Launch cost</h4>'+grid(P+'c',m.c)+'<h4>Returns</h4>'+(m.r.win?'<p class="dim">Wins the game when it arrives.</p>':grid(P+'r',m.r,['rp']))+'</details>'}).join('')}
@@ -668,7 +687,7 @@ $('editor').addEventListener('change',e=>{const el=e.target;
 $('editor').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;
  if(b.dataset.tab){edTab=b.dataset.tab;edOpen=null;renderEd()}
  else if(b.dataset.del){killTech(b.dataset.del);edOpen=null;renderEd();done()}
- else if(b.id==='nt-add'){const n=$('nt-n').value.trim()||'New technology',r=Math.max(1,parseFloat($('nt-r').value)||40),id='x'+Date.now().toString(36);T[id]={n,rp:r,req:[],d:'Custom technology.',custom:1};edOpen=id;renderEd();done()}});
+ else if(b.id==='nt-add'){const n=$('nt-n').value.trim()||'New technology',r=Math.max(1,parseFloat($('nt-r').value)||40),id='x'+Date.now().toString(36);T[id]={n,rp:r,req:[],cat:'colony',d:'Custom technology.',custom:1};edOpen=id;renderEd();done()}});
 $('ed-back').onclick=()=>setMode('title');
 $('ed-reset').onclick=()=>{if(CF.edit==='default')return;applyData(JSON.parse(DEF));done();renderEd();$('ed-msg').textContent='Values reset to Default.'};
 $('ed-exp').onclick=()=>{$('ed-json').value=JSON.stringify({v:2,name:cfById(CF.edit).name,d:DATA},null,1);$('ed-msg').textContent='Exported below. Copy it somewhere safe.'};
