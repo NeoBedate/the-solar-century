@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>The Solar Century</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&family=VT323&display=swap">
+<style>
+:root{--bg:#0a0e2a;--panel:#141a4a;--hi:#5b6bd6;--lo:#05071a;--ink:#e8e4d4;--dim:#9aa0c8;--acc:#ff9a2e;--ok:#5fd68a;--bad:#ff5a5a;--reg:#b9b2a0;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:light){:root:not([data-theme="dark"]){--bg:#d9d4c3;--panel:#f1ede0;--hi:#ffffff;--lo:#58543f;--ink:#1c1f3d;--dim:#55587a;--acc:#c2560a;--ok:#1d7a42;--bad:#b3261e;--reg:#8d8672}}
+:root[data-theme="dark"]{color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:22px/1.15 'VT323',ui-monospace,Menlo,Consolas,monospace}
+h1,h2{font-family:'Silkscreen','Courier New',monospace;font-weight:700;margin:0;letter-spacing:.02em}
+.wrap{max-width:1100px;margin:0 auto;padding:12px}
+.win{background:var(--panel);border:3px solid;border-color:var(--hi) var(--lo) var(--lo) var(--hi);margin-bottom:12px}
+.win>h2{background:var(--acc);color:#1a0f00;font-size:14px;padding:5px 8px}
+.in{padding:8px 10px}
+header.win .in{display:flex;flex-wrap:wrap;gap:6px 18px;align-items:center;justify-content:space-between}
+h1{font-size:18px}
+.date{color:var(--acc);font-size:26px}
+.res{display:flex;flex-wrap:wrap;gap:6px 16px}
+.res{font-size:19px}.chip{position:relative;display:inline-flex;align-items:center;gap:4px;white-space:nowrap;cursor:default}
+.chip svg{display:block}.chip.dim svg{opacity:.55}
+.chip::after{content:attr(data-n);position:absolute;left:50%;top:100%;transform:translateX(-50%);margin-top:5px;padding:1px 7px;background:var(--ink);color:var(--bg);border:2px solid var(--acc);font-size:18px;white-space:nowrap;opacity:0;pointer-events:none;z-index:20}
+.chip:hover::after,.chip:focus::after{opacity:1}
+.chip:focus{outline:2px solid var(--acc);outline-offset:2px}
+.res .chip:nth-last-child(-n+4)::after{left:auto;right:0;transform:none}
+.colony{display:flex;justify-content:space-between;align-items:center;gap:8px}.colony .chip::after{left:auto;right:0;transform:none}.colony .chip b{font:400 20px 'VT323',monospace}
+.layout{display:grid;grid-template-columns:200px minmax(0,1fr);gap:12px;align-items:start}
+.layout aside{position:sticky;top:8px;z-index:3}
+.cat{margin-bottom:10px}.cat:last-child{margin-bottom:0}
+.cat-n{position:relative;font:700 11px/1.25 'Silkscreen',monospace;color:var(--acc);border-bottom:2px dashed var(--lo);padding-bottom:3px;margin-bottom:5px;cursor:help}
+.cat-n::after{content:attr(data-n);position:absolute;left:0;top:100%;margin-top:4px;width:max-content;max-width:230px;padding:3px 7px;background:var(--ink);color:var(--bg);border:2px solid var(--acc);font:400 18px/1.1 'VT323',monospace;white-space:normal;opacity:0;pointer-events:none;z-index:30}
+.cat-n:hover::after,.cat-n:focus::after{opacity:1}
+.cat-n:focus{outline:2px solid var(--acc);outline-offset:2px}
+.cat-r{display:grid;grid-template-columns:1fr;gap:4px}
+.cat-r .chip::after{left:0;transform:none}
+@media(max-width:800px){.layout{grid-template-columns:1fr}.layout aside{position:static}.cats{display:grid;grid-template-columns:1fr 1fr;gap:8px 14px}.cat{margin:0}}.res b{color:var(--acc);font-weight:400}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:0 12px}
+@media(max-width:800px){.grid{grid-template-columns:1fr}}
+.row{display:flex;gap:8px;align-items:center;justify-content:space-between;padding:6px 0;border-bottom:1px dashed var(--lo)}
+.row:last-child{border:0}
+.row small{display:block;color:var(--dim);font-size:19px}
+button{font:inherit;color:var(--ink);background:var(--panel);border:3px solid;border-color:var(--hi) var(--lo) var(--lo) var(--hi);padding:2px 10px;cursor:pointer;white-space:nowrap}
+button:active:not(:disabled){border-color:var(--lo) var(--hi) var(--hi) var(--lo)}
+button:disabled{opacity:.45;cursor:not-allowed}
+button:focus-visible{outline:3px solid var(--acc);outline-offset:1px}
+button[aria-pressed=true],button[aria-checked=true]{background:var(--acc);color:#1a0f00}
+button.go{background:var(--acc);color:#1a0f00}
+.map{display:flex;flex-wrap:wrap;gap:3px;min-height:64px;padding:10px;background:linear-gradient(var(--lo) 0 40%,var(--reg) 40% 100%);border-bottom:3px solid var(--lo)}
+.tile{width:30px;height:30px;display:grid;place-items:center;font:700 12px 'Silkscreen',monospace;color:#10122c;border:2px solid;border-color:#fff8 #0006 #0006 #fff8}
+.t-solar{background:#6ea8ff}.t-mine{background:#c98a4b}.t-ice{background:#8fe3f0}.t-elec{background:#ff9a2e}.t-lab{background:#c58cff}.t-hab{background:#7fe0a0}.t-reactor{background:#e6e36a}.t-fact{background:#b6b6c8}.t-shop{background:#9fb3c8}
+.bar{height:10px;background:var(--lo);margin-top:3px}.bar i{display:block;height:100%;background:var(--ok)}
+.bad{color:var(--bad)}.ok{color:var(--ok)}.dim{color:var(--dim)}
+#log{max-height:60vh;min-height:240px;overflow:auto;padding:8px 10px;font-size:20px}
+#log div{padding:1px 0}
+.end{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.scene{position:relative;height:330px;overflow:hidden;border-bottom:3px solid var(--lo);
+background:var(--scene-img,none) center/cover,
+radial-gradient(circle at 90% 16%,#3b82f6 0 20px,transparent 21px),
+radial-gradient(1.5px 1.5px at 12% 20%,#fff,transparent),radial-gradient(1.5px 1.5px at 34% 9%,#fff,transparent),radial-gradient(1.5px 1.5px at 55% 24%,#fff,transparent),radial-gradient(1.5px 1.5px at 72% 12%,#fff,transparent),radial-gradient(1.5px 1.5px at 24% 38%,#fff,transparent),
+linear-gradient(#02030f 0 66%,var(--reg) 66% 100%)}
+.ph{position:absolute;left:8px;top:6px;font-size:17px;color:#9aa0c8}
+.hot{position:absolute;width:17%;min-width:80px;padding:6px 4px;text-align:center;display:flex;flex-direction:column;gap:2px;background:var(--panel);color:var(--ink)}
+.hot b{font:700 11px/1.2 'Silkscreen',monospace}
+.hot small{color:var(--acc);font-size:19px}
+.hot:hover,.hot:focus-visible{background:var(--acc);color:#1a0f00}
+.hot:hover small,.hot:focus-visible small{color:#1a0f00}
+[hidden]{display:none!important}
+.title{min-height:100vh;display:grid;place-items:center;padding:20px;color:#e8e4d4;text-align:center;
+background:var(--scene-img,none) center/cover,
+radial-gradient(circle at 82% 20%,#3b82f6 0 34px,#1e3a8a 35px 40px,transparent 41px),
+radial-gradient(1.5px 1.5px at 10% 18%,#fff,transparent),radial-gradient(1.5px 1.5px at 28% 8%,#fff,transparent),radial-gradient(1.5px 1.5px at 47% 22%,#fff,transparent),radial-gradient(1.5px 1.5px at 63% 10%,#fff,transparent),radial-gradient(1.5px 1.5px at 38% 34%,#fff,transparent),radial-gradient(1.5px 1.5px at 92% 44%,#fff,transparent),
+linear-gradient(#02030f 0 76%,#8d8672 76% 100%)}
+.tbox{max-width:420px;width:100%}
+.title h1{font:700 clamp(26px,6vw,48px)/1.1 'Silkscreen',monospace;color:#ff9a2e;text-shadow:3px 3px 0 #05071a;margin:0 0 8px}
+.tag{font-size:24px;margin:0 0 22px}
+.menu .in{display:flex;flex-direction:column;gap:10px;padding:14px}
+.menu button{font-size:26px;padding:6px 12px}
+dialog{background:var(--panel);color:var(--ink);border:3px solid var(--acc);font:inherit;max-width:420px}
+dialog::backdrop{background:#000a}
+</style>
+</head>
+<body>
+<div class="title" id="title"><div class="tbox">
+ <h1>THE SOLAR CENTURY</h1>
+ <p class="tag">Earth is lost. Humanity’s last foothold is a base on the Moon.</p>
+ <nav class="win menu" aria-label="Main menu"><div class="in">
+  <button class="go" id="m-new">New Game</button>
+  <button id="m-load" disabled title="Coming soon">Load Game</button>
+  <button id="m-opt" disabled title="Coming soon">Options</button>
+  <button id="m-exit">Exit</button>
+ </div></nav>
+</div></div>
+<div class="title" id="newgame" hidden><div class="tbox">
+ <h1>NEW GAME</h1>
+ <p class="tag">Choose a difficulty</p>
+ <div class="win menu"><div class="in" role="radiogroup" aria-label="Difficulty">
+  <button class="diff" role="radio" aria-checked="false" data-d="easy" disabled title="Coming soon">Easy <small class="dim">coming soon</small></button>
+  <button class="diff" role="radio" aria-checked="true" data-d="normal" data-note="Normal: the game as balanced right now.">Normal</button>
+  <button class="diff" role="radio" aria-checked="false" data-d="hard" disabled title="Coming soon">Hard <small class="dim">coming soon</small></button>
+ </div></div>
+ <p class="tag" id="d-note" style="margin-top:14px">Normal: the game as balanced right now.</p>
+ <div class="win menu"><div class="in">
+  <button class="go" id="d-start">Start game</button>
+  <button id="d-back">Back</button>
+ </div></div>
+</div></div>
+<div class="title" id="bye" hidden><div class="tbox">
+ <h1>GAME CLOSED</h1>
+ <p class="tag">The Solar Century has ended. You can close this tab now.</p>
+ <button id="m-back">Back to main menu</button>
+</div></div>
+<div class="wrap" id="game" hidden>
+<header class="win"><div class="in">
+ <button id="menu">Main menu</button>
+ <div class="date" id="date"></div>
+ <div class="res" id="res"></div>
+</div></header>
+
+<nav class="win" aria-label="Time and navigation"><div class="in end">
+ <button id="back" hidden>Return to base</button>
+ <button data-sp="0">Pause</button><button id="step">+1 hour</button><button data-sp="30000" title="1 hour per 30 seconds">Very slow</button><button data-sp="15000" title="1 hour per 15 seconds">Slow</button><button data-sp="5000" title="1 hour per 5 seconds">Normal</button><button data-sp="2000" title="1 hour per 2 seconds">Fast</button><button data-sp="500" title="1 hour per half a second">Turbo</button>
+ <span class="dim" id="goal"></span>
+</div></nav>
+
+<div class="layout"><aside class="win" aria-label="Resources"><h2>Resources</h2><div class="in cats" id="stock"></div></aside><main>
+<section class="win" id="scr-base"><h2 class="colony"><span>Moonbase – Mare Tranquillitatis</span><span id="pop"></span></h2>
+ <div class="scene" id="scene">
+  <span class="ph">Placeholder scene: replace --scene-img in CSS with the main screen image</span>
+  <button class="hot" data-go="tech" style="left:3%;bottom:30%"><b>Science Labs</b><small id="b-tech"></small></button>
+  <button class="hot" data-go="build" style="left:23%;bottom:14%"><b>Construction</b><small id="b-build"></small></button>
+  <button class="hot" data-go="yard" style="left:43%;bottom:34%"><b>Shipyard</b><small id="b-yard"></small></button>
+  <button class="hot" data-go="flight" style="left:63%;bottom:14%"><b>Flight plans</b><small id="b-flight"></small></button>
+  <button class="hot" data-go="log" style="left:81%;bottom:30%"><b>Mission Control Log</b><small id="b-log"></small></button>
+ </div>
+ <div class="map" id="map"></div>
+ <div class="in" id="power"></div>
+</section>
+
+<section class="win" id="scr-build" hidden><h2>Construction</h2><div class="in" id="build"></div></section>
+<section class="win" id="scr-tech" hidden><h2>Science Labs</h2><div class="in" id="tech"></div></section>
+<section class="win" id="scr-yard" hidden><h2>Shipyard</h2><div class="in" id="yard"></div></section>
+<section class="win" id="scr-flight" hidden><h2>Flight plans</h2><div class="in" id="flights"></div></section>
+<section class="win" id="scr-log" hidden><h2>Mission Control Log</h2><div id="log" aria-live="polite"></div></section>
+</main></div>
+</div>
+<dialog id="dmenu"><p>Return to the main menu? The current game can’t be resumed yet, so its progress will be lost.</p><button id="dstay">Stay</button> <button class="go" id="dleave">Return to main menu</button></dialog>
+<dialog id="dlg"><p id="dmsg"></p><button class="go" id="dok">Close</button> <button id="drestart" hidden>New game</button></dialog>
+
+<script>
+const DEADLINE=2300;
+const RN={hydrogen:'Hydrogen',oxygen:'Oxygen',water:'Water',nitrogen:'Nitrogen',methane:'Methane',sulphur:'Sulphur',titanium:'Titanium',aluminium:'Aluminium',copper:'Copper',silica:'Silica',iron:'Iron',silver:'Silver',chromium:'Chromium',platinum:'Platinum',uranium:'Uranium',components:'Components',machinery:'Machinery',software:'Software'};
+const B={
+ solar:{n:'Solar array',c:{iron:8,silica:12,aluminium:4,components:1},p:4,d:'+4 power',g:'S',t:48},
+ mine:{n:'Regolith mine',c:{iron:16,aluminium:8,titanium:2,components:2,machinery:4},p:-2,out:{iron:6,silica:4,aluminium:3,titanium:1.5,sulphur:.5},d:'+6 iron, +4 silica, +3 aluminium, +1.5 titanium, +0.5 sulphur / month',g:'M',t:72},
+ ice:{n:'Ice extractor',c:{iron:12,aluminium:8,titanium:2,components:2,machinery:4},p:-2,out:{water:10,nitrogen:1},d:'+10 water, +1 nitrogen / month',g:'I',t:72},
+ elec:{n:'Electrolyser',c:{iron:16,aluminium:8,copper:4,components:3,machinery:4},p:-3,inp:{water:18},out:{hydrogen:2,oxygen:16},d:'18 water → 2 hydrogen + 16 oxygen / month',g:'E',t:120},
+ fact:{n:'Component factory',c:{iron:24,aluminium:8,copper:4,silica:8,components:3,machinery:6},p:-3,inp:{iron:8,silica:5,aluminium:2,copper:.5},out:{components:4},d:'8 iron + 5 silica + 2 aluminium + 0.5 copper → 4 components / month',g:'C',t:168},
+ shop:{n:'Machinery workshop',c:{iron:24,aluminium:12,copper:4,silica:8,components:4,machinery:6},p:-3,inp:{iron:10,aluminium:4,titanium:1},out:{machinery:2},d:'10 iron + 4 aluminium + 1 titanium → 2 machinery / month',g:'W',t:168},
+ lab:{n:'Science lab',c:{aluminium:12,copper:8,silica:8,titanium:4,components:4},p:-3,d:'Research points: 1 per 20 days. While a project is active: −75%. Needed to start any project',g:'L',t:144},
+ hab:{n:'Habitat module',c:{aluminium:16,iron:16,nitrogen:8,water:16,components:3},p:-1,d:'houses 6 colonists',g:'H',t:96},
+ reactor:{n:'Fission reactor',tech:'fission',c:{iron:32,titanium:16,chromium:8,uranium:8,components:6,machinery:8},p:12,inp:{uranium:.5},d:'+12 power, burns 0.5 uranium / month',g:'R',t:200}
+};
+const T={
+ deep:{n:'Deep drilling',rp:25,req:[],d:'Regolith mines +50%'},
+ hydro:{n:'Hydroponics',rp:30,req:[],d:'Colonists use 40% less water'},
+ fusion:{n:'Fusion cells',rp:50,req:['deep'],d:'Solar arrays +50%'},
+ ion:{n:'Ion drive',rp:50,req:['deep'],d:'Unlocks Mars survey'},
+ fission:{n:'Nuclear power',rp:60,req:['deep'],d:'Unlocks the fission reactor'},
+ belt:{n:'Asteroid mining',rp:80,req:['ion'],d:'Unlocks Belt expedition'},
+ outer:{n:'Outer-system drive',rp:100,req:['belt'],d:'Unlocks Outer moons expedition'},
+ gaia:{n:'Gaia seed',rp:150,req:['hydro','fusion','outer'],d:'Unlocks the Gaia Ark'}
+};
+const M={
+ earth:{n:'Earth salvage',tech:null,c:{hydrogen:10,oxygen:20},t:3,risk:.1,r:{iron:40,copper:15,aluminium:15,silica:10}},
+ mars:{n:'Mars survey',tech:'ion',c:{hydrogen:15,oxygen:30},t:5,risk:.15,r:{water:60,nitrogen:30,sulphur:15,methane:10,rp:15}},
+ belt:{n:'Belt expedition',tech:'belt',c:{hydrogen:20,oxygen:40,titanium:10},t:6,risk:.2,r:{copper:60,platinum:15,titanium:30,iron:80}},
+ outer:{n:'Outer moons expedition',tech:'outer',c:{hydrogen:35,oxygen:70,titanium:20},t:9,risk:.25,r:{uranium:40,silver:20,chromium:25}},
+ gaia:{n:'Gaia Ark launch',tech:'gaia',c:{hydrogen:80,oxygen:120,titanium:120,aluminium:100,iron:150,chromium:30,silver:20,platinum:20,uranium:40},t:10,risk:0,r:{win:1}}
+};
+const fmt=o=>Object.keys(o).map(k=>'+'+o[k]+' '+(RN[k]||'research').toLowerCase()).join(', ');
+for(const k in M)M[k].d=M[k].r.win?'Rebuilds Earth and wins the game':fmt(M[k].r);
+const SHIP={iron:16,aluminium:16,titanium:6,copper:6,components:4,software:2};
+const WEAR=.05;
+let S;
+function init(){S={diff,cur:null,proj:{},screen:'base',y:2200,m:1,d:1,h:0,speed:0,brown:false,q:[],res:{hydrogen:30,oxygen:100,water:100,nitrogen:30,methane:5,sulphur:10,titanium:20,aluminium:40,copper:20,silica:60,iron:120,silver:0,chromium:0,platinum:0,uranium:0,components:10,machinery:20,software:10},pop:8,rp:0,b:{solar:2,mine:1,ice:1,elec:0,fact:0,shop:0,lab:0,hab:2,reactor:0},tech:{},ships:1,out:[],over:false,log:[]};
+ say('Year 2200. The asteroid has scorched Earth. The Moon colony is humanity’s last foothold.');
+ say('Silver, chromium and uranium cannot be mined on the Moon or in the asteroid belt. Look further out.');
+ say('Build industry, research new drives, and launch the Gaia Ark before '+DEADLINE+'.')}
+const $=id=>document.getElementById(id);
+function say(t,cls){S.log.unshift([t,cls||''])}
+function pow(){let p=0,u=0;for(const k in B){const n=S.b[k],b=B[k];if(b.p>0){let x=n*b.p;if(k==='solar'&&S.tech.fusion)x*=1.5;if(k==='reactor'&&(S.res.uranium<.01||S.res.machinery<.01))x=0;p+=x}else u+=n*-b.p}return{p,u,e:u?Math.min(1,p/u):1}}
+function can(c){return Object.keys(c).every(k=>Math.floor(S.res[k])>=c[k])}
+function pay(c){for(const k in c)S.res[k]-=c[k]}
+function cost(c){return Object.keys(c).map(k=>c[k]+' '+RN[k].toLowerCase()).join(', ')}
+function build(k){if(S.over||!can(B[k].c))return;pay(B[k].c);S.q.push({k,left:B[k].t});say('Construction started: '+B[k].n+' ('+dur(B[k].t)+').');render()}
+const startCost=k=>S.proj[k]&&S.proj[k].state==='paused'?Math.ceil(T[k].rp/2):T[k].rp;
+function canResearch(k){const t=T[k];return !S.over&&!S.cur&&S.b.lab>0&&!S.tech[k]&&t.req.every(r=>S.tech[r])&&Math.floor(S.rp)>=startCost(k)}
+function research(k){if(!canResearch(k))return;const t=T[k],p=S.proj[k],resume=p&&p.state==='paused',c=startCost(k);S.rp-=c;S.proj[k]={left:p?p.left:t.rp*24,state:'active'};S.cur=k;say((resume?'Research resumed: ':'Research started: ')+t.n+' (cost '+c+' research points up front, then '+t.rp/100+' per day).');render()}
+function pauseResearch(why){if(!S.cur)return;const k=S.cur,t=T[k],c=Math.ceil(t.rp/2);S.proj[k].state='paused';S.cur=null;
+ if(why)say('WARNING: development of '+t.n+' has stopped ('+why+'). Progress is kept; resuming costs '+c+' research points.','bad');
+ else say('Research paused: '+t.n+'. Progress is kept; resuming costs '+c+' research points.');
+ render()}
+function buildShip(){if(S.over||!can(SHIP))return;pay(SHIP);S.ships++;say('A new shuttle rolls out of the hangar.','ok');render()}
+function launch(k){const m=M[k];if(S.over||S.ships<1||!can(m.c))return;
+ pay(m.c);S.ships--;S.out.push({k,left:m.t*720});say('Launched: '+m.n+' ('+Math.round(m.t*30)+' days).');render()}
+function tick(){
+ if(S.over)return;const P=pow(),e=P.e,R=S.res,H=720;
+ if(e<1&&!S.brown){S.brown=true;say('Power shortfall: machines run at '+Math.round(e*100)+'%.','bad')}
+ if(e>=1&&S.brown){S.brown=false;say('Power restored.','ok')}
+ let short=false;
+ for(const k in B){const b=B[k];if(!b.out&&!b.inp)continue;const mult=k==='mine'&&S.tech.deep?1.5:1;
+  for(let i=0;i<S.b[k];i++){const inp=b.inp||{};if(Object.keys(inp).some(x=>R[x]<inp[x]/H))continue;const w=(b.c.machinery||0)*WEAR/H;if(w){if(R.machinery<w){short=true;continue}R.machinery-=w}
+   for(const x in inp)R[x]-=inp[x]/H;
+   for(const x in b.out||{})R[x]+=b.out[x]*mult*e/H}}
+ if(short&&!S.nomach){S.nomach=true;say('Machinery shortage: industrial buildings are idle.','bad')}else if(!short&&S.nomach){S.nomach=false;say('Machinery restored: industrial buildings are working again.','ok')}
+ S.rp+=S.b.lab*e*(S.cur?.25:1)/(20*24);
+ if(S.cur){const k=S.cur,t=T[k],dc=t.rp/100/24;
+  if(S.b.lab<1)pauseResearch('no science lab');
+  else if(S.rp<dc){S.rp=0;pauseResearch('out of research points')}
+  else{S.rp-=dc;const p=S.proj[k];p.left-=e;if(p.left<=0){S.tech[k]=1;delete S.proj[k];S.cur=null;say('Research complete: '+t.n+'. '+t.d+'.','ok')}}}
+ R.water-=S.pop*0.8*(S.tech.hydro?.6:1)/H;R.oxygen-=S.pop*0.5/H;
+ if(R.water<0)R.water=0;if(R.oxygen<0)R.oxygen=0;
+ for(const o of S.out)o.left--;
+ for(const q of S.q)q.left--;
+ const done=S.q.filter(q=>q.left<=0);S.q=S.q.filter(q=>q.left>0);
+ for(const q of done){S.b[q.k]++;say('Construction complete: '+B[q.k].n+'.','ok')}
+ const back=S.out.filter(o=>o.left<=0);S.out=S.out.filter(o=>o.left>0);
+ for(const o of back){const m=M[o.k];
+  if(Math.random()<m.risk){say(m.n+': ship lost in transit. The crew is gone.','bad');S.pop=Math.max(0,S.pop-2);continue}
+  S.ships++;
+  if(m.r.win){S.over=true;say('The Gaia Ark has reached Earth. Green shoots break the ash.','ok');end('Victory in '+S.y+'! The Gaia Ark has seeded Earth with new life. Humanity has a home again.');continue}
+  for(const k in m.r){if(k==='rp')S.rp+=m.r[k];else R[k]+=m.r[k]}
+  say(m.n+': ship returns with '+m.d+'.','ok')}
+ S.h++;
+ if(S.h>=24){S.h=0;S.d++;daily()}
+ if(S.d>30){S.d=1;S.m++;monthly()}
+ if(S.m>12){S.m=1;S.y++}
+ if(!S.over&&S.pop<=0){S.over=true;end('The colony has fallen silent. No one is left on the Moon.')}
+ else if(!S.over&&S.y>=DEADLINE){S.over=true;end('Time is up. Earth’s orbit decays and the colony never launched the Ark.')}
+}
+function daily(){const R=S.res;if(S.pop>0&&(R.water<=.001||R.oxygen<=.001)){S.pop--;say((R.water<=.001?'No water':'No oxygen')+': a colonist dies.','bad')}}
+function monthly(){const R=S.res,cap=S.b.hab*6;
+ if(S.pop<cap&&R.water>S.pop*3&&R.oxygen>S.pop*3&&S.pop>0){S.pop++;say('A child is born in the dome. Population '+S.pop+'.')}
+ if(Math.random()<.18){const ev=Math.random();
+  if(ev<.4){const k=['solar','mine','ice','hab'].filter(x=>S.b[x]>0);if(k.length){const x=k[Math.floor(Math.random()*k.length)];S.b[x]--;say('Meteor strike destroys a '+B[x].n.toLowerCase()+'.','bad')}}
+  else if(ev<.7){const g=20+Math.floor(Math.random()*30);R.iron+=g;say('Survey team finds a rich vein: +'+g+' iron.','ok')}
+  else{const l=Math.min(Math.floor(R.hydrogen),8);R.hydrogen-=l;say('Solar flare ruins stored hydrogen: −'+l+'.','bad')}}}
+const pad=n=>String(n).padStart(2,'0');
+const dur=h=>h>=24?Math.ceil(h/24)+' d':h+' h';
+const cache={};function set(id,h){if(cache[id]!==h){cache[id]=h;$(id).innerHTML=h}}
+function end(msg){$('dmsg').textContent=msg;$('drestart').hidden=false;$('dok').hidden=true;$('dlg').showModal()}
+const ICON={
+ hydrogen:`<rect x="4" y="5" width="8" height="10" rx="3" fill="#8fd3ff"/><rect x="6.5" y="2.5" width="3" height="3" fill="#cfd8e8"/><rect x="5.5" y="1" width="5" height="1.8" fill="#cfd8e8"/><rect x="5.5" y="8" width="5" height="1.4" fill="#fff" opacity=".8"/>`,
+ oxygen:`<circle cx="5.5" cy="10.5" r="3.6" fill="#bfeaff" stroke="#4aa8e0"/><circle cx="11" cy="6" r="2.8" fill="#bfeaff" stroke="#4aa8e0"/><circle cx="10" cy="12.8" r="1.6" fill="#bfeaff" stroke="#4aa8e0"/>`,
+ water:`<path d="M8 1.5C8 1.5 3 7.5 3 10.2a5 5 0 0 0 10 0C13 7.5 8 1.5 8 1.5Z" fill="#3b82f6"/><path d="M6 10.5a2.2 2.2 0 0 0 1.6 2" stroke="#bfe0ff" fill="none" stroke-width="1.2"/>`,
+ nitrogen:`<rect x="6" y="6.8" width="4" height="2.4" fill="#4a6fd6"/><circle cx="4.5" cy="8" r="3.2" fill="#7aa2ff"/><circle cx="11.5" cy="8" r="3.2" fill="#7aa2ff"/>`,
+ methane:`<path d="M8 8L3 3M8 8L13 3M8 8L3 13M8 8L13 13" stroke="#9a9aa8" stroke-width="1.4"/><circle cx="8" cy="8" r="3" fill="#6b6b78"/><circle cx="3" cy="3" r="1.9" fill="#e8e4d4"/><circle cx="13" cy="3" r="1.9" fill="#e8e4d4"/><circle cx="3" cy="13" r="1.9" fill="#e8e4d4"/><circle cx="13" cy="13" r="1.9" fill="#e8e4d4"/>`,
+ sulphur:`<path d="M8 1L12.5 6L8 15L3.5 6Z" fill="#f2d516"/><path d="M3.5 6H12.5M8 1V15" stroke="#b99f00" stroke-width=".9"/>`,
+ titanium:`<path d="M8 1.5L14 5V11L8 14.5L2 11V5Z" fill="#8a94a8"/><path d="M8 1.5L14 5L8 8.5L2 5Z" fill="#b6c0d2"/>`,
+ aluminium:`<path d="M2 12L4 6H14L12 12Z" fill="#d6dbe6"/><path d="M4 6L6 3H15L14 6Z" fill="#f2f5fa"/>`,
+ copper:`<rect x="2" y="2" width="12" height="2.4" rx="1.2" fill="#d9822b"/><rect x="2" y="5.2" width="12" height="2.4" rx="1.2" fill="#e89a45"/><rect x="2" y="8.4" width="12" height="2.4" rx="1.2" fill="#d9822b"/><rect x="2" y="11.6" width="12" height="2.4" rx="1.2" fill="#e89a45"/>`,
+ silica:`<path d="M5 15V6L8 1L11 6V15Z" fill="#cfeef0" stroke="#7fb5b8"/><path d="M5 6H11" stroke="#7fb5b8"/>`,
+ iron:`<path d="M2 2H14V5H9.5V11H14V14H2V11H6.5V5H2Z" fill="#a0644a"/>`,
+ silver:`<circle cx="8" cy="8" r="6.5" fill="#c9ced8"/><circle cx="8" cy="8" r="4.2" fill="none" stroke="#8b93a3"/><path d="M4.5 5L7 3.8" stroke="#fff" stroke-width="1.2"/>`,
+ chromium:`<circle cx="8" cy="8" r="6.5" fill="#9fb3c8"/><path d="M2 10Q8 7 14 10" stroke="#44546a" fill="none"/><ellipse cx="6" cy="5.5" rx="2.4" ry="1.6" fill="#fff" opacity=".85"/>`,
+ platinum:`<path d="M3 5L5.5 2H10.5L13 5L8 14Z" fill="#e8f2ff" stroke="#7f93b3"/><path d="M3 5H13M5.5 2L8 5L10.5 2M8 5V14" stroke="#7f93b3" fill="none" stroke-width=".8"/>`,
+ uranium:`<circle cx="8" cy="8" r="7" fill="#d8e63a"/><path d="M8 8L4.5 1.94A7 7 0 0 1 11.5 1.94ZM8 8L15 8A7 7 0 0 1 11.5 14.06ZM8 8L4.5 14.06A7 7 0 0 1 1 8Z" fill="#1d2a10"/><circle cx="8" cy="8" r="1.8" fill="#1d2a10"/>`,
+ components:`<path d="M6 1v3M8 1v3M10 1v3M6 12v3M8 12v3M10 12v3M1 6h3M1 8h3M1 10h3M12 6h3M12 8h3M12 10h3" stroke="#d6dbe6" stroke-width="1"/><rect x="4" y="4" width="8" height="8" fill="#3a8f5a"/><rect x="6" y="6" width="4" height="4" fill="#1d4d2f"/>`,
+ machinery:`<g fill="#8a94a8"><rect x="6.8" y="1" width="2.4" height="3"/><rect x="6.8" y="12" width="2.4" height="3"/><rect x="1" y="6.8" width="3" height="2.4"/><rect x="12" y="6.8" width="3" height="2.4"/><rect x="6.8" y="1" width="2.4" height="3" transform="rotate(45 8 8)"/><rect x="6.8" y="1" width="2.4" height="3" transform="rotate(135 8 8)"/><rect x="6.8" y="1" width="2.4" height="3" transform="rotate(225 8 8)"/><rect x="6.8" y="1" width="2.4" height="3" transform="rotate(315 8 8)"/><circle cx="8" cy="8" r="4.6"/></g><circle cx="8" cy="8" r="2" fill="#2d3340"/>`,
+ software:`<path d="M2 2H12L14 4V14H2Z" fill="#3b4aa0"/><rect x="4" y="2" width="7" height="4.5" fill="#d6dbe6"/><rect x="8.5" y="3" width="1.8" height="2.6" fill="#3b4aa0"/><rect x="4" y="9" width="8" height="5" fill="#e8e4d4"/><path d="M5 11H11M5 12.8H9" stroke="#8a94a8" stroke-width=".8"/>`,
+ colonists:`<circle cx="8" cy="4.5" r="3" fill="#f2c9a0"/><path d="M2.5 15C2.5 10 5 8.5 8 8.5S13.5 10 13.5 15Z" fill="#1f2a7a"/>`,
+ research:`<path d="M6 1.5H10M7 1.5V6L2.5 13.5Q2 15 3.5 15H12.5Q14 15 13.5 13.5L9 6V1.5" fill="#c58cff" stroke="#6b3fa0"/><path d="M4.5 11H11.5" stroke="#fff" opacity=".7"/>`
+};
+const ico=k=>'<svg viewBox="0 0 16 16" width="22" height="22" aria-hidden="true">'+ICON[k]+'</svg>';
+function chip(k,name,val,dim){return '<span class="chip'+(dim?' dim':'')+'" tabindex="0" data-n="'+name+'" aria-label="'+name+' '+val+'">'+ico(k)+'<b>'+val+'</b></span>'}
+function labStatus(){const n=S.b.lab,e=pow().e;
+ if(!n)return '<div class="row"><div>No science lab yet<small>Build one in Construction: no research project can start without it.</small></div></div>';
+ const rate=n*e*(S.cur?.25:1)/20;
+ const rp=rate>0?(rate>=.1?rate.toFixed(2)+' per day':'1 per '+Math.round(1/rate)+' days'):'stopped';
+ let h='<div class="row"><div>'+n+' science lab'+(n>1?'s':'')+'<small>Research points: '+rp+(S.cur?' (cut by 75% while a project is active)':' (full pace)')+'</small></div></div>';
+ if(S.cur){const t=T[S.cur],p=S.proj[S.cur],tot=t.rp*24;h+='<div class="row"><div>Project: '+t.n+'<small>'+Math.ceil(p.left/24)+' days left · costs '+t.rp/100+' research points / day</small><div class="bar"><i style="width:'+Math.min(100,Math.round((1-p.left/tot)*100))+'%"></i></div></div><button onclick="pauseResearch()">Pause</button></div>'}
+ else h+='<div class="row dim">No project active. Starting a technology spends its research points up front, then a little every day. Resuming a paused one costs half the upfront points.</div>';
+ return h}
+const FAR=['silver','chromium','uranium'];
+const CAT=[
+ {n:'Volatiles',d:'Life support, fuel and habitat atmosphere. Methane has no use, as in the original.',r:['water','oxygen','hydrogen','nitrogen','methane']},
+ {n:'Minerals',d:'Non-metallic raw materials produced by the Regolith mines.',r:['silica','sulphur']},
+ {n:'Metals',d:'Structural metals for buildings and ships. Iron, aluminium and titanium come from the Regolith mines. Copper comes from the asteroid belt and Earth salvage.',r:['iron','aluminium','titanium','copper']},
+ {n:'Rare metals',d:'Platinum comes from the asteroid belt. Silver, chromium and uranium come only from the outer moons.',r:['platinum','silver','chromium','uranium']},
+ {n:'Manufactured',d:'Manufactured goods made from raw materials. Components come from the Component factory and machinery from the Machinery workshop. Software has no source yet.',r:['components','machinery','software']}
+];
+const stock=()=>CAT.map(c=>'<div class="cat"><div class="cat-n" tabindex="0" data-n="'+c.d+'">'+c.n+'</div><div class="cat-r">'+c.r.map(k=>chip(k,RN[k]+(FAR.includes(k)?' (not found on the Moon or in the asteroid belt)':''),Math.floor(S.res[k]),FAR.includes(k))).join('')+'</div></div>').join('');
+const SCR=['base','build','tech','yard','flight','log'];
+function go(s){S.screen=s;render()}
+function render(){
+ SCR.forEach(s=>$('scr-'+s).hidden=S.screen!==s);$('back').hidden=S.screen==='base';
+ $('b-build').textContent=S.q.length?S.q.length+' in progress':'Idle';
+ $('b-tech').textContent=S.cur?'Project active':Math.floor(S.rp)+' research pts';
+ $('b-yard').textContent=S.ships+' in hangar';
+ $('b-flight').textContent=S.out.length+' in flight';
+ $('b-log').textContent=S.log.length+' entries';
+ set('pop',chip('colonists','Colonists',S.pop+'/'+S.b.hab*6));
+ $('date').textContent=S.y+'-'+pad(S.m)+'-'+pad(S.d)+'  '+pad(S.h)+':00';
+ set('res',chip('research','Research points',Math.floor(S.rp)));
+ set('stock',stock());
+ let t='';for(const k in B)for(let i=0;i<S.b[k];i++)t+='<div class="tile t-'+k+'" title="'+B[k].n+'">'+B[k].g+'</div>';
+ for(const q of S.q)t+='<div class="tile" style="background:transparent;border-style:dashed;color:var(--ink)" title="Under construction: '+B[q.k].n+'">'+B[q.k].g+'</div>';
+ set('map',t);const P=pow();
+ set('power','Power '+P.p+' made / '+P.u+' needed <span class="'+(P.e<1?'bad':'ok')+'">('+Math.round(P.e*100)+'% efficiency)</span><div class="bar"><i style="width:'+Math.round(P.e*100)+'%"></i></div>');
+ set('build',Object.keys(B).filter(k=>!B[k].tech||S.tech[B[k].tech]).map(k=>'<div class="row"><div>'+B[k].n+' ×'+S.b[k]+'<small>'+B[k].d+' · power '+(B[k].p>0?'+':'')+B[k].p+' · '+cost(B[k].c)+(B[k].c.machinery?' · upkeep '+(+(B[k].c.machinery*WEAR).toFixed(2))+' machinery / month':'')+' · takes '+dur(B[k].t)+'</small></div><button '+(can(B[k].c)&&!S.over?'':'disabled')+' onclick="build(\''+k+'\')">Build</button></div>').join('')+(S.q.length?'<div class="dim" style="padding-top:6px">Under construction: '+S.q.map(q=>B[q.k].n+' ('+dur(q.left)+')').join(', ')+'</div>':''));
+ set('tech',labStatus()+Object.keys(T).map(k=>{const x=T[k],ok=x.req.every(r=>S.tech[r]),done=S.tech[k];
+  return '<div class="row"><div>'+x.n+(done?' <span class="ok">done</span>':'')+(S.cur===k?' <span class="ok">in progress</span>':S.proj[k]?' <span class="bad">paused, '+Math.ceil(S.proj[k].left/24)+' days left</span>':'')+'<small>'+x.d+(done?'':' · '+x.rp+' points up front + '+x.rp/100+' / day, '+x.rp+' days'+(x.req.length?' · needs '+x.req.map(r=>T[r].n).join(', '):''))+'</small></div>'+(done||S.cur===k?'':'<button '+(canResearch(k)?'':'disabled')+' onclick="research(\''+k+'\')">'+(S.proj[k]?'Resume ('+startCost(k)+' pts)':'Research')+'</button>')+'</div>'}).join(''));
+ let y='<div class="row"><div>Shuttles in hangar: '+S.ships+'<small>'+cost(SHIP)+' each</small></div><button '+(can(SHIP)&&!S.over?'':'disabled')+' onclick="buildShip()">Build shuttle</button></div>';
+ let h='';
+ for(const k in M){const m=M[k];if(m.tech&&!S.tech[m.tech])continue;
+  h+='<div class="row"><div>'+m.n+'<small>Brings '+m.d+' · '+Math.round(m.t*30)+' days · '+Math.round(m.risk*100)+'% risk · costs '+cost(m.c)+'</small></div><button '+(S.ships>0&&can(m.c)&&!S.over?'':'disabled')+' onclick="launch(\''+k+'\')">Launch</button></div>'}
+ if(S.out.length)h+='<div class="dim" style="padding-top:6px">In flight: '+S.out.map(o=>M[o.k].n+' ('+dur(o.left)+')').join(', ')+'</div>';
+ set('yard',y);set('flights',h);
+ set('log',S.log.slice(0,40).map(l=>'<div class="'+l[1]+'">'+l[0]+'</div>').join(''));
+ document.querySelectorAll('[data-sp]').forEach(b=>b.setAttribute('aria-pressed',String(+b.dataset.sp===S.speed)));
+ $('goal').textContent='Goal: launch the Gaia Ark before '+DEADLINE;
+}
+document.querySelectorAll('[data-sp]').forEach(b=>b.onclick=()=>{S.speed=+b.dataset.sp;render()});
+$('step').onclick=()=>{S.speed=0;tick();render()};
+let last=performance.now(),acc=0;
+setInterval(()=>{const n=performance.now(),dt=n-last;last=n;if(!S.speed||S.over||mode!=='game'||$('dlg').open||$('dmenu').open){acc=0;return}acc+=dt;let c=0;while(acc>=S.speed&&!S.over&&c<20){acc-=S.speed;tick();c++}acc=Math.min(acc,S.speed);if(c)render()},100);
+document.querySelectorAll('[data-go]').forEach(b=>b.onclick=()=>go(b.dataset.go));
+$('back').onclick=()=>go('base');
+addEventListener('keydown',e=>{if(e.key==='Escape'&&mode==='game'&&S.screen!=='base'&&!$('dlg').open)go('base')});
+$('dok').onclick=()=>$('dlg').close();
+$('drestart').onclick=()=>{$('dlg').close();$('drestart').hidden=true;$('dok').hidden=false;init();render()};
+let mode='title',diff='normal';
+function setMode(m){mode=m;$('title').hidden=m!=='title';$('game').hidden=m!=='game';$('bye').hidden=m!=='exit';$('newgame').hidden=m!=='new';if(m==='new')$('d-start').focus();if(m==='title')$('m-new').focus();if(m==='game')render()}
+$('m-new').onclick=()=>setMode('new');
+$('d-start').onclick=()=>{init();setMode('game')};
+$('d-back').onclick=()=>setMode('title');
+document.querySelectorAll('.diff:not(:disabled)').forEach(b=>b.onclick=()=>{diff=b.dataset.d;document.querySelectorAll('.diff').forEach(x=>x.setAttribute('aria-checked',String(x===b)));$('d-note').textContent=b.dataset.note});
+$('m-exit').onclick=()=>{window.close();setMode('exit')};
+$('m-back').onclick=()=>setMode('title');
+$('menu').onclick=()=>{if(S.over)setMode('title');else $('dmenu').showModal()};
+$('dstay').onclick=()=>$('dmenu').close();
+$('dleave').onclick=()=>{$('dmenu').close();setMode('title')};
+init();render();setMode('title');
+</script>
+</body>
+</html>
