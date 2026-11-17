@@ -336,7 +336,7 @@ const oLbl=o=>o.k==='survey'?oN(o)+' · '+SVPH[o.ph]+(o.ph==='orbit'?'':' ('+dur
 let svSel=null;
 function svSend(k){if(S.over||S.ships<1||!can(SURVEY.c)||svProbe(k)||S.colonies[k]||(S.sv[k]&&S.sv[k].done))return;pay(SURVEY.c);const bi=berths().findIndex(x=>x.s==='hangar');S.ships--;S.out.push({k:'survey',loc:k,ph:'fly',left:tripD(k)*24,crew:0,b:bi<0?undefined:bi});say('Probe launched to '+LOCD[k].n+' ('+dur(tripD(k)*24)+').');render()}
 function svStart(k){const o=svProbe(k);if(S.over||!o||o.ph!=='orbit'||(S.sv[k]&&S.sv[k].done))return;o.ph='scan';o.left=LOCD[k].alen*24;say('Analysis of '+LOCD[k].n+' started ('+LOCD[k].alen+' days).');render()}
-function svRecall(k){const o=svProbe(k);if(S.over||!o||o.ph!=='orbit')return;o.ph='back';o.left=tripD(k)*24;say('Probe recalled from '+LOCD[k].n+' ('+dur(o.left)+').');render()}
+function svRecall(k){const o=svProbe(k);if(S.over||!o||o.ph!=='orbit')return;o.ph='back';o.left=tripFrom(k,HOME)*24;say('Probe recalled from '+LOCD[k].n+' ('+dur(o.left)+').');render()}
 function svTick(o){o.left--;if(o.left>0)return;const n=LOCD[o.loc].n;
  if(o.ph==='fly'){o.ph='orbit';say('The probe has reached the orbit of '+n+'. Start the analysis from its orbit view or Flight plans.','ok')}
  else if(o.ph==='scan'){const sv=S.sv[o.loc]=S.sv[o.loc]||{};o.ph='orbit';
@@ -359,7 +359,7 @@ function orbHtml(){const k=S.loc,l=LOCD[k],pr=svProbe(k),sv=S.sv[k]||{};let st='
   else if(pr&&pr.ph==='orbit'){st='Probe in orbit.'+(sv.fails?' Failed attempts: '+sv.fails+'.':'');act='<button class="go" onclick="svStart(\''+k+'\')">Start analysis</button> '}
   else{st='No probe sent yet.';act='<button '+(S.ships>0&&can(SURVEY.c)&&!S.over?'':'disabled')+' onclick="svSend(\''+k+'\')">Send probe</button>'+(S.ships<1?' <span class="bad">no probe in the hangar</span>':!can(SURVEY.c)?' <span class="bad">needs '+cost(SURVEY.c)+'</span>':'')}
   if(pr&&pr.ph==='orbit')act+='<button onclick="svRecall(\''+k+'\')">Recall probe</button>'}
- return '<h2>Survey of '+esc(l.n)+'</h2><div class="in"><div class="row"><div>Analysis<small>Length '+l.alen+' days · difficulty '+Math.round(l.adiff*100)+'% · success chance '+Math.round(svChance(k)*100)+'% per attempt</small></div></div><div class="row"><div>Probe trip<small>'+lapse(tripD(l.k||k))+' ('+fmtAU(distAU(HOME,k))+' AU) · launch cost '+cost(SURVEY.c)+'</small></div></div><div class="row"><div>'+st+'</div><div>'+act+'</div></div></div>'}
+ return '<h2>Survey of '+esc(l.n)+'</h2><div class="in"><div class="row"><div>Analysis<small>Length '+l.alen+' days · difficulty '+Math.round(l.adiff*100)+'% · success chance '+Math.round(svChance(k)*100)+'% per attempt</small></div></div><div class="row"><div>Probe trip<small>'+lapse(tripD(l.k||k))+' ('+fmtAU(distNow(HOME,k,daysJ()))+' AU today) · launch cost '+cost(SURVEY.c)+'</small></div></div><div class="row"><div>'+st+'</div><div>'+act+'</div></div></div>'}
 function modRows(){const ks=Object.keys(LOCD).filter(k=>S.tech['col_'+k]&&!S.mods[k]),built=Object.keys(S.mods).filter(k=>S.mods[k]&&!S.colonies[k]);return (ks.length?'<h4 class="rh">Colonisation modules</h4>':'')+ks.map(k=>{const q=S.q.some(x=>x.k==='colmod:'+k);return '<div class="row"><div>Colonisation module – '+esc(LOCD[k].n)+'<small>'+cost(SURVEY.mc)+' · takes '+dur(SURVEY.mt)+'</small></div><button '+(!q&&can(SURVEY.mc)&&!S.over?'':'disabled')+' onclick="buildMod(\''+k+'\')">'+(q?'Queued':'Build')+'</button></div>'}).join('')+(built.length?'<div class="dim" style="padding-top:6px">Modules built: '+built.map(k=>esc(LOCD[k].n)).join(', ')+'</div>':'')}
 function launch(k){const m=M[k],cr=CREW[k];if(S.over||S.ships<1||!can(m.c)||freeCol()<cr)return;
  pay(m.c);const bi=berths().findIndex(x=>x.s==='hangar');S.ships--;S.out.push({k,left:m.t*720,crew:cr,b:bi<0?undefined:bi});say('Launched: '+m.n+' ('+Math.round(m.t*30)+' days, crew of '+cr+').');render()}
@@ -540,7 +540,14 @@ const LOCD={};for(const l of LOCS)LOCD[l.k]=Object.assign({n:l.n,d:l.d},l.p?{p:l
 const HOME='moon',AUKM=149597870.7;
 const sunA=k=>LOCD[k].a||sunA(LOCD[k].p);
 function distAU(f,t){if(f===t)return 0;const ak=x=>LOCD[x].p?LOCD[x].ak:0;return sysOf(f)===sysOf(t)?Math.abs(ak(f)-ak(t))*1000/AUKM:Math.abs(sunA(f)-sunA(t))}
-const tripD=k=>Math.max(1,Math.round(distAU(HOME,k)*SURVEY.dpa));
+/* Trips use the real positions of the bodies on the date: the probe leaves its body at day t0 and flies straight at SURVEY.dpa days per AU towards where the target will be, so the trip is the first time T when speed x T reaches the distance to the target's position at t0+T. Inside one planetary system (Moon to Earth) the real orbit distance is used. */
+const distNow=(f,t,t0)=>{if(f===t)return 0;if(sysOf(f)===sysOf(t))return distAU(f,t);const a=kepler(sysOf(f),t0),b=kepler(sysOf(t),t0);return Math.hypot(a[0]-b[0],a[1]-b[1])};
+function tripDays(f,t,t0){if(f===t)return 0;if(sysOf(f)===sysOf(t))return Math.max(1,Math.round(distAU(f,t)*SURVEY.dpa));
+ const v=1/SURVEY.dpa,P=kepler(sysOf(f),t0),dist=T=>{const q=kepler(sysOf(t),t0+T);return Math.hypot(q[0]-P[0],q[1]-P[1])},h=Math.min(30,Math.max(1,dist(0)*SURVEY.dpa/150));
+ let a=0,b=h;while(v*b<dist(b)&&b<4e5){a=b;b+=h}for(let i=0;i<30;i++){const m=(a+b)/2;if(v*m<dist(m))a=m;else b=m}return Math.max(1,Math.round(b))}
+const tripCache={};
+function tripFrom(f,t){const d=Math.floor(daysJ()),key=f+'>'+t+'@'+d+'/'+SURVEY.dpa;return tripCache[key]!==undefined?tripCache[key]:(tripCache[key]=tripDays(f,t,d))}
+const tripD=k=>tripFrom(HOME,k);
 const fmtAU=x=>x<.01?x.toFixed(4):x<1?x.toFixed(3):x.toFixed(2);
 function lapse(d){if(d<1)return Math.max(1,Math.round(d*24))+' h';const M=365.25/12;if(d<M)return Math.round(d)+' d';const y=Math.floor(d/365.25);let r=d-y*365.25;const m=Math.floor(r/M),dd=Math.round(r-m*M);return (y?y+' y ':'')+m+' mo'+(dd?' '+dd+' d':'')}
 const LOCL=()=>Object.keys(LOCD).map(k=>Object.assign({k},LOCD[k]));
@@ -554,7 +561,7 @@ const dbLst=a=>a.length?a.join(', '):'none';
 function dbData(){
  const lk=Object.keys(LOCD),E={loc:[],res:[],bld:[],tech:[],ship:[],col:[]};
  for(const k of lk){const l=LOCD[k],pr=Object.keys(l.res||{}).filter(r=>l.res[r]>0);
-  E.loc.push({k,n:l.n,i:ico('colony'),d:l.d,f:[['Orbits',l.p?LOCD[l.p].n:'the Sun'],['Colony',S&&S.colonies&&S.colonies[k]?(l.col||l.n):'none'],['Can provide',dbLst(pr.map(r=>RN[r]+' '+l.res[r].toLocaleString('en-US')))],['Analysis length',l.alen+' days'],['Analysis difficulty',Math.round(l.adiff*100)+'%'],['Orbit',l.p?Math.round(l.ak*1000).toLocaleString('en-US')+' km around '+LOCD[l.p].n:fmtAU(l.a)+' AU from the Sun'],['Orbital period',lapse(l.per)],['Eccentricity',String(l.ecc)],['Distance from the Moonbase',k===HOME?'0':fmtAU(distAU(HOME,k))+' AU'],['Probe trip',k===HOME?'none':lapse(tripD(k))]]})}
+  E.loc.push({k,n:l.n,i:ico('colony'),d:l.d,f:[['Orbits',l.p?LOCD[l.p].n:'the Sun'],['Colony',S&&S.colonies&&S.colonies[k]?(l.col||l.n):'none'],['Can provide',dbLst(pr.map(r=>RN[r]+' '+l.res[r].toLocaleString('en-US')))],['Analysis length',l.alen+' days'],['Analysis difficulty',Math.round(l.adiff*100)+'%'],['Orbit',l.p?Math.round(l.ak*1000).toLocaleString('en-US')+' km around '+LOCD[l.p].n:fmtAU(l.a)+' AU from the Sun'],['Orbital period',lapse(l.per)],['Eccentricity',String(l.ecc)],['Distance from the Moonbase today',k===HOME?'0':S?fmtAU(distNow(HOME,k,daysJ()))+' AU':'-'],['Probe trip if launched today',k===HOME?'none':S?lapse(tripD(k)):'-']]})}
  for(const r in RN){const c=CAT.find(c=>c.r.includes(r)),by=Object.keys(B).filter(k=>B[k].out&&B[k].out[r]!==undefined).map(k=>B[k].n),us=Object.keys(B).filter(k=>B[k].inp&&B[k].inp[r]!==undefined).map(k=>B[k].n),cn=Object.keys(B).filter(k=>B[k].c&&B[k].c[r]).map(k=>B[k].n),at=lk.filter(k=>(LOCD[k].res||{})[r]>0).map(k=>LOCD[k].n);
   E.res.push({n:RN[r],i:ico(r),d:'',f:[['Category',c?c.n:'-'],['Produced by',dbLst(by)],['Consumed by',dbLst(us)],['Used to build',dbLst(cn)],['Found at',at.length>8?at.slice(0,8).join(', ')+' and '+(at.length-8)+' more':dbLst(at)]]})}
  for(const k in B){const b=B[k],st=STAFF[k];
@@ -628,9 +635,9 @@ function sceneHtml(k){const s=SCENES[k]||SCENES.moon,hz=s.hz===undefined?66:s.hz
  return h}
 /* ===== The map: five zoom levels (1 Solar System, 2 region, 3 planetary system, 4 orbit of a location, 5 main screen) ===== */
 /* Real ephemeris for the map: [mean longitude at J2000 in degrees, longitude of perihelion in degrees]; the semi-major axis, eccentricity and period come from LOCD */
-const EPH={mercury:[252.25,77.46],venus:[181.98,131.6],earth:[100.46,102.94],mars:[355.45,336.06],jupiter:[34.4,14.73],saturn:[49.95,92.6],uranus:[313.24,170.95],neptune:[304.88,44.96],pluto:[238.93,224.07]};
+const EPH={mercury:[252.25,77.46],venus:[181.98,131.6],earth:[100.46,102.94],mars:[355.45,336.06],jupiter:[34.4,14.73],saturn:[49.95,92.6],uranus:[313.24,170.95],neptune:[304.88,44.96],pluto:[238.93,224.07],belt:[159.6,154]};/* belt = Ceres */
 const RKM={mercury:2440,venus:6052,earth:6371,mars:3390,jupiter:69911,saturn:58232,uranus:25362,neptune:24622,pluto:1188};/* real radii, only used to rank the drawn sizes */
-const PLN=Object.keys(EPH);
+const PLN=Object.keys(EPH).filter(k=>k!=='belt');
 const RETRO={triton:1};/* orbits backwards */
 const PER=k=>LOCD[k].per*(RETRO[k]?-1:1);/* real orbital period in days, from the location data */
 const PLR={mercury:50,venus:70,earth:70,mars:55,belt:80,jupiter:150,saturn:120,uranus:95,neptune:95,pluto:40};
