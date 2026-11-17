@@ -15,6 +15,7 @@ Things we have said we will build or decide later.
 - Where to display the number of colonised locations. It is tracked already, but hidden for now.
 
 **Expansion**
+- Drive technologies: specify several drives (faster than the simplest one, which covers 1 AU in 1946 days) so that, over a whole game, every location can be reached. The simplest drive cannot reach beyond Uranus before 2200. Probe trip times must then use the drive's speed instead of the single `SURVEY.dpa`.
 - Colonisation, next details from the owner: what a finished colonisation module does (launching it and founding the colony), what the probe analysis reveals about each location, and the real values for each location's analysis difficulty, length, trip time and technology cost. Everything is placeholder today, and a failed analysis only costs time.
 - Map: starships and missions shown flying on the map and in orbit, mouse wheel zoom, and real art for the orbit globes. Today the map is schematic and the orbit view only shows the globe with a marker.
 - Founding colonies on other planets, moons and in the asteroid belt. They are listed in Colonies but only the Moonbase exists.

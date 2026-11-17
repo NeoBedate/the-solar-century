@@ -1,6 +1,6 @@
 # The Solar Century
 
-A single-file browser prototype of a lunar-colony resource management game, inspired by *Millennium 2.2* (1989). Earth is lost; build up a Moon base and launch the Gaia Ark before the year 2300.
+A single-file browser prototype of a lunar-colony resource management game, inspired by *Millennium 2.2* (1989). Earth is lost; build up a Moon base and launch the Gaia Ark before the year 2200. The game starts on Friday 1 January 2100 and uses the real calendar, with leap years and weekdays.
 
 **Status:** early prototype. All costs, rates and timings are provisional.
 
@@ -21,7 +21,7 @@ Open `index.html` in any modern browser. No build step and no dependencies. The 
 - Two bars on the second line of the top bar, left-aligned under the Moonbase button: first one bar holding all the resources, with dashed dividers between its five sections, with the Research points in their own bar right below it, as wide as the Moonbase button. The Research points icon is drawn big and dimmed behind the number, like the category icons. The Research points number is green when growing, normal when stale and red when diminishing, and whose tooltip shows the icon, the name and the points gained per day in smaller text. In the resources bar, the 18 resources are each shown only as its quantity, separated by "·" and in a fixed order, grouped in five sections (Volatiles, Minerals, Metals, Rare metals and Manufactured) each with its category icon drawn big and dimmed behind the numbers, clipped to the bar. A quantity is green when the resource is growing, in the normal text colour when stale and red when diminishing. Hovering a category icon shows its name; hovering a resource shows its icon, its name and, in smaller text, its net growth per day (production and consumption by buildings and colonists, not counting missions).
 
 **Colonisation (first steps)**
-- Every location has an analysis difficulty, an analysis length and a probe trip time (editable in the Editor, shown in the Database).
+- Every location has an analysis difficulty, an analysis length and real orbital data (distance from the Sun or its planet, eccentricity, period). The distance from the Moonbase in AU and the probe trip time are worked out from them (shown in the Database).
 - Send a probe to a location, from its orbit view in the map or from Flight plans. When it reaches the orbit, press Start analysis. The analysis takes the location's length and may fail depending on its difficulty (the probe stays in orbit and you can try again, or recall it).
 - A successful analysis makes the technology "Colonise <location>" available in Science Labs. Its research cost depends on the location's difficulty and analysis length.
 - Once that technology is researched, Construction offers a colonisation module for the location. For now a finished module only gets recorded: launching it and founding the colony come later.
