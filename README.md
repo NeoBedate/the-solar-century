@@ -6,7 +6,7 @@ A single-file browser prototype of a lunar-colony resource management game, insp
 
 ## Play
 
-Open `index.html` in any modern browser. No build step and no dependencies. Fonts load from Google Fonts when online; the game falls back to system monospace fonts otherwise.
+Open `index.html` in any modern browser. No build step and no dependencies. The Jura font (free, SIL Open Font License) loads from Google Fonts when online; the game falls back to the system sans-serif font otherwise.
 
 ## What is in the prototype
 
@@ -18,7 +18,7 @@ Open `index.html` in any modern browser. No build step and no dependencies. Font
 **Main interface**
 - A fixed 1920x1080 (16:9) stage that scales to fit the window (add `?scale=0.5` to the URL to force a scale). The Moonbase scene fills it as the main screen, and the panels, overview screens, date and clock float in front.
 - Top bar with Moonbase, Colonies, Starships, Technology, Mission Control and Database buttons, the date, a hamburger menu and a grouped icon clock (pause, +1 hour and five speeds, from 1 hour per 30 seconds to 1 hour per half second).
-- Two bars on the second line of the top bar, starting under Colonies: the Research points on their own, then one bar holding all the resources, with dashed dividers between its five sections. The Research points number is green when growing, normal when stale and red when diminishing, and whose tooltip shows the icon, the name and the points gained per day in smaller text. In the resources bar, the 18 resources are each shown only as its quantity, separated by "·" and in a fixed order, grouped in five sections (Volatiles, Minerals, Metals, Rare metals and Manufactured) with the category icon, slightly bigger, at the left. A quantity is green when the resource is growing, in the normal text colour when stale and red when diminishing. Hovering a category icon shows its name; hovering a resource shows its icon, its name and, in smaller text, its net growth per day (production and consumption by buildings and colonists, not counting missions).
+- Two bars on the second line of the top bar, left-aligned under the Moonbase button: first one bar holding all the resources, with dashed dividers between its five sections, with the Research points in their own bar right below it, as wide as the Moonbase button. The Research points icon is drawn big and dimmed behind the number, like the category icons. The Research points number is green when growing, normal when stale and red when diminishing, and whose tooltip shows the icon, the name and the points gained per day in smaller text. In the resources bar, the 18 resources are each shown only as its quantity, separated by "·" and in a fixed order, grouped in five sections (Volatiles, Minerals, Metals, Rare metals and Manufactured) each with its category icon drawn big and dimmed behind the numbers, clipped to the bar. A quantity is green when the resource is growing, in the normal text colour when stale and red when diminishing. Hovering a category icon shows its name; hovering a resource shows its icon, its name and, in smaller text, its net growth per day (production and consumption by buildings and colonists, not counting missions).
 
 **Moonbase**
 - Main screen linking to Science Labs, Construction, Shipyard, Starport, and Flight plans. The Science Labs and Construction buttons show what they are working on, or Idle.

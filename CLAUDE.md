@@ -24,13 +24,13 @@ Single-file browser game prototype (`index.html`: HTML, CSS and vanilla JS, no b
 
 ## UI conventions decided so far
 
-- Amiga/Atari ST look: bevelled buttons and panels, Silkscreen and VT323 fonts, orange accent.
+- Amiga/Atari ST look: bevelled buttons and panels, orange accent. The only font is **Jura** (Google Fonts, SIL Open Font License, free to use), with letter-spacing tightened to -0.04em (about 30% less space between characters than its default). Sizes are chosen for Jura, so do not reintroduce pixel fonts.
 - Top controls sit on the page background (no bar): Moonbase, Colonies, Starships, Technology, Mission Control and Database buttons on the left, the date and a hamburger menu on the right, and the grouped icon clock below.
 - Every floating screen except the Moonbase panel has a close button at the right of its title bar (added in code to each `h2`, returns to `base`).
 - Hover tooltips (not always-visible text) for descriptions and details. Greyed-out items stay readable.
 - Overview screens (Colonies, Starships) use a pager: a centred orange title with fixed arrow buttons at the far left and right. Colonies has three named, fixed pages (Inner, Middle and Outer Planets). Starships is the "Moon Fleet", 12 per page, filtered by the five ship type buttons.
 - Moons are indented under their planet. Status is shown with icons, not words.
-- Two bars sit on the second line of the top bar (left, under the overview buttons; the clock is at the right of that line): the Research points on their own, then one merged Resources bar with one section per category, divided by dashed lines, with the category icon (bigger) at the left, then each resource as just its quantity (no icon), separated by "·", in the fixed `CAT` order. A quantity is green if growing, normal text colour if stale, red if diminishing (`resRate()`). Tooltips: the category name over the icon; over a resource, its icon, name and the net growth per day in smaller text (the Research points follow the same colour and tooltip rules). The owner is refining the top bar step by step.
+- A Resources bar sits on the second line of the top bar (left-aligned with the Moonbase button; the clock is at the right of that line), and the Research points bar sits on a third line right below it, as wide as the Moonbase button (106px) with the same treatment as the categories (big dimmed flask behind the centred number, 100px hover area). The Resources bar is one merged bar divided by dashed lines, with the category icon drawn big (62px, 35% opacity, centre 6px from the section's left edge or separator) behind the numbers and clipped to the bar, then each resource as just its quantity in bold (no icon), separated by "·", in the fixed `CAT` order. A quantity is green if growing, normal text colour if stale, red if diminishing (`resRate()`). Tooltips: the category name over the icon; over a resource, its icon, name and the net growth per day in smaller text (the Research points follow the same colour and tooltip rules). The owner is refining the top bar step by step.
 
 ## Rendering rules (set by the owner)
 
