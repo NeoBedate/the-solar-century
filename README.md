@@ -42,7 +42,7 @@ Open `index.html` in any modern browser. No build step and no dependencies. The 
 **Overview screens**
 - Every overview and Moonbase sub-screen has a close button (X) at the top right of its title bar, on the same line as its name. It returns to the Moonbase, like Esc.
 - Colonies: 31 locations in three pages (Inner, Middle and Outer Planets), including the Sun's planets, Pluto and 20 moons. Uncolonised locations are greyed out, and hovering shows a description and each resource category with what is produced and what the location can provide.
-- Starships: the Moon Fleet, with a pager, filters for the five ship types and hangar and mission status icons for each ship.
+- Starships: the Moon Fleet, with a pager, filters for the five ship types and two lines per ship. At the left the ship icon (spanning both lines), then a vertical status chip (In mission on the first line, Landed on the second, the active one highlighted) with a mission text box attached to its right, then the editable bold name with the ship type under it. At the top right a Recycle button scraps a landed starship for half of its cost (provisional). Below the Recycle button, eight part chips in two rows of four (drive, life support, cargo bay, crew quarters, bridge, ship's computer, weapons, shields), each an icon and a 14-character text box, right-justified (placeholder values, only Probes so far).
 - Technology: paused and completed technologies, with seven category filters (Colonization, Energy, Mining, Manufacturing, Life Support, Starships, Weapons). Every technology has a category, editable in the Editor.
 - Database: a compendium of locations, resources, buildings, technologies, starships and colonists (entries without a description simply show their facts).
 
