@@ -647,7 +647,7 @@ const regOf=k=>colPageOf({k,p:LOCD[k].p}),sysOf=k=>LOCD[k].p||k;
 const daysJ=()=>(Date.UTC(S.y,S.m-1,S.d,S.h)-Date.UTC(2000,0,1,12))/864e5;/* days since J2000 */
 const phase=(k,i)=>(Object.keys(LOCD).indexOf(k)*2.399+i)%(2*Math.PI);
 /* Zoom levels 1-4 are drawn to scale around the Sun: LVL gives pixels per AU, the Sun's size, the base planet size and the region shown. REGLV is the level of each region (Inner, Middle, Outer). ZONES are the AU limits of the regions at level 1. */
-const CX=960,CY=540,D2R=Math.PI/180,TILT=23,TY=Math.cos(TILT*Math.PI/180),LVL={1:{s:7.5,sun:9,base:5},2:{s:10.4,sun:12,base:12,reg:2},3:{s:47,sun:18,base:14,reg:1},4:{s:160,sun:34,base:14,reg:0}},REGLV=[4,3,2],ZONES=[[0,4.1],[4.1,14],[14,56]],SYSR=430,SYSG={saturn:.6};
+const CX=960,CY=540,D2R=Math.PI/180,TILT=40,TY=Math.cos(TILT*Math.PI/180),LVL={1:{s:7.5,sun:9,base:5},2:{s:10.4,sun:12,base:12,reg:2},3:{s:47,sun:18,base:14,reg:1},4:{s:160,sun:34,base:14,reg:0}},REGLV=[4,3,2],ZONES=[[0,4.1],[4.1,14],[14,56]],SYSR=430,SYSG={saturn:.6};
 const rpx=(k,base)=>Math.max(3.5,Math.round(base*Math.pow(RKM[k]/6371,.35)*10)/10);
 function kepler(k,t){const l=LOCD[k],w=EPH[k][1]*D2R,e=l.ecc,M=(EPH[k][0]-EPH[k][1]+360*t/l.per)*D2R;let E=M;for(let i=0;i<8;i++)E-=(E-e*Math.sin(E)-M)/(1-e*Math.cos(E));
  const x=l.a*(Math.cos(E)-e),y=l.a*Math.sqrt(1-e*e)*Math.sin(E);return[x*Math.cos(w)-y*Math.sin(w),x*Math.sin(w)+y*Math.cos(w)]}
