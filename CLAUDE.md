@@ -60,7 +60,7 @@ No test suite. We check changes with headless Chromium through Playwright (`requ
 
 ## Blender (headless)
 
-Blender 5.3 is installed (`/Applications/Blender.app`, Homebrew cask; `blender` is also in `/opt/homebrew/bin`). There is no window and no MCP server: Claude drives it from Bash through `tools/blender.sh`, which runs `blender --background --factory-startup --python-exit-code 1` (a Python error fails the command).
+Blender 5.3 is installed on the owner's Mac (`/Applications/Blender.app`, Homebrew cask; `blender` is also in `/opt/homebrew/bin`). It is not installed on the desktop PC: install it there, and `tools/blender.sh` finds it on the PATH or through `BLENDER=/path/to/blender`. There is no window and no MCP server: Claude drives it from Bash through `tools/blender.sh`, which runs `blender --background --factory-startup --python-exit-code 1` (a Python error fails the command).
 
 - `tools/blender.sh script.py [args]` runs a script (read `args` after `--` in `sys.argv`); `tools/blender.sh -e 'print(1)'` runs one expression.
 - Typical use: build or load a scene with `bpy`, render with `bpy.ops.render.render(write_still=True)` and export (for example glTF with `bpy.ops.export_scene.gltf`). Cycles on the CPU (`scene.cycles.device='CPU'`) renders with materials; Workbench is fast but ignores material colours.
