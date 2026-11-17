@@ -18,12 +18,12 @@ button,input,select,textarea{letter-spacing:inherit}
 h1,h2{font-family:'Jura',system-ui,sans-serif;font-weight:700;margin:0}
 .wrap{max-width:1100px;margin:0 auto;padding:12px}
 .win{background:var(--panel);border:3px solid;border-color:var(--hi) var(--lo) var(--lo) var(--hi);margin-bottom:12px}
-.win>h2{background:var(--acc);color:#1a0f00;font-size:14px;padding:5px 8px}
+.win>h2{background:var(--acc);color:#1a0f00;font-size:14px;padding:5px 8px;position:sticky;top:0;z-index:3}.sticky{position:sticky;top:30px;z-index:2;background:var(--panel);padding-top:8px;padding-bottom:8px}#cols,#shipsList,#tovList,#scr-db>.in{padding-top:0}.sticky .sgrid{margin-bottom:0}
 .win>h2.wh{display:flex;justify-content:space-between;align-items:center;min-height:30px;padding-top:0;padding-bottom:0}.xb{padding:0 6px;line-height:0;height:22px}
 .in{padding:8px 10px}
 header.win .in{display:flex;flex-wrap:wrap;gap:6px 18px;align-items:center;justify-content:space-between}
 h1{font-size:14px}
-header.bare{margin-bottom:10px}header.bare .in.hdr{display:flex;flex-direction:column;flex-wrap:nowrap;align-items:stretch;gap:5px;padding:0 2px}.hdr #dbbtn{margin-right:auto}.loc.off .nm{color:var(--dim)}.loc.off .ci{opacity:.65}.loc.off .ci svg{filter:grayscale(1)}.loc .nm{position:relative;cursor:default}.loc .nm::after{content:attr(data-d);position:absolute;left:0;top:100%;margin-top:4px;width:340px;padding:4px 8px;background:var(--ink);color:var(--bg);border:2px solid var(--acc);font-size:14px;line-height:1.1;white-space:normal;opacity:0;pointer-events:none;z-index:20}.loc .nm:hover::after,.loc .nm:focus::after{opacity:1}.loc .nm:focus{outline:2px solid var(--acc);outline-offset:2px}.sgrid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:8px}.sgrid.c7{grid-template-columns:repeat(7,1fr)}.sbox{cursor:pointer;font:inherit;color:inherit;display:flex;flex-direction:column;align-items:center;gap:2px;padding:8px 6px;background:var(--bg);border:3px solid;border-color:var(--lo) var(--hi) var(--hi) var(--lo)}.sbox b{font:400 22px/1 'Jura',system-ui,sans-serif;color:var(--acc)}.sbox span{font:600 12px 'Jura',system-ui,sans-serif;color:var(--dim);text-align:center}.sbox.dim{opacity:.6}.sbox[aria-pressed=true]{opacity:1}.sbox[aria-pressed=true] b,.sbox[aria-pressed=true] span{color:#1a0f00}.ct.dim>svg{filter:grayscale(1);opacity:.55}.tp .t1{display:block;white-space:normal}.dbe{border-bottom:1px dashed var(--lo);padding:4px 0}.dbe summary{cursor:pointer;padding:3px 0}.dbe .ci{display:inline-block;vertical-align:-5px;margin-right:6px}.dbe .ci svg{width:22px;height:22px}.pend{font:600 12px 'Jura',system-ui,sans-serif;color:var(--dim);font-style:normal;margin-left:8px}.dbb{padding:2px 0 6px 30px}.dbb p{margin:0 0 4px}.dbb dl{margin:0;display:grid;grid-template-columns:max-content 1fr;gap:2px 14px}.dbb dt{color:var(--dim)}.dbb dd{margin:0}#dbList{margin-top:8px}.rh{font:600 14px 'Jura',system-ui,sans-serif;color:var(--acc);margin:12px 0 2px}#shipsList .ci{display:inline-block;vertical-align:-5px;margin-right:6px}.loc.sub>div:first-child{margin-left:24px}.loc .lc{display:flex;gap:6px;align-items:center;flex:none}.loc .ct{position:relative;display:inline-flex;cursor:help}.loc .tp{position:absolute;right:0;top:100%;margin-top:4px;min-width:310px;padding:5px 8px;background:var(--ink);color:var(--bg);border:2px solid var(--acc);font-size:13px;line-height:1.15;opacity:0;pointer-events:none;z-index:30;display:block}.loc .ct:hover .tp,.loc .ct:focus .tp{opacity:1}.loc .ct:focus{outline:2px solid var(--acc);outline-offset:2px}.loc .th{display:block;font:600 13px 'Jura',system-ui,sans-serif;color:#ffb066;margin-bottom:3px}.loc .tr{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:14px;align-items:center;white-space:nowrap}.loc .tr i{font-style:normal;display:flex;align-items:center;gap:4px}.loc .tr i:nth-child(n+2){justify-content:flex-end}.loc .tr.h{color:#ffb066;font-size:11px;border-bottom:1px dashed #6b6b78;margin-bottom:2px}.loc .tr svg{width:14px;height:14px}.loc.off .ct>svg{filter:grayscale(1);opacity:.6}.pgh{display:flex;justify-content:space-between;align-items:center;padding:0 0 6px}.pgh b{font:600 16px 'Jura',system-ui,sans-serif;color:var(--acc)}.loc .ci{display:inline-block;vertical-align:-5px;margin-right:6px}.loc .st{font:600 13px 'Jura',system-ui,sans-serif;white-space:nowrap;color:var(--dim)}.loc:not(.off) .st{color:#1f7a40}.hdr .r1{display:flex;justify-content:flex-end;gap:12px;align-items:center}.hdr .r2{flex-wrap:nowrap}.hdr .r2 .seg{margin-left:auto}.hdr .date{font-size:17px;line-height:1}.hdr #menu.clk{padding:2px 8px}
+header.bare{margin-bottom:10px}header.bare .in.hdr{display:flex;flex-direction:column;flex-wrap:nowrap;align-items:stretch;gap:5px;padding:0 2px}.loc.off .nm{color:var(--dim)}.loc.off .ci{opacity:.65}.loc.off .ci svg{filter:grayscale(1)}.loc .nm{position:relative;cursor:default}.loc .nm::after{content:attr(data-d);position:absolute;left:0;top:100%;margin-top:4px;width:340px;padding:4px 8px;background:var(--ink);color:var(--bg);border:2px solid var(--acc);font-size:14px;line-height:1.1;white-space:normal;opacity:0;pointer-events:none;z-index:20}.loc .nm:hover::after,.loc .nm:focus::after{opacity:1}.loc .nm:focus{outline:2px solid var(--acc);outline-offset:2px}.sgrid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:8px}.sgrid.c7{grid-template-columns:repeat(7,1fr)}.sbox{cursor:pointer;font:inherit;color:inherit;display:flex;flex-direction:column;align-items:center;gap:2px;padding:8px 6px;background:var(--bg);border:3px solid;border-color:var(--lo) var(--hi) var(--hi) var(--lo)}.sbox b{font:400 22px/1 'Jura',system-ui,sans-serif;color:var(--acc)}.sbox span{font:600 12px 'Jura',system-ui,sans-serif;color:var(--dim);text-align:center}.sbox.dim{opacity:.6}.sbox[aria-pressed=true]{opacity:1}.sbox[aria-pressed=true] b,.sbox[aria-pressed=true] span{color:#1a0f00}.ct.dim>svg{filter:grayscale(1);opacity:.55}.tp .t1{display:block;white-space:normal}.dbe{border-bottom:1px dashed var(--lo);padding:4px 0}.dbe summary{cursor:pointer;padding:3px 0}.dbe .ci{display:inline-block;vertical-align:-5px;margin-right:6px}.dbe .ci svg{width:22px;height:22px}.pend{font:600 12px 'Jura',system-ui,sans-serif;color:var(--dim);font-style:normal;margin-left:8px}.dbb{padding:2px 0 6px 30px}.dbb p{margin:0 0 4px}.dbb dl{margin:0;display:grid;grid-template-columns:max-content 1fr;gap:2px 14px}.dbb dt{color:var(--dim)}.dbb dd{margin:0}#dbList{margin-top:8px}.rh{font:600 14px 'Jura',system-ui,sans-serif;color:var(--acc);margin:12px 0 2px}#shipsList .ci{display:inline-block;vertical-align:-5px;margin-right:6px}.loc.sub>div:first-child{margin-left:24px}.loc .lc{display:flex;gap:6px;align-items:center;flex:none}.loc .ct{position:relative;display:inline-flex;cursor:help}.loc .tp{position:absolute;right:0;top:100%;margin-top:4px;min-width:310px;padding:5px 8px;background:var(--ink);color:var(--bg);border:2px solid var(--acc);font-size:13px;line-height:1.15;opacity:0;pointer-events:none;z-index:30;display:block}.loc .ct:hover .tp,.loc .ct:focus .tp{opacity:1}.loc .ct:focus{outline:2px solid var(--acc);outline-offset:2px}.loc .th{display:block;font:600 13px 'Jura',system-ui,sans-serif;color:#ffb066;margin-bottom:3px}.loc .tr{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:14px;align-items:center;white-space:nowrap}.loc .tr i{font-style:normal;display:flex;align-items:center;gap:4px}.loc .tr i:nth-child(n+2){justify-content:flex-end}.loc .tr.h{color:#ffb066;font-size:11px;border-bottom:1px dashed #6b6b78;margin-bottom:2px}.loc .tr svg{width:14px;height:14px}.loc.off .ct>svg{filter:grayscale(1);opacity:.6}.pgh{display:flex;justify-content:space-between;align-items:center;padding:0 0 6px}.pgh b{font:600 16px 'Jura',system-ui,sans-serif;color:var(--acc)}.loc .ci{display:inline-block;vertical-align:-5px;margin-right:6px}.loc .st{font:600 13px 'Jura',system-ui,sans-serif;white-space:nowrap;color:var(--dim)}.loc:not(.off) .st{color:#1f7a40}.hdr .date{font-size:17px;line-height:1}.hdr #menu.clk{padding:2px 8px}
 .date{color:var(--acc);font-size:20px}
 .res{display:flex;flex-wrap:wrap;gap:6px 16px}
 .res{font-size:14px}.chip{position:relative;display:inline-flex;align-items:center;gap:4px;white-space:nowrap;cursor:default}
@@ -33,13 +33,13 @@ header.bare{margin-bottom:10px}header.bare .in.hdr{display:flex;flex-direction:c
 .chip.rich::after{content:none}.chip .rt{position:absolute;left:0;top:100%;margin-top:5px;display:flex;align-items:center;gap:5px;padding:1px 7px;background:var(--ink);color:var(--bg);border:2px solid var(--acc);font-size:14px;white-space:nowrap;opacity:0;pointer-events:none;z-index:20}.chip.rich:hover .rt,.chip.rich:focus .rt{opacity:1}
 .chip:focus{outline:2px solid var(--acc);outline-offset:2px}
 .res .chip:nth-last-child(-n+4)::after{left:auto;right:0;transform:none}#res{display:flex;flex-wrap:wrap;gap:6px 14px}#res .chip::after{left:0;right:auto;transform:none}
-.colony{display:flex;justify-content:space-between;align-items:center;gap:8px}.colony .chip::after{left:auto;right:0;transform:none}.colony .chip b{font:400 15px 'Jura',system-ui,sans-serif}
+.colony{display:flex;justify-content:space-between;align-items:center;gap:8px}.colony .chip::after{left:auto;right:0;transform:none}.colony .chip b{font:400 15px 'Jura',system-ui,sans-serif}.popr{justify-content:flex-end;padding-bottom:0}.colname{position:absolute;left:50%;top:12px;transform:translateX(-50%);z-index:5;height:35px;display:flex;align-items:center;white-space:nowrap;font-size:26px;font-weight:600;color:var(--acc);text-shadow:0 2px 0 #000a,0 0 12px #000c;pointer-events:none}
 .stage{position:fixed;left:50%;top:50%;width:1920px;height:1080px;overflow:hidden;transform-origin:center center;transform:translate(-50%,-50%);background:#02030f}
 .stage .scene{z-index:0}
 .stage header.bare{position:absolute;left:16px;right:16px;top:12px;margin:0;z-index:5}
 .stage main>.win{position:absolute;left:16px;right:16px;top:140px;bottom:16px;margin:0;overflow:auto;z-index:4;box-shadow:0 0 0 2px #000a}
 .stage main>#scr-base{top:130px;left:auto;right:16px;bottom:auto;width:400px;max-height:calc(100% - 146px)}
-.rpb.rsb{gap:0;padding:0}.rg{display:flex;align-items:center;height:100%;padding:0 12px;gap:5.12px}.rsb .rg+.rg{border-left:2px dashed var(--lo)}.rg,#res{position:relative}.cic-bg{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:0}.cic-bg svg{position:absolute;left:6px;top:50%;width:62.4px;height:62.4px;transform:translate(-50%,-50%);opacity:.35}.rg .chip.cic{position:absolute;left:0;top:0;bottom:0;width:100px;max-width:100%;z-index:1}.rg .chip:not(.cic){position:relative;z-index:2}.rpb.rrb{padding:0;width:106px}.hdr .r3{height:35px;align-items:center}#res{display:flex;align-items:center;height:100%;flex:1}#res .chip{position:relative;z-index:2;width:100%;justify-content:center;font-size:18px}.rg .chip{font-size:18px;gap:4px}.rg .chip svg{width:18px;height:18px}.rg .chip b{font-weight:700;color:var(--ink)}#res b{font-weight:700}.rt svg{width:16px;height:16px}.rg .sep{color:var(--dim);font-size:18px}.rg .chip b.up,.rpb .chip b.up{color:var(--ok)}.rg .chip b.down,.rpb .chip b.down{color:var(--bad)}.rt .rr{font-size:14px;margin-left:2px}
+.rpb.rsb{gap:0;padding:0}.rg{display:flex;align-items:center;height:100%;padding:0 12px;gap:5.12px}.rsb .rg+.rg{border-left:2px dashed var(--lo)}.rg,#res{position:relative}.cic-bg{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:0}.cic-bg svg{position:absolute;left:6px;top:50%;width:62.4px;height:62.4px;transform:translate(-50%,-50%);opacity:.35}.rg .chip.cic{position:absolute;left:0;top:0;bottom:0;width:100px;max-width:100%;z-index:1}.rg .chip:not(.cic){position:relative;z-index:2}.rpb.rrb{padding:0;width:106px}#res{display:flex;align-items:center;height:100%;flex:1}#res .chip{position:relative;z-index:2;width:100%;justify-content:center;font-size:18px}.rg .chip{font-size:18px;gap:4px}.rg .chip svg{width:18px;height:18px}.rg .chip b{font-weight:700;color:var(--ink)}#res b{font-weight:700}.rt svg{width:16px;height:16px}.rg .sep{color:var(--dim);font-size:18px}.rg .chip b.up,.rpb .chip b.up{color:var(--ok)}.rg .chip b.down,.rpb .chip b.down{color:var(--bad)}.rt .rr{font-size:14px;margin-left:2px}
 .scene.quiet .hot{display:none}
 .cat{margin-bottom:10px}.cat:last-child{margin-bottom:0}
 .cat-n{position:relative;font:600 13px/1.25 'Jura',system-ui,sans-serif;color:var(--acc);border-bottom:2px dashed var(--lo);padding-bottom:3px;margin-bottom:5px;cursor:help}
@@ -59,13 +59,16 @@ header.bare{margin-bottom:10px}header.bare .in.hdr{display:flex;flex-direction:c
 .stf button{padding:0 9px}
 .stf b{min-width:1.4em;text-align:center;color:var(--acc);font-weight:400}
 .rps{font-size:14px;color:var(--dim)}
-.hdr .r1>button{height:35px}
+.hdr .nav button,.hdr #menu{height:35px}
+header.bare .in.hdr{display:grid;grid-template-columns:auto 1fr auto;grid-template-rows:35px 35px 35px;gap:5px 0;align-items:start;padding:0 2px}
+.hdr .nav{display:flex;justify-content:space-between;align-items:flex-start}.hdr .ov{display:flex;margin-left:12px}.hdr .dm{grid-column:3;display:flex;align-items:center;gap:12px;justify-self:end}.hdr .rsb{grid-column:1;grid-row:2}.hdr .seg{grid-column:3;grid-row:2;justify-self:end}.hdr .rrb{grid-column:1;grid-row:3;justify-self:start}
 .hdr #back{width:106px}
-.hdr .r1{align-items:flex-start}
+
 .hdr #menu{height:35px}
 .rpb{display:flex;align-items:center;height:35px;padding:0 12px;background:var(--panel);border:3px solid;border-color:var(--hi) var(--lo) var(--lo) var(--hi);box-shadow:0 0 0 2px #000a}
-.hdr .r2{padding-left:0;height:35px;align-items:center}
-.hdr .date{display:flex;align-items:center;height:35px;font-size:17px;line-height:1.15}
+.hdr .seg .clk{height:35px;display:flex;align-items:center}
+
+.hdr .date{display:flex;align-items:center;height:35px;font-size:20px;font-weight:700;letter-spacing:.02em;line-height:1.15}
 .row small{display:block;color:var(--dim);font-size:14px}
 button{font:inherit;color:var(--ink);background:var(--panel);border:3px solid;border-color:var(--hi) var(--lo) var(--lo) var(--hi);padding:2px 10px;cursor:pointer;white-space:nowrap}
 button:active:not(:disabled){border-color:var(--lo) var(--hi) var(--hi) var(--lo)}
@@ -81,11 +84,8 @@ button.go{background:var(--acc);color:#1a0f00}
 #log{min-height:240px;padding:8px 10px;font-size:15px}
 #log div{padding:1px 0}
 .end{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
-.scene{position:absolute;inset:0;overflow:hidden;
-background:var(--scene-img,none) center/cover,
-radial-gradient(circle at 70% 14%,#3b82f6 0 56px,#1e3a8a 57px 64px,transparent 65px),
-radial-gradient(1.5px 1.5px at 12% 20%,#fff,transparent),radial-gradient(1.5px 1.5px at 34% 9%,#fff,transparent),radial-gradient(1.5px 1.5px at 55% 24%,#fff,transparent),radial-gradient(1.5px 1.5px at 72% 12%,#fff,transparent),radial-gradient(1.5px 1.5px at 24% 38%,#fff,transparent),
-linear-gradient(#02030f 0 66%,var(--reg) 66% 100%)}
+.scene{position:absolute;inset:0;overflow:hidden;background:#02030f}
+.sbg,.sk,.gd{position:absolute;inset:0}.sbg{overflow:hidden;pointer-events:none}.gd{bottom:0;box-shadow:inset 0 10px 30px #0007}.sb{position:absolute;border-radius:50%}.scene.away .hot{display:none}#mapbg{pointer-events:auto}#mapbg[data-zone="0"],#mapbg[data-zone="1"],#mapbg[data-zone="2"]{cursor:pointer}.zn{position:absolute;border-radius:50%;pointer-events:none;opacity:0;transition:opacity .15s}.zn b{position:absolute;left:0;right:0;text-align:center;font-size:26px;font-weight:600;color:#ffd9a8;text-shadow:0 2px 0 #000,0 0 10px #000;pointer-events:none}.zn small{display:block;font-size:15px;font-weight:400;color:#c9b79c}#mapbg[data-zone="0"] .zn0,#mapbg[data-zone="1"] .zn1,#mapbg[data-zone="2"] .zn2{opacity:1}.mb{position:absolute;left:0;top:0;cursor:pointer;will-change:transform}.mi,.mr,.mc{position:absolute;display:block}.mi{inset:0;border-radius:50%}.mr{border:3px solid rgba(235,220,170,.6);border-radius:50%;transform:rotate(-16deg)}.mc{border:2px solid #ff9a2e;border-radius:50%;box-shadow:0 0 10px #ff9a2e99}.ml{position:absolute;top:50%;transform:translateY(-50%);white-space:nowrap;font-size:18px;font-weight:600;color:#e8e4d4;text-shadow:0 1px 0 #000,0 0 8px #000;pointer-events:none}.mb:hover .mi{filter:brightness(1.25)}.mo{position:absolute;border:1px solid rgba(150,160,220,.28);border-radius:50%;pointer-events:none}.mo.op{border-style:dashed;border-color:rgba(255,154,46,.5)}.belt{position:absolute;width:0;height:0}.belt i{position:absolute;background:#9a958c;border-radius:50%}.mk{position:absolute;left:0;top:0}.mk i{position:absolute;left:-7px;top:-7px;width:14px;height:14px;background:var(--acc);transform:rotate(45deg);border:2px solid #fff}.mt{position:absolute;left:0;right:0;bottom:90px;text-align:center;font-size:24px;font-weight:600;color:#e8e4d4;text-shadow:0 2px 0 #000,0 0 10px #000;pointer-events:none}.mt small{display:block;font-size:16px;font-weight:400;color:#9aa0c8}.zoombar{position:absolute;bottom:16px;left:50%;transform:translateX(-50%);z-index:3;display:flex}.zoombar button{height:35px;padding:0 14px;margin-left:-3px;font-size:16px}.zoombar button:first-child{margin-left:0}.pvw{position:relative;width:320px;height:180px;overflow:hidden;border:2px solid var(--lo);margin:4px 0 8px;background:#02030f}.pvw .sbg{width:1920px;height:1080px;inset:auto;left:0;top:0;transform:scale(.16667);transform-origin:0 0}
 .ph{position:absolute;left:16px;bottom:10px;font-size:13px;color:#9aa0c8}
 .hot{position:absolute;width:240px;padding:6px 4px;text-align:center;display:flex;flex-direction:column;gap:2px;background:var(--panel);color:var(--ink)}
 .hot b{font:600 13px/1.2 'Jura',system-ui,sans-serif}
@@ -159,8 +159,12 @@ dialog::backdrop{background:#000a}
  <button id="m-back">Back to main menu</button>
 </div></div>
 <div class="stage" id="game" hidden>
- <div class="scene" id="scene" aria-label="Moonbase main screen">
-  <span class="ph">Placeholder scene: replace --scene-img in CSS with the main screen image</span>
+<div class="colname" id="colname">Moonbase – Mare Tranquillitatis</div>
+<div class="zoombar" id="zoombar" role="group" aria-label="Map zoom levels"></div>
+ <div class="scene" id="scene" aria-label="Main screen: the current location">
+  <div class="sbg" id="scenebg"></div>
+  <div class="sbg" id="mapbg" hidden></div>
+  <span class="ph">Placeholder scene: to be replaced with the real image of this location</span>
   <button class="hot" data-go="tech" style="left:18%;bottom:30%"><b>Science Labs</b><small id="b-tech"></small></button>
   <button class="hot" data-go="build" style="left:33.5%;bottom:14%"><b>Construction</b><small id="b-build"></small></button>
   <button class="hot" data-go="yard" style="left:49%;bottom:30%"><b>Shipyard</b><small id="b-yard"></small></button>
@@ -168,26 +172,28 @@ dialog::backdrop{background:#000a}
   <button class="hot" data-go="flight" style="left:64.5%;bottom:14%"><b>Flight plans</b><small id="b-flight"></small></button>
  </div>
 <header class="bare" aria-label="Moonbase, date, menu and time controls"><div class="in hdr">
- <div class="r1">
+ <div class="nav">
  <button id="back" title="Moonbase main screen">Moonbase</button>
+ <div class="ov">
  <button id="colbtn" title="Planets and colonies">Colonies</button>
  <button id="shipbtn" title="All starships">Starships</button>
  <button id="tovbtn" title="Technology overview">Technology</button>
  <button id="logbtn" title="Mission Control Log">Mission Control</button>
  <button id="dbbtn" title="Compendium of the game">Database</button>
+ </div>
+ </div>
+ <div class="dm">
  <div class="date" id="date"></div>
  <button id="menu" class="clk" title="Main menu" aria-label="Main menu"><svg viewBox="0 0 16 16" width="20" height="20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="square"><path d="M2 3.5H14M2 8H14M2 12.5H14"/></svg></button>
  </div>
- <div class="end r2">
  <div class="rpb rsb" id="stock" aria-label="Resources"></div>
  <span class="seg" role="group" aria-label="Game speed"><button data-sp="0" title="Pause" aria-label="Pause" class="clk"><svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="square"><path d="M5 2.5V13.5M11 2.5V13.5"/></svg></button><button id="step" title="Advance 1 hour" aria-label="Advance 1 hour" class="clk"><svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="square"><path d="M3 2.5L9 8L3 13.5Z" fill="currentColor" stroke-width="1"/><path d="M13 2.5V13.5"/></svg></button><button data-sp="30000" title="Very slow: 1 hour per 30 seconds" aria-label="Very slow: 1 hour per 30 seconds" class="clk"><svg viewBox="0 0 8.5 16" width="9" height="16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="square"><path d="M2.0 2.5L6.5 8L2.0 13.5"/></svg></button><button data-sp="15000" title="Slow: 1 hour per 15 seconds" aria-label="Slow: 1 hour per 15 seconds" class="clk"><svg viewBox="0 0 13.0 16" width="13" height="16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="square"><path d="M2.0 2.5L6.5 8L2.0 13.5"/><path d="M6.5 2.5L11.0 8L6.5 13.5"/></svg></button><button data-sp="5000" title="Normal: 1 hour per 5 seconds" aria-label="Normal: 1 hour per 5 seconds" class="clk"><svg viewBox="0 0 17.5 16" width="18" height="16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="square"><path d="M2.0 2.5L6.5 8L2.0 13.5"/><path d="M6.5 2.5L11.0 8L6.5 13.5"/><path d="M11.0 2.5L15.5 8L11.0 13.5"/></svg></button><button data-sp="2000" title="Fast: 1 hour per 2 seconds" aria-label="Fast: 1 hour per 2 seconds" class="clk"><svg viewBox="0 0 22.0 16" width="22" height="16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="square"><path d="M2.0 2.5L6.5 8L2.0 13.5"/><path d="M6.5 2.5L11.0 8L6.5 13.5"/><path d="M11.0 2.5L15.5 8L11.0 13.5"/><path d="M15.5 2.5L20.0 8L15.5 13.5"/></svg></button><button data-sp="500" title="Turbo: 1 hour per half a second" aria-label="Turbo: 1 hour per half a second" class="clk"><svg viewBox="0 0 26.5 16" width="26" height="16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="square"><path d="M2.0 2.5L6.5 8L2.0 13.5"/><path d="M6.5 2.5L11.0 8L6.5 13.5"/><path d="M11.0 2.5L15.5 8L11.0 13.5"/><path d="M15.5 2.5L20.0 8L15.5 13.5"/><path d="M20.0 2.5L24.5 8L20.0 13.5"/></svg></button></span>
- </div>
- <div class="end r3"><div class="rpb rrb" aria-label="Research points"><div id="res"></div></div></div>
+ <div class="rpb rrb" aria-label="Research points"><div id="res"></div></div>
 </div></header>
 
 
 <main>
-<section class="win" id="scr-base"><h2 class="colony"><span>Moonbase – Mare Tranquillitatis</span><span id="pop"></span></h2>
+<section class="win" id="scr-base"><div class="in colony popr"><span id="pop"></span></div>
  <div class="map" id="map"></div>
  <div class="in" id="power"></div>
 </section>
@@ -199,9 +205,9 @@ dialog::backdrop{background:#000a}
 <section class="win" id="scr-col" hidden><h2>Colonies</h2><div class="in" id="cols"></div></section>
 <section class="win" id="scr-ships" hidden><h2>Starships</h2><div class="in" id="shipsList"></div></section>
 <section class="win" id="scr-tov" hidden><h2>Technology</h2><div class="in" id="tovList"></div></section>
-<section class="win" id="scr-db" hidden><h2>Database</h2><div class="in"><div class="end" id="db-tabs" role="group" aria-label="Database sections"></div><div id="dbList"></div></div></section>
+<section class="win" id="scr-db" hidden><h2>Database</h2><div class="in"><div class="end sticky" id="db-tabs" role="group" aria-label="Database sections"></div><div id="dbList"></div></div></section>
 <section class="win" id="scr-flight" hidden><h2>Flight plans</h2><div class="in" id="flights"></div></section>
-<section class="win" id="scr-log" hidden><h2>Mission Control Log</h2><div class="in end" id="log-tabs" role="group" aria-label="Log sections"><button data-lt="obj">Main Objectives</button><button data-lt="ops">Daily Operations</button><button data-lt="inv">Under Investigation</button></div><div id="objectives" class="in" hidden></div><div id="invest" class="in" hidden></div><div id="log" aria-live="polite"></div></section>
+<section class="win" id="scr-log" hidden><h2>Mission Control Log</h2><div class="in end sticky" id="log-tabs" role="group" aria-label="Log sections"><button data-lt="obj">Main Objectives</button><button data-lt="ops">Daily Operations</button><button data-lt="inv">Under Investigation</button></div><div id="objectives" class="in" hidden></div><div id="invest" class="in" hidden></div><div id="log" aria-live="polite"></div></section>
 </main>
 </div>
 <div class="wrap" id="editor" hidden>
@@ -267,7 +273,7 @@ const JOBN={labourer:'Labourers',scientist:'Scientists',technician:'Technicians'
 const CREW={earth:2,mars:3,belt:3,outer:4,gaia:8};
 const COL={pop:8,water:.8,oxygen:.5,boost:.1};
 let S;
-function init(){S={diff,cur:null,proj:{},screen:'base',y:2200,m:1,d:1,h:0,speed:0,brown:false,q:[],nobuild:false,staff:{solar:2,mine:2,ice:2,elec:0,reactor:0,lab:0,fact:0,shop:0,build:2},res:{hydrogen:30,oxygen:100,water:100,nitrogen:30,methane:5,sulphur:10,titanium:20,aluminium:40,copper:20,silica:60,iron:120,silver:0,chromium:0,platinum:0,uranium:0,components:10,machinery:20,software:10},pop:COL.pop,rp:0,b:{solar:2,mine:1,ice:1,elec:0,fact:0,shop:0,lab:0,hab:2,reactor:0},slots:Math.min(PORT.start,PORT.max),colonies:Object.fromEntries(Object.keys(LOCD).filter(k=>LOCD[k].start).map(k=>[k,1])),tech:{},ships:1,out:[],over:false,log:[]};
+function init(){S={diff,cur:null,proj:{},screen:'base',loc:(LOCD[new URLSearchParams(location.search).get('loc')]?new URLSearchParams(location.search).get('loc'):'moon'),view:{z:(+new URLSearchParams(location.search).get('z')>=1&&+new URLSearchParams(location.search).get('z')<=5?+new URLSearchParams(location.search).get('z'):5)},y:2200,m:1,d:1,h:0,speed:0,brown:false,q:[],nobuild:false,staff:{solar:2,mine:2,ice:2,elec:0,reactor:0,lab:0,fact:0,shop:0,build:2},res:{hydrogen:30,oxygen:100,water:100,nitrogen:30,methane:5,sulphur:10,titanium:20,aluminium:40,copper:20,silica:60,iron:120,silver:0,chromium:0,platinum:0,uranium:0,components:10,machinery:20,software:10},pop:COL.pop,rp:0,b:{solar:2,mine:1,ice:1,elec:0,fact:0,shop:0,lab:0,hab:2,reactor:0},slots:Math.min(PORT.start,PORT.max),colonies:Object.fromEntries(Object.keys(LOCD).filter(k=>LOCD[k].start).map(k=>[k,1])),tech:{},ships:1,out:[],over:false,log:[]};
  say('Year 2200. The asteroid has scorched Earth. The Moon colony is humanity’s last foothold.');
  say('Silver, chromium and uranium cannot be mined on the Moon or in the asteroid belt. Look further out.');
  say('Build industry, research new drives, and launch the Gaia Ark before '+DEADLINE+'.')}
@@ -499,7 +505,7 @@ const dbLst=a=>a.length?a.join(', '):'none';
 function dbData(){
  const lk=Object.keys(LOCD),E={loc:[],res:[],bld:[],tech:[],ship:[],col:[]};
  for(const k of lk){const l=LOCD[k],pr=Object.keys(l.res||{}).filter(r=>l.res[r]>0);
-  E.loc.push({n:l.n,i:ico('colony'),d:l.d,f:[['Orbits',l.p?LOCD[l.p].n:'the Sun'],['Colony',S&&S.colonies&&S.colonies[k]?(l.col||l.n):'none'],['Can provide',dbLst(pr.map(r=>RN[r]+' '+l.res[r].toLocaleString('en-US')))]]})}
+  E.loc.push({k,n:l.n,i:ico('colony'),d:l.d,f:[['Orbits',l.p?LOCD[l.p].n:'the Sun'],['Colony',S&&S.colonies&&S.colonies[k]?(l.col||l.n):'none'],['Can provide',dbLst(pr.map(r=>RN[r]+' '+l.res[r].toLocaleString('en-US')))]]})}
  for(const r in RN){const c=CAT.find(c=>c.r.includes(r)),by=Object.keys(B).filter(k=>B[k].out&&B[k].out[r]!==undefined).map(k=>B[k].n),us=Object.keys(B).filter(k=>B[k].inp&&B[k].inp[r]!==undefined).map(k=>B[k].n),cn=Object.keys(B).filter(k=>B[k].c&&B[k].c[r]).map(k=>B[k].n),at=lk.filter(k=>(LOCD[k].res||{})[r]>0).map(k=>LOCD[k].n);
   E.res.push({n:RN[r],i:ico(r),d:'',f:[['Category',c?c.n:'-'],['Produced by',dbLst(by)],['Consumed by',dbLst(us)],['Used to build',dbLst(cn)],['Found at',at.length>8?at.slice(0,8).join(', ')+' and '+(at.length-8)+' more':dbLst(at)]]})}
  for(const k in B){const b=B[k],st=STAFF[k];
@@ -515,18 +521,108 @@ function dbData(){
 const DBTABS=[['loc','Locations'],['res','Resources'],['bld','Buildings'],['tech','Technologies'],['ship','Starships'],['col','Colonists']];
 function dbHtml(){const E=dbData();let h='';
  const tabs=DBTABS.map(t=>'<button data-dt="'+t[0]+'" aria-pressed="'+(dbTab===t[0])+'">'+t[1]+' ('+E[t[0]].length+')</button>').join('');
- h=E[dbTab].map(x=>'<details class="dbe"><summary><span class="ci">'+x.i+'</span>'+esc(x.n)+'</summary><div class="dbb">'+(x.d?'<p>'+esc(x.d)+'</p>':'')+'<dl>'+x.f.map(f=>'<dt>'+f[0]+'</dt><dd>'+esc(f[1])+'</dd>').join('')+'</dl></div></details>').join('');
+ h=E[dbTab].map(x=>'<details class="dbe"><summary><span class="ci">'+x.i+'</span>'+esc(x.n)+'</summary><div class="dbb">'+(x.k&&dbTab==='loc'?'<div class="pvw"><div class="sbg">'+sceneHtml(x.k)+'</div></div>':'')+(x.d?'<p>'+esc(x.d)+'</p>':'')+'<dl>'+x.f.map(f=>'<dt>'+f[0]+'</dt><dd>'+esc(f[1])+'</dd>').join('')+'</dl></div></details>').join('');
  return [tabs,h]}
 let tovFilter=null;const SHIPS_PER=12;let shipFilter=null,shipPage=0;
 const pgArr=(attr,d,on,t)=>'<button class="clk pgb" '+attr+'="'+d+'" title="'+t+'" aria-label="'+t+'"'+(on?'':' disabled')+'><svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="square"><path d="'+(d<0?'M10.5 2.5L5 8L10.5 13.5':'M5.5 2.5L11 8L5.5 13.5')+'"/></svg></button>';
 const SHIPTYPES=[{k:'probe',n:'Probes'},{k:'hop',n:'Hop Miners'},{k:'solar',n:'Solar Carriers'},{k:'nuclear',n:'Nuclear Cruisers'},{k:'colony',n:'Colony Ships'}];
+/* ===== Placeholder scenes: what each location looks like (CSS shapes drawn on the 1920x1080 stage) ===== */
+const bands=a=>'linear-gradient(180deg,'+a.map((c,i)=>c+' '+(i*100/a.length).toFixed(1)+'% '+((i+1)*100/a.length).toFixed(1)+'%').join(',')+')';
+const JUPB=['#e8d3a8','#c88f5a','#f1e4c8','#a8643a','#d9b887','#8f5a34','#e6cfa0','#b9784a'],SATB=['#e4cf8e','#c9a85c','#efe0aa','#b8964e','#dcc47c','#a98a48','#e9d79a'],URAB=['#a6dfe0','#86cdd2','#b8e8e8','#7cc6cc','#a0dadc'],NEPB=['#2a4fb8','#3b6fd9','#1f3a8a','#4f84e6','#2d56c4','#1c3a96'];
+const GAS=(a,sun)=>({sky:bands(a),hz:100,sun});
+const MOON_OF=(gr,body)=>({sky:['#000','#06060a'],st:1,hz:66,gr,bd:[body]});
+const PL=(x,y,r,b,ring)=>({x,y,r,c:b,ring});
+const SCENES={
+ mercury:{sky:['#000','#08080c'],st:1,hz:66,gr:'linear-gradient(#8a8478,#5f5a50)',sun:{x:26,y:22,r:70,c:'#fff3c8'}},
+ venus:{sky:'linear-gradient(180deg,#8f6a22,#d9a63e 55%,#f0cf7a)',hz:100,sun:{x:70,y:24,r:34,c:'#fff0b0',o:.7},bd:[{x:20,y:84,r:280,c:'#e9c46a',o:.55,flat:1},{x:76,y:94,r:320,c:'#d9a63e',o:.6,flat:1},{x:50,y:100,r:300,c:'#f0cf7a',o:.7,flat:1}]},
+ earth:{sky:['#1b0b08','#6e2a16'],hz:70,gr:'linear-gradient(#3b2a22,#1a1210)',sun:{x:30,y:46,r:38,c:'#ff9a5a',o:.8},bd:[{x:78,y:18,r:30,c:'radial-gradient(circle at 35% 30%,#c8c3bb,#7a766f)'}]},
+ moon:{sky:['#02030f','#02030f'],st:1,hz:66,gr:'#8d8672',bd:[{x:70,y:14,r:64,c:'#3b82f6',flat:1,ring:'#1e3a8a'}]},
+ mars:{sky:['#4a2216','#d9976a'],st:.35,hz:66,gr:'linear-gradient(#a24f2e,#6e3220)',sun:{x:74,y:30,r:20,c:'#fff0dc'},bd:[{x:36,y:16,r:9,c:'#6a625c'}]},
+ phobos:MOON_OF('linear-gradient(#6a6058,#3e3732)',PL(76,22,230,'radial-gradient(circle at 40% 35%,#d0653a,#8c3a20 70%)')),
+ deimos:MOON_OF('linear-gradient(#a0968c,#6a625a)',PL(30,26,44,'radial-gradient(circle at 40% 35%,#d0653a,#8c3a20 70%)')),
+ belt:{sky:['#000','#05060d'],st:1.2,hz:100,sun:{x:84,y:16,r:12,c:'#fff'},bd:[8,20,30],bd2:1},
+ jupiter:GAS(JUPB,{x:82,y:12,r:10,c:'#fff'}),
+ io:MOON_OF('linear-gradient(#e0bc3c,#a8741c)',PL(70,24,250,bands(JUPB))),
+ europa:MOON_OF('linear-gradient(#dfeaf0,#9fb4c0)',PL(72,22,190,bands(JUPB))),
+ ganymede:MOON_OF('linear-gradient(#8a8174,#4d463e)',PL(74,22,120,bands(JUPB))),
+ callisto:MOON_OF('linear-gradient(#5b5249,#2e2924)',PL(76,20,70,bands(JUPB))),
+ saturn:GAS(SATB,{x:82,y:12,r:8,c:'#fff'}),
+ titan:{sky:['#6b3f12','#e0a448'],hz:66,gr:'linear-gradient(#4a2e16,#2a190c)',bd:[{x:72,y:24,r:70,c:bands(SATB),o:.55,ring:1}]},
+ enceladus:MOON_OF('linear-gradient(#f4f8fb,#c7d6e0)',PL(70,26,190,bands(SATB),1)),
+ rhea:MOON_OF('linear-gradient(#c4bfb8,#7e7a74)',PL(72,24,110,bands(SATB),1)),
+ iapetus:MOON_OF('linear-gradient(90deg,#241e1a 0 48%,#dcd8d0 52%)',PL(78,20,42,bands(SATB),1)),
+ dione:MOON_OF('linear-gradient(#d2d3d6,#85878c)',PL(72,22,95,bands(SATB),1)),
+ tethys:MOON_OF('linear-gradient(#e8ebee,#aab3ba)',PL(70,24,135,bands(SATB),1)),
+ mimas:MOON_OF('linear-gradient(#b6b6b8,#6a6a6e)',PL(66,28,210,bands(SATB),1)),
+ uranus:GAS(URAB,{x:82,y:12,r:6,c:'#fff'}),
+ titania:MOON_OF('linear-gradient(#746b64,#403a35)',PL(72,22,90,bands(URAB))),
+ oberon:MOON_OF('linear-gradient(#54473f,#2c2420)',PL(76,20,62,bands(URAB))),
+ umbriel:MOON_OF('linear-gradient(#403e3c,#1c1b1a)',PL(72,22,85,bands(URAB))),
+ ariel:MOON_OF('linear-gradient(#cbc8c3,#8a8782)',PL(70,24,115,bands(URAB))),
+ miranda:MOON_OF('linear-gradient(#b2ada6,#6f6b66)',PL(68,26,155,bands(URAB))),
+ neptune:GAS(NEPB,{x:82,y:12,r:5,c:'#fff'}),
+ triton:MOON_OF('linear-gradient(#ecdcd4,#b59a92)',PL(70,24,105,bands(NEPB))),
+ pluto:{sky:['#000','#05050a'],st:1,hz:66,gr:'linear-gradient(#c8ab8c,#7e6650)',sun:{x:84,y:16,r:5,c:'#fff'},bd:[PL(30,22,95,'radial-gradient(circle at 40% 35%,#a8a8b0,#6a6a72 75%)')]},
+ charon:MOON_OF('linear-gradient(#92929a,#55555c)',PL(70,22,165,'radial-gradient(circle at 40% 35%,#dcc0a0,#9c7e60 75%)'))
+};
+const STARS=['12 20','34 9','55 24','72 12','24 38','88 18','5 8','47 6','63 35','94 40','18 52','81 30','39 22','67 5','8 32','91 8'].map(p=>{const q=p.split(' ');return 'radial-gradient(1.5px 1.5px at '+q[0]+'% '+q[1]+'%,#fff,transparent)'}).join(',');
+function sceneHtml(k){const s=SCENES[k]||SCENES.moon,hz=s.hz===undefined?66:s.hz;
+ const sky=typeof s.sky==='string'?s.sky:'linear-gradient(180deg,'+s.sky[0]+','+s.sky[1]+')';
+ let h='<div class="sk" style="background:'+sky+'"></div>';
+ if(s.st)h+='<div class="sk" style="background:'+STARS+';opacity:'+Math.min(1,s.st)+'"></div>';
+ if(s.sun)h+='<div class="sb" style="left:'+s.sun.x+'%;top:'+s.sun.y+'%;width:'+2*s.sun.r+'px;height:'+2*s.sun.r+'px;margin:-'+s.sun.r+'px 0 0 -'+s.sun.r+'px;background:'+s.sun.c+';opacity:'+(s.sun.o||1)+';box-shadow:0 0 '+Math.round(s.sun.r*1.2)+'px '+Math.round(s.sun.r*.4)+'px '+s.sun.c+'88"></div>';
+ if(s.bd2)h+=[[20,60,90],[62,72,140],[42,28,46],[84,55,60],[8,20,30]].map(a=>'<div class="sb" style="left:'+a[0]+'%;top:'+a[1]+'%;width:'+2*a[2]+'px;height:'+2*a[2]+'px;margin:-'+a[2]+'px 0 0 -'+a[2]+'px;background:radial-gradient(circle at 35% 30%,#8a857c,#3c3934);box-shadow:inset -'+Math.round(a[2]*.3)+'px -'+Math.round(a[2]*.2)+'px '+Math.round(a[2]*.6)+'px #000a"></div>').join('');
+ else for(const b of s.bd||[]){const r=b.r,sh=b.flat?'':'box-shadow:inset -'+Math.round(r*.3)+'px -'+Math.round(r*.2)+'px '+Math.round(r*.6)+'px rgba(0,0,0,.6);';
+  h+='<div class="sb" style="left:'+b.x+'%;top:'+b.y+'%;width:'+2*r+'px;height:'+2*r+'px;margin:-'+r+'px 0 0 -'+r+'px;background:'+b.c+';opacity:'+(b.o||1)+';'+sh+(b.flat&&typeof b.ring==='string'?'border:7px solid '+b.ring+';':'')+'"></div>';
+  if(b.ring&&typeof b.ring!=='string')h+='<div class="sb" style="left:'+b.x+'%;top:'+b.y+'%;width:'+Math.round(r*3)+'px;height:'+Math.round(r*.7)+'px;margin:-'+Math.round(r*.35)+'px 0 0 -'+Math.round(r*1.5)+'px;border:'+Math.max(2,Math.round(r*.07))+'px solid rgba(235,220,170,.55);transform:rotate(-16deg);opacity:'+(b.o||1)+'"></div>'}
+ if(hz<100)h+='<div class="gd" style="top:'+hz+'%;background:'+s.gr+'"></div>';
+ return h}
+/* ===== The map: five zoom levels (1 Solar System, 2 region, 3 planetary system, 4 orbit of a location, 5 main screen) ===== */
+const ORB={mercury:{T:88,r:72,s:6},venus:{T:225,r:110,s:9},earth:{T:365,r:150,s:10},mars:{T:687,r:195,s:8},belt:{T:1700,r:240,s:0},jupiter:{T:4333,r:285,s:16},saturn:{T:10759,r:335,s:14},uranus:{T:30687,r:385,s:11},neptune:{T:60190,r:430,s:11},pluto:{T:90560,r:470,s:5}};
+const MOONT={moon:27.3,phobos:.32,deimos:1.26,io:1.77,europa:3.55,ganymede:7.15,callisto:16.7,titan:15.9,enceladus:1.37,rhea:4.5,iapetus:79,dione:2.74,tethys:1.89,mimas:.94,titania:8.7,oberon:13.5,umbriel:4.1,ariel:2.5,miranda:1.4,triton:-5.88,charon:6.39};
+const PLR={mercury:50,venus:70,earth:70,mars:55,belt:80,jupiter:150,saturn:120,uranus:95,neptune:95,pluto:40};
+const MR={moon:22,phobos:8,deimos:6,io:18,europa:16,ganymede:24,callisto:22,titan:26,enceladus:8,rhea:14,iapetus:14,dione:12,tethys:12,mimas:8,titania:16,oberon:15,umbriel:14,ariel:14,miranda:10,triton:20,charon:20};
+const GLOBE={mercury:'#8a8478',venus:'#e0b050',earth:'radial-gradient(circle at 40% 35%,#6a4a3c,#2a1a14)',moon:'#a8a39c',mars:'#b5532f',phobos:'#6a6058',deimos:'#9a9086',belt:'#7e7a72',jupiter:bands(JUPB),io:'radial-gradient(circle at 40% 35%,#ecd04e,#c9722a)',europa:'#dfeaf0',ganymede:'#8a8174',callisto:'#5b5249',saturn:bands(SATB),titan:'#d99a3a',enceladus:'#f4f8fb',rhea:'#c4bfb8',iapetus:'linear-gradient(90deg,#241e1a 50%,#dcd8d0 50%)',dione:'#d2d3d6',tethys:'#e8ebee',mimas:'#b6b6b8',uranus:bands(URAB),titania:'#746b64',oberon:'#54473f',umbriel:'#403e3c',ariel:'#cbc8c3',miranda:'#b2ada6',neptune:bands(NEPB),triton:'#ecdcd4',pluto:'#c8ab8c',charon:'#92929a'};
+const regOf=k=>colPageOf({k,p:LOCD[k].p}),sysOf=k=>LOCD[k].p||k;
+const hoursNow=()=>(((S.y-2200)*12+(S.m-1))*720)+(S.d-1)*24+S.h;
+const phase=(k,i)=>(Object.keys(LOCD).indexOf(k)*2.399+i)%(2*Math.PI);
+const CX=960,CY=540,ZONES=[[0,262],[262,360],[360,520]],ZLOC=['earth','jupiter','uranus'];
+function zoneHtml(){return ZONES.map((z,i)=>{const r=z[1],a=(z[0]/r*100).toFixed(2),b=(z[0]/r*100+.5).toFixed(2),mid=(z[0]+z[1])/2;return '<i class="zn zn'+i+'" style="width:'+2*r+'px;height:'+2*r+'px;margin:-'+r+'px 0 0 -'+r+'px;left:'+CX+'px;top:'+CY+'px;background:radial-gradient(circle closest-side,transparent '+a+'%,rgba(255,154,46,.9) '+a+'%,rgba(255,154,46,.9) '+b+'%,rgba(255,154,46,.13) '+b+'%)"><b style="top:'+(r-mid-18)+'px">'+esc(COLPAGES[i])+'<small>Click to zoom in</small></b></i>'}).join('')}
+function zoneAt(e){const m=$('mapbg').getBoundingClientRect(),k=m.width/1920,d=Math.hypot((e.clientX-m.left)/k-CX,(e.clientY-m.top)/k-CY);return ZONES.findIndex(z=>d>=z[0]&&d<z[1])}
+function mapBody(k,R,o){o=o||{};const sh='box-shadow:inset -'+Math.round(R*.3)+'px -'+Math.round(R*.2)+'px '+Math.round(R*.6)+'px rgba(0,0,0,.55);';
+ const col=S.colonies&&(S.colonies[k]||(o.any&&Object.keys(LOCD).some(m=>LOCD[m].p===k&&S.colonies[m])));
+ return '<div class="mb'+(o.cls?' '+o.cls:'')+'" data-mk="'+k+'"'+(o.T?' data-per="'+o.T+'" data-r="'+o.r+'" data-ph="'+o.ph+'"':'')+' style="width:'+2*R+'px;height:'+2*R+'px;margin:-'+R+'px 0 0 -'+R+'px;transform:translate('+(o.x===undefined?CX:o.x)+'px,'+(o.y===undefined?CY:o.y)+'px)">'+
+  '<i class="mi" style="background:'+GLOBE[k]+';'+sh+'"></i>'+(k==='saturn'||o.ring?'<i class="mr" style="left:-'+Math.round(R*.55)+'px;right:-'+Math.round(R*.55)+'px;top:'+Math.round(R*.65)+'px;bottom:'+Math.round(R*.65)+'px"></i>':'')+(col?'<i class="mc" style="inset:-'+(o.cr||6)+'px"></i>':'')+(o.label===false?'':'<span class="ml" style="left:'+(2*R+8)+'px">'+esc(LOCD[k].n)+'</span>')+'</div>'}
+function mapRing(r,cls){return '<i class="mo'+(cls?' '+cls:'')+'" style="width:'+2*r+'px;height:'+2*r+'px;margin:-'+r+'px 0 0 -'+r+'px;left:'+CX+'px;top:'+CY+'px"></i>'}
+function beltRing(r){let d='';for(let i=0;i<110;i++){const a=i*2.399,rr=r+((i*37)%17-8),s=1+(i%3);d+='<i style="left:'+Math.round(Math.cos(a)*rr)+'px;top:'+Math.round(Math.sin(a)*rr)+'px;width:'+s+'px;height:'+s+'px"></i>'}
+ return '<div class="belt" data-rot="'+ORB.belt.T+'" data-mk="belt" style="left:'+CX+'px;top:'+CY+'px">'+d+'</div>'}
+const regionKeys=g=>Object.keys(ORB).filter(k=>regOf(k)===g);
+function mapHtml(){const z=S.view.z;let h='<div class="sk" style="background:'+STARS+';opacity:.8"></div>';
+ const sun=r=>'<div class="sb" style="left:'+CX+'px;top:'+CY+'px;width:'+2*r+'px;height:'+2*r+'px;margin:-'+r+'px 0 0 -'+r+'px;background:#fff3c8;box-shadow:0 0 '+r*2+'px '+r+'px #ffb84a99"></div>';
+ if(z===1){h+=zoneHtml()+sun(22);for(const k in ORB){const o=ORB[k];h+=mapRing(o.r);if(k==='belt'){h+=beltRing(o.r);continue}h+=mapBody(k,o.s,{T:o.T,r:o.r,ph:phase(k,0),any:1})}}
+ else if(z===2){const g=regOf(S.loc),ks=regionKeys(g),rs=ks.map(k=>ORB[k].r),r0=Math.min.apply(null,rs),r1=Math.max.apply(null,rs),mr=k=>110+(ORB[k].r-r0)/(r1-r0)*340;
+  h+=sun(40);for(const k of ks){const r=mr(k);h+=mapRing(r);if(k==='belt'){h+=beltRing(r);continue}h+=mapBody(k,Math.round(ORB[k].s*2.6),{T:ORB[k].T,r,ph:phase(k,0),cr:8,any:1})}}
+ else if(z===3){const p=sysOf(S.loc),ms=Object.keys(LOCD).filter(k=>LOCD[k].p===p),R=PLR[p];
+  h+=p==='belt'?beltRing(1):'';
+  h+=mapBody(p,R,{label:true,cr:10,ring:p==='saturn'});
+  ms.forEach((k,i)=>{const r=ms.length>1?R+90+(450-R-90)*i/(ms.length-1):R+170;h+=mapRing(r)+mapBody(k,MR[k],{T:MOONT[k],r,ph:phase(k,1),cr:7})})}
+ else{const k=S.loc,R=300;h+=mapBody(k,R,{label:false,cr:12,ring:k==='saturn'})+mapRing(400,'op')+'<div class="mk" data-per="2" data-r="400" data-ph="'+phase(k,2)+'" style="width:0;height:0"><i></i></div>'+'<div class="mt">'+(S.colonies&&S.colonies[k]?'Colony: '+esc(LOCD[k].col||LOCD[k].n):'No colony')+'<small>Click the globe to land</small></div>'}
+ return h}
+function updateOrbits(){const m=$('mapbg');if(!m||m.hidden)return;const t=hoursNow()/24+(S.speed&&typeof acc!=='undefined'?acc/S.speed/24:0);
+ m.querySelectorAll('[data-per]').forEach(e=>{const r=+e.dataset.r,a=+e.dataset.ph+2*Math.PI*t/+e.dataset.per;e.style.transform='translate('+(CX+Math.cos(a)*r).toFixed(1)+'px,'+(CY+Math.sin(a)*r).toFixed(1)+'px)'});
+ m.querySelectorAll('[data-rot]').forEach(e=>{e.style.transform='rotate('+(360*t/+e.dataset.rot).toFixed(3)+'deg)'})}
+(function frame(){try{if(S&&mode==='game'&&S.view.z<5)updateOrbits()}catch(e){}requestAnimationFrame(frame)})();
+const ZNAMES=()=>[['Solar System','Solar System'],[COLPAGES[regOf(S.loc)],COLPAGES[regOf(S.loc)]],[(sysOf(S.loc)==='belt'?'Asteroid belt':LOCD[sysOf(S.loc)].n+' system'),'System'],[LOCD[S.loc].n+' orbit','Orbit'],[LOCD[S.loc].n+' surface','Surface']];
+function viewTitle(){const z=S.view.z,l=LOCD[S.loc];return z===1?'Solar System':z===2?COLPAGES[regOf(S.loc)]:z===3?ZNAMES()[2][0]:z===4?l.n+' – orbit':(S.loc==='moon'?'Moonbase – Mare Tranquillitatis':(S.colonies&&S.colonies[S.loc]?l.col||l.n:l.n))}
+function zoomTo(z){S.view.z=z;go('base')}
+function mapClick(k){const z=S.view.z;if(z===1){S.loc=k;S.view.z=2}else if(z===2){S.loc=k;S.view.z=3}else if(z===3){S.loc=k;S.view.z=4}else if(z===4){S.view.z=5}go('base')}
 const SCR=['base','col','ships','tov','db','build','tech','yard','port','flight','log'];
 function go(s){S.screen=s;render()}
 SCR.filter(s=>s!=='base').forEach(s=>{const h=$('scr-'+s).querySelector('h2');h.classList.add('wh');h.insertAdjacentHTML('beforeend','<button class="xb" title="Close (Esc)" aria-label="Close"><svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="square"><path d="M3 3L13 13M13 3L3 13"/></svg></button>');h.querySelector('.xb').onclick=()=>go('base')});
 function fit(){const q=+new URLSearchParams(location.search).get('scale'),k=q>0?q:Math.min(innerWidth/1920,innerHeight/1080);$('game').style.transform='translate(-50%,-50%) scale('+k+')'}
 addEventListener('resize',fit);
 function render(){
- SCR.forEach(s=>$('scr-'+s).hidden=S.screen!==s);$('scene').classList.toggle('quiet',S.screen!=='base');$('back').setAttribute('aria-pressed',String(S.screen==='base'));
+ SCR.forEach(s=>$('scr-'+s).hidden=S.screen!==s);$('scene').classList.toggle('quiet',S.screen!=='base');{const z=S.view.z,away=S.loc!=='moon'||z<5;$('scene').classList.toggle('away',away);$('scenebg').hidden=z<5;$('mapbg').hidden=z>=5;set('scenebg',z>=5?sceneHtml(S.loc):'');set('mapbg',z<5?mapHtml():'');if(S.screen==='base'&&away)$('scr-base').hidden=true;$('colname').textContent=viewTitle();document.querySelector('.ph').hidden=z<5;set('zoombar',ZNAMES().map((n,i)=>'<button data-z="'+(i+1)+'" aria-pressed="'+(z===i+1)+'" title="Zoom level '+(i+1)+'">'+(i+1)+' · '+esc(n[1])+'</button>').join(''));updateOrbits()}$('back').setAttribute('aria-pressed',String(S.screen==='base'));
  $('b-build').textContent=S.q.length?S.q.length+' in progress':'Idle';
  $('b-tech').textContent=S.cur?T[S.cur].n:'Idle';
  $('colbtn').setAttribute('aria-pressed',String(S.screen==='col'));$('shipbtn').setAttribute('aria-pressed',String(S.screen==='ships'));$('tovbtn').setAttribute('aria-pressed',String(S.screen==='tov'));$('dbbtn').setAttribute('aria-pressed',String(S.screen==='db'));$('logbtn').setAttribute('aria-pressed',String(S.screen==='log'));
@@ -559,7 +655,7 @@ function render(){
   h+='<div class="row"><div>'+m.n+'<small>Brings '+m.d+' · '+Math.round(m.t*30)+' days · '+Math.round(m.risk*100)+'% risk · costs '+cost(m.c)+' · crew '+CREW[k]+(freeCol()<CREW[k]?' <span class="bad">(needs '+CREW[k]+' free colonists)</span>':'')+'</small></div><button '+(S.ships>0&&can(m.c)&&freeCol()>=CREW[k]&&!S.over?'':'disabled')+' onclick="launch(\''+k+'\')">Launch</button></div>'}
  if(S.out.length)h+='<div class="dim" style="padding-top:6px">In flight: '+S.out.map(o=>M[o.k].n+' ('+dur(o.left)+', crew '+o.crew+')').join(', ')+'</div>';
  set('yard',y);set('port',pt);
- const np=COLPAGES.length;colPage=Math.min(colPage,np-1);const arr=(d,on,t)=>'<button class="clk pgb" data-cp="'+d+'" title="'+t+'" aria-label="'+t+'"'+(on?'':' disabled')+'><svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="square"><path d="'+(d<0?'M10.5 2.5L5 8L10.5 13.5':'M5.5 2.5L11 8L5.5 13.5')+'"/></svg></button>';set('cols','<div class="pgh">'+arr(-1,colPage>0,'Previous page')+'<b>'+COLPAGES[colPage]+'</b>'+arr(1,colPage<np-1,'Next page')+'</div>'+LOCL().filter(l=>colPageOf(l)===colPage).map(l=>{const c=!!S.colonies[l.k];return '<div class="row loc'+(c?'':' off')+(l.p?' sub':'')+'"><div><span class="ci" role="img" title="'+(c?'Colonised':'No colony')+'" aria-label="'+(c?'Colonised':'No colony')+'">'+ico('colony')+'</span><span class="nm" tabindex="0" data-d="'+esc(l.d)+'">'+l.n+'</span>'+(c?'<small>Colony: '+(l.col||l.n)+' · '+S.pop+' colonists</small>':'')+'</div><span class="lc">'+CAT.map(k=>'<span class="ct" tabindex="0" aria-label="'+k.n+'"><svg viewBox="0 0 16 16" width="20" height="20" aria-hidden="true">'+ICON[CATI[k.n]]+'</svg>'+resTip(l,k)+'</span>').join('')+'</span></div>'}).join(''));set('flights',h);
+ const np=COLPAGES.length;colPage=Math.min(colPage,np-1);const arr=(d,on,t)=>'<button class="clk pgb" data-cp="'+d+'" title="'+t+'" aria-label="'+t+'"'+(on?'':' disabled')+'><svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="square"><path d="'+(d<0?'M10.5 2.5L5 8L10.5 13.5':'M5.5 2.5L11 8L5.5 13.5')+'"/></svg></button>';set('cols','<div class="sticky"><div class="pgh">'+arr(-1,colPage>0,'Previous page')+'<b>'+COLPAGES[colPage]+'</b>'+arr(1,colPage<np-1,'Next page')+'</div></div>'+LOCL().filter(l=>colPageOf(l)===colPage).map(l=>{const c=!!S.colonies[l.k];return '<div class="row loc'+(c?'':' off')+(l.p?' sub':'')+'"><div><span class="ci" role="img" title="'+(c?'Colonised':'No colony')+'" aria-label="'+(c?'Colonised':'No colony')+'">'+ico('colony')+'</span><span class="nm" tabindex="0" data-d="'+esc(l.d)+'">'+l.n+'</span>'+(c?'<small>Colony: '+(l.col||l.n)+' · '+S.pop+' colonists</small>':'')+'</div><span class="lc">'+CAT.map(k=>'<span class="ct" tabindex="0" aria-label="'+k.n+'"><svg viewBox="0 0 16 16" width="20" height="20" aria-hidden="true">'+ICON[CATI[k.n]]+'</svg>'+resTip(l,k)+'</span>').join('')+'</span></div>'}).join(''));set('flights',h);
  {const d=dbHtml();set('db-tabs',d[0]);set('dbList',d[1])}
  {let n=0;const cnt={probe:owned()};
   const sb=t=>'<button class="sbox'+(cnt[t.k]?'':' dim')+'" data-sf="'+t.k+'" aria-pressed="'+(shipFilter===t.k)+'" title="'+(shipFilter===t.k?'Show all starships':'Show only '+t.n)+'"><b>'+(cnt[t.k]||0)+'</b><span>'+t.n+'</span></button>';
@@ -569,13 +665,13 @@ function render(){
   const sel=all.filter(x=>!shipFilter||x.t===shipFilter),npg=Math.max(1,Math.ceil(sel.length/SHIPS_PER));shipPage=Math.min(shipPage,npg-1);
   const shown=sel.slice(shipPage*SHIPS_PER,(shipPage+1)*SHIPS_PER),fn=shipFilter?SHIPTYPES.find(t=>t.k===shipFilter).n:'';
   const hdr='<div class="pgh">'+pgArr('data-xp',-1,shipPage>0,'Previous page')+'<b>Moon Fleet</b>'+pgArr('data-xp',1,shipPage<npg-1,'Next page')+'</div>';
-  set('shipsList',hdr+'<div class="sgrid">'+SHIPTYPES.map(sb).join('')+'</div>'+(shown.map(x=>x.h).join('')||'<div class="dim">'+(shipFilter?'No '+fn+'.':'No starships. Build one in the Shipyard.')+'</div>'))}
+  set('shipsList','<div class="sticky">'+hdr+'<div class="sgrid">'+SHIPTYPES.map(sb).join('')+'</div></div>'+(shown.map(x=>x.h).join('')||'<div class="dim">'+(shipFilter?'No '+fn+'.':'No starships. Build one in the Shipyard.')+'</div>'))}
  {const act=Object.keys(S.proj).filter(k=>S.proj[k].state==='active'),pau=Object.keys(S.proj).filter(k=>S.proj[k].state!=='active'),done=Object.keys(S.tech);
   const pr=k=>{const tot=T[k].rp*24,left=S.proj[k].left;return Math.round((1-left/tot)*100)+'% · '+Math.ceil(left/24)+' days left'};
   const fk=k=>!tovFilter||T[k].cat===tovFilter,fp=pau.filter(fk),fd=done.filter(fk),row=(k,st)=>'<div class="row"><div>'+T[k].n+'<small>'+tcn(k)+' · '+st+'</small></div></div>';
   const cb=c=>{const n=Object.keys(T).filter(k=>T[k].cat===c.k).length;return '<button class="sbox'+(n?'':' dim')+'" data-rf="'+c.k+'" aria-pressed="'+(tovFilter===c.k)+'" title="'+(tovFilter===c.k?'Show all categories':'Show only '+c.n)+'"><b>'+n+'</b><span>'+c.n+'</span></button>'};
   set('invest',act.map(k=>row(k,'Moonbase · '+pr(k))).join('')||'<div class="dim">Nothing under investigation.</div>');
-  set('tovList',   '<div class="sgrid c7">'+TCATS.map(cb).join('')+'</div>'+
+  set('tovList',   '<div class="sticky"><div class="sgrid c7">'+TCATS.map(cb).join('')+'</div></div>'+
    (fp.length?'<h4 class="rh">Paused ('+fp.length+')</h4>'+fp.map(k=>row(k,'Moonbase · paused · '+pr(k))).join(''):'')+
    '<h4 class="rh">Completed ('+fd.length+')</h4>'+(fd.map(k=>row(k,T[k].d)).join('')||'<div class="dim">No technologies researched yet.</div>'))}
  document.querySelectorAll('[data-lt]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.lt===logTab)));
@@ -594,7 +690,11 @@ $('step').onclick=()=>{S.speed=0;tick();render()};
 let last=performance.now(),acc=0;
 setInterval(()=>{const n=performance.now(),dt=n-last;last=n;if(!S.speed||S.over||mode!=='game'||$('dlg').open||$('dmenu').open){acc=0;return}acc+=dt;let c=0;while(acc>=S.speed&&!S.over&&c<20){acc-=S.speed;tick();c++}acc=Math.min(acc,S.speed);if(c)render()},100);
 document.querySelectorAll('[data-go]').forEach(b=>b.onclick=()=>go(b.dataset.go));
-$('back').onclick=()=>go('base');
+$('back').onclick=()=>{S.loc='moon';S.view.z=5;go('base')};
+$('mapbg').addEventListener('click',e=>{const b=e.target.closest('[data-mk]');if(b)mapClick(b.dataset.mk);else if(S.view.z===1){const g=zoneAt(e);if(g>=0){S.loc=ZLOC[g];S.view.z=2;go('base')}}});
+$('mapbg').addEventListener('mousemove',e=>{if(S.view.z===1)$('mapbg').dataset.zone=zoneAt(e)});
+$('mapbg').addEventListener('mouseleave',()=>{$('mapbg').dataset.zone='-1'});
+$('zoombar').addEventListener('click',e=>{const b=e.target.closest('[data-z]');if(b)zoomTo(+b.dataset.z)});
 $('colbtn').onclick=()=>go('col');$('dbbtn').onclick=()=>go('db');$('logbtn').onclick=()=>go('log');
 $('db-tabs').addEventListener('click',e=>{const b=e.target.closest('[data-dt]');if(b){dbTab=b.dataset.dt;render()}});
 $('tovList').addEventListener('click',e=>{const f=e.target.closest('[data-rf]');if(f){tovFilter=tovFilter===f.dataset.rf?null:f.dataset.rf;render()}});

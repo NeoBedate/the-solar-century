@@ -5,7 +5,7 @@ Things we have said we will build or decide later.
 **Game flow**
 - Load Game and Options on the title screen.
 - Easy and Hard difficulties (only Normal is available).
-- The original-style main screen image (the Moonbase scene is a placeholder).
+- The original-style main screen images. Every location has a CSS placeholder scene today (the Moonbase one included); they are to be replaced by real art.
 
 **Design to define**
 - Technologies for the Manufacturing and Weapons research categories. The filters exist, but no technology belongs to them yet.
@@ -15,6 +15,7 @@ Things we have said we will build or decide later.
 - Where to display the number of colonised locations. It is tracked already, but hidden for now.
 
 **Expansion**
+- Map: starships and missions shown flying on the map and in orbit, mouse wheel zoom, and real art for the orbit globes. Today the map is schematic and the orbit view only shows the globe with a marker.
 - Founding colonies on other planets, moons and in the asteroid belt. They are listed in Colonies but only the Moonbase exists.
 - Several outposts running different research projects at the same time. The Under Investigation tab of the Mission Control Log is built for this.
 - The other starship types: Hop Miners, Solar Carriers, Nuclear Cruisers and Colony Ships. They can be researched and built, and today only Probes exist.
