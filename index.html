@@ -745,6 +745,12 @@ $('back').onclick=()=>{S.loc='moon';S.view.z=5;go('base')};
 $('mapbg').addEventListener('click',e=>{const b=e.target.closest('[data-mk]');if(b)mapClick(b.dataset.mk);else if(S.view.z===1){const g=zoneAt(e);if(g>=0){S.loc=ZLOC[g];S.view.z=2;go('base')}}});
 $('mapbg').addEventListener('mousemove',e=>{if(S.view.z===1)$('mapbg').dataset.zone=zoneAt(e)});
 $('mapbg').addEventListener('mouseleave',()=>{$('mapbg').dataset.zone='-1'});
+let wheelAt=0;
+$('game').addEventListener('wheel',e=>{if(mode!=='game'||S.screen!=='base'||S.over||$('dlg').open||$('dmenu').open||e.target.closest('.win,header,#zoombar'))return;e.preventDefault();const n=performance.now();if(n-wheelAt<220||!e.deltaY)return;wheelAt=n;const z=S.view.z;
+ if(e.deltaY>0){if(z>1)zoomTo(z-1);return}
+ if(z>=5)return;const b=e.target.closest('[data-mk]');
+ if(z===1&&!b){const g=zoneAt(e);if(g>=0)S.loc=ZLOC[g]}else if(b)S.loc=b.dataset.mk;
+ zoomTo(z+1)},{passive:false});
 $('zoombar').addEventListener('click',e=>{const b=e.target.closest('[data-z]');if(b)zoomTo(+b.dataset.z)});
 $('colbtn').onclick=()=>go('col');$('dbbtn').onclick=()=>go('db');$('logbtn').onclick=()=>go('log');
 $('db-tabs').addEventListener('click',e=>{const b=e.target.closest('[data-dt]');if(b){dbTab=b.dataset.dt;render()}});
