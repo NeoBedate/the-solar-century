@@ -627,8 +627,9 @@ function sceneHtml(k){const s=SCENES[k]||SCENES.moon,hz=s.hz===undefined?66:s.hz
  if(hz<100)h+='<div class="gd" style="top:'+hz+'%;background:'+s.gr+'"></div>';
  return h}
 /* ===== The map: five zoom levels (1 Solar System, 2 region, 3 planetary system, 4 orbit of a location, 5 main screen) ===== */
-const ORB={mercury:{T:88,r:72,s:6},venus:{T:225,r:110,s:9},earth:{T:365,r:150,s:10},mars:{T:687,r:195,s:8},belt:{T:1700,r:240,s:0},jupiter:{T:4333,r:285,s:16},saturn:{T:10759,r:335,s:14},uranus:{T:30687,r:385,s:11},neptune:{T:60190,r:430,s:11},pluto:{T:90560,r:470,s:5}};
-const MOONT={moon:27.3,phobos:.32,deimos:1.26,io:1.77,europa:3.55,ganymede:7.15,callisto:16.7,titan:15.9,enceladus:1.37,rhea:4.5,iapetus:79,dione:2.74,tethys:1.89,mimas:.94,titania:8.7,oberon:13.5,umbriel:4.1,ariel:2.5,miranda:1.4,triton:-5.88,charon:6.39};
+const ORB={mercury:{r:72,s:6},venus:{r:110,s:9},earth:{r:150,s:10},mars:{r:195,s:8},belt:{r:240,s:0},jupiter:{r:285,s:16},saturn:{r:335,s:14},uranus:{r:385,s:11},neptune:{r:430,s:11},pluto:{r:470,s:5}};
+const RETRO={triton:1};/* orbits backwards */
+const PER=k=>LOCD[k].per*(RETRO[k]?-1:1);/* real orbital period in days, from the location data */
 const PLR={mercury:50,venus:70,earth:70,mars:55,belt:80,jupiter:150,saturn:120,uranus:95,neptune:95,pluto:40};
 const MR={moon:22,phobos:8,deimos:6,io:18,europa:16,ganymede:24,callisto:22,titan:26,enceladus:8,rhea:14,iapetus:14,dione:12,tethys:12,mimas:8,titania:16,oberon:15,umbriel:14,ariel:14,miranda:10,triton:20,charon:20};
 const GLOBE={mercury:'#8a8478',venus:'#e0b050',earth:'radial-gradient(circle at 40% 35%,#6a4a3c,#2a1a14)',moon:'#a8a39c',mars:'#b5532f',phobos:'#6a6058',deimos:'#9a9086',belt:'#7e7a72',jupiter:bands(JUPB),io:'radial-gradient(circle at 40% 35%,#ecd04e,#c9722a)',europa:'#dfeaf0',ganymede:'#8a8174',callisto:'#5b5249',saturn:bands(SATB),titan:'#d99a3a',enceladus:'#f4f8fb',rhea:'#c4bfb8',iapetus:'linear-gradient(90deg,#241e1a 50%,#dcd8d0 50%)',dione:'#d2d3d6',tethys:'#e8ebee',mimas:'#b6b6b8',uranus:bands(URAB),titania:'#746b64',oberon:'#54473f',umbriel:'#403e3c',ariel:'#cbc8c3',miranda:'#b2ada6',neptune:bands(NEPB),triton:'#ecdcd4',pluto:'#c8ab8c',charon:'#92929a'};
@@ -644,17 +645,17 @@ function mapBody(k,R,o){o=o||{};const sh='box-shadow:inset -'+Math.round(R*.3)+'
   '<i class="mi" style="background:'+GLOBE[k]+';'+sh+'"></i>'+(k==='saturn'||o.ring?'<i class="mr" style="left:-'+Math.round(R*.55)+'px;right:-'+Math.round(R*.55)+'px;top:'+Math.round(R*.65)+'px;bottom:'+Math.round(R*.65)+'px"></i>':'')+(col?'<i class="mc" style="inset:-'+(o.cr||6)+'px"></i>':'')+(o.label===false?'':'<span class="ml" style="left:'+(2*R+8)+'px">'+esc(LOCD[k].n)+'</span>')+'</div>'}
 function mapRing(r,cls){return '<i class="mo'+(cls?' '+cls:'')+'" style="width:'+2*r+'px;height:'+2*r+'px;margin:-'+r+'px 0 0 -'+r+'px;left:'+CX+'px;top:'+CY+'px"></i>'}
 function beltRing(r){let d='';for(let i=0;i<110;i++){const a=i*2.399,rr=r+((i*37)%17-8),s=1+(i%3);d+='<i style="left:'+Math.round(Math.cos(a)*rr)+'px;top:'+Math.round(Math.sin(a)*rr)+'px;width:'+s+'px;height:'+s+'px"></i>'}
- return '<div class="belt" data-rot="'+ORB.belt.T+'" data-mk="belt" style="left:'+CX+'px;top:'+CY+'px">'+d+'</div>'}
+ return '<div class="belt" data-rot="'+PER('belt')+'" data-mk="belt" style="left:'+CX+'px;top:'+CY+'px">'+d+'</div>'}
 const regionKeys=g=>Object.keys(ORB).filter(k=>regOf(k)===g);
 function mapHtml(){const z=S.view.z;let h='<div class="sk" style="background:'+STARS+';opacity:.8"></div>';
  const sun=r=>'<div class="sb" style="left:'+CX+'px;top:'+CY+'px;width:'+2*r+'px;height:'+2*r+'px;margin:-'+r+'px 0 0 -'+r+'px;background:#fff3c8;box-shadow:0 0 '+r*2+'px '+r+'px #ffb84a99"></div>';
- if(z===1){h+=zoneHtml()+sun(22);for(const k in ORB){const o=ORB[k];h+=mapRing(o.r);if(k==='belt'){h+=beltRing(o.r);continue}h+=mapBody(k,o.s,{T:o.T,r:o.r,ph:phase(k,0),any:1})}}
+ if(z===1){h+=zoneHtml()+sun(22);for(const k in ORB){const o=ORB[k];h+=mapRing(o.r);if(k==='belt'){h+=beltRing(o.r);continue}h+=mapBody(k,o.s,{T:PER(k),r:o.r,ph:phase(k,0),any:1})}}
  else if(z===2){const g=regOf(S.loc),ks=regionKeys(g),rs=ks.map(k=>ORB[k].r),r0=Math.min.apply(null,rs),r1=Math.max.apply(null,rs),mr=k=>110+(ORB[k].r-r0)/(r1-r0)*340;
-  h+=sun(40);for(const k of ks){const r=mr(k);h+=mapRing(r);if(k==='belt'){h+=beltRing(r);continue}h+=mapBody(k,Math.round(ORB[k].s*2.6),{T:ORB[k].T,r,ph:phase(k,0),cr:8,any:1})}}
+  h+=sun(40);for(const k of ks){const r=mr(k);h+=mapRing(r);if(k==='belt'){h+=beltRing(r);continue}h+=mapBody(k,Math.round(ORB[k].s*2.6),{T:PER(k),r,ph:phase(k,0),cr:8,any:1})}}
  else if(z===3){const p=sysOf(S.loc),ms=Object.keys(LOCD).filter(k=>LOCD[k].p===p),R=PLR[p];
   h+=p==='belt'?beltRing(1):'';
   h+=mapBody(p,R,{label:true,cr:10,ring:p==='saturn'});
-  ms.forEach((k,i)=>{const r=ms.length>1?R+90+(450-R-90)*i/(ms.length-1):R+170;h+=mapRing(r)+mapBody(k,MR[k],{T:MOONT[k],r,ph:phase(k,1),cr:7})})}
+  ms.forEach((k,i)=>{const r=ms.length>1?R+90+(450-R-90)*i/(ms.length-1):R+170;h+=mapRing(r)+mapBody(k,MR[k],{T:PER(k),r,ph:phase(k,1),cr:7})})}
  else{const k=S.loc,R=300;h+=mapBody(k,R,{label:false,cr:12,ring:k==='saturn'})+mapRing(400,'op')+'<div class="mk" data-per="2" data-r="400" data-ph="'+phase(k,2)+'" style="width:0;height:0"><i></i></div>'+'<div class="mt">'+(S.colonies&&S.colonies[k]?'Colony: '+esc(LOCD[k].col||LOCD[k].n):'No colony')+'<small>Click the globe to land</small></div>'}
  return h}
 function updateOrbits(){const m=$('mapbg');if(!m||m.hidden)return;const t=hoursNow()/24+(S.speed&&typeof acc!=='undefined'?acc/S.speed/24:0);
