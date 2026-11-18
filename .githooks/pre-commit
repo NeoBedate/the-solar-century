@@ -3,6 +3,9 @@
 # Install once per computer (from the repository folder):   git config core.hooksPath .githooks
 # A failing check stops the commit. Fix the problem; do not skip the hook.
 
+# Tools that do not load the shell profile (GitHub Desktop, editors) miss Homebrew's Node: add its usual folders.
+PATH="/opt/homebrew/bin:/usr/local/bin:$PATH"; export PATH
+
 files=$(git diff --cached --name-only)
 echo "$files" | grep -Eq '^(index\.html|GDD\.html|tools/)' || exit 0
 
