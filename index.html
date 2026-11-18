@@ -223,6 +223,7 @@ button.go{background:var(--acc);color:#1a0f00}
 .t-elec{background:#ff9a2e}
 .t-lab{background:#c58cff}
 .t-hab{background:#7fe0a0}
+.t-farm{background:#9ad65a}
 .t-reactor{background:#e6e36a}
 .t-fact{background:#b6b6c8}
 .t-shop{background:#9fb3c8}
@@ -416,21 +417,22 @@ dialog::backdrop{background:#000a}
 /* ===== GAME DATA: defaults for buildings, technologies, missions, staffing, weights (editable in the Editor through DATA) ===== */
 const START=2100,DEADLINE=2200,WD=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
 const dim=(y,m)=>new Date(Date.UTC(y,m,0)).getUTCDate(),wday=(y,m,d)=>WD[new Date(Date.UTC(y,m-1,d)).getUTCDay()];
-const RN={hydrogen:'Hydrogen',oxygen:'Oxygen',water:'Water',nitrogen:'Nitrogen',methane:'Methane',sulphur:'Sulphur',titanium:'Titanium',aluminium:'Aluminium',copper:'Copper',silica:'Silica',iron:'Iron',silver:'Silver',chromium:'Chromium',platinum:'Platinum',uranium:'Uranium',components:'Components',machinery:'Machinery',software:'Software'};
+const RN={hydrogen:'Hydrogen',oxygen:'Oxygen',water:'Water',nitrogen:'Nitrogen',methane:'Methane',sulphur:'Sulphur',titanium:'Titanium',aluminium:'Aluminium',copper:'Copper',silica:'Silica',iron:'Iron',silver:'Silver',chromium:'Chromium',platinum:'Platinum',uranium:'Uranium',components:'Components',machinery:'Machinery',software:'Software',food:'Food'};
 const B={
- solar:{n:'Solar array',c:{iron:8,silica:12,aluminium:4,components:1},p:4,d:'+4 power',g:'S',t:48},
- mine:{n:'Regolith mine',c:{iron:16,aluminium:8,titanium:2,components:2,machinery:4},p:-2,out:{iron:6,silica:4,aluminium:3,titanium:1.5,sulphur:.5},d:'+6 iron, +4 silica, +3 aluminium, +1.5 titanium, +0.5 sulphur / month',g:'M',t:72},
- ice:{n:'Ice extractor',c:{iron:12,aluminium:8,titanium:2,components:2,machinery:4},p:-2,out:{water:10,nitrogen:1},d:'+10 water, +1 nitrogen / month',g:'I',t:72},
- elec:{n:'Electrolyser',c:{iron:16,aluminium:8,copper:4,components:3,machinery:4},p:-3,inp:{water:18},out:{hydrogen:2,oxygen:16},d:'18 water → 2 hydrogen + 16 oxygen / month',g:'E',t:120},
- fact:{n:'Component factory',c:{iron:24,aluminium:8,copper:4,silica:8,components:3,machinery:6},p:-3,inp:{iron:8,silica:5,aluminium:2,copper:.5},out:{components:4},d:'8 iron + 5 silica + 2 aluminium + 0.5 copper → 4 components / month',g:'C',t:168},
- shop:{n:'Machinery workshop',c:{iron:24,aluminium:12,copper:4,silica:8,components:4,machinery:6},p:-3,inp:{iron:10,aluminium:4,titanium:1},out:{machinery:2},d:'10 iron + 4 aluminium + 1 titanium → 2 machinery / month',g:'W',t:168},
+ solar:{n:'Solar array',c:{iron:16,silica:24,aluminium:8,components:2},p:6,d:'+6 power',g:'S',t:48},
+ mine:{n:'Regolith mine',c:{iron:16,aluminium:8,titanium:2,components:2,machinery:4},p:-2,out:{iron:12,silica:8,aluminium:6,titanium:3,sulphur:1},d:'+12 iron, +8 silica, +6 aluminium, +3 titanium, +1 sulphur / month',g:'M',t:72},
+ ice:{n:'Ice extractor',c:{iron:12,aluminium:8,titanium:2,components:2,machinery:4},p:-2,out:{water:12,nitrogen:1.2},d:'+12 water, +1.2 nitrogen / month',g:'I',t:72},
+ elec:{n:'Electrolyser',c:{iron:16,aluminium:8,copper:4,components:3,machinery:4},p:-3,inp:{water:18},out:{hydrogen:2.4,oxygen:19.2},d:'18 water → 2.4 hydrogen + 19.2 oxygen / month',g:'E',t:120},
+ fact:{n:'Component factory',c:{iron:24,aluminium:8,copper:4,silica:8,components:3,machinery:6},p:-3,inp:{iron:8,silica:5,aluminium:2,copper:.5},out:{components:8},d:'8 iron + 5 silica + 2 aluminium + 0.5 copper → 8 components / month',g:'C',t:168},
+ shop:{n:'Machinery workshop',c:{iron:24,aluminium:12,copper:4,silica:8,components:4,machinery:6},p:-3,inp:{iron:10,aluminium:4,titanium:1},out:{machinery:4},d:'10 iron + 4 aluminium + 1 titanium → 4 machinery / month',g:'W',t:168},
+ farm:{n:'Hydroponics',c:{iron:12,aluminium:8,silica:10,components:2,machinery:2},p:-2,inp:{water:4,nitrogen:1},out:{food:9.6},d:'',g:'F',t:96},
  lab:{n:'Science lab',c:{aluminium:12,copper:8,silica:8,titanium:4,components:4},p:-3,d:'Research points: 1 per 20 days. While a project is active: −75%. Needed to start any project',g:'L',t:144},
- hab:{n:'Habitat module',c:{aluminium:16,iron:16,nitrogen:8,water:16,components:3},p:-1,cap:6,d:'houses 6 colonists',g:'H',t:96},
- reactor:{n:'Fission reactor',tech:'fission',c:{iron:32,titanium:16,chromium:8,uranium:8,components:6,machinery:8},p:12,inp:{uranium:.5},d:'+12 power, burns 0.5 uranium / month',g:'R',t:200}
+ hab:{n:'Habitat module',c:{aluminium:64,iron:64,nitrogen:32,water:64,components:12},p:-1,cap:50,d:'houses 50 colonists',g:'H',t:96},
+ reactor:{n:'Fission reactor',tech:'fission',c:{iron:32,titanium:16,chromium:8,uranium:8,components:6,machinery:8},p:24,inp:{uranium:.5},d:'+24 power, burns 0.5 uranium / month',g:'R',t:200}
 };
 const T={
  deep:{n:'Deep drilling',rp:25,req:[],cat:'mining',d:'Regolith mines +50%'},
- hydro:{n:'Hydroponics',rp:30,req:[],cat:'life',d:'Colonists use 40% less water'},
+ hydro:{n:'Water recycling',rp:30,req:[],cat:'life',d:'Colonists use 40% less water'},
  fusion:{n:'Fusion cells',rp:50,req:['deep'],cat:'energy',d:'Solar arrays +50%'},
  ion:{n:'Ion drive',rp:50,req:['deep'],cat:'ships',d:'Unlocks Mars survey'},
  fission:{n:'Nuclear power',rp:60,req:['deep'],cat:'energy',d:'Unlocks the fission reactor'},
@@ -453,21 +455,29 @@ const PORT={max:8,start:1,t:96,c:{iron:12,aluminium:8,titanium:2,silica:8,compon
 const WEAR=.05;
 let BOOST=.1;
 const STAFF={
- solar:{job:'labourer',min:1,full:2},
- mine:{job:'labourer',min:2,full:3},
- ice:{job:'labourer',min:2,full:3},
- elec:{job:'scientist',min:2,full:3},
- reactor:{job:'scientist',min:3,full:5},
- lab:{job:'scientist',min:2,full:3},
- fact:{job:'technician',min:2,full:4},
- shop:{job:'technician',min:2,full:4},
+ solar:{job:'labourer',min:4,full:8},
+ mine:{job:'labourer',min:8,full:12},
+ ice:{job:'labourer',min:8,full:12},
+ farm:{job:'labourer',min:8,full:12},
+ elec:{job:'scientist',min:8,full:12},
+ reactor:{job:'scientist',min:12,full:20},
+ lab:{job:'scientist',min:8,full:12},
+ fact:{job:'technician',min:8,full:16},
+ shop:{job:'technician',min:8,full:16},
  build:{job:'builder',min:2,full:4}
 };
 const JOBN={labourer:'Labourers',scientist:'Scientists',technician:'Technicians',builder:'Builders'};
 /* Weights in tonnes (provisional). Everything a starship carries weighs: each unit of a resource, each part, and each crew member (the same for everyone). */
-const WT={res:{hydrogen:.07,oxygen:1.1,water:1,nitrogen:.8,methane:.4,sulphur:2,titanium:4.5,aluminium:2.7,copper:9,silica:2.5,iron:7.8,silver:10.5,chromium:7.2,platinum:21,uranium:19,components:.5,machinery:5,software:.01},part:{drive:40,life:15,cargo:20,crew:12,bridge:8,computer:2,weapons:25,shields:18},crew:.1,max:{probe:100}};
+const WT={res:{hydrogen:.07,oxygen:1.1,water:1,nitrogen:.8,methane:.4,sulphur:2,titanium:4.5,aluminium:2.7,copper:9,silica:2.5,iron:7.8,silver:10.5,chromium:7.2,platinum:21,uranium:19,components:.5,machinery:5,software:.01,food:.5},part:{drive:40,life:15,cargo:20,crew:12,bridge:8,computer:2,weapons:25,shields:18},crew:.1,max:{probe:100}};
 const CREW={earth:2,mars:3,belt:3,outer:4,gaia:8};
-const COL={pop:8,water:.8,oxygen:.5,boost:.1};
+/* Colonists: starting number, full-crew bonus and what each lifeform needs per colonist per month (air = the gas it breathes; provisional) */
+const COL={pop:80,boost:.1,rates:{
+ Human:{air:'oxygen',a:.025,water:.1,food:.08},
+ Martian:{air:'oxygen',a:.04,water:.07,food:.06},
+ Hydrogoid:{air:'hydrogen',a:.08,water:.04,food:.09},
+ Nitroid:{air:'nitrogen',a:.07,water:.05,food:.07},
+ Sulphuroid:{air:'sulphur',a:.05,water:.03,food:.07},
+ Methanoid:{air:'methane',a:.06,water:.03,food:.06}}};
 /* Colonisation: probe survey, analysis, technology cost and module (placeholder values) */
 const SURVEY={dpa:1946,rpBase:60,rpDiff:2,rpLen:90,fail:.8,c:{hydrogen:10,oxygen:5},mc:{aluminium:40,titanium:20,components:12,machinery:10},mt:600};
 /* per location: [analysis difficulty 0-1, analysis length in days] */
@@ -476,11 +486,14 @@ const LOCAN={mercury:[.35,40],venus:[.8,90],earth:[.45,30],moon:[.05,10],mars:[.
 const LOCORB={mercury:[.387,0,.206,88],venus:[.723,0,.007,224.7],earth:[1,0,.017,365.25],moon:[0,384.4,.055,27.32],mars:[1.524,0,.093,687],phobos:[0,9.376,.015,.319],deimos:[0,23.46,.0002,1.263],belt:[2.767,0,.076,1682],jupiter:[5.203,0,.049,4333],io:[0,421.7,.004,1.769],europa:[0,671.1,.009,3.551],ganymede:[0,1070.4,.001,7.155],callisto:[0,1882.7,.007,16.689],leda:[0,11165,.164,240.9],saturn:[9.537,0,.057,10759],titan:[0,1221.9,.029,15.945],enceladus:[0,238,.005,1.37],rhea:[0,527.1,.001,4.518],iapetus:[0,3560.8,.028,79.33],dione:[0,377.4,.002,2.737],tethys:[0,294.6,.0001,1.888],mimas:[0,185.5,.02,.942],hyperion:[0,1481.1,.123,21.28],phoebe:[0,12952,.156,550.5],uranus:[19.19,0,.046,30687],titania:[0,436.3,.001,8.706],oberon:[0,583.5,.001,13.463],umbriel:[0,266,.004,4.144],ariel:[0,190.9,.001,2.52],miranda:[0,129.9,.001,1.413],neptune:[30.07,0,.009,60190],triton:[0,354.8,0,5.877],pluto:[39.48,0,.249,90560],charon:[0,19.6,.0002,6.387]};
 /* ===== STATE (init) AND COLONISTS: jobs, staffing, free colonists ===== */
 let S;
-function init(){S={diff,cur:null,proj:{},y:START,m:1,d:1,h:0,speed:0,brown:false,q:[],nobuild:false,staff:{solar:2,mine:2,ice:2,elec:0,reactor:0,lab:0,fact:0,shop:0,build:2},res:{hydrogen:30,oxygen:100,water:100,nitrogen:30,methane:5,sulphur:10,titanium:20,aluminium:40,copper:20,silica:60,iron:120,silver:0,chromium:0,platinum:0,uranium:0,components:10,machinery:20,software:10},pop:COL.pop,rp:0,b:{solar:2,mine:1,ice:1,elec:0,fact:0,shop:0,lab:0,hab:2,reactor:0},slots:Math.min(PORT.start,PORT.max),names:{},cargo:{},colonies:Object.fromEntries(Object.keys(LOCD).filter(k=>LOCD[k].start).map(k=>[k,1])),tech:{},ships:1,out:[],over:false,end:null,log:[],sv:{},mods:{}};
+function init(){S={diff,cur:null,proj:{},y:START,m:1,d:1,h:0,speed:0,brown:false,q:[],nobuild:false,staff:{solar:8,mine:8,ice:16,farm:8,elec:0,reactor:0,lab:0,fact:0,shop:0,build:2},res:{hydrogen:30,oxygen:100,water:100,nitrogen:30,methane:5,sulphur:10,titanium:20,aluminium:40,copper:20,silica:60,iron:120,silver:0,chromium:0,platinum:0,uranium:0,components:10,machinery:20,software:10,food:60},pop:COL.pop,rp:0,b:{solar:1,mine:1,ice:2,farm:1,elec:0,fact:0,shop:0,lab:0,hab:2,reactor:0},slots:Math.min(PORT.start,PORT.max),names:{},cargo:{},colonies:Object.fromEntries(Object.keys(LOCD).filter(k=>LOCD[k].start).map(k=>[k,1])),tech:{},ships:1,out:[],over:false,end:null,log:[],sv:{},mods:{}};
  for(const k in S.colonies){S.sv[k]={done:1};S.mods[k]=1;S.tech['col_'+k]=1}
  say('Year '+START+'. The asteroid has scorched Earth. The Moon colony is humanity’s last foothold.');
  say('Silver, chromium and uranium cannot be mined on the Moon or in the asteroid belt. Look further out.');
  say('Build industry, research new drives, and launch the Gaia Ark before '+DEADLINE+'.')}
+const lifeOf=()=>LOCD[HOME].life||'Human';
+/* what the colony consumes per month: water, food and the gas its lifeform breathes */
+function needs(){const r=COL.rates[lifeOf()]||COL.rates.Human;return{air:r.air,a:S.pop*r.a,water:S.pop*r.water*(S.tech.hydro?.6:1),food:S.pop*r.food}}
 function say(t,cls){S.log.unshift([t,cls||''])}
 function work(k){const s=STAFF[k],n=S.b[k];return s?Math.min(n,Math.floor(S.staff[k]/s.min)):n}
 function manned(k){const s=STAFF[k];if(!s)return 0;const w=work(k);return Math.min(w,Math.floor((S.staff[k]-w*s.min)/Math.max(1,s.full-s.min)))}
@@ -587,8 +600,7 @@ function tick(){
   if(work('lab')<1)pauseResearch('no staffed science lab');
   else if(S.rp<dc){S.rp=0;pauseResearch('out of research points')}
   else{S.rp-=dc;const p=S.proj[k];p.left-=e;if(p.left<=0){S.tech[k]=1;delete S.proj[k];S.cur=null;say('Research complete: '+t.n+'. '+t.d+'.','ok')}}}
- R.water-=S.pop*COL.water*(S.tech.hydro?.6:1)/H;R.oxygen-=S.pop*COL.oxygen/H;
- if(R.water<0)R.water=0;if(R.oxygen<0)R.oxygen=0;
+ {const n=needs();R.water-=n.water/H;R[n.air]-=n.a/H;R.food-=n.food/H;for(const x of ['water',n.air,'food'])if(R[x]<0)R[x]=0}
  for(const o of S.out.slice()){if(o.k==='survey')svTick(o);else o.left--}
  const plan=sitePlan();S.q.forEach((q,i)=>{q.left-=plan[i]===2?1+BOOST:plan[i]===1?1:0});
  const idle=plan.some(x=>x===0);
@@ -617,9 +629,9 @@ function tick(){
  if(!S.over&&S.pop<=0){S.over=true;S.end='The colony has fallen silent. No one is left on the Moon.'}
  else if(!S.over&&S.y>=DEADLINE){S.over=true;S.end='Time is up. Earth’s orbit decays and the colony never launched the Ark.'}
 }
-function daily(){const R=S.res;if(S.pop>0&&(R.water<=.001||R.oxygen<=.001)){S.pop--;say((R.water<=.001?'No water':'No oxygen')+': a colonist dies.','bad')}}
-function monthly(){const R=S.res,cap=S.b.hab*B.hab.cap;
- if(S.pop<cap&&R.water>S.pop*3&&R.oxygen>S.pop*3&&S.pop>0){S.pop++;say('A child is born in the dome. Population '+S.pop+'.')}
+function daily(){const R=S.res,n=needs(),lack=['water',n.air,'food'].find(x=>R[x]<=.001);if(S.pop>0&&lack){S.pop--;say((lack==='food'?'No food':'No '+RN[lack].toLowerCase())+': a colonist dies.','bad')}}
+function monthly(){const R=S.res,cap=S.b.hab*B.hab.cap,n=needs();
+ if(S.pop<cap&&S.pop>0&&R.water>n.water*3&&R[n.air]>n.a*3&&R.food>n.food*3){S.pop++;say('A child is born in the dome. Population '+S.pop+'.')}
  if(Math.random()<.18){const ev=Math.random();
   if(ev<.4){const k=['solar','mine','ice','hab'].filter(x=>S.b[x]>0);if(k.length){const x=k[Math.floor(Math.random()*k.length)];S.b[x]--;say('Meteor strike destroys a '+B[x].n.toLowerCase()+'.','bad')}}
   else if(ev<.7){const g=20+Math.floor(Math.random()*30);R.iron+=g;say('Survey team finds a rich vein: +'+g+' iron.','ok')}
@@ -645,6 +657,7 @@ const ICON={
  chromium:`<circle cx="8" cy="8" r="6.5" fill="#9fb3c8"/><path d="M2 10Q8 7 14 10" stroke="#44546a" fill="none"/><ellipse cx="6" cy="5.5" rx="2.4" ry="1.6" fill="#fff" opacity=".85"/>`,
  platinum:`<path d="M3 5L5.5 2H10.5L13 5L8 14Z" fill="#e8f2ff" stroke="#7f93b3"/><path d="M3 5H13M5.5 2L8 5L10.5 2M8 5V14" stroke="#7f93b3" fill="none" stroke-width=".8"/>`,
  uranium:`<circle cx="8" cy="8" r="7" fill="#d8e63a"/><path d="M8 8L4.5 1.94A7 7 0 0 1 11.5 1.94ZM8 8L15 8A7 7 0 0 1 11.5 14.06ZM8 8L4.5 14.06A7 7 0 0 1 1 8Z" fill="#1d2a10"/><circle cx="8" cy="8" r="1.8" fill="#1d2a10"/>`,
+ food:`<path d="M8 4.6C5.4 3 2.6 4.8 2.6 8.6 2.6 12 5 14.6 8 13.4 11 14.6 13.4 12 13.4 8.6 13.4 4.8 10.6 3 8 4.6Z" fill="#e0533f"/><path d="M8 4.6C8 3.2 8.8 2 10.4 1.4" stroke="#6b4a2a" fill="none" stroke-width="1.2"/><path d="M9 3.2C10.2 1.8 12 2 12.8 2.8 11.8 4 10.2 4.2 9 3.2Z" fill="#4fae55"/>`,
  components:`<path d="M6 1v3M8 1v3M10 1v3M6 12v3M8 12v3M10 12v3M1 6h3M1 8h3M1 10h3M12 6h3M12 8h3M12 10h3" stroke="#d6dbe6" stroke-width="1"/><rect x="4" y="4" width="8" height="8" fill="#3a8f5a"/><rect x="6" y="6" width="4" height="4" fill="#1d4d2f"/>`,
  machinery:`<g fill="#8a94a8"><rect x="6.8" y="1" width="2.4" height="3"/><rect x="6.8" y="12" width="2.4" height="3"/><rect x="1" y="6.8" width="3" height="2.4"/><rect x="12" y="6.8" width="3" height="2.4"/><rect x="6.8" y="1" width="2.4" height="3" transform="rotate(45 8 8)"/><rect x="6.8" y="1" width="2.4" height="3" transform="rotate(135 8 8)"/><rect x="6.8" y="1" width="2.4" height="3" transform="rotate(225 8 8)"/><rect x="6.8" y="1" width="2.4" height="3" transform="rotate(315 8 8)"/><circle cx="8" cy="8" r="4.6"/></g><circle cx="8" cy="8" r="2" fill="#2d3340"/>`,
  software:`<path d="M2 2H12L14 4V14H2Z" fill="#3b4aa0"/><rect x="4" y="2" width="7" height="4.5" fill="#d6dbe6"/><rect x="8.5" y="3" width="1.8" height="2.6" fill="#3b4aa0"/><rect x="4" y="9" width="8" height="5" fill="#e8e4d4"/><path d="M5 11H11M5 12.8H9" stroke="#8a94a8" stroke-width=".8"/>`,
@@ -689,14 +702,14 @@ const CAT=[
  {n:'Minerals',d:'Non-metallic raw materials produced by the Regolith mines.',r:['silica','sulphur']},
  {n:'Metals',d:'Structural metals for buildings and ships. Iron, aluminium and titanium come from the Regolith mines. Copper comes from the asteroid belt and Earth salvage.',r:['iron','aluminium','titanium','copper']},
  {n:'Rare metals',d:'Platinum comes from the asteroid belt. Silver, chromium and uranium come only from the outer moons.',r:['platinum','silver','chromium','uranium']},
- {n:'Manufactured',d:'Manufactured goods made from raw materials. Components come from the Component factory and machinery from the Machinery workshop. Software has no source yet.',r:['components','machinery','software']}
+ {n:'Manufactured',d:'Manufactured goods made from raw materials. Food comes from Hydroponics, components from the Component factory and machinery from the Machinery workshop. Software has no source yet.',r:['food','components','machinery','software']}
 ];
 const CATI={Volatiles:'catvol',Minerals:'catmin',Metals:'catmet','Rare metals':'catrare',Manufactured:'catman'};
 function resRate(){const P=pow(),e=P.e,R=S.res,d={};for(const r in RN)d[r]=0;
  for(const k in B){const b=B[k];if(!b.out&&!b.inp)continue;const mult=k==='mine'&&S.tech.deep?1.5:1,w=work(k),mb=manned(k),inp=b.inp||{},wear=(b.c.machinery||0)*WEAR;
   for(let i=0;i<w;i++){const bm=i<mb?1+BOOST:1;if(Object.keys(inp).some(x=>R[x]<inp[x]/720))continue;if(wear){if(R.machinery<wear/720)continue;d.machinery-=wear/30}
    for(const x in inp)d[x]-=inp[x]/30;for(const x in b.out||{})d[x]+=b.out[x]*mult*bm*e/30}}
- d.water-=S.pop*COL.water*(S.tech.hydro?.6:1)/30;d.oxygen-=S.pop*COL.oxygen/30;return d}
+ const n=needs();d.water-=n.water/30;d[n.air]-=n.a/30;d.food-=n.food/30;return d}
 const n3=n=>n<1000?String(n):n<1e6?Math.floor(n/1000)+'k':Math.floor(n/1e6)+'M';
 const rchip=(k,val,rate,dim)=>{const v=+rate.toFixed(2),g=(v>0?'+':'')+v+' per day';
  return '<span class="chip rich'+(dim?' dim':'')+'" tabindex="0" aria-label="'+RN[k]+' '+val+', '+g+'"><b class="'+(v>0?'up':v<0?'down':'')+'">'+n3(val)+'</b><span class="rt">'+ico(k)+RN[k]+'<small class="rr">'+g+'</small></span></span>'};
@@ -815,7 +828,8 @@ function dbData(){
   E.tech.push({n:t.n,i:ico('research'),d:t.d||'',f:[['Category',tcn(k)],['Research cost',t.rp+' points up front, '+t.rp+' days'],['Requires',dbLst(t.req.map(r=>T[r].n))],['Unlocks',dbLst(un)]]})}
  for(const t of SHIPTYPES){const pr=t.k==='probe';
   E.ship.push({n:t.n,i:ico('ship'),d:'',f:pr?[['Built in','Shipyard'],['Build cost',cost(SHIP)],['Berths','Starport, up to '+PORT.max]]:[['Status','not available yet']]})}
- E.col.push({n:'Colonists',i:ico('colonists'),d:'',f:[['At start',COL.pop],['Water',COL.water+' per colonist / month'],['Oxygen',COL.oxygen+' per colonist / month'],['Full crew bonus','+'+Math.round(COL.boost*100)+'% output']]});
+ E.col.push({n:'Colonists',i:ico('colonists'),d:'',f:[['At start',COL.pop],['Base job','every colonist, of any lifeform'],['Full crew bonus','+'+Math.round(COL.boost*100)+'% output']]});
+ for(const lf in COL.rates){const r=COL.rates[lf];E.col.push({n:lf,i:ico('colonists'),d:'',f:[['Breathes',RN[r.air]+', '+r.a+' per colonist / month'],['Water',r.water+' per colonist / month'],['Food',r.food+' per colonist / month'],['Lives at',dbLst(Object.keys(LOCD).filter(k=>LOCD[k].life===lf).map(k=>LOCD[k].n))]]})}
  for(const j in JOBN){const bs=Object.keys(STAFF).filter(k=>STAFF[k].job===j).map(k=>k==='build'?'Construction sites':B[k].n);E.col.push({n:JOBN[j],i:ico('colonists'),d:'',f:[['Staff',dbLst(bs)]]})}
  E.col.push({n:'Crew',i:ico('colonists'),d:'',f:[['Role','colonists aboard a starship on a mission; they are not available for jobs until the ship returns']]});
  return E}
@@ -1219,7 +1233,7 @@ function edT(){return '<div class="ef addt">'+fl('New technology name','<input t
 function edW(){return '<details'+(edOpen==='wt'?' open':'')+'><summary>Weights (tonnes)</summary><h4>Per unit of each resource</h4>'+'<div class="eg">'+RK.map(r=>fl(RN[r],num('WT.res.'+r,WT.res[r]))).join('')+'</div>'+'<h4>Starship parts</h4><div class="eg">'+PARTS.map(p=>fl(p.n,num('WT.part.'+p.k,WT.part[p.k]))).join('')+'</div><h4>Crew</h4><div class="ef">'+fl('Weight per crew member',num('WT.crew',WT.crew))+'</div><h4>Maximum tonnage per starship type</h4><div class="ef">'+fl('Probe',num('WT.max.probe',WT.max.probe))+'</div></details>'}
 function edS(){return edW()+'<details'+(edOpen==='ship'?' open':'')+'><summary>Probe (build cost)</summary>'+grid('SHIP',SHIP)+'</details><details'+(edOpen==='port'?' open':'')+'><summary>Starport (berth expansion)</summary><div class="ef">'+fl('Maximum berths',num('PORT.max',PORT.max,{int:1,min:1}))+fl('Berths at start',num('PORT.start',PORT.start,{int:1,min:1}))+fl('Expansion time (hours)',num('PORT.t',PORT.t,{min:1}))+'</div><h4>Cost per new berth</h4>'+grid('PORT.c',PORT.c)+'</details>'+Object.keys(M).map(k=>{const m=M[k],P='M.'+k+'.';
  return '<details'+(edOpen===k?' open':'')+'><summary>'+esc(m.n)+'</summary><div class="ef">'+fl('Name',txt(P+'n',m.n))+fl('Duration (months)',num(P+'t',m.t,{min:.1}))+fl('Risk of loss (%)',num(P+'risk',m.risk,{pct:1}))+fl('Crew (colonists)',num('CREW.'+k,CREW[k],{int:1}))+fl('Requires tech',techSel(P+'tech',m.tech))+'</div><h4>Launch cost</h4>'+grid(P+'c',m.c)+'<h4>Returns</h4>'+(m.r.win?'<p class="dim">Wins the game when it arrives.</p>':grid(P+'r',m.r,['rp']))+'</details>'}).join('')}
-function edC(){return '<div class="ef">'+fl('Starting colonists',num('COL.pop',COL.pop,{int:1,min:1}))+fl('Water per colonist / month',num('COL.water',COL.water))+fl('Oxygen per colonist / month',num('COL.oxygen',COL.oxygen))+fl('Boost when fully manned (%)',num('COL.boost',COL.boost,{pct:1}))+'</div><h4>Staffing per building (colonists)</h4><div class="eg">'+
+function edC(){return '<div class="ef">'+fl('Starting colonists',num('COL.pop',COL.pop,{int:1,min:1}))+fl('Boost when fully manned (%)',num('COL.boost',COL.boost,{pct:1}))+'</div><h4>Needs per colonist / month, by lifeform</h4><div class="eg">'+Object.keys(COL.rates).map(lf=>{const r=COL.rates[lf],P='COL.rates.'+lf+'.';return '<div class="sg"><b>'+lf+'</b><span class="dim">breathes '+RN[r.air].toLowerCase()+'</span>'+fl(RN[r.air],num(P+'a',r.a))+fl('Water',num(P+'water',r.water))+fl('Food',num(P+'food',r.food))+'</div>'}).join('')+'</div><h4>Staffing per building (colonists)</h4><div class="eg">'+
  Object.keys(STAFF).map(k=>{const s=STAFF[k],P='STAFF.'+k+'.';
   return '<div class="sg"><b>'+(k==='build'?'Construction site':esc(B[k].n))+'</b><span class="dim">'+JOBN[s.job]+'</span>'+fl('Minimum to run',num(P+'min',s.min,{int:1,min:1}))+fl('Full crew (boost)',num(P+'full',s.full,{int:1,min:2}))+'</div>'}).join('')+'</div>'}
 let edTab='b',edOpen=null;

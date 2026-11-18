@@ -193,7 +193,7 @@ footer{text-align:center;color:var(--dim);font-size:13px;padding:10px 0 30px}
  <h3>Pillars</h3>
  <div class="cards">
   <div class="card2 bev"><h4 data-ic="colonists">A colony to keep alive</h4><p>Every colonist matters. They eat water and oxygen, take jobs in buildings, crew ships and are born or die. Running short of air or water costs lives.</p></div>
-  <div class="card2 bev"><h4 data-ic="catman">An economy to build</h4><p>Eighteen resources in five families flow through mines, extractors, factories and reactors. Power, staffing and machinery wear decide how well it runs.</p></div>
+  <div class="card2 bev"><h4 data-ic="catman">An economy to build</h4><p>Nineteen resources in five families flow through mines, extractors, factories and reactors. Power, staffing and machinery wear decide how well it runs.</p></div>
   <div class="card2 bev"><h4 data-ic="ship">The real Solar System</h4><p>A real calendar and real orbits: planets sit where they really are on the game date, so trips and launch windows change with time. Distance is the main obstacle.</p></div>
   <div class="card2 bev"><h4 data-ic="research">A race against time</h4><p>The deadline is 1 January 2200. Research better drives, survey and colonise new worlds, and gather the rare materials the Ark needs before the century ends.</p></div>
  </div>
@@ -212,7 +212,7 @@ footer{text-align:center;color:var(--dim);font-size:13px;padding:10px 0 30px}
   <defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#ff9a2e"/></marker></defs>
   <rect class="bx" x="20" y="30" width="180" height="70"/><text class="t1" x="110" y="60" text-anchor="middle">Colonists</text><text class="t2" x="110" y="80" text-anchor="middle">jobs · crew · births</text>
   <rect class="bx" x="360" y="30" width="180" height="70"/><text class="t1" x="450" y="60" text-anchor="middle">Buildings</text><text class="t2" x="450" y="80" text-anchor="middle">power · production</text>
-  <rect class="bx" x="700" y="30" width="180" height="70"/><text class="t1" x="790" y="60" text-anchor="middle">Resources</text><text class="t2" x="790" y="80" text-anchor="middle">18 kinds · research points</text>
+  <rect class="bx" x="700" y="30" width="180" height="70"/><text class="t1" x="790" y="60" text-anchor="middle">Resources</text><text class="t2" x="790" y="80" text-anchor="middle">19 kinds · research points</text>
   <rect class="bx" x="700" y="200" width="180" height="70"/><text class="t1" x="790" y="230" text-anchor="middle">Build &amp; research</text><text class="t2" x="790" y="250" text-anchor="middle">construction · technologies</text>
   <rect class="bx" x="360" y="200" width="180" height="70"/><text class="t1" x="450" y="230" text-anchor="middle">Starships</text><text class="t2" x="450" y="250" text-anchor="middle">probes · missions · surveys</text>
   <rect class="bx" x="20" y="200" width="180" height="70"/><text class="t1" x="110" y="230" text-anchor="middle">New colonies</text><text class="t2" x="110" y="250" text-anchor="middle">new resources · reach</text>
@@ -245,10 +245,11 @@ footer{text-align:center;color:var(--dim);font-size:13px;padding:10px 0 30px}
 </div></section>
 
 <section class="win bev" id="colony" data-ic="colonists"><h2>Colonists and jobs</h2><div class="body">
- <p>The colony starts with <b><span data-val="START_STATE.pop"></span> colonists</b> and <span data-val="START_STATE.b.hab"></span> Habitat modules (<span data-val="B.hab.cap"></span> colonists each). Each colonist uses <span data-val="COL.water"></span> water and <span data-val="COL.oxygen"></span> oxygen per month (Hydroponics cuts water by 40%).</p>
+ <p>The colony starts with <b><span data-val="START_STATE.pop"></span> colonists</b> and <span data-val="START_STATE.b.hab"></span> Habitat modules (<span data-val="B.hab.cap"></span> colonists each). Each colonist uses water, food and the gas its lifeform breathes (Humans and Martians oxygen, Hydrogoids hydrogen, Nitroids nitrogen, Sulphuroids sulphur, Methanoids methane); the rates per lifeform are in the table below. Food comes from the Hydroponics building and water from the Ice extractor. The Water recycling technology cuts water use by 40%. Without water, food or the breathable gas, one colonist dies each day.</p>
+ <div class="tw"><table id="t-needs"></table></div>
  <ul>
-  <li><b>Births:</b> each month one child is born if there is room in the habitats and at least 3 units of water and oxygen per colonist in store.</li>
-  <li><b>Deaths:</b> each day with no water or no oxygen, one colonist dies. Ships lost on missions lose their crew.</li>
+  <li><b>Births:</b> each month one child is born if there is room in the habitats and the stock of water, food and breathable gas covers at least 3 months of the colony's needs.</li>
+  <li><b>Deaths:</b> each day with no water, no food or no breathable gas, one colonist dies. Ships lost on missions lose their crew.</li>
   <li><b>Jobs:</b> free colonists are assigned to buildings as Labourers, Scientists, Technicians or Builders, or leave as Crew on a starship. A building needs a <b>minimum</b> staff to run and gets a <b>+<span data-val="BOOST*100"></span>% boost</b> when fully manned.</li>
   <li>If the population falls below the posts filled, the largest teams lose people first and the log reports the empty jobs.</li>
  </ul>
@@ -263,11 +264,11 @@ footer{text-align:center;color:var(--dim);font-size:13px;padding:10px 0 30px}
 </div></section>
 
 <section class="win bev" id="resources" data-ic="catmet"><h2>Resources</h2><div class="body">
- <p>Eighteen resources in five families, always shown in the same order. The Resources bar shows each quantity (k and M above 999), green when growing, normal when stale and red when falling. Every unit has a weight in tonnes, which matters for starship loading.</p>
+ <p>Nineteen resources in five families, always shown in the same order. The Resources bar shows each quantity (k and M above 999), green when growing, normal when stale and red when falling. Every unit has a weight in tonnes, which matters for starship loading.</p>
  <div id="res-cats"></div>
  <h3 data-ic="research">Research points</h3>
  <p>A separate currency earned by staffed Science Labs and some missions, spent on technologies (see Research).</p>
- <div class="note todo">Software has no source yet, and methane has no use (as in the original). Database descriptions are still to be written for all 18 resources.</div>
+ <div class="note todo">Software has no source yet, and methane has no use (as in the original). Database descriptions are still to be written for all 19 resources.</div>
 </div></section>
 
 <section class="win bev" id="buildings" data-ic="hangar"><h2>Buildings and power</h2><div class="body">
@@ -430,21 +431,22 @@ footer{text-align:center;color:var(--dim);font-size:13px;padding:10px 0 30px}
 /* Game data: copied verbatim from index.html by tools/sync-gdd.js. Run it after changing game data; never edit this block. */
 /* SYNC:BEGIN (written by tools/sync-gdd.js from index.html; do not edit by hand) */
 const START=2100,DEADLINE=2200,WD=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
-const RN={hydrogen:'Hydrogen',oxygen:'Oxygen',water:'Water',nitrogen:'Nitrogen',methane:'Methane',sulphur:'Sulphur',titanium:'Titanium',aluminium:'Aluminium',copper:'Copper',silica:'Silica',iron:'Iron',silver:'Silver',chromium:'Chromium',platinum:'Platinum',uranium:'Uranium',components:'Components',machinery:'Machinery',software:'Software'};
+const RN={hydrogen:'Hydrogen',oxygen:'Oxygen',water:'Water',nitrogen:'Nitrogen',methane:'Methane',sulphur:'Sulphur',titanium:'Titanium',aluminium:'Aluminium',copper:'Copper',silica:'Silica',iron:'Iron',silver:'Silver',chromium:'Chromium',platinum:'Platinum',uranium:'Uranium',components:'Components',machinery:'Machinery',software:'Software',food:'Food'};
 const B={
- solar:{n:'Solar array',c:{iron:8,silica:12,aluminium:4,components:1},p:4,d:'+4 power',g:'S',t:48},
- mine:{n:'Regolith mine',c:{iron:16,aluminium:8,titanium:2,components:2,machinery:4},p:-2,out:{iron:6,silica:4,aluminium:3,titanium:1.5,sulphur:.5},d:'+6 iron, +4 silica, +3 aluminium, +1.5 titanium, +0.5 sulphur / month',g:'M',t:72},
- ice:{n:'Ice extractor',c:{iron:12,aluminium:8,titanium:2,components:2,machinery:4},p:-2,out:{water:10,nitrogen:1},d:'+10 water, +1 nitrogen / month',g:'I',t:72},
- elec:{n:'Electrolyser',c:{iron:16,aluminium:8,copper:4,components:3,machinery:4},p:-3,inp:{water:18},out:{hydrogen:2,oxygen:16},d:'18 water → 2 hydrogen + 16 oxygen / month',g:'E',t:120},
- fact:{n:'Component factory',c:{iron:24,aluminium:8,copper:4,silica:8,components:3,machinery:6},p:-3,inp:{iron:8,silica:5,aluminium:2,copper:.5},out:{components:4},d:'8 iron + 5 silica + 2 aluminium + 0.5 copper → 4 components / month',g:'C',t:168},
- shop:{n:'Machinery workshop',c:{iron:24,aluminium:12,copper:4,silica:8,components:4,machinery:6},p:-3,inp:{iron:10,aluminium:4,titanium:1},out:{machinery:2},d:'10 iron + 4 aluminium + 1 titanium → 2 machinery / month',g:'W',t:168},
+ solar:{n:'Solar array',c:{iron:16,silica:24,aluminium:8,components:2},p:6,d:'+6 power',g:'S',t:48},
+ mine:{n:'Regolith mine',c:{iron:16,aluminium:8,titanium:2,components:2,machinery:4},p:-2,out:{iron:12,silica:8,aluminium:6,titanium:3,sulphur:1},d:'+12 iron, +8 silica, +6 aluminium, +3 titanium, +1 sulphur / month',g:'M',t:72},
+ ice:{n:'Ice extractor',c:{iron:12,aluminium:8,titanium:2,components:2,machinery:4},p:-2,out:{water:12,nitrogen:1.2},d:'+12 water, +1.2 nitrogen / month',g:'I',t:72},
+ elec:{n:'Electrolyser',c:{iron:16,aluminium:8,copper:4,components:3,machinery:4},p:-3,inp:{water:18},out:{hydrogen:2.4,oxygen:19.2},d:'18 water → 2.4 hydrogen + 19.2 oxygen / month',g:'E',t:120},
+ fact:{n:'Component factory',c:{iron:24,aluminium:8,copper:4,silica:8,components:3,machinery:6},p:-3,inp:{iron:8,silica:5,aluminium:2,copper:.5},out:{components:8},d:'8 iron + 5 silica + 2 aluminium + 0.5 copper → 8 components / month',g:'C',t:168},
+ shop:{n:'Machinery workshop',c:{iron:24,aluminium:12,copper:4,silica:8,components:4,machinery:6},p:-3,inp:{iron:10,aluminium:4,titanium:1},out:{machinery:4},d:'10 iron + 4 aluminium + 1 titanium → 4 machinery / month',g:'W',t:168},
+ farm:{n:'Hydroponics',c:{iron:12,aluminium:8,silica:10,components:2,machinery:2},p:-2,inp:{water:4,nitrogen:1},out:{food:9.6},d:'',g:'F',t:96},
  lab:{n:'Science lab',c:{aluminium:12,copper:8,silica:8,titanium:4,components:4},p:-3,d:'Research points: 1 per 20 days. While a project is active: −75%. Needed to start any project',g:'L',t:144},
- hab:{n:'Habitat module',c:{aluminium:16,iron:16,nitrogen:8,water:16,components:3},p:-1,cap:6,d:'houses 6 colonists',g:'H',t:96},
- reactor:{n:'Fission reactor',tech:'fission',c:{iron:32,titanium:16,chromium:8,uranium:8,components:6,machinery:8},p:12,inp:{uranium:.5},d:'+12 power, burns 0.5 uranium / month',g:'R',t:200}
+ hab:{n:'Habitat module',c:{aluminium:64,iron:64,nitrogen:32,water:64,components:12},p:-1,cap:50,d:'houses 50 colonists',g:'H',t:96},
+ reactor:{n:'Fission reactor',tech:'fission',c:{iron:32,titanium:16,chromium:8,uranium:8,components:6,machinery:8},p:24,inp:{uranium:.5},d:'+24 power, burns 0.5 uranium / month',g:'R',t:200}
 };
 const T={
  deep:{n:'Deep drilling',rp:25,req:[],cat:'mining',d:'Regolith mines +50%'},
- hydro:{n:'Hydroponics',rp:30,req:[],cat:'life',d:'Colonists use 40% less water'},
+ hydro:{n:'Water recycling',rp:30,req:[],cat:'life',d:'Colonists use 40% less water'},
  fusion:{n:'Fusion cells',rp:50,req:['deep'],cat:'energy',d:'Solar arrays +50%'},
  ion:{n:'Ion drive',rp:50,req:['deep'],cat:'ships',d:'Unlocks Mars survey'},
  fission:{n:'Nuclear power',rp:60,req:['deep'],cat:'energy',d:'Unlocks the fission reactor'},
@@ -465,20 +467,27 @@ const PORT={max:8,start:1,t:96,c:{iron:12,aluminium:8,titanium:2,silica:8,compon
 const WEAR=.05;
 const BOOST=.1;
 const STAFF={
- solar:{job:'labourer',min:1,full:2},
- mine:{job:'labourer',min:2,full:3},
- ice:{job:'labourer',min:2,full:3},
- elec:{job:'scientist',min:2,full:3},
- reactor:{job:'scientist',min:3,full:5},
- lab:{job:'scientist',min:2,full:3},
- fact:{job:'technician',min:2,full:4},
- shop:{job:'technician',min:2,full:4},
+ solar:{job:'labourer',min:4,full:8},
+ mine:{job:'labourer',min:8,full:12},
+ ice:{job:'labourer',min:8,full:12},
+ farm:{job:'labourer',min:8,full:12},
+ elec:{job:'scientist',min:8,full:12},
+ reactor:{job:'scientist',min:12,full:20},
+ lab:{job:'scientist',min:8,full:12},
+ fact:{job:'technician',min:8,full:16},
+ shop:{job:'technician',min:8,full:16},
  build:{job:'builder',min:2,full:4}
 };
 const JOBN={labourer:'Labourers',scientist:'Scientists',technician:'Technicians',builder:'Builders'};
-const WT={res:{hydrogen:.07,oxygen:1.1,water:1,nitrogen:.8,methane:.4,sulphur:2,titanium:4.5,aluminium:2.7,copper:9,silica:2.5,iron:7.8,silver:10.5,chromium:7.2,platinum:21,uranium:19,components:.5,machinery:5,software:.01},part:{drive:40,life:15,cargo:20,crew:12,bridge:8,computer:2,weapons:25,shields:18},crew:.1,max:{probe:100}};
+const WT={res:{hydrogen:.07,oxygen:1.1,water:1,nitrogen:.8,methane:.4,sulphur:2,titanium:4.5,aluminium:2.7,copper:9,silica:2.5,iron:7.8,silver:10.5,chromium:7.2,platinum:21,uranium:19,components:.5,machinery:5,software:.01,food:.5},part:{drive:40,life:15,cargo:20,crew:12,bridge:8,computer:2,weapons:25,shields:18},crew:.1,max:{probe:100}};
 const CREW={earth:2,mars:3,belt:3,outer:4,gaia:8};
-const COL={pop:8,water:.8,oxygen:.5,boost:.1};
+const COL={pop:80,boost:.1,rates:{
+ Human:{air:'oxygen',a:.025,water:.1,food:.08},
+ Martian:{air:'oxygen',a:.04,water:.07,food:.06},
+ Hydrogoid:{air:'hydrogen',a:.08,water:.04,food:.09},
+ Nitroid:{air:'nitrogen',a:.07,water:.05,food:.07},
+ Sulphuroid:{air:'sulphur',a:.05,water:.03,food:.07},
+ Methanoid:{air:'methane',a:.06,water:.03,food:.06}}};
 const SURVEY={dpa:1946,rpBase:60,rpDiff:2,rpLen:90,fail:.8,c:{hydrogen:10,oxygen:5},mc:{aluminium:40,titanium:20,components:12,machinery:10},mt:600};
 const LOCAN={mercury:[.35,40],venus:[.8,90],earth:[.45,30],moon:[.05,10],mars:[.2,30],phobos:[.25,20],deimos:[.2,15],belt:[.3,45],jupiter:[.9,120],io:[.85,80],europa:[.5,70],ganymede:[.4,60],callisto:[.35,50],leda:[.5,70],saturn:[.9,150],titan:[.45,90],enceladus:[.5,60],rhea:[.4,50],iapetus:[.45,50],dione:[.4,45],tethys:[.35,40],mimas:[.35,35],hyperion:[.45,60],phoebe:[.5,80],uranus:[.92,180],titania:[.5,70],oberon:[.5,70],umbriel:[.55,70],ariel:[.5,65],miranda:[.55,60],neptune:[.95,200],triton:[.6,90],pluto:[.6,100],charon:[.55,80]};
 const LOCORB={mercury:[.387,0,.206,88],venus:[.723,0,.007,224.7],earth:[1,0,.017,365.25],moon:[0,384.4,.055,27.32],mars:[1.524,0,.093,687],phobos:[0,9.376,.015,.319],deimos:[0,23.46,.0002,1.263],belt:[2.767,0,.076,1682],jupiter:[5.203,0,.049,4333],io:[0,421.7,.004,1.769],europa:[0,671.1,.009,3.551],ganymede:[0,1070.4,.001,7.155],callisto:[0,1882.7,.007,16.689],leda:[0,11165,.164,240.9],saturn:[9.537,0,.057,10759],titan:[0,1221.9,.029,15.945],enceladus:[0,238,.005,1.37],rhea:[0,527.1,.001,4.518],iapetus:[0,3560.8,.028,79.33],dione:[0,377.4,.002,2.737],tethys:[0,294.6,.0001,1.888],mimas:[0,185.5,.02,.942],hyperion:[0,1481.1,.123,21.28],phoebe:[0,12952,.156,550.5],uranus:[19.19,0,.046,30687],titania:[0,436.3,.001,8.706],oberon:[0,583.5,.001,13.463],umbriel:[0,266,.004,4.144],ariel:[0,190.9,.001,2.52],miranda:[0,129.9,.001,1.413],neptune:[30.07,0,.009,60190],triton:[0,354.8,0,5.877],pluto:[39.48,0,.249,90560],charon:[0,19.6,.0002,6.387]};
@@ -499,6 +508,7 @@ const ICON={
  chromium:`<circle cx="8" cy="8" r="6.5" fill="#9fb3c8"/><path d="M2 10Q8 7 14 10" stroke="#44546a" fill="none"/><ellipse cx="6" cy="5.5" rx="2.4" ry="1.6" fill="#fff" opacity=".85"/>`,
  platinum:`<path d="M3 5L5.5 2H10.5L13 5L8 14Z" fill="#e8f2ff" stroke="#7f93b3"/><path d="M3 5H13M5.5 2L8 5L10.5 2M8 5V14" stroke="#7f93b3" fill="none" stroke-width=".8"/>`,
  uranium:`<circle cx="8" cy="8" r="7" fill="#d8e63a"/><path d="M8 8L4.5 1.94A7 7 0 0 1 11.5 1.94ZM8 8L15 8A7 7 0 0 1 11.5 14.06ZM8 8L4.5 14.06A7 7 0 0 1 1 8Z" fill="#1d2a10"/><circle cx="8" cy="8" r="1.8" fill="#1d2a10"/>`,
+ food:`<path d="M8 4.6C5.4 3 2.6 4.8 2.6 8.6 2.6 12 5 14.6 8 13.4 11 14.6 13.4 12 13.4 8.6 13.4 4.8 10.6 3 8 4.6Z" fill="#e0533f"/><path d="M8 4.6C8 3.2 8.8 2 10.4 1.4" stroke="#6b4a2a" fill="none" stroke-width="1.2"/><path d="M9 3.2C10.2 1.8 12 2 12.8 2.8 11.8 4 10.2 4.2 9 3.2Z" fill="#4fae55"/>`,
  components:`<path d="M6 1v3M8 1v3M10 1v3M6 12v3M8 12v3M10 12v3M1 6h3M1 8h3M1 10h3M12 6h3M12 8h3M12 10h3" stroke="#d6dbe6" stroke-width="1"/><rect x="4" y="4" width="8" height="8" fill="#3a8f5a"/><rect x="6" y="6" width="4" height="4" fill="#1d4d2f"/>`,
  machinery:`<g fill="#8a94a8"><rect x="6.8" y="1" width="2.4" height="3"/><rect x="6.8" y="12" width="2.4" height="3"/><rect x="1" y="6.8" width="3" height="2.4"/><rect x="12" y="6.8" width="3" height="2.4"/><rect x="6.8" y="1" width="2.4" height="3" transform="rotate(45 8 8)"/><rect x="6.8" y="1" width="2.4" height="3" transform="rotate(135 8 8)"/><rect x="6.8" y="1" width="2.4" height="3" transform="rotate(225 8 8)"/><rect x="6.8" y="1" width="2.4" height="3" transform="rotate(315 8 8)"/><circle cx="8" cy="8" r="4.6"/></g><circle cx="8" cy="8" r="2" fill="#2d3340"/>`,
  software:`<path d="M2 2H12L14 4V14H2Z" fill="#3b4aa0"/><rect x="4" y="2" width="7" height="4.5" fill="#d6dbe6"/><rect x="8.5" y="3" width="1.8" height="2.6" fill="#3b4aa0"/><rect x="4" y="9" width="8" height="5" fill="#e8e4d4"/><path d="M5 11H11M5 12.8H9" stroke="#8a94a8" stroke-width=".8"/>`,
@@ -531,7 +541,7 @@ const CAT=[
  {n:'Minerals',d:'Non-metallic raw materials produced by the Regolith mines.',r:['silica','sulphur']},
  {n:'Metals',d:'Structural metals for buildings and ships. Iron, aluminium and titanium come from the Regolith mines. Copper comes from the asteroid belt and Earth salvage.',r:['iron','aluminium','titanium','copper']},
  {n:'Rare metals',d:'Platinum comes from the asteroid belt. Silver, chromium and uranium come only from the outer moons.',r:['platinum','silver','chromium','uranium']},
- {n:'Manufactured',d:'Manufactured goods made from raw materials. Components come from the Component factory and machinery from the Machinery workshop. Software has no source yet.',r:['components','machinery','software']}
+ {n:'Manufactured',d:'Manufactured goods made from raw materials. Food comes from Hydroponics, components from the Component factory and machinery from the Machinery workshop. Software has no source yet.',r:['food','components','machinery','software']}
 ];
 const CATI={Volatiles:'catvol',Minerals:'catmin',Metals:'catmet','Rare metals':'catrare',Manufactured:'catman'};
 const LOCS=[
@@ -569,12 +579,13 @@ const LOCS=[
  {k:'triton',n:'Triton',p:'neptune',d:'Large frozen moon orbiting backwards, with nitrogen geysers.'},
  {k:'pluto',n:'Pluto',d:'A small, frozen dwarf planet at the edge of the Kuiper belt, with a large moon, Charon. The most remote location of all.'},
  {k:'charon',n:'Charon',p:'pluto',d:'The large companion of Pluto, so big that the two orbit a point between them.'}];
+const LIFE={venus:'Sulphuroid',io:'Sulphuroid',jupiter:'Hydrogoid',europa:'Human',ganymede:'Human',dione:'Human',phobos:'Martian',deimos:'Martian',iapetus:'Human',mimas:'Human',charon:'Methanoid',leda:'Human',hyperion:'Sulphuroid',phoebe:'Human',moon:'Human',mars:'Martian',callisto:'Human',saturn:'Hydrogoid',enceladus:'Human',tethys:'Human',rhea:'Human',titan:'Nitroid',uranus:'Methanoid',miranda:'Human',ariel:'Human',umbriel:'Sulphuroid',titania:'Methanoid',oberon:'Human',neptune:'Methanoid',triton:'Methanoid',pluto:'Methanoid'};
 const HOME='moon',AUKM=149597870.7;
 const PARTS=[{k:'drive',n:'Drive',d:'Moves the ship. Faster drives shorten trips.'},{k:'life',n:'Life support',d:'Keeps the crew and colonists alive on long flights.'},{k:'cargo',n:'Cargo bay',d:'Carries resources, parts and colony modules.'},{k:'crew',n:'Crew quarters',d:'Berths for the crew and colonists travelling aboard.'},{k:'bridge',n:'Bridge',d:'Command centre that coordinates the ship systems.'},{k:'computer',n:"Ship's computer",d:'Onboard navigation and mission control.'},{k:'weapons',n:'Weapons',d:'Armament for combat.'},{k:'shields',n:'Shields',d:'Protection against hostile fire and debris.'}];
 const SHIPPARTS={probe:{drive:'Simplest drive',life:'',cargo:'',crew:'',bridge:'',computer:'Survey computer',weapons:'',shields:''}};
 const SHIPTYPES=[{k:'probe',n:'Probes'},{k:'hop',n:'Hop Miners'},{k:'solar',n:'Solar Carriers'},{k:'nuclear',n:'Nuclear Cruisers'},{k:'colony',n:'Colony Ships'}];
-const START_STATE={pop:COL.pop,res:{hydrogen:30,oxygen:100,water:100,nitrogen:30,methane:5,sulphur:10,titanium:20,aluminium:40,copper:20,silica:60,iron:120,silver:0,chromium:0,platinum:0,uranium:0,components:10,machinery:20,software:10},b:{solar:2,mine:1,ice:1,elec:0,fact:0,shop:0,lab:0,hab:2,reactor:0},staff:{solar:2,mine:2,ice:2,elec:0,reactor:0,lab:0,fact:0,shop:0,build:2},slots:Math.min(PORT.start,PORT.max)};
-const SYNC={"rev":9,"date":"2026-11-18","history":[[8,"2026-11-18","fc7af07","Colonist lifeforms by location, table resources, Leda/Hyperion/Phoebe, outer ring for irregular moons"],[7,"2026-11-18","af8c449","GDD revision number and history generated from git (roadmap item 5)"],[6,"2026-11-18","021f924","Cheaper development: test and GDD-sync tools, code signposts, shorter CLAUDE.md and README, guides"],[5,"2026-11-18","57000dc","GDD Back button: same-tab navigation to the title screen; launch config for the dev server"],[4,"2026-11-18","1597f7c","GDD: move the Game Design Document box above Contents"],[3,"2026-11-18","d3ec3ac","Light/dark theme switch in the in-game main menu; Back button in the GDD"],[2,"2026-11-18","9a9d31f","Title screen: Design Document button opens GDD.html in a new tab"],[1,"2026-11-18","69f52a2","Add the Game Design Document (GDD.html), styled like the game"]]};
+const START_STATE={pop:COL.pop,res:{hydrogen:30,oxygen:100,water:100,nitrogen:30,methane:5,sulphur:10,titanium:20,aluminium:40,copper:20,silica:60,iron:120,silver:0,chromium:0,platinum:0,uranium:0,components:10,machinery:20,software:10,food:60},b:{solar:1,mine:1,ice:2,farm:1,elec:0,fact:0,shop:0,lab:0,hab:2,reactor:0},staff:{solar:8,mine:8,ice:16,farm:8,elec:0,reactor:0,lab:0,fact:0,shop:0,build:2},slots:Math.min(PORT.start,PORT.max)};
+const SYNC={"rev":10,"date":"2026-11-18","history":[[9,"2026-11-18","181824d","Lifeforms and extrapolated resources for 11 more locations; Mercury, Earth and the belt stay without lifeform"],[8,"2026-11-18","fc7af07","Colonist lifeforms by location, table resources, Leda/Hyperion/Phoebe, outer ring for irregular moons"],[7,"2026-11-18","af8c449","GDD revision number and history generated from git (roadmap item 5)"],[6,"2026-11-18","021f924","Cheaper development: test and GDD-sync tools, code signposts, shorter CLAUDE.md and README, guides"],[5,"2026-11-18","57000dc","GDD Back button: same-tab navigation to the title screen; launch config for the dev server"],[4,"2026-11-18","1597f7c","GDD: move the Game Design Document box above Contents"],[3,"2026-11-18","d3ec3ac","Light/dark theme switch in the in-game main menu; Back button in the GDD"],[2,"2026-11-18","9a9d31f","Title screen: Design Document button opens GDD.html in a new tab"],[1,"2026-11-18","69f52a2","Add the Game Design Document (GDD.html), styled like the game"]]};
 /* SYNC:END */
 
 /* GDD-only data: what the game does not hold (yet). Edit by hand. */
@@ -593,6 +604,7 @@ const val=x=>{const s=scope();return Function(...Object.keys(s),'return ('+x+')'
 function fill(){
  $('grev').textContent=SYNC.rev||'?';$('gdate').textContent=SYNC.date||'';
  $('t-rev').innerHTML='<tr><th class="n">Rev.</th><th>Date</th><th>Commit</th><th>Changes</th></tr><tr><td class="n"><b>'+SYNC.rev+'</b></td><td>'+SYNC.date+'</td><td><b>this version</b></td><td class="dim">The text you are reading.</td></tr>'+(SYNC.history||[]).map(h=>'<tr><td class="n">'+h[0]+'</td><td>'+h[1]+'</td><td><code>'+h[2]+'</code></td><td>'+h[3].replace(/&/g,'&amp;').replace(/</g,'&lt;')+'</td></tr>').join('');
+ $('t-needs').innerHTML='<tr><th>Lifeform</th><th>Breathes</th><th class="n">Gas</th><th class="n">Water</th><th class="n">Food</th><th>Lives at</th></tr>'+Object.keys(COL.rates).map(lf=>{const r=COL.rates[lf];return '<tr><td>'+lf+'</td><td>'+RN[r.air]+'</td><td class="n">'+r.a+'</td><td class="n">'+r.water+'</td><td class="n">'+r.food+'</td><td>'+Object.keys(LIFE).filter(k=>LIFE[k]===lf).map(k=>LOCS.find(l=>l.k===k).n).join(', ')+'</td></tr>'}).join('')+'<caption>Units per colonist per month</caption>';
  $('t-staff').innerHTML='<tr><th>Building</th><th>Job</th><th class="n">Minimum</th><th class="n">Full (+'+Math.round(BOOST*100)+'%)</th></tr>'+Object.keys(STAFF).map(k=>{const s=STAFF[k];return '<tr><td>'+(k==='build'?'Construction site (each queued item)':B[k].n)+'</td><td>'+JOBN[s.job]+'</td><td class="n">'+s.min+'</td><td class="n">'+s.full+'</td></tr>'}).join('');
  $('res-cats').innerHTML=CAT.map(c=>'<div class="res-cat"><div>'+ic(CATI[c.n],24)+c.n+' <small style="font-weight:400">'+c.d+'</small></div><div class="res-row">'+c.r.map(r=>'<span>'+ic(r)+RN[r]+' <small>start '+START_STATE.res[r]+' · '+WT.res[r]+' t</small></span>').join('')+'</div></div>').join('');
  $('t-bld').innerHTML='<tr><th>Building</th><th>Cost</th><th class="n">Power</th><th class="n">Build</th><th>Effect</th><th class="n">Start</th></tr>'+Object.keys(B).map(k=>{const b=B[k];return '<tr><td><b>'+b.n+'</b></td><td>'+costH(b.c)+'</td><td class="n" style="color:var('+(b.p>0?'--ok':'--bad')+')">'+(b.p>0?'+':'')+b.p+'</td><td class="n">'+hrs(b.t)+'</td><td>'+b.d+(b.tech?' <small>(needs '+T[b.tech].n+')</small>':'')+'</td><td class="n">'+(START_STATE.b[k]||0)+'</td></tr>'}).join('');

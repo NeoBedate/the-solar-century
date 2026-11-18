@@ -8,6 +8,7 @@ Things we have said we will build or decide later.
 - The original-style main screen images. Every location has a CSS placeholder scene today (the Moonbase one included); they are to be replaced by real art.
 
 **Design to define**
+- Food and consumption balance: food, the Hydroponics building (needs water, nitrogen and power) and the per-lifeform rates exist, but all numbers are provisional. The starting Moonbase (80 colonists, 2 habitats of 50, 1 solar array, 1 mine, 2 ice extractors, 1 Hydroponics; it begins 34% short of power on purpose, as the first tutorial need) was adjusted so that it survives. Staffing was multiplied by 4 and building outputs (resources and power, not inputs or research) by 2; construction sites still need 2 builders, and the Habitat module cost is 4 times the old one. Still to define: food on colony ships and colony supplies, other food sources, different diets per lifeform, what the Water recycling technology (the old Hydroponics technology, renamed) should become, and whether Hydroponics should need its own technology.
 - Technologies for the Manufacturing and Weapons research categories. The filters exist, but no technology belongs to them yet.
 - Balancing resources and costs, which is a job for later down the road. All values are provisional.
 - A source for software.
@@ -35,7 +36,7 @@ Things we have said we will build or decide later.
 - The other starship types: Hop Miners, Solar Carriers, Nuclear Cruisers and Colony Ships. They can be researched and built, and today only Probes exist.
 
 **Database descriptions still to write** (not tracked in the game; this list is the only record)
-- Resources: all 18 (Hydrogen, Oxygen, Water, Nitrogen, Methane, Sulphur, Titanium, Aluminium, Copper, Silica, Iron, Silver, Chromium, Platinum, Uranium, Components, Machinery, Software).
+- Resources: all 19 (Hydrogen, Oxygen, Water, Nitrogen, Methane, Sulphur, Titanium, Aluminium, Copper, Silica, Iron, Silver, Chromium, Platinum, Uranium, Components, Machinery, Software, Food).
 - Starships: Probes, Hop Miners, Solar Carriers, Nuclear Cruisers, Colony Ships.
-- Colonists: Colonists, Labourers, Scientists, Technicians, Builders, Crew.
+- Colonists: Colonists, the six lifeforms (Human, Martian, Hydrogoid, Nitroid, Sulphuroid, Methanoid), Labourers, Scientists, Technicians, Builders, Crew.
 
