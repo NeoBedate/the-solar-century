@@ -6,12 +6,12 @@ A single-file browser prototype of a lunar-colony resource management game, insp
 
 ## Play
 
-Open `index.html` in any modern browser. No build step and no dependencies. The Jura font (free, SIL Open Font License) loads from Google Fonts when online; the game falls back to the system sans-serif font otherwise.
+Open `index.html` in any modern browser. No build step and no dependencies. For development, `node tools/serve.js` serves the folder on http://localhost:8080 and reloads the page when a file changes. The Jura font (free, SIL Open Font License) loads from Google Fonts when online; the game falls back to the system sans-serif font otherwise.
 
 ## What is in the prototype
 
 **Menus and setup**
-- Title screen with New Game, Load Game, Options, Editor, Design Document (opens `GDD.html` in a new tab) and Exit. Load Game and Options are not working yet.
+- Title screen with New Game, Load Game, Options, Editor, Design Document (opens `GDD.html`; its Back button returns to the title screen) and Exit. Load Game and Options are not working yet.
 - New Game offers a difficulty screen (only Normal is available) and a Select Configuration choice.
 - Editor with tabs for Buildings, Tech, Starships, Colonists and Locations. Edits live in named configurations. The built-in Default is read-only, and configurations can be exported and imported as JSON.
 

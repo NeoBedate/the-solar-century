@@ -58,6 +58,9 @@ Single-file browser game prototype (`index.html`: HTML, CSS and vanilla JS, no b
 
 ## Testing
 
+In the Claude app, preview the game with the `game` configuration in `.claude/launch.json` (`tools/serve.js` on http://localhost:8080). The browser pane opens local files as `data:` copies, where links between `index.html` and `GDD.html` cannot work.
+
+
 No test suite. We check changes with headless Chromium through Playwright (`require('playwright')`), loading the file with network requests blocked, driving the UI and reading `S` and the DOM, and checking for `pageerror`. Do the same for any change, then look at a screenshot for UI work.
 
 ## Blender (headless)
