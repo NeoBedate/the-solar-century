@@ -438,10 +438,10 @@ const T={
  ion:{n:'Ion drive',rp:50,req:['deep'],cat:'ships',d:'Unlocks the Ion Drive and the Mars survey'},
  nuclear:{n:'Nuclear drive',rp:100,req:['ion','fission'],cat:'ships',d:'Unlocks the Nuclear Drive'},
  sublight:{n:'Sublight drive',rp:250,req:['nuclear'],cat:'ships',d:'Unlocks the Sublight Drive'},
- helium3:{n:'Helium-3 reactor',rp:40,req:[],cat:'ships',d:'Unlocks the Helium-3 Reactor'},
- hfr:{n:'Fission reactor design (HFR)',rp:80,req:['fission'],cat:'ships',d:'Unlocks the Bedate\'s Fission Reactor'},
- tokamak:{n:'Tokamak fusion',rp:160,req:['fusion','hfr'],cat:'ships',d:'Unlocks the Tokamak Fusion Reactor'},
- antimatter:{n:'Antimatter containment',rp:320,req:['tokamak'],cat:'ships',d:'Unlocks the Antimatter Reactor'},
+ hreactor:{n:'Hydrogen reactor',rp:40,req:[],cat:'ships',d:'Unlocks the Hydrogen Reactor'},
+ tokamak:{n:'Tokamak fusion',rp:80,req:['fusion'],cat:'ships',d:'Unlocks the Tokamak Fusion Reactor'},
+ hfr:{n:'Fission reactor design (HFR)',rp:160,req:['fission','tokamak'],cat:'ships',d:'Unlocks the Bedate\'s Fission Reactor'},
+ supertokamak:{n:'Super Tokamak',rp:320,req:['hfr'],cat:'ships',d:'Unlocks the Super Tokamak'},
  fission:{n:'Nuclear power',rp:60,req:['deep'],cat:'energy',d:'Unlocks the fission reactor'},
  belt:{n:'Asteroid mining',rp:80,req:['ion'],cat:'mining',d:'Unlocks Belt expedition'},
  outer:{n:'Outer-system drive',rp:100,req:['belt'],cat:'ships',d:'Unlocks Outer moons expedition'},
@@ -497,10 +497,10 @@ const EVENTS={
 };
 /* Starship engines (provisional). yield = power the ship gets (same scale as the buildings' power); fuel = units burnt per month while running; wt = tonnes; c = build cost; tech = technology that unlocks it. No ship fits one yet and ship power is not used yet, see PROMISES.md. */
 const ENGINES={
- he3:{n:'Helium-3 Reactor',yield:6,wt:20,fuel:{hydrogen:2},c:{iron:12,aluminium:6,titanium:4,copper:4,components:6,machinery:4},tech:'helium3',d:'Fuses helium-3 gathered from the lunar regolith. Small yield and cheap to build, but it burns a lot of fuel for the power it makes.'},
- hfr:{n:"Bedate's Fission Reactor (HFR)",yield:20,wt:50,fuel:{uranium:.1},c:{titanium:16,chromium:10,platinum:4,uranium:6,copper:10,components:14,machinery:12},tech:'hfr',d:'A compact fission reactor of a very efficient design. Normal yield and very low consumption of uranium, but expensive to build.'},
- tokamak:{n:'Tokamak Fusion Reactor',yield:60,wt:80,fuel:{hydrogen:6},c:{titanium:30,chromium:18,silver:10,platinum:10,copper:16,components:25,machinery:20,software:6},tech:'tokamak',d:'A magnetic bottle holds a fusion plasma hotter than the Sun. High yield and normal consumption, and very expensive to build.'},
- antimatter:{n:'Antimatter Reactor',yield:200,wt:100,fuel:{uranium:6},c:{titanium:50,chromium:30,silver:20,platinum:25,uranium:20,components:45,machinery:35,software:15},tech:'antimatter',d:'The best engine ever built: matter and antimatter annihilate and release immense power. Very high yield, very expensive, and it consumes a lot of fuel.'}
+ hydrogen:{n:'Hydrogen Reactor',yield:6,wt:20,fuel:{hydrogen:2},c:{iron:12,aluminium:6,titanium:4,copper:4,components:6,machinery:4},tech:'hreactor',d:'Fuses hydrogen drawn from the Moon\'s water ice. Small yield and cheap to build, but it burns a lot of fuel for the power it makes.'},
+ tokamak:{n:'Tokamak Fusion Reactor',yield:20,wt:50,fuel:{hydrogen:2},c:{titanium:16,chromium:10,platinum:4,silver:4,copper:10,components:14,machinery:12,software:2},tech:'tokamak',d:'A magnetic bottle holds a hydrogen plasma hotter than the Sun. Normal yield and normal consumption, and expensive to build.'},
+ hfr:{n:"Bedate's Fission Reactor (HFR)",yield:60,wt:80,fuel:{uranium:.3},c:{titanium:30,chromium:18,silver:10,platinum:10,uranium:6,copper:16,components:25,machinery:20,software:6},tech:'hfr',d:'A compact fission reactor of a very efficient design. High yield and very low consumption of uranium, but very expensive to build.'},
+ supertokamak:{n:'Super Tokamak',yield:200,wt:100,fuel:{uranium:6},c:{titanium:50,chromium:30,silver:20,platinum:25,uranium:20,components:45,machinery:35,software:15},tech:'supertokamak',d:'The best engine ever built: an enormous Tokamak fed with uranium that releases immense power. Very high yield, very expensive, and it consumes a lot of fuel.'}
 };
 const CREW={earth:2,mars:3,belt:3,outer:4,gaia:8};
 /* Colonists: starting number, full-crew bonus and what each lifeform needs per colonist per month (air = the gas it breathes; provisional) */
