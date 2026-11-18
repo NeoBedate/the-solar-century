@@ -20,8 +20,11 @@ Things we have said we will build or decide later.
 - Atmosphere: give each location an atmosphere value based on its controlling atmospheric resource. It decides which environmental technology is needed to sustain a colony there.
 - Environmental technology: define the technologies that let a colony survive each atmosphere type (to be tied to the location's atmosphere value).
 - Starship parts: every starship gets these parts, each tied to a technology: drive, life support, cargo bay, crew quarters, bridge, ship's computer, weapons and shields.
+- Minimum crew warning: every starship needs a minimum crew to work properly. When the crew aboard falls below that minimum, issue a warning (define the minimum per ship type and how the warning is shown).
+- Starship loading, next steps: the Crew, Cargo and Resources tabs of each starship exist (Cargo is empty). Crew quarters should limit how many people can be aboard, the Cargo tab needs its content (parts and colony modules in the cargo bay), and missions do not yet use the crew and resources loaded on a ship.
 - Refit: the button exists on each starship but is disabled. Define how a starship's parts are changed (cost, time, which parts, whether it must be landed).
 - Define the starship parts: what each one does and its values, per starship type (to be defined later).
+- Cargo and weight: weights exist (per unit of each resource, per part type and per crew member, all provisional, editable under Starships in the Editor) but nothing uses them yet. The Starships overview shows each ship's total tonnage (fitted parts plus crew) over a maximum (placeholder: 100 t for probes). Still to define: how the maximum is set (by the drive, the cargo bay or the ship type), cargo bay capacity, what loading a starship means, and how total weight affects the drive (speed, fuel or trip time). Weights per part type will need to become per part variant once there are several drives and so on.
 - Define colony module: what it is, its size and what it contains. To colonise, a starship must carry a colony module in its cargo bay.
 - Colonists travel on the same starship as the colony module and occupy its crew quarters.
 - Colony supplies: the ship must also bring a minimum amount of supplies for those colonists (which resources and how much per colonist are still to define).
