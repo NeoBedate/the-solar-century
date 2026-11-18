@@ -423,7 +423,7 @@ const B={
  mine:{n:'Regolith mine',c:{iron:16,aluminium:8,titanium:2,components:2,machinery:4},p:-2,out:{iron:12,silica:8,aluminium:6,titanium:3,sulphur:1},d:'+12 iron, +8 silica, +6 aluminium, +3 titanium, +1 sulphur / month',g:'M',t:72},
  ice:{n:'Ice extractor',c:{iron:12,aluminium:8,titanium:2,components:2,machinery:4},p:-2,out:{water:12,nitrogen:1.2},d:'+12 water, +1.2 nitrogen / month',g:'I',t:72},
  elec:{n:'Electrolyser',c:{iron:16,aluminium:8,copper:4,components:3,machinery:4},p:-3,inp:{water:18},out:{hydrogen:2.4,oxygen:19.2},d:'18 water → 2.4 hydrogen + 19.2 oxygen / month',g:'E',t:120},
- fact:{n:'Component factory',c:{iron:24,aluminium:8,copper:4,silica:8,components:3,machinery:6},p:-3,inp:{iron:8,silica:5,aluminium:2,copper:.5},out:{components:8},d:'8 iron + 5 silica + 2 aluminium + 0.5 copper → 8 components / month',g:'C',t:168},
+ fact:{n:'Component factory',c:{iron:24,aluminium:8,copper:4,silica:8,components:3,machinery:6},p:-3,inp:{iron:8,silica:5,aluminium:2,copper:.5},out:{components:48},d:'8 iron + 5 silica + 2 aluminium + 0.5 copper → 48 components / month',g:'C',t:168},
  shop:{n:'Machinery workshop',c:{iron:24,aluminium:12,copper:4,silica:8,components:4,machinery:6},p:-3,inp:{iron:10,aluminium:4,titanium:1},out:{machinery:4},d:'10 iron + 4 aluminium + 1 titanium → 4 machinery / month',g:'W',t:168},
  farm:{n:'Hydroponics',c:{iron:12,aluminium:8,silica:10,components:2,machinery:2},p:-2,inp:{water:4,nitrogen:1},out:{food:9.6},d:'',g:'F',t:96},
  lab:{n:'Science lab',c:{aluminium:12,copper:8,silica:8,titanium:4,components:4},p:-3,d:'Research points: 1 per 20 days. While a project is active: −75%. Needed to start any project',g:'L',t:144},
@@ -438,6 +438,12 @@ const T={
  fission:{n:'Nuclear power',rp:60,req:['deep'],cat:'energy',d:'Unlocks the fission reactor'},
  belt:{n:'Asteroid mining',rp:80,req:['ion'],cat:'mining',d:'Unlocks Belt expedition'},
  outer:{n:'Outer-system drive',rp:100,req:['belt'],cat:'ships',d:'Unlocks Outer moons expedition'},
+ atm_human:{life:'Human',n:'Colony module: Human',rp:60,req:[],cat:'colony',d:'Allows colonisation modules for locations with a Human atmosphere'},
+ atm_martian:{life:'Martian',n:'Colony module: Martian',rp:80,req:[],cat:'colony',d:'Allows colonisation modules for locations with a Martian atmosphere'},
+ atm_hydrogoid:{life:'Hydrogoid',n:'Colony module: Hydrogoid',rp:100,req:[],cat:'colony',d:'Allows colonisation modules for locations with a Hydrogoid atmosphere'},
+ atm_nitroid:{life:'Nitroid',n:'Colony module: Nitroid',rp:100,req:[],cat:'colony',d:'Allows colonisation modules for locations with a Nitroid atmosphere'},
+ atm_sulphuroid:{life:'Sulphuroid',n:'Colony module: Sulphuroid',rp:120,req:[],cat:'colony',d:'Allows colonisation modules for locations with a Sulphuroid atmosphere'},
+ atm_methanoid:{life:'Methanoid',n:'Colony module: Methanoid',rp:120,req:[],cat:'colony',d:'Allows colonisation modules for locations with a Methanoid atmosphere'},
  gaia:{n:'Gaia seed',rp:150,req:['hydro','fusion','outer'],cat:'colony',d:'Unlocks the Gaia Ark'}
 };
 const TCATS=[{k:'colony',n:'Colonization'},{k:'energy',n:'Energy'},{k:'mining',n:'Mining'},{k:'manuf',n:'Manufacturing'},{k:'life',n:'Life Support'},{k:'ships',n:'Starships'},{k:'weapons',n:'Weapons'}],tcn=k=>(TCATS.find(c=>c.k===T[k].cat)||{n:'Uncategorised'}).n;
@@ -473,13 +479,13 @@ const CREW={earth:2,mars:3,belt:3,outer:4,gaia:8};
 /* Colonists: starting number, full-crew bonus and what each lifeform needs per colonist per month (air = the gas it breathes; provisional) */
 const COL={pop:80,boost:.1,rates:{
  Human:{air:'oxygen',a:.025,water:.1,food:.08},
- Martian:{air:'oxygen',a:.04,water:.07,food:.06},
+ Martian:{air:'oxygen',a:.02,water:.07,food:.06},
  Hydrogoid:{air:'hydrogen',a:.08,water:.04,food:.09},
  Nitroid:{air:'nitrogen',a:.07,water:.05,food:.07},
  Sulphuroid:{air:'sulphur',a:.05,water:.03,food:.07},
  Methanoid:{air:'methane',a:.06,water:.03,food:.06}}};
 /* Colonisation: probe survey, analysis, technology cost and module (placeholder values) */
-const SURVEY={dpa:1946,rpBase:60,rpDiff:2,rpLen:90,fail:.8,c:{hydrogen:10,oxygen:5},mc:{aluminium:40,titanium:20,components:12,machinery:10},mt:600};
+const SURVEY={dpa:1946,rpBase:60,rpDiff:2,rpLen:90,fail:.8,c:{hydrogen:10,oxygen:5},mc:{titanium:1100,aluminium:700,copper:100,silica:400,platinum:100,components:200,machinery:100},mpop:50,mmonths:12,mt:600};
 /* per location: [analysis difficulty 0-1, analysis length in days] */
 const LOCAN={mercury:[.35,40],venus:[.8,90],earth:[.45,30],moon:[.05,10],mars:[.2,30],phobos:[.25,20],deimos:[.2,15],belt:[.3,45],jupiter:[.9,120],io:[.85,80],europa:[.5,70],ganymede:[.4,60],callisto:[.35,50],leda:[.5,70],saturn:[.9,150],titan:[.45,90],enceladus:[.5,60],rhea:[.4,50],iapetus:[.45,50],dione:[.4,45],tethys:[.35,40],mimas:[.35,35],hyperion:[.45,60],phoebe:[.5,80],uranus:[.92,180],titania:[.5,70],oberon:[.5,70],umbriel:[.55,70],ariel:[.5,65],miranda:[.55,60],neptune:[.95,200],triton:[.6,90],pluto:[.6,100],charon:[.55,80]};
 /* Real orbital data per location: [a = distance from the Sun in AU (planets, belt), ak = distance from its planet in thousand km (moons), eccentricity, period in days] */
@@ -562,7 +568,9 @@ function recycle(bi){const BS=berths();if(S.over||!BS[bi]||BS[bi].s!=='hangar')r
  for(const M of [S.names,S.cargo])delete M[H[H.length-1]];S.ships--;for(const k in back)S.res[k]+=back[k];say('Starship recycled: '+nm+' (returned '+cost(back)+').','ok')}
 function buildShip(){if(S.over||!can(SHIP)||owned()>=portSlots())return;pay(SHIP);S.ships++;say('A new probe rolls out and is berthed in the Starport ('+owned()+'/'+portSlots()+' slots).','ok')}
 /* ===== SURVEY AND COLONISATION: probes, analysis, Colonise technologies, colonisation modules ===== */
-const visT=k=>{const t=T[k];return !t.loc||!!S.tech[k]||!!(S.sv[t.loc]&&S.sv[t.loc].done)};
+const lifeSeen=lf=>Object.keys(LOCD).some(l=>LOCD[l].life===lf&&S.sv[l]&&S.sv[l].done);
+/* a location's "Colonise" technology shows once it is analysed; a "Colony module" technology once any location with that lifeform is analysed */
+const visT=k=>{const t=T[k];return !!S.tech[k]||(t.life?lifeSeen(t.life):!t.loc||!!(S.sv[t.loc]&&S.sv[t.loc].done))};
 const svProbe=k=>S.out.find(o=>o.k==='survey'&&o.loc===k),svChance=k=>Math.max(0,1-LOCD[k].adiff*SURVEY.fail);
 const oN=o=>o.k==='survey'?'Survey of '+LOCD[o.loc].n:M[o.k].n,oWhen=o=>o.k==='survey'&&o.ph==='orbit'?'in orbit':dur(o.left)+' to go';
 const SVPH={fly:'flying there',orbit:'in orbit',scan:'analysing',back:'returning'};
@@ -578,10 +586,13 @@ function svRecall(k){const o=svProbe(k);if(S.over||!o||o.ph!=='orbit')return;o.p
 function svTick(o){o.left--;if(o.left>0)return;const n=LOCD[o.loc].n;
  if(o.ph==='fly'){o.ph='orbit';say('The probe has reached the orbit of '+n+'. Start the analysis from its orbit view or Flight plans.','ok')}
  else if(o.ph==='scan'){const sv=S.sv[o.loc]=S.sv[o.loc]||{};o.ph='orbit';
-  if(Math.random()<svChance(o.loc)){sv.done=1;say('Analysis of '+n+' succeeded. The technology “'+T['col_'+o.loc].n+'” is now available.','ok')}
+  if(Math.random()<svChance(o.loc)){const lf=LOCD[o.loc].life,nw=lf&&!lifeSeen(lf);sv.done=1;say('Analysis of '+n+' succeeded. The technology “'+T['col_'+o.loc].n+'” is now available.'+(nw?' The technology “'+T[modTech(o.loc)].n+'” is now available too.':''),'ok')}
   else{sv.fails=(sv.fails||0)+1;say('Analysis of '+n+' failed. The probe is still in orbit: try again or recall it.','bad')}}
  else if(o.ph==='back'){S.ships++;S.out.splice(S.out.indexOf(o),1);say('The probe from '+n+' is back in the Starport.','ok')}}
-function buildMod(k){if(S.over||!S.tech['col_'+k]||S.mods[k]||S.q.some(q=>q.k==='colmod:'+k)||!can(SURVEY.mc))return;pay(SURVEY.mc);S.q.push({k:'colmod:'+k,left:SURVEY.mt});say('Construction started: colonisation module for '+LOCD[k].n+' ('+dur(SURVEY.mt)+').')}
+/* A module is tailored to the atmosphere (lifeform) of its location: it needs that lifeform's "Colony module" technology, the base materials, and a year of the gas the lifeform breathes, of water and of food for its colonists */
+const modTech=k=>'atm_'+(LOCD[k].life||'').toLowerCase(),modOk=k=>!!LOCD[k].life&&!!S.tech[modTech(k)];
+function modCost(k){const c=Object.assign({},SURVEY.mc),r=COL.rates[LOCD[k].life];if(!r)return c;const f=SURVEY.mpop*SURVEY.mmonths;c[r.air]=(c[r.air]||0)+Math.ceil(r.a*f);c.water=(c.water||0)+Math.ceil(r.water*f);c.food=Math.ceil(r.food*f);return c}
+function buildMod(k){if(S.over||!S.tech['col_'+k]||!modOk(k)||S.mods[k]||S.q.some(q=>q.k==='colmod:'+k)||!can(modCost(k)))return;pay(modCost(k));S.q.push({k:'colmod:'+k,left:SURVEY.mt});say('Construction started: colonisation module for '+LOCD[k].n+' ('+dur(SURVEY.mt)+').')}
 /* ===== MISSIONS AND THE GAME CLOCK: launch, tick (one game hour), daily, monthly ===== */
 function launch(k){const m=M[k],cr=CREW[k];if(S.over||S.ships<1||!can(m.c)||freeCol()<cr)return;
  pay(m.c);const bi=berths().findIndex(x=>x.s==='hangar');S.ships--;S.out.push({k,left:m.t*720,crew:cr,b:bi<0?undefined:bi});say('Launched: '+m.n+' ('+Math.round(m.t*30)+' days, crew of '+cr+').')}
@@ -824,7 +835,7 @@ function dbData(){
   E.res.push({n:RN[r],i:ico(r),d:'',f:[['Category',c?c.n:'-'],['Weight',WT.res[r]+' t per unit'],['Produced by',dbLst(by)],['Consumed by',dbLst(us)],['Used to build',dbLst(cn)],['Found at',at.length>8?at.slice(0,8).join(', ')+' and '+(at.length-8)+' more':dbLst(at)]]})}
  for(const k in B){const b=B[k],st=STAFF[k];
   E.bld.push({n:b.n,i:'<span class="tile t-'+k+'" style="width:22px;height:22px;font-size:14px">'+b.g+'</span>',d:b.d||'',f:[['Cost',cost(b.c)],['Build time',dur(b.t)],['Power',(b.p>0?'+':'')+b.p],['Staff',st?st.min+' '+JOBN[st.job].toLowerCase()+' to run, '+st.full+' for full crew':'none'],['Requires',b.tech?T[b.tech].n:'nothing']]})}
- for(const k in T){if(T[k].gen)continue;const t=T[k],un=Object.keys(B).filter(x=>B[x].tech===k).map(x=>B[x].n).concat(Object.keys(M).filter(x=>M[x].tech===k).map(x=>M[x].n));
+ for(const k in T){if(T[k].gen||(S&&S.sv&&!visT(k)))continue;const t=T[k],un=Object.keys(B).filter(x=>B[x].tech===k).map(x=>B[x].n).concat(Object.keys(M).filter(x=>M[x].tech===k).map(x=>M[x].n));
   E.tech.push({n:t.n,i:ico('research'),d:t.d||'',f:[['Category',tcn(k)],['Research cost',t.rp+' points up front, '+t.rp+' days'],['Requires',dbLst(t.req.map(r=>T[r].n))],['Unlocks',dbLst(un)]]})}
  for(const t of SHIPTYPES){const pr=t.k==='probe';
   E.ship.push({n:t.n,i:ico('ship'),d:'',f:pr?[['Built in','Shipyard'],['Build cost',cost(SHIP)],['Berths','Starport, up to '+PORT.max]]:[['Status','not available yet']]})}
@@ -984,7 +995,7 @@ function svHtml(){const pr=S.out.filter(o=>o.k==='survey'),free=Object.keys(LOCD
 function orbHtml(){const k=U.loc,l=LOCD[k],pr=svProbe(k),sv=S.sv[k]||{};let st='',act='';
  if(S.colonies[k])st='<b class="ok">Colony: '+esc(l.col||l.n)+'</b>';
  else{const tk='col_'+k;
-  if(sv.done)st='<b class="ok">Analysis complete.</b> '+(S.mods[k]?'Colonisation module built.':S.tech[tk]?'Colonisation researched: build the module in Construction.':'Research “'+esc(T[tk].n)+'” ('+T[tk].rp+' points) in Science Labs.');
+  if(sv.done)st='<b class="ok">Analysis complete.</b> '+(S.mods[k]?'Colonisation module built.':S.tech[tk]?'Colonisation researched: '+(!LOCD[k].life?'no lifeform can live here.':!modOk(k)?'research “'+esc(T[modTech(k)].n)+'” to build the module.':'build the module in Construction.'):'Research “'+esc(T[tk].n)+'” ('+T[tk].rp+' points) in Science Labs.');
   else if(pr&&pr.ph==='fly')st='Probe on its way: arrives in '+dur(pr.left)+'.';
   else if(pr&&pr.ph==='scan')st='Analysis in progress: '+Math.ceil(pr.left/24)+' days left.';
   else if(pr&&pr.ph==='back')st='Probe returning: '+dur(pr.left)+'.';
@@ -994,7 +1005,7 @@ function orbHtml(){const k=U.loc,l=LOCD[k],pr=svProbe(k),sv=S.sv[k]||{};let st='
  return '<h2>Survey of '+esc(l.n)+'</h2><div class="in"><div class="row"><div>Analysis<small>Length '+l.alen+' days · difficulty '+Math.round(l.adiff*100)+'% · success chance '+Math.round(svChance(k)*100)+'% per attempt</small></div></div><div class="row"><div>Probe trip<small>'+lapse(tripD(l.k||k))+' ('+fmtAU(distNow(HOME,k,daysJ()))+' AU today) · launch cost '+cost(SURVEY.c)+'</small></div></div><div class="row"><div>'+st+'</div><div>'+act+'</div></div></div>'}
 function modRows(){const ks=Object.keys(LOCD).filter(k=>S.tech['col_'+k]&&!S.mods[k]),built=Object.keys(S.mods).filter(k=>S.mods[k]&&!S.colonies[k]);
  return (ks.length?'<h4 class="rh">Colonisation modules</h4>':'')+ks.map(k=>{const q=S.q.some(x=>x.k==='colmod:'+k);
- return '<div class="row"><div>Colonisation module – '+esc(LOCD[k].n)+'<small>'+cost(SURVEY.mc)+' · takes '+dur(SURVEY.mt)+'</small></div><button '+(!q&&can(SURVEY.mc)&&!S.over?'':'disabled')+' onclick="act(buildMod,\''+k+'\')">'+(q?'Queued':'Build')+'</button></div>'}).join('')+(built.length?'<div class="dim" style="padding-top:6px">Modules built: '+built.map(k=>esc(LOCD[k].n)).join(', ')+'</div>':'')}
+ return '<div class="row"><div>Colonisation module – '+esc(LOCD[k].n)+'<small>'+(!LOCD[k].life?'No lifeform can live here':!modOk(k)?'Research “'+esc(T[modTech(k)].n)+'” first':cost(modCost(k))+' · takes '+dur(SURVEY.mt))+'</small></div><button '+(!q&&modOk(k)&&can(modCost(k))&&!S.over?'':'disabled')+' onclick="act(buildMod,\''+k+'\')">'+(q?'Queued':'Build')+'</button></div>'}).join('')+(built.length?'<div class="dim" style="padding-top:6px">Modules built: '+built.map(k=>esc(LOCD[k].n)).join(', ')+'</div>':'')}
 SCR.filter(s=>s!=='base').forEach(s=>{const h=$('scr-'+s).querySelector('h2');
  h.classList.add('wh');
  h.insertAdjacentHTML('beforeend','<button class="xb" title="Close (Esc)" aria-label="Close"><svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="square"><path d="M3 3L13 13M13 3L3 13"/></svg></button>');
@@ -1237,7 +1248,7 @@ function edC(){return '<div class="ef">'+fl('Starting colonists',num('COL.pop',C
  Object.keys(STAFF).map(k=>{const s=STAFF[k],P='STAFF.'+k+'.';
   return '<div class="sg"><b>'+(k==='build'?'Construction site':esc(B[k].n))+'</b><span class="dim">'+JOBN[s.job]+'</span>'+fl('Minimum to run',num(P+'min',s.min,{int:1,min:1}))+fl('Full crew (boost)',num(P+'full',s.full,{int:1,min:2}))+'</div>'}).join('')+'</div>'}
 let edTab='b',edOpen=null;
-function edL(){return '<details'+(edOpen==='survey'?' open':'')+'><summary>Colonisation (survey, technology and module)</summary><p class="dim">A probe surveys a location; each analysis fails with a chance of difficulty × the failure factor. A successful analysis unlocks the technology “Colonise …”, which costs base × (1 + difficulty × factor) × (1 + length / divisor) research points. That technology unlocks the colonisation module.</p><div class="ef">'+fl('Technology base cost (points)',num('SURVEY.rpBase',SURVEY.rpBase,{min:1}))+fl('Difficulty factor on cost',num('SURVEY.rpDiff',SURVEY.rpDiff,{min:0}))+fl('Length divisor on cost (days)',num('SURVEY.rpLen',SURVEY.rpLen,{min:1}))+fl('Failure factor (% of difficulty)',num('SURVEY.fail',SURVEY.fail,{pct:1}))+fl('Module build time (hours)',num('SURVEY.mt',SURVEY.mt,{min:1}))+fl('Probe days per AU (simplest drive)',num('SURVEY.dpa',SURVEY.dpa,{min:1}))+'</div><h4>Probe cost per survey flight</h4>'+grid('SURVEY.c',SURVEY.c)+'<h4>Colonisation module cost</h4>'+grid('SURVEY.mc',SURVEY.mc)+'</details><p class="dim">Planets and moons for the Colonies screen. “Colonised at start” shows a location as a colony in colour; only the Moonbase can produce for now. “Can provide” is the amount each resource the location can supply.</p>'+Object.keys(LOCD).map(k=>{const l=LOCD[k],P='LOCD.'+k+'.';
+function edL(){return '<details'+(edOpen==='survey'?' open':'')+'><summary>Colonisation (survey, technology and module)</summary><p class="dim">A probe surveys a location; each analysis fails with a chance of difficulty × the failure factor. A successful analysis unlocks the technology “Colonise …”, which costs base × (1 + difficulty × factor) × (1 + length / divisor) research points. That technology unlocks the colonisation module.</p><div class="ef">'+fl('Technology base cost (points)',num('SURVEY.rpBase',SURVEY.rpBase,{min:1}))+fl('Difficulty factor on cost',num('SURVEY.rpDiff',SURVEY.rpDiff,{min:0}))+fl('Length divisor on cost (days)',num('SURVEY.rpLen',SURVEY.rpLen,{min:1}))+fl('Failure factor (% of difficulty)',num('SURVEY.fail',SURVEY.fail,{pct:1}))+fl('Module build time (hours)',num('SURVEY.mt',SURVEY.mt,{min:1}))+fl('Colonists a module supplies',num('SURVEY.mpop',SURVEY.mpop,{int:1,min:1}))+fl('Months of gas and food in a module',num('SURVEY.mmonths',SURVEY.mmonths,{int:1,min:1}))+fl('Probe days per AU (simplest drive)',num('SURVEY.dpa',SURVEY.dpa,{min:1}))+'</div><h4>Probe cost per survey flight</h4>'+grid('SURVEY.c',SURVEY.c)+'<h4>Colonisation module cost (materials; the gas and food of its lifeform are added)</h4>'+grid('SURVEY.mc',SURVEY.mc)+'</details><p class="dim">Planets and moons for the Colonies screen. “Colonised at start” shows a location as a colony in colour; only the Moonbase can produce for now. “Can provide” is the amount each resource the location can supply.</p>'+Object.keys(LOCD).map(k=>{const l=LOCD[k],P='LOCD.'+k+'.';
  return '<details'+(edOpen===k?' open':'')+'><summary>'+(l.p?'↳ ':'')+esc(l.n)+'</summary><div class="ef">'+fl('Name',txt(P+'n',l.n))+fl('Colony name (when colonised)',txt(P+'col',l.col||''))+fl('Description',txt(P+'d',l.d),1)+fl('Analysis length (days)',num(P+'alen',l.alen,{int:1,min:1}))+fl('Analysis difficulty (%)',num(P+'adiff',l.adiff,{pct:1}))+(l.p?fl('Orbit radius around its planet (thousand km)',num(P+'ak',l.ak,{min:.001})):fl('Distance from the Sun (AU)',num(P+'a',l.a,{min:.01})))+fl('Eccentricity',num(P+'ecc',l.ecc,{max:1}))+fl('Orbital period (days)',num(P+'per',l.per,{min:.1}))+'<label class="ck" style="grid-column:1/-1"><input type="checkbox" data-p="'+P+'start"'+(l.start?' checked':'')+(k==='moon'?' disabled':'')+'>Colonised at start'+(k==='moon'?' (the Moonbase always is)':'')+'</label></div><h4>Can provide</h4>'+grid(P+'res',l.res)+'</details>'}).join('')}
 const TABS=[['b','Buildings'],['t','Tech'],['s','Starships'],['c','Colonists'],['l','Locations']];
 function renderEd(){cfBar();

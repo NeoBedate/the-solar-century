@@ -320,14 +320,14 @@ footer{text-align:center;color:var(--dim);font-size:13px;padding:10px 0 30px}
   <div class="st bev" data-ic="mission"><b>2 · Fly</b>Trip time from the real positions of the bodies on the launch date.</div><div class="ar">›</div>
   <div class="st bev" data-ic="project"><b>3 · Analyse</b>In orbit, start the analysis. It takes the location's length in days.</div><div class="ar">›</div>
   <div class="st bev" data-ic="research"><b>4 · Research</b>Success unlocks “Colonise &lt;location&gt;”. A failure leaves the probe in orbit to retry or recall.</div><div class="ar">›</div>
-  <div class="st bev" data-ic="hangar"><b>5 · Build module</b>Construction offers a colonisation module, built in <span data-val="SURVEY.mt/24"></span> days for<br><span data-cost="SURVEY.mc"></span></div><div class="ar">›</div>
+  <div class="st bev" data-ic="hangar"><b>5 · Build module</b>Construction offers a colonisation module, tailored to the atmosphere of the location (its lifeform) and built in <span data-val="SURVEY.mt/24"></span> days. It needs the technology “Colony module” for that lifeform (one per lifeform, researched once). That technology stays hidden until the player has successfully analysed a location with that lifeform (the Moon counts for Humans, so it shows from the start) and costs <span data-cost="SURVEY.mc"></span>, plus enough of the gas that lifeform breathes, of water and of food for <span data-val="SURVEY.mpop"></span> colonists for <span data-val="SURVEY.mmonths"></span> months (for example 15 oxygen, 60 water and 48 food for a Human location). Locations with no lifeform (Mercury, Earth, the belt) cannot get a module.</div><div class="ar">›</div>
   <div class="st bev" data-ic="colony"><b>6 · Found colony</b><span class="st-no">Planned</span>: ship the module with colonists and supplies.</div>
  </div>
  <h3>Trip time</h3>
  <p>The probe leaves on day <i>t0</i> and flies straight at <b><span data-val="SURVEY.dpa"></span> days per AU</b> (the simplest drive: Moon to Earth in about <span data-val="Math.round(384400/149597870.7*SURVEY.dpa)"></span> days) towards where the target will be. The trip is the first time <i>T</i> at which speed × <i>T</i> reaches the distance to the target's real position at <i>t0 + T</i>. Inside one planetary system the orbit distance is used; moons share their planet's position; the belt uses Ceres. Trips therefore change with the date, which creates launch windows. A recall computes the way back from the current date.</p>
  <h3>Analysis</h3>
  <p>Success chance is <code>1 − difficulty × <span data-val="SURVEY.fail"></span></code>. The difficulty (0 to 1) and length in days are set per location in the Editor (see Locations).</p>
- <div class="note todo">Still to define: what a finished module does (launching it and founding the colony), what an analysis reveals, the colony module itself (size, contents), colony supplies per colonist, atmospheres per location, and the real values for difficulty, length and cost. With the simplest drive nothing beyond Uranus is reachable before 2200, so faster drives are needed.</div>
+ <div class="note todo">Still to define: what a finished module does (launching it and founding the colony), what an analysis reveals, the colony module's size and contents beyond its cost, how colonists and supplies travel aboard the ship, and the real values for difficulty, length and cost. With the simplest drive nothing beyond Uranus is reachable before 2200, so faster drives are needed.</div>
 </div></section>
 
 <section class="win bev" id="locations" data-ic="colony"><h2>Locations</h2><div class="body">
@@ -408,7 +408,7 @@ footer{text-align:center;color:var(--dim);font-size:13px;padding:10px 0 30px}
   <div>
    <h4>Economy</h4><ul><li>Balancing of all costs and rates.</li><li>A source for software.</li><li>Other ways to earn research points.</li></ul>
    <h4>Research</h4><ul><li>Manufacturing and Weapons technologies.</li><li>Drive technologies and their speeds.</li><li>Environmental technologies per atmosphere.</li></ul>
-   <h4>Colonisation</h4><ul><li>Launching the module and founding a colony.</li><li>The colony module, supplies and colonists aboard.</li><li>Atmosphere values per location.</li><li>What an analysis reveals; real difficulty, length and cost values.</li><li>Several outposts researching at once.</li></ul>
+   <h4>Colonisation</h4><ul><li>Launching the module and founding a colony.</li><li>The colony module's contents beyond its cost, and the colonists aboard.</li><li>What an analysis reveals; real difficulty, length and cost values.</li><li>Several outposts researching at once.</li></ul>
   </div>
   <div>
    <h4>Starships</h4><ul><li>What each part does, per ship type.</li><li>Refit rules.</li><li>Minimum crew and its warning.</li><li>Crew quarters, cargo bay capacity, maximum tonnage and its effect on the drive.</li><li>Hop Miners, Solar Carriers, Nuclear Cruisers and Colony Ships.</li></ul>
@@ -437,7 +437,7 @@ const B={
  mine:{n:'Regolith mine',c:{iron:16,aluminium:8,titanium:2,components:2,machinery:4},p:-2,out:{iron:12,silica:8,aluminium:6,titanium:3,sulphur:1},d:'+12 iron, +8 silica, +6 aluminium, +3 titanium, +1 sulphur / month',g:'M',t:72},
  ice:{n:'Ice extractor',c:{iron:12,aluminium:8,titanium:2,components:2,machinery:4},p:-2,out:{water:12,nitrogen:1.2},d:'+12 water, +1.2 nitrogen / month',g:'I',t:72},
  elec:{n:'Electrolyser',c:{iron:16,aluminium:8,copper:4,components:3,machinery:4},p:-3,inp:{water:18},out:{hydrogen:2.4,oxygen:19.2},d:'18 water → 2.4 hydrogen + 19.2 oxygen / month',g:'E',t:120},
- fact:{n:'Component factory',c:{iron:24,aluminium:8,copper:4,silica:8,components:3,machinery:6},p:-3,inp:{iron:8,silica:5,aluminium:2,copper:.5},out:{components:8},d:'8 iron + 5 silica + 2 aluminium + 0.5 copper → 8 components / month',g:'C',t:168},
+ fact:{n:'Component factory',c:{iron:24,aluminium:8,copper:4,silica:8,components:3,machinery:6},p:-3,inp:{iron:8,silica:5,aluminium:2,copper:.5},out:{components:48},d:'8 iron + 5 silica + 2 aluminium + 0.5 copper → 48 components / month',g:'C',t:168},
  shop:{n:'Machinery workshop',c:{iron:24,aluminium:12,copper:4,silica:8,components:4,machinery:6},p:-3,inp:{iron:10,aluminium:4,titanium:1},out:{machinery:4},d:'10 iron + 4 aluminium + 1 titanium → 4 machinery / month',g:'W',t:168},
  farm:{n:'Hydroponics',c:{iron:12,aluminium:8,silica:10,components:2,machinery:2},p:-2,inp:{water:4,nitrogen:1},out:{food:9.6},d:'',g:'F',t:96},
  lab:{n:'Science lab',c:{aluminium:12,copper:8,silica:8,titanium:4,components:4},p:-3,d:'Research points: 1 per 20 days. While a project is active: −75%. Needed to start any project',g:'L',t:144},
@@ -452,6 +452,12 @@ const T={
  fission:{n:'Nuclear power',rp:60,req:['deep'],cat:'energy',d:'Unlocks the fission reactor'},
  belt:{n:'Asteroid mining',rp:80,req:['ion'],cat:'mining',d:'Unlocks Belt expedition'},
  outer:{n:'Outer-system drive',rp:100,req:['belt'],cat:'ships',d:'Unlocks Outer moons expedition'},
+ atm_human:{life:'Human',n:'Colony module: Human',rp:60,req:[],cat:'colony',d:'Allows colonisation modules for locations with a Human atmosphere'},
+ atm_martian:{life:'Martian',n:'Colony module: Martian',rp:80,req:[],cat:'colony',d:'Allows colonisation modules for locations with a Martian atmosphere'},
+ atm_hydrogoid:{life:'Hydrogoid',n:'Colony module: Hydrogoid',rp:100,req:[],cat:'colony',d:'Allows colonisation modules for locations with a Hydrogoid atmosphere'},
+ atm_nitroid:{life:'Nitroid',n:'Colony module: Nitroid',rp:100,req:[],cat:'colony',d:'Allows colonisation modules for locations with a Nitroid atmosphere'},
+ atm_sulphuroid:{life:'Sulphuroid',n:'Colony module: Sulphuroid',rp:120,req:[],cat:'colony',d:'Allows colonisation modules for locations with a Sulphuroid atmosphere'},
+ atm_methanoid:{life:'Methanoid',n:'Colony module: Methanoid',rp:120,req:[],cat:'colony',d:'Allows colonisation modules for locations with a Methanoid atmosphere'},
  gaia:{n:'Gaia seed',rp:150,req:['hydro','fusion','outer'],cat:'colony',d:'Unlocks the Gaia Ark'}
 };
 const TCATS=[{k:'colony',n:'Colonization'},{k:'energy',n:'Energy'},{k:'mining',n:'Mining'},{k:'manuf',n:'Manufacturing'},{k:'life',n:'Life Support'},{k:'ships',n:'Starships'},{k:'weapons',n:'Weapons'}],tcn=k=>(TCATS.find(c=>c.k===T[k].cat)||{n:'Uncategorised'}).n;
@@ -483,12 +489,12 @@ const WT={res:{hydrogen:.07,oxygen:1.1,water:1,nitrogen:.8,methane:.4,sulphur:2,
 const CREW={earth:2,mars:3,belt:3,outer:4,gaia:8};
 const COL={pop:80,boost:.1,rates:{
  Human:{air:'oxygen',a:.025,water:.1,food:.08},
- Martian:{air:'oxygen',a:.04,water:.07,food:.06},
+ Martian:{air:'oxygen',a:.02,water:.07,food:.06},
  Hydrogoid:{air:'hydrogen',a:.08,water:.04,food:.09},
  Nitroid:{air:'nitrogen',a:.07,water:.05,food:.07},
  Sulphuroid:{air:'sulphur',a:.05,water:.03,food:.07},
  Methanoid:{air:'methane',a:.06,water:.03,food:.06}}};
-const SURVEY={dpa:1946,rpBase:60,rpDiff:2,rpLen:90,fail:.8,c:{hydrogen:10,oxygen:5},mc:{aluminium:40,titanium:20,components:12,machinery:10},mt:600};
+const SURVEY={dpa:1946,rpBase:60,rpDiff:2,rpLen:90,fail:.8,c:{hydrogen:10,oxygen:5},mc:{titanium:1100,aluminium:700,copper:100,silica:400,platinum:100,components:200,machinery:100},mpop:50,mmonths:12,mt:600};
 const LOCAN={mercury:[.35,40],venus:[.8,90],earth:[.45,30],moon:[.05,10],mars:[.2,30],phobos:[.25,20],deimos:[.2,15],belt:[.3,45],jupiter:[.9,120],io:[.85,80],europa:[.5,70],ganymede:[.4,60],callisto:[.35,50],leda:[.5,70],saturn:[.9,150],titan:[.45,90],enceladus:[.5,60],rhea:[.4,50],iapetus:[.45,50],dione:[.4,45],tethys:[.35,40],mimas:[.35,35],hyperion:[.45,60],phoebe:[.5,80],uranus:[.92,180],titania:[.5,70],oberon:[.5,70],umbriel:[.55,70],ariel:[.5,65],miranda:[.55,60],neptune:[.95,200],triton:[.6,90],pluto:[.6,100],charon:[.55,80]};
 const LOCORB={mercury:[.387,0,.206,88],venus:[.723,0,.007,224.7],earth:[1,0,.017,365.25],moon:[0,384.4,.055,27.32],mars:[1.524,0,.093,687],phobos:[0,9.376,.015,.319],deimos:[0,23.46,.0002,1.263],belt:[2.767,0,.076,1682],jupiter:[5.203,0,.049,4333],io:[0,421.7,.004,1.769],europa:[0,671.1,.009,3.551],ganymede:[0,1070.4,.001,7.155],callisto:[0,1882.7,.007,16.689],leda:[0,11165,.164,240.9],saturn:[9.537,0,.057,10759],titan:[0,1221.9,.029,15.945],enceladus:[0,238,.005,1.37],rhea:[0,527.1,.001,4.518],iapetus:[0,3560.8,.028,79.33],dione:[0,377.4,.002,2.737],tethys:[0,294.6,.0001,1.888],mimas:[0,185.5,.02,.942],hyperion:[0,1481.1,.123,21.28],phoebe:[0,12952,.156,550.5],uranus:[19.19,0,.046,30687],titania:[0,436.3,.001,8.706],oberon:[0,583.5,.001,13.463],umbriel:[0,266,.004,4.144],ariel:[0,190.9,.001,2.52],miranda:[0,129.9,.001,1.413],neptune:[30.07,0,.009,60190],triton:[0,354.8,0,5.877],pluto:[39.48,0,.249,90560],charon:[0,19.6,.0002,6.387]};
 const SHIPREC=.5;
@@ -585,7 +591,7 @@ const PARTS=[{k:'drive',n:'Drive',d:'Moves the ship. Faster drives shorten trips
 const SHIPPARTS={probe:{drive:'Simplest drive',life:'',cargo:'',crew:'',bridge:'',computer:'Survey computer',weapons:'',shields:''}};
 const SHIPTYPES=[{k:'probe',n:'Probes'},{k:'hop',n:'Hop Miners'},{k:'solar',n:'Solar Carriers'},{k:'nuclear',n:'Nuclear Cruisers'},{k:'colony',n:'Colony Ships'}];
 const START_STATE={pop:COL.pop,res:{hydrogen:30,oxygen:100,water:100,nitrogen:30,methane:5,sulphur:10,titanium:20,aluminium:40,copper:20,silica:60,iron:120,silver:0,chromium:0,platinum:0,uranium:0,components:10,machinery:20,software:10,food:60},b:{solar:1,mine:1,ice:2,farm:1,elec:0,fact:0,shop:0,lab:0,hab:2,reactor:0},staff:{solar:8,mine:8,ice:16,farm:8,elec:0,reactor:0,lab:0,fact:0,shop:0,build:2},slots:Math.min(PORT.start,PORT.max)};
-const SYNC={"rev":10,"date":"2026-11-18","history":[[9,"2026-11-18","181824d","Lifeforms and extrapolated resources for 11 more locations; Mercury, Earth and the belt stay without lifeform"],[8,"2026-11-18","fc7af07","Colonist lifeforms by location, table resources, Leda/Hyperion/Phoebe, outer ring for irregular moons"],[7,"2026-11-18","af8c449","GDD revision number and history generated from git (roadmap item 5)"],[6,"2026-11-18","021f924","Cheaper development: test and GDD-sync tools, code signposts, shorter CLAUDE.md and README, guides"],[5,"2026-11-18","57000dc","GDD Back button: same-tab navigation to the title screen; launch config for the dev server"],[4,"2026-11-18","1597f7c","GDD: move the Game Design Document box above Contents"],[3,"2026-11-18","d3ec3ac","Light/dark theme switch in the in-game main menu; Back button in the GDD"],[2,"2026-11-18","9a9d31f","Title screen: Design Document button opens GDD.html in a new tab"],[1,"2026-11-18","69f52a2","Add the Game Design Document (GDD.html), styled like the game"]]};
+const SYNC={"rev":11,"date":"2026-11-18","history":[[10,"2026-11-18","df4b839","Food and Hydroponics, per-lifeform consumption, 80 colonists, habitats of 50, rebalanced staffing and outputs, power shortfall at start"],[9,"2026-11-18","181824d","Lifeforms and extrapolated resources for 11 more locations; Mercury, Earth and the belt stay without lifeform"],[8,"2026-11-18","fc7af07","Colonist lifeforms by location, table resources, Leda/Hyperion/Phoebe, outer ring for irregular moons"],[7,"2026-11-18","af8c449","GDD revision number and history generated from git (roadmap item 5)"],[6,"2026-11-18","021f924","Cheaper development: test and GDD-sync tools, code signposts, shorter CLAUDE.md and README, guides"],[5,"2026-11-18","57000dc","GDD Back button: same-tab navigation to the title screen; launch config for the dev server"],[4,"2026-11-18","1597f7c","GDD: move the Game Design Document box above Contents"],[3,"2026-11-18","d3ec3ac","Light/dark theme switch in the in-game main menu; Back button in the GDD"],[2,"2026-11-18","9a9d31f","Title screen: Design Document button opens GDD.html in a new tab"],[1,"2026-11-18","69f52a2","Add the Game Design Document (GDD.html), styled like the game"]]};
 /* SYNC:END */
 
 /* GDD-only data: what the game does not hold (yet). Edit by hand. */
