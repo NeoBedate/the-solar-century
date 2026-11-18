@@ -491,7 +491,7 @@ function freeCol(){return Math.max(0,S.pop-crewOut()-assigned())}
 function jobCount(j){let a=0;for(const k in STAFF)if(STAFF[k].job===j)a+=S.staff[k];return a}
 function staffCap(k){return k==='build'?Math.max(1,S.q.length)*STAFF.build.full:S.b[k]*STAFF[k].full}
 function assign(k,d){if(S.over||!STAFF[k])return;const nv=S.staff[k]+d;if(nv<0||(d>0&&(freeCol()<d||nv>staffCap(k))))return;S.staff[k]=nv;render()}
-function fit(){let over=assigned()+crewOut()-S.pop,lost=0;
+function fitStaff(){let over=assigned()+crewOut()-S.pop,lost=0;
  while(over>0){let kk=null;
  for(const k in S.staff)if(S.staff[k]>0&&(kk===null||S.staff[k]>S.staff[kk]))kk=k;
  if(kk===null)break;
@@ -599,7 +599,7 @@ function modRows(){const ks=Object.keys(LOCD).filter(k=>S.tech['col_'+k]&&!S.mod
 function launch(k){const m=M[k],cr=CREW[k];if(S.over||S.ships<1||!can(m.c)||freeCol()<cr)return;
  pay(m.c);const bi=berths().findIndex(x=>x.s==='hangar');S.ships--;S.out.push({k,left:m.t*720,crew:cr,b:bi<0?undefined:bi});say('Launched: '+m.n+' ('+Math.round(m.t*30)+' days, crew of '+cr+').');render()}
 function tick(){
- if(S.over)return;fit();const P=pow(),e=P.e,R=S.res,H=720;
+ if(S.over)return;fitStaff();const P=pow(),e=P.e,R=S.res,H=720;
  if(e<1&&!S.brown){S.brown=true;say('Power shortfall: machines run at '+Math.round(e*100)+'%.','bad')}
  if(e>=1&&S.brown){S.brown=false;say('Power restored.','ok')}
  let short=false;
