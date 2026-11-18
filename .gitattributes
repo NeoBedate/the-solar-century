@@ -1,0 +1,4 @@
+# Shell scripts and CI files must keep Unix line endings on every computer
+.githooks/* text eol=lf
+*.sh text eol=lf
+.github/** text eol=lf

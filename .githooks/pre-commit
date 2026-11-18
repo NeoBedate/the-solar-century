@@ -1,0 +1,26 @@
+#!/bin/sh
+# Checkpoint before each commit: runs the headless game check when the game, the GDD or the tools change.
+# Install once per computer (from the repository folder):   git config core.hooksPath .githooks
+# A failing check stops the commit. Fix the problem; do not skip the hook.
+
+files=$(git diff --cached --name-only)
+echo "$files" | grep -Eq '^(index\.html|GDD\.html|tools/)' || exit 0
+
+if ! command -v node >/dev/null 2>&1; then
+  echo "pre-commit: Node.js is not installed, so the game check was skipped." >&2
+  exit 0
+fi
+if [ ! -d tools/node_modules/playwright ]; then
+  echo "pre-commit: tools are not set up, so the game check was skipped." >&2
+  echo "            Set up once: cd tools && npm i && npx playwright install chromium" >&2
+  exit 0
+fi
+
+echo "pre-commit: checking the game (node tools/check.js)..."
+if ! out=$(node tools/check.js 2>&1); then
+  echo "$out" >&2
+  echo "pre-commit: the check failed, so the commit was stopped." >&2
+  exit 1
+fi
+echo "$out" | grep -E '^(warning|no page errors)' || true
+exit 0

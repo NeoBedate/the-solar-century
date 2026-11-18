@@ -7,8 +7,8 @@ Improvements to how the game is built and tested. Each item says what it gives, 
 | # | Improvement | Status | Your part |
 |---|---|---|---|
 | 1 | Test scenarios from the URL (`?state=`, `?seed=`) | Planned | Choose the situations worth saving |
-| 2 | Checkpoint before each commit (git hook) | Planned | Say yes; install Node.js on each computer |
-| 3 | Automatic checks on GitHub | Planned | Say yes; a push is needed to activate it |
+| 2 | Checkpoint before each commit (git hook) | Done on the desktop PC | Install it on the Mac (see below) |
+| 3 | Automatic checks on GitHub | Ready, starts with the next push | Say "push it" |
 | 4 | Balancing simulator | Later (when balancing starts) | Decide what "balanced" means |
 | 5 | Automatic GDD revision numbers | Planned | Nothing |
 | – | Token savings: `tools/check.js`, `tools/sync-gdd.js`, short `CLAUDE.md`, short README, code signposts | Done | – |
@@ -25,17 +25,26 @@ Improvements to how the game is built and tested. Each item says what it gives, 
 
 **Gives:** `tools/check.js` runs by itself before every commit and stops a commit that breaks the game. No tokens are spent on it.
 
-**Claude does:** a git pre-commit hook in the repository and a one-line install command.
+**How it works:** the hook is `.githooks/pre-commit`. It runs only when a commit includes `index.html`, `GDD.html` or a file in `tools/` (documents alone are not checked), takes about 5 seconds, and when it stops a commit it prints the page error that caused it. On a computer without Node.js or without the tools set up it prints a warning and lets the commit through.
 
-**You:** approve it, and run the install command once on each computer (desktop PC and Mac). Node.js must be installed on both.
+**Installed on:** the desktop PC.
+
+**You, on the Mac (once):** in Terminal, from the repository folder, after pulling:
+
+```
+cd tools && npm i && npx playwright install chromium && cd ..
+git config core.hooksPath .githooks
+```
+
+Node.js is needed (`brew install node` if it is missing).
 
 ## 3. Automatic checks on GitHub
 
 **Gives:** every push is tested on GitHub's computers (free for this size of project); a red or green mark appears next to each commit.
 
-**Claude does:** a GitHub Actions workflow file that installs Playwright and runs `tools/check.js`.
+**How it works:** the workflow is `.github/workflows/check.yml`. On every push to `main` (and on pull requests) GitHub installs the tools, runs `tools/check.js`, checks that the GDD data matches the game (`tools/sync-gdd.js --check`), and keeps three screenshots for 7 days (Actions tab, the run, "Artifacts"). You can also start it by hand: Actions tab, "Game check", "Run workflow".
 
-**You:** approve it, then say "push it" so it starts working. If a check fails, GitHub emails you.
+**You:** say "push it"; the first run starts with that push. Check the result on GitHub (green tick or red cross next to the commit, or the Actions tab). If a run fails, GitHub emails you; tell Claude and it will read the log.
 
 ## 4. Balancing simulator
 

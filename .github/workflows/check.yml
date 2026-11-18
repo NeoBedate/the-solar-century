@@ -1,0 +1,41 @@
+# Runs the headless game check on GitHub for every push and pull request (see docs/guide-process-roadmap.md, item 3).
+name: Game check
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install the tools (Playwright and acorn)
+        working-directory: tools
+        run: |
+          npm install --no-audit --no-fund
+          npx playwright install --with-deps chromium
+
+      - name: Check the game and the GDD
+        run: node tools/check.js --shot base,map1,gdd
+
+      - name: GDD data matches the game
+        run: node tools/sync-gdd.js --check
+
+      - name: Keep the screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: screenshots
+          path: tools/out/
+          retention-days: 7

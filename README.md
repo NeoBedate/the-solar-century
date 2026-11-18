@@ -35,6 +35,7 @@ Node.js only, for development (the game needs nothing). Set up once: `cd tools &
 - `node tools/serve.js`: serves the folder on http://localhost:8080 and reloads the page when a file changes.
 - `node tools/check.js`: headless test of every screen, with optional screenshots (`--shot base`).
 - `node tools/sync-gdd.js`: copies the game's data into the GDD's tables.
+- `git config core.hooksPath .githooks` (once per computer): runs the check before each commit that changes the game. GitHub runs it too on every push.
 
 ## Credits
 

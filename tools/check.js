@@ -20,14 +20,16 @@
 const path=require('path'),fs=require('fs');
 let chromium;try{({chromium}=require('playwright'))}catch(e){console.error('Playwright missing: cd tools && npm i && npx playwright install chromium');process.exit(2)}
 const root=path.resolve(__dirname,'..'),out=path.join(__dirname,'out');
-const url=f=>'file:///'+path.join(root,f).replace(/\\/g,'/');
+const url=f=>require('url').pathToFileURL(path.join(root,f)).href;
 const A=process.argv.slice(2),opt=k=>{const i=A.indexOf('--'+k);return i<0?null:(A[i+1]&&!A[i+1].startsWith('--')?A[i+1]:true)};
 const shots=(opt('shot')||'').toString().split(',').filter(Boolean),scale=+(opt('scale')||.5),theme=opt('theme')==='light'?'light':'dark',days=+(opt('days')||0),q=opt('url')||'',ev=opt('eval'),quick=!!opt('quick');
 const clip=opt('clip')?opt('clip').split(',').map(Number):null;
+const errs=[],log=[];
 const SCR=['base','col','ships','tov','db','build','tech','yard','port','flight','log'];
 (async()=>{
- const b=await chromium.launch(),errs=[],log=[];
+ const b=await chromium.launch();
  const ctx=await b.newContext({viewport:{width:1920,height:1080},deviceScaleFactor:scale,colorScheme:theme});
+ ctx.setDefaultTimeout(8000);
  await ctx.route('**/*',r=>{const u=r.request().url();(u.startsWith('file:')||/fonts\.(googleapis|gstatic)\.com/.test(u))?r.continue():r.abort()});
  const page=async(f,tag)=>{const p=await ctx.newPage();p.on('pageerror',e=>errs.push(tag+': '+e.message));p.on('console',m=>{if(m.type()==='error'&&!/net::ERR_FAILED|Failed to load resource/.test(m.text()))errs.push(tag+' console: '+m.text())});await p.goto(url(f)+(tag==='game'?q:''));await p.evaluate(()=>document.fonts.ready);return p};
  if(!fs.existsSync(out))fs.mkdirSync(out);
@@ -69,4 +71,7 @@ const SCR=['base','col','ships','tov','db','build','tech','yard','port','flight'
  console.log(log.join('\n'));
  if(errs.length){console.log('ERRORS ('+errs.length+'):\n'+[...new Set(errs)].slice(0,20).join('\n'));process.exit(1)}
  console.log('no page errors');
-})().catch(e=>{console.error('check failed: '+e.message.split('\n')[0]);process.exit(1)});
+})().catch(e=>{
+ const u=[...new Set(errs)];
+ console.error(log.concat('check failed: '+e.message.split('\n')[0],u.length?['page errors (the likely cause):',...u.slice(0,10)]:[]).join('\n'));
+ process.exit(1)});
