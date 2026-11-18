@@ -743,27 +743,27 @@ const LOCS=[
 /* Units each location can provide (placeholder values to tune) */
 const LOCRES={
  mercury:{iron:30000,aluminium:4000,titanium:3000,silica:20000,sulphur:5000,platinum:200},
- venus:{sulphur:25000,nitrogen:8000},
+ venus:{hydrogen:187,nitrogen:1125,sulphur:1875,titanium:562,aluminium:1500,silica:4500,iron:2625},
  earth:{water:20000,oxygen:20000,nitrogen:30000,iron:5000,copper:2000,aluminium:2000,silica:1500},
  moon:{hydrogen:375,oxygen:2625,water:375,nitrogen:375,titanium:5625,aluminium:3937,silica:4125,iron:3375},
  mars:{hydrogen:375,oxygen:750,water:1500,nitrogen:492,silica:4500,iron:5625,silver:750},
- phobos:{iron:600,silica:800,water:300,titanium:100},
- deimos:{silica:400,water:300,iron:200},
+ phobos:{hydrogen:187,oxygen:187,water:375,nitrogen:187,titanium:187,silica:1875,iron:1312},
+ deimos:{hydrogen:187,water:375,silica:1500,iron:937},
  belt:{copper:8000,platinum:1200,titanium:3000,iron:20000},
- jupiter:{hydrogen:100000},
- io:{sulphur:30000,iron:4000,silica:6000,chromium:1500},
- europa:{water:60000,oxygen:3000,sulphur:800,silver:600},
- ganymede:{water:50000,silica:15000,iron:8000,silver:800,uranium:400},
+ jupiter:{hydrogen:5625,oxygen:562,water:562,nitrogen:1875,methane:562,sulphur:937,silica:4500,iron:3000},
+ io:{oxygen:375,sulphur:2250,aluminium:937,copper:750,silica:3750,iron:2625},
+ europa:{hydrogen:750,oxygen:750,water:1875,nitrogen:187,sulphur:375,silver:375,silica:2250,iron:1312},
+ ganymede:{hydrogen:375,oxygen:375,water:1125,nitrogen:187,aluminium:937,silver:375,silica:4125,iron:3000,uranium:375},
  callisto:{hydrogen:375,nitrogen:375,sulphur:750,titanium:2625,aluminium:1687,copper:1125,silica:3750,iron:3000,silver:375,platinum:750},
  leda:{hydrogen:375,nitrogen:375,methane:3000,sulphur:1125,copper:750,silica:1875,iron:1312,uranium:937},
  saturn:{hydrogen:5625,oxygen:750,water:375,nitrogen:2625,methane:375,sulphur:1125,silica:5625,iron:3375},
  titan:{hydrogen:750,oxygen:187,nitrogen:1875,methane:562,silver:1125,platinum:1500,uranium:1687},
  enceladus:{hydrogen:750,oxygen:375,water:375,nitrogen:375,aluminium:2250,silica:2437,iron:1312},
  rhea:{hydrogen:187,oxygen:187,water:187,nitrogen:375,silica:5625,platinum:3937},
- iapetus:{water:6000,silica:2500,iron:800},
- dione:{water:5000,silica:2000},
+ iapetus:{hydrogen:187,oxygen:187,water:375,nitrogen:187,silica:3750,iron:1312},
+ dione:{hydrogen:187,oxygen:375,water:375,nitrogen:187,silica:3750,iron:937},
  tethys:{hydrogen:562,oxygen:281,water:375,nitrogen:187,methane:187,aluminium:1312,copper:750,silica:4500,uranium:4125},
- mimas:{water:2500,silica:800},
+ mimas:{hydrogen:187,oxygen:187,water:187,nitrogen:187,aluminium:562,silica:2625},
  hyperion:{methane:375,sulphur:1875,aluminium:1687,copper:750,uranium:562},
  phoebe:{hydrogen:375,oxygen:375,water:187,nitrogen:562,methane:375,titanium:1500,silica:3750,iron:1312},
  uranus:{hydrogen:187,nitrogen:750,methane:2062,sulphur:375,titanium:562,copper:2625,silica:3000,iron:1312,uranium:750},
@@ -775,9 +775,9 @@ const LOCRES={
  neptune:{hydrogen:562,methane:1687,sulphur:562,aluminium:3000,copper:2437,silica:1312,iron:1687,platinum:2625,uranium:187},
  triton:{hydrogen:1312,oxygen:1125,water:1500,nitrogen:562,methane:375,titanium:2625,silica:3375,chromium:3187,platinum:187},
  pluto:{hydrogen:937,nitrogen:375,methane:1687,sulphur:937,silica:4875,platinum:1687,uranium:750},
- charon:{water:6000,methane:1500,nitrogen:800}};
+ charon:{hydrogen:562,nitrogen:187,methane:1312,sulphur:375,silica:3375,platinum:562,uranium:375}};
 /* Lifeform of each colony location, from its atmospheric conditions (locations not listed cannot host a colony yet) */
-const LIFE={leda:'Human',hyperion:'Sulphuroid',phoebe:'Human',moon:'Human',mars:'Martian',callisto:'Human',saturn:'Hydrogoid',enceladus:'Human',tethys:'Human',rhea:'Human',titan:'Nitroid',uranus:'Methanoid',miranda:'Human',ariel:'Human',umbriel:'Sulphuroid',titania:'Methanoid',oberon:'Human',neptune:'Methanoid',triton:'Methanoid',pluto:'Methanoid'};
+const LIFE={venus:'Sulphuroid',io:'Sulphuroid',jupiter:'Hydrogoid',europa:'Human',ganymede:'Human',dione:'Human',phobos:'Martian',deimos:'Martian',iapetus:'Human',mimas:'Human',charon:'Methanoid',leda:'Human',hyperion:'Sulphuroid',phoebe:'Human',moon:'Human',mars:'Martian',callisto:'Human',saturn:'Hydrogoid',enceladus:'Human',tethys:'Human',rhea:'Human',titan:'Nitroid',uranus:'Methanoid',miranda:'Human',ariel:'Human',umbriel:'Sulphuroid',titania:'Methanoid',oberon:'Human',neptune:'Methanoid',triton:'Methanoid',pluto:'Methanoid'};
 const LOCD={};for(const l of LOCS)LOCD[l.k]=Object.assign({n:l.n,d:l.d},l.p?{p:l.p}:{},l.col?{col:l.col}:{},{start:l.k==='moon',life:LIFE[l.k]||'',res:Object.assign({},LOCRES[l.k]),adiff:LOCAN[l.k][0],alen:LOCAN[l.k][1],a:LOCORB[l.k][0],ak:LOCORB[l.k][1],ecc:LOCORB[l.k][2],per:LOCORB[l.k][3]});
 const HOME='moon',AUKM=149597870.7;
 const sunA=k=>LOCD[k].a||sunA(LOCD[k].p);
@@ -806,7 +806,7 @@ const dbLst=a=>a.length?a.join(', '):'none';
 function dbData(){
  const lk=Object.keys(LOCD),E={loc:[],res:[],bld:[],tech:[],ship:[],col:[]};
  for(const k of lk){const l=LOCD[k],pr=Object.keys(l.res||{}).filter(r=>l.res[r]>0);
-  E.loc.push({k,n:l.n,i:ico('colony'),d:l.d,f:[['Orbits',l.p?LOCD[l.p].n:'the Sun'],['Colony',S&&S.colonies&&S.colonies[k]?(l.col||l.n):'none'],['Lifeform',l.life||'none (not habitable yet)'],['Can provide',dbLst(pr.map(r=>RN[r]+' '+l.res[r].toLocaleString('en-US')))],['Analysis length',l.alen+' days'],['Analysis difficulty',Math.round(l.adiff*100)+'%'],['Orbit',l.p?Math.round(l.ak*1000).toLocaleString('en-US')+' km around '+LOCD[l.p].n:fmtAU(l.a)+' AU from the Sun'],['Orbital period',lapse(l.per)],['Eccentricity',String(l.ecc)],['Distance from the Moonbase today',k===HOME?'0':S?fmtAU(distNow(HOME,k,daysJ()))+' AU':'-'],['Probe trip if launched today',k===HOME?'none':S?lapse(tripD(k)):'-']]})}
+  E.loc.push({k,n:l.n,i:ico('colony'),d:l.d,f:[['Orbits',l.p?LOCD[l.p].n:'the Sun'],['Colony',S&&S.colonies&&S.colonies[k]?(l.col||l.n):'none'],['Lifeform',l.life||'none'],['Can provide',dbLst(pr.map(r=>RN[r]+' '+l.res[r].toLocaleString('en-US')))],['Analysis length',l.alen+' days'],['Analysis difficulty',Math.round(l.adiff*100)+'%'],['Orbit',l.p?Math.round(l.ak*1000).toLocaleString('en-US')+' km around '+LOCD[l.p].n:fmtAU(l.a)+' AU from the Sun'],['Orbital period',lapse(l.per)],['Eccentricity',String(l.ecc)],['Distance from the Moonbase today',k===HOME?'0':S?fmtAU(distNow(HOME,k,daysJ()))+' AU':'-'],['Probe trip if launched today',k===HOME?'none':S?lapse(tripD(k)):'-']]})}
  for(const r in RN){const c=CAT.find(c=>c.r.includes(r)),by=Object.keys(B).filter(k=>B[k].out&&B[k].out[r]!==undefined).map(k=>B[k].n),us=Object.keys(B).filter(k=>B[k].inp&&B[k].inp[r]!==undefined).map(k=>B[k].n),cn=Object.keys(B).filter(k=>B[k].c&&B[k].c[r]).map(k=>B[k].n),at=lk.filter(k=>(LOCD[k].res||{})[r]>0).map(k=>LOCD[k].n);
   E.res.push({n:RN[r],i:ico(r),d:'',f:[['Category',c?c.n:'-'],['Weight',WT.res[r]+' t per unit'],['Produced by',dbLst(by)],['Consumed by',dbLst(us)],['Used to build',dbLst(cn)],['Found at',at.length>8?at.slice(0,8).join(', ')+' and '+(at.length-8)+' more':dbLst(at)]]})}
  for(const k in B){const b=B[k],st=STAFF[k];
