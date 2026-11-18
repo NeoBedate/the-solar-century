@@ -47,6 +47,10 @@ Open `index.html` in any modern browser. No build step and no dependencies. The 
 - Technology: paused and completed technologies, with seven category filters (Colonization, Energy, Mining, Manufacturing, Life Support, Starships, Weapons). Every technology has a category, editable in the Editor.
 - Database: a compendium of locations, resources, buildings, technologies, starships and colonists (entries without a description simply show their facts).
 
+## Game Design Document
+
+[GDD.html](GDD.html) describes the game's design: vision, core loop, every system and its current values, and the open design questions. Open it in a browser. It is updated together with the game.
+
 ## Things to do
 
 See [PROMISES.md](PROMISES.md) for what we have said we will build, decide or write later.

@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Solar Century GDD</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jura:wght@400;500;600;700&display=swap">
+<!--
+  The Solar Century: Game Design Document.
+  Living document: update it with every feature change (see CLAUDE.md).
+  Prose is plain HTML below. The tables are drawn from the small data blocks
+  in the <script> at the end (GDATA), which mirror the defaults in index.html.
+  The icons in ICON are copied from index.html.
+-->
+<style>
+:root{--bg:#0a0e2a;--panel:#141a4a;--panel2:#10153d;--hi:#5b6bd6;--lo:#05071a;--ink:#e8e4d4;--dim:#9aa0c8;--acc:#ff9a2e;--cyan:#6fdcff;--ok:#5fd68a;--bad:#ff5a5a;--warn:#ffd24a;--space:#02030f;color-scheme:dark}
+@media (prefers-color-scheme:light){:root:not([data-theme="dark"]){--bg:#d9d4c3;--panel:#f1ede0;--panel2:#e6e1d1;--hi:#ffffff;--lo:#58543f;--ink:#1c1f3d;--dim:#55587a;--acc:#c2560a;--cyan:#0a6f96;--ok:#1d7a42;--bad:#b3261e;--warn:#8a6400;--space:#cfc9b6;color-scheme:light}}
+:root[data-theme="dark"]{--bg:#0a0e2a;--panel:#141a4a;--panel2:#10153d;--hi:#5b6bd6;--lo:#05071a;--ink:#e8e4d4;--dim:#9aa0c8;--acc:#ff9a2e;--cyan:#6fdcff;--ok:#5fd68a;--bad:#ff5a5a;--warn:#ffd24a;--space:#02030f;color-scheme:dark}
+:root[data-theme="light"]{--bg:#d9d4c3;--panel:#f1ede0;--panel2:#e6e1d1;--hi:#ffffff;--lo:#58543f;--ink:#1c1f3d;--dim:#55587a;--acc:#c2560a;--cyan:#0a6f96;--ok:#1d7a42;--bad:#b3261e;--warn:#8a6400;--space:#cfc9b6;color-scheme:light}
+:root[data-theme="light"] body::before{opacity:.25}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:80px}
+body{margin:0;background:var(--space);color:var(--ink);font:17px/1.45 'Jura',system-ui,-apple-system,'Segoe UI',sans-serif;letter-spacing:-.04em;min-height:100vh}
+body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;background:
+ radial-gradient(1.5px 1.5px at 12% 20%,#fff,transparent),radial-gradient(1.5px 1.5px at 34% 9%,#fff,transparent),radial-gradient(1px 1px at 55% 24%,#fff,transparent),radial-gradient(1.5px 1.5px at 72% 12%,#fff,transparent),radial-gradient(1px 1px at 24% 38%,#fff,transparent),radial-gradient(1.5px 1.5px at 88% 18%,#fff,transparent),radial-gradient(1px 1px at 5% 8%,#fff,transparent),radial-gradient(1px 1px at 47% 6%,#fff,transparent),radial-gradient(1.5px 1.5px at 63% 35%,#fff,transparent),radial-gradient(1px 1px at 94% 40%,#fff,transparent),radial-gradient(1px 1px at 18% 52%,#fff,transparent),radial-gradient(1.5px 1.5px at 81% 30%,#fff,transparent),radial-gradient(1px 1px at 39% 62%,#fff,transparent),radial-gradient(1px 1px at 67% 75%,#fff,transparent),radial-gradient(1.5px 1.5px at 8% 82%,#fff,transparent),radial-gradient(1px 1px at 91% 88%,#fff,transparent),radial-gradient(1px 1px at 52% 92%,#fff,transparent),radial-gradient(1.5px 1.5px at 28% 72%,#fff,transparent),
+ radial-gradient(ellipse 70% 40% at 50% 115%,#2a2f5a 0%,transparent 70%),var(--space)}
+@media (prefers-color-scheme:light){:root:not([data-theme="dark"]) body::before{opacity:.25}}
+a{color:var(--cyan)}
+h1,h2,h3,h4{font-family:'Jura',system-ui,sans-serif;font-weight:700;margin:0}
+p{margin:0 0 .7em}p:last-child{margin-bottom:0}
+ul,ol{margin:0 0 .7em;padding-left:1.3em}li{margin:.15em 0}
+b,strong{font-weight:700}
+small,.dim{color:var(--dim)}
+code{font:600 .9em 'Jura',monospace;color:var(--cyan);background:var(--panel2);padding:0 4px;border:1px solid var(--lo)}
+.bev{background:var(--panel);border:3px solid;border-color:var(--hi) var(--lo) var(--lo) var(--hi);box-shadow:0 0 0 2px #000a}
+.inset{background:var(--panel2);border:3px solid;border-color:var(--lo) var(--hi) var(--hi) var(--lo)}
+
+/* top bar, like the game's header: name in the centre, revision as the date at the right */
+.top{position:sticky;top:0;z-index:10;display:flex;align-items:center;gap:12px;padding:10px 16px;background:linear-gradient(var(--space) 70%,transparent)}
+.top .brand{height:42px;display:flex;align-items:center;gap:8px;padding:0 14px;font-weight:700;font-size:16px}
+.top .brand svg{width:22px;height:22px}
+.top .ttl{flex:1;text-align:center;color:var(--acc);font-size:26px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.top .rev{color:var(--acc);font-size:20px;font-weight:700;display:flex;align-items:center;white-space:nowrap}
+.top .rev .dt{display:inline-flex;flex-direction:column;margin-left:7px;font-size:12px;line-height:1.1;font-weight:600}.top .rev .dt span:first-child{color:var(--cyan)}
+.top button{font:inherit;font-size:15px;color:var(--ink);background:var(--panel);border:3px solid;border-color:var(--hi) var(--lo) var(--lo) var(--hi);height:42px;padding:0 10px;cursor:pointer;line-height:0}
+.top button:active{border-color:var(--lo) var(--hi) var(--hi) var(--lo)}
+
+.layout{display:grid;grid-template-columns:240px minmax(0,1fr);gap:22px;max-width:1340px;margin:0 auto;padding:6px 16px 60px}
+/* contents: a column of bevelled buttons touching each other, like the overview buttons */
+nav.toc{position:sticky;top:76px;align-self:start;max-height:calc(100vh - 92px);overflow:auto;display:flex;flex-direction:column}
+nav.toc .hd{padding:8px 10px;background:var(--acc);color:#1a0f00;font-weight:700;font-size:15px;text-align:center;border:3px solid;border-color:#ffc98a #7a3c00 #7a3c00 #ffc98a}
+nav.toc a{display:flex;gap:8px;align-items:center;padding:6px 10px;margin-top:-3px;color:var(--ink);text-decoration:none;font-size:15px;background:var(--panel);border:3px solid;border-color:var(--hi) var(--lo) var(--lo) var(--hi)}
+nav.toc a i{font-style:normal;color:var(--acc);font-weight:700;min-width:1.6em}
+nav.toc a:hover{background:var(--panel2)}
+nav.toc a.on{border-color:var(--lo) var(--hi) var(--hi) var(--lo);background:var(--panel2);color:var(--acc)}
+
+/* sections are floating windows with a 75px title bar and centred title */
+section.win{margin-bottom:26px}
+section.win>h2{position:relative;display:flex;justify-content:center;align-items:center;min-height:75px;padding:0 70px;font-size:26px;color:var(--acc);text-align:center;border-bottom:3px solid var(--lo);background:linear-gradient(var(--panel),var(--panel2))}
+section.win>h2 .no{position:absolute;left:14px;top:50%;transform:translateY(-50%);width:42px;height:35px;display:flex;align-items:center;justify-content:center;font-size:18px;color:#1a0f00;background:var(--acc);border:3px solid;border-color:#ffc98a #7a3c00 #7a3c00 #ffc98a}
+section.win>h2 svg{position:absolute;right:16px;top:50%;transform:translateY(-50%);width:34px;height:34px;opacity:.9}
+.body{padding:18px 22px}
+h3{font-size:19px;color:var(--acc);margin:18px 0 8px;padding-bottom:3px;border-bottom:2px dashed var(--lo);display:flex;align-items:center;gap:8px}
+h3:first-child{margin-top:0}
+h3 svg{width:20px;height:20px}
+h4{font-size:16px;color:var(--cyan);margin:12px 0 4px}
+
+/* cover */
+.cover{position:relative;overflow:hidden;min-height:400px;display:flex;flex-direction:column;justify-content:flex-end;margin-bottom:26px}
+.cover .sky{position:absolute;inset:0;background:linear-gradient(#000 0%,#06060a 66%)}
+.cover .earth{position:absolute;right:9%;top:46px;width:150px;height:150px;border-radius:50%;background:radial-gradient(circle at 40% 35%,#6a4a3c,#2a1a14);box-shadow:inset -40px -26px 60px rgba(0,0,0,.6),0 0 40px #ff5a2a33}
+.cover .earth::after{content:"";position:absolute;inset:-8px;border-radius:50%;box-shadow:0 0 22px 4px #ff7a3a44}
+.cover .sun{position:absolute;left:12%;top:40px;width:26px;height:26px;border-radius:50%;background:#fff6d8;box-shadow:0 0 30px 12px #ffe7a0aa}
+.cover .ground{position:absolute;left:0;right:0;bottom:0;height:40%;background:linear-gradient(#8f8a82,#5e5a54);box-shadow:inset 0 10px 30px #0007}
+.cover .ground::before{content:"";position:absolute;left:18%;top:20%;width:120px;height:28px;border-radius:50%;background:#0002;box-shadow:340px 30px 0 -4px #0002,640px 10px 0 6px #0002,900px 40px 0 -8px #0002}
+.cover .dome{position:absolute;bottom:34%;left:40%;width:120px;height:60px;border-radius:60px 60px 0 0;background:linear-gradient(#bfe6ff55,#6ea8ff33);border:2px solid #cfe6ff88}
+.cover .dome.b{left:51%;width:80px;height:40px}
+.cover .tower{position:absolute;bottom:34%;left:60%;width:10px;height:80px;background:#9aa0a8;box-shadow:inset -3px 0 0 #0004}
+.cover .tower::after{content:"";position:absolute;left:-10px;top:-6px;width:30px;height:8px;background:#ff9a2e}
+.cover .card{position:relative;margin:0 22px 22px;padding:18px 22px;max-width:760px}
+.cover h1{font-size:58px;line-height:1;color:var(--acc);letter-spacing:-.03em}
+.cover .tag{font-size:19px;margin:8px 0 12px}
+.meta{display:flex;flex-wrap:wrap;gap:0}
+.meta span{padding:4px 12px;margin-right:-3px;font-size:14px;background:var(--panel2);border:3px solid;border-color:var(--hi) var(--lo) var(--lo) var(--hi)}
+.meta span b{color:var(--acc)}
+
+/* chips, tables, callouts */
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin:8px 0 12px}
+.card2{padding:12px 14px}
+.card2 h4{margin-top:0;display:flex;gap:8px;align-items:center;color:var(--acc)}
+.card2 h4 svg{width:22px;height:22px;flex:none}
+.card2 p{font-size:15px}
+.note{margin:12px 0;padding:10px 14px 10px 46px;position:relative;font-size:15px;border-left:4px solid var(--acc);background:var(--panel2)}
+.note::before{content:"!";position:absolute;left:12px;top:9px;width:22px;height:22px;display:flex;align-items:center;justify-content:center;font-weight:700;color:#1a0f00;background:var(--acc)}
+.note.todo{border-left-color:var(--warn)}.note.todo::before{content:"?";background:var(--warn)}
+.tw{overflow-x:auto;margin:8px 0 14px}
+table{border-collapse:collapse;width:100%;font-size:14.5px}
+th{text-align:left;font-weight:700;color:#1a0f00;background:var(--acc);padding:5px 8px;white-space:nowrap}
+td{padding:5px 8px;border-bottom:1px dashed var(--lo);vertical-align:top}
+tr:nth-child(even) td{background:#ffffff06}
+td.n,th.n{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+td .ic{display:inline-flex;vertical-align:-4px;margin-right:5px}td .ic svg{width:18px;height:18px}
+td.sub{padding-left:28px}
+.cost{display:inline-flex;align-items:center;gap:2px;margin:0 6px 2px 0;white-space:nowrap}.cost svg{width:15px;height:15px}
+.pill{display:inline-block;padding:0 7px;font-size:12.5px;font-weight:700;border:2px solid currentColor;margin:1px 2px 1px 0;white-space:nowrap}
+.pill.ok{color:var(--ok)}.pill.part{color:var(--warn)}.pill.no{color:var(--dim)}
+.st-ok{color:var(--ok);font-weight:700}.st-part{color:var(--warn);font-weight:700}.st-no{color:var(--dim);font-weight:700}
+
+/* flow diagrams: bevelled boxes joined by orange arrows */
+.flow{display:flex;flex-wrap:wrap;align-items:stretch;gap:0;margin:10px 0 14px}
+.flow .st{flex:1 1 130px;min-width:120px;padding:10px 10px;font-size:14px;text-align:center}
+.flow .st b{display:block;margin-bottom:4px;font-size:15px;color:var(--acc)}
+.flow .st>svg{display:block;margin:0 auto 4px;width:26px;height:26px}
+.flow .ar{flex:0 0 26px;display:flex;align-items:center;justify-content:center;color:var(--acc);font-weight:700;font-size:20px}
+.diag{display:block;width:100%;height:auto;margin:6px 0 12px}
+.diag text{font-family:'Jura',system-ui,sans-serif;letter-spacing:-.04em;fill:var(--ink)}
+.diag .bx{fill:var(--panel);stroke:var(--hi);stroke-width:3}
+.diag .bx.hot{stroke:var(--acc)}
+.diag .ln{stroke:var(--acc);stroke-width:2.5;fill:none}
+.diag .lnd{stroke:var(--dim);stroke-width:2;fill:none;stroke-dasharray:6 5}
+.diag .t1{font-size:15px;font-weight:700}
+.diag .t2{font-size:12px;fill:var(--dim)}
+.diag .ta{fill:var(--acc)}
+.zoom{display:flex;flex-wrap:wrap;margin:8px 0 12px}
+.zoom div{flex:1 1 120px;margin-right:-3px;padding:8px 10px;font-size:13.5px;background:var(--panel);border:3px solid;border-color:var(--hi) var(--lo) var(--lo) var(--hi)}
+.zoom div b{display:block;color:var(--acc);font-size:22px;line-height:1}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.timeline{position:relative;margin:10px 0 6px;padding-left:24px;border-left:3px solid var(--acc)}
+.timeline div{position:relative;margin-bottom:10px;font-size:15px}
+.timeline div::before{content:"";position:absolute;left:-32px;top:5px;width:11px;height:11px;background:var(--acc);border:2px solid var(--lo)}
+.timeline div b{color:var(--acc)}
+.res-cat{margin-bottom:12px}
+.res-cat>div{display:flex;align-items:center;gap:8px;font-weight:700;color:var(--acc);margin-bottom:4px}
+.res-cat>div svg{width:24px;height:24px}
+.res-row{display:flex;flex-wrap:wrap;gap:6px}
+.res-row span{display:inline-flex;align-items:center;gap:5px;padding:2px 9px;font-size:14px;background:var(--panel2);border:2px solid var(--lo)}
+.res-row span svg{width:18px;height:18px}
+.res-row span small{font-size:12px}
+footer{text-align:center;color:var(--dim);font-size:13px;padding:10px 0 30px}
+
+@media (max-width:900px){
+ .layout{grid-template-columns:minmax(0,1fr);padding:6px 16px 40px}
+ nav.toc{position:static;max-height:none;display:grid;grid-template-columns:1fr 1fr}
+ nav.toc .hd{grid-column:1/-1}
+ nav.toc a{margin-top:-3px}
+ .two{grid-template-columns:1fr}
+ .top .ttl{font-size:18px}.top .rev .dt{display:none}
+ .cover h1{font-size:40px}
+ .body{padding:14px 14px}
+ section.win>h2{font-size:20px;padding:0 54px}
+ section.win>h2 svg{display:none}
+}
+@media (max-width:520px){.top .brand span{display:none}.top .rev{font-size:15px}nav.toc{grid-template-columns:1fr}}
+@media print{.top,nav.toc{display:none}.layout{display:block}body::before{display:none}body{background:#fff;color:#000}}
+</style>
+</head>
+<body>
+
+<div class="top">
+ <div class="brand bev" id="brand"><span>Game Design Document</span></div>
+ <div class="ttl">The Solar Century</div>
+ <div class="rev">Rev. 1<span class="dt"><span>2026-11-18</span><span>5de238e</span></span></div>
+ <button id="theme" title="Switch light / dark" aria-label="Switch light or dark theme"><svg viewBox="0 0 16 16" width="20" height="20" aria-hidden="true"><circle cx="8" cy="8" r="5.5" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M8 2.5A5.5 5.5 0 0 1 8 13.5Z" fill="currentColor"/></svg></button>
+</div>
+
+<div class="layout">
+<nav class="toc" id="toc" aria-label="Contents"><div class="hd">Contents</div></nav>
+<main>
+
+<header class="cover bev" id="top">
+ <div class="sky"></div><div class="sun"></div><div class="earth"></div><div class="ground"></div><div class="dome"></div><div class="dome b"></div><div class="tower"></div>
+ <div class="card bev">
+  <h1>The Solar Century</h1>
+  <div class="tag">Earth is lost. Build the Moonbase, explore the real Solar System, and launch the Gaia Ark before 2200.</div>
+  <div class="meta"><span><b>Genre</b> Colony management and strategy</span><span><b>Platform</b> Browser, single file</span><span><b>Status</b> Early prototype</span><span><b>Inspired by</b> <i>Millennium 2.2</i> (1989)</span></div>
+ </div>
+</header>
+
+<section class="win bev" id="about" data-ic="mission"><h2>About this document</h2><div class="body">
+ <p>This is the Game Design Document (GDD) for <b>The Solar Century</b>. It describes what the game is, how its systems work and fit together, and what is still to be designed. It is a <b>living document</b>: it is updated together with the game whenever a feature is added or changed, and the revision in the top bar names the game commit it matches.</p>
+ <ul>
+  <li><span class="st-ok">Built</span>: in the prototype today. <span class="st-part">Partial</span>: started, with parts missing. <span class="st-no">Planned</span>: promised but not started.</li>
+  <li><b>All numbers are provisional.</b> Balancing is deliberately postponed. The live values are the Default configuration in the game's Editor; the tables here mirror them at the revision shown.</li>
+  <li>Companion files: <code>README.md</code> (what the prototype contains), <code>PROMISES.md</code> (what we said we will do later) and <code>CLAUDE.md</code> (technical guide and working rules).</li>
+ </ul>
+</div></section>
+
+<section class="win bev" id="vision" data-ic="colony"><h2>Vision</h2><div class="body">
+ <h3>Premise</h3>
+ <p>In the year 2100 an asteroid has scorched the Earth. The last of humanity lives in a small base in Mare Tranquillitatis, on the Moon. The colony has one century to grow from a handful of domes into a spacefaring civilisation, reach out across the Solar System for the resources it lacks, and build the <b>Gaia Ark</b>: a ship that carries the seeds of new life back to Earth.</p>
+ <h3>Pillars</h3>
+ <div class="cards">
+  <div class="card2 bev"><h4 data-ic="colonists">A colony to keep alive</h4><p>Every colonist matters. They eat water and oxygen, take jobs in buildings, crew ships and are born or die. Running short of air or water costs lives.</p></div>
+  <div class="card2 bev"><h4 data-ic="catman">An economy to build</h4><p>Eighteen resources in five families flow through mines, extractors, factories and reactors. Power, staffing and machinery wear decide how well it runs.</p></div>
+  <div class="card2 bev"><h4 data-ic="ship">The real Solar System</h4><p>A real calendar and real orbits: planets sit where they really are on the game date, so trips and launch windows change with time. Distance is the main obstacle.</p></div>
+  <div class="card2 bev"><h4 data-ic="research">A race against time</h4><p>The deadline is 1 January 2200. Research better drives, survey and colonise new worlds, and gather the rare materials the Ark needs before the century ends.</p></div>
+ </div>
+ <h3>Win and loss</h3>
+ <ul>
+  <li><b>Victory:</b> research the Gaia seed, gather its materials and launch the Gaia Ark mission. When it reaches Earth, the game is won.</li>
+  <li><b>Defeat:</b> the population falls to zero, or the year 2200 arrives before the Ark has launched.</li>
+ </ul>
+ <h3>Tone and look</h3>
+ <p>Hard science fiction told with restraint, in the spirit of late-1980s strategy games: an Amiga/Atari ST interface of bevelled panels and orange accents, terse log messages, and a quiet main screen that shows the place where the player is.</p>
+</div></section>
+
+<section class="win bev" id="loop" data-ic="gain"><h2>Core loop</h2><div class="body">
+ <p>The player staffs buildings, which turn power and raw materials into resources and research points. Resources pay for more buildings, starships and missions; research unlocks better buildings, drives and colonies. Each colony opens new resources, which feed the next step outwards, until the Ark can be built.</p>
+ <svg class="diag" viewBox="0 0 900 300" role="img" aria-label="Core loop diagram">
+  <defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#ff9a2e"/></marker></defs>
+  <rect class="bx" x="20" y="30" width="180" height="70"/><text class="t1" x="110" y="60" text-anchor="middle">Colonists</text><text class="t2" x="110" y="80" text-anchor="middle">jobs · crew · births</text>
+  <rect class="bx" x="360" y="30" width="180" height="70"/><text class="t1" x="450" y="60" text-anchor="middle">Buildings</text><text class="t2" x="450" y="80" text-anchor="middle">power · production</text>
+  <rect class="bx" x="700" y="30" width="180" height="70"/><text class="t1" x="790" y="60" text-anchor="middle">Resources</text><text class="t2" x="790" y="80" text-anchor="middle">18 kinds · research points</text>
+  <rect class="bx" x="700" y="200" width="180" height="70"/><text class="t1" x="790" y="230" text-anchor="middle">Build &amp; research</text><text class="t2" x="790" y="250" text-anchor="middle">construction · technologies</text>
+  <rect class="bx" x="360" y="200" width="180" height="70"/><text class="t1" x="450" y="230" text-anchor="middle">Starships</text><text class="t2" x="450" y="250" text-anchor="middle">probes · missions · surveys</text>
+  <rect class="bx" x="20" y="200" width="180" height="70"/><text class="t1" x="110" y="230" text-anchor="middle">New colonies</text><text class="t2" x="110" y="250" text-anchor="middle">new resources · reach</text>
+  <path class="ln" d="M200 65H356" marker-end="url(#ah)"/><text class="t2 ta" x="278" y="56" text-anchor="middle">staff</text>
+  <path class="ln" d="M540 65H696" marker-end="url(#ah)"/><text class="t2 ta" x="618" y="56" text-anchor="middle">produce</text>
+  <path class="ln" d="M790 100V196" marker-end="url(#ah)"/><text class="t2 ta" x="800" y="152">spend</text>
+  <path class="ln" d="M700 235H544" marker-end="url(#ah)"/><text class="t2 ta" x="622" y="226" text-anchor="middle">unlock</text>
+  <path class="ln" d="M360 235H204" marker-end="url(#ah)"/><text class="t2 ta" x="282" y="226" text-anchor="middle">survey · settle</text>
+  <path class="lnd" d="M110 200V104" marker-end="url(#ah)"/><text class="t2" x="120" y="152">more people and places</text>
+  <rect class="bx hot" x="380" y="128" width="140" height="44"/><text class="t1" x="450" y="156" text-anchor="middle" style="fill:#ff9a2e">Gaia Ark</text>
+  <path class="lnd" d="M790 200Q790 150 524 150" marker-end="url(#ah)"/>
+ </svg>
+ <h3>Progression arc</h3>
+ <div class="timeline">
+  <div><b>Early game.</b> Balance water, oxygen and power on the Moon. Build mines, an ice extractor and a Science Lab. Salvage Earth for metals.</div>
+  <div><b>Mid game.</b> Research drives, survey the inner planets and the belt, found the first colonies, and run expeditions for copper, platinum and water.</div>
+  <div><b>Late game.</b> Reach the outer moons for silver, chromium and uranium, research the Gaia seed, and assemble the Ark before 2200.</div>
+ </div>
+ <div class="note todo">The arc above is the intended shape. Today only the Moonbase exists and produces; the mid and late game rely on missions that return fixed rewards.</div>
+</div></section>
+
+<section class="win bev" id="time" data-ic="project"><h2>Time and calendar</h2><div class="body">
+ <ul>
+  <li>One tick is <b>one game hour</b>. The game starts on <b>Friday 1 January 2100</b> and ends on 1 January 2200 (the deadline).</li>
+  <li>The calendar is the real Gregorian one: real month lengths, leap years (2100 is not one) and weekdays.</li>
+  <li>Rates and durations in the data use <b>720 hours as one game month</b>. Daily checks (deaths from lack of air or water) run at midnight; monthly events (births, random events) on the first of the month.</li>
+  <li>The clock has pause, +1 hour and five speeds, from 1 hour per 30 seconds to 1 hour per half second.</li>
+  <li>Real orbits use the days since J2000, so every date in the century shows the planets in their true positions.</li>
+ </ul>
+</div></section>
+
+<section class="win bev" id="colony" data-ic="colonists"><h2>Colonists and jobs</h2><div class="body">
+ <p>The colony starts with <b>8 colonists</b> and two Habitat modules (6 colonists each). Each colonist uses <span data-val="COL.water"></span> water and <span data-val="COL.oxygen"></span> oxygen per month (Hydroponics cuts water by 40%).</p>
+ <ul>
+  <li><b>Births:</b> each month one child is born if there is room in the habitats and at least 3 units of water and oxygen per colonist in store.</li>
+  <li><b>Deaths:</b> each day with no water or no oxygen, one colonist dies. Ships lost on missions lose their crew.</li>
+  <li><b>Jobs:</b> free colonists are assigned to buildings as Labourers, Scientists, Technicians or Builders, or leave as Crew on a starship. A building needs a <b>minimum</b> staff to run and gets a <b>+10% boost</b> when fully manned.</li>
+  <li>If the population falls below the posts filled, the largest teams lose people first and the log reports the empty jobs.</li>
+ </ul>
+ <div class="tw"><table id="t-staff"></table></div>
+ <div class="note todo">Colonists, Labourers, Scientists, Technicians, Builders and Crew have no Database descriptions yet.</div>
+</div></section>
+
+<section class="win bev" id="resources" data-ic="catmet"><h2>Resources</h2><div class="body">
+ <p>Eighteen resources in five families, always shown in the same order. The Resources bar shows each quantity (k and M above 999), green when growing, normal when stale and red when falling. Every unit has a weight in tonnes, which matters for starship loading.</p>
+ <div id="res-cats"></div>
+ <h3 data-ic="research">Research points</h3>
+ <p>A separate currency earned by staffed Science Labs and some missions, spent on technologies (see Research).</p>
+ <div class="note todo">Software has no source yet, and methane has no use (as in the original). Database descriptions are still to be written for all 18 resources.</div>
+</div></section>
+
+<section class="win bev" id="buildings" data-ic="hangar"><h2>Buildings and power</h2><div class="body">
+ <p>Buildings are ordered in <b>Construction</b>, paid up front, and finished after their build time by Builders. Each building on the queue needs at least 2 builders to progress and gets the boost with 4. A stalled site is reported in the log.</p>
+ <div class="tw"><table id="t-bld"></table></div>
+ <h3>Power</h3>
+ <p>Solar arrays and the Fission reactor produce power; every other building uses it. When demand exceeds supply, all machines run at the ratio of supply to demand (a <b>brown-out</b>), slowing production and research. Fusion cells raise solar output by 50%. A reactor without uranium or machinery produces nothing.</p>
+ <h3>Machinery wear</h3>
+ <p>Industrial buildings use up 5% of the machinery in their build cost each month. Without machinery they stop.</p>
+</div></section>
+
+<section class="win bev" id="research" data-ic="research"><h2>Research</h2><div class="body">
+ <ul>
+  <li>Staffed Science Labs produce <b>1 research point per 20 days</b> each. While a project is running, passive research drops to 25%.</li>
+  <li>Starting a project costs its full price up front, then 1% of it per day until done. A staffed lab is needed to start or keep a project. Running out of points or scientists <b>pauses</b> it; resuming costs half the price.</li>
+  <li>Only one project runs at a time at the Moonbase. Several outposts researching in parallel are planned.</li>
+  <li>Every technology belongs to one of seven categories, which are the filters of the Technology overview.</li>
+ </ul>
+ <div class="tw"><table id="t-tech"></table></div>
+ <h3>Generated technologies</h3>
+ <p>Each successful survey creates a technology <b>Colonise &lt;location&gt;</b> (Colonization category). Its cost grows with the location's analysis difficulty and length: <code>60 × (1 + 2 × difficulty) × (1 + length / 90)</code> points.</p>
+ <div class="note todo">No technologies belong to Manufacturing or Weapons yet. Drive technologies (faster than the simplest drive), environmental technologies per atmosphere type, and a technology per starship part are still to be defined.</div>
+</div></section>
+
+<section class="win bev" id="ships" data-ic="ship"><h2>Starport and starships</h2><div class="body">
+ <h3 data-ic="hangar">Starport</h3>
+ <p>The Starport is a Moonbase screen, not a building. It starts with <b>1 berth</b> and grows to <b>8</b>, one berth at a time through the Construction queue (<span data-cost="PORT"></span>, 4 days each). Each ship needs a berth; a ship away on a mission keeps its berth.</p>
+ <h3 data-ic="ship">Starship types</h3>
+ <div class="tw"><table id="t-ships"></table></div>
+ <p>A probe costs <span data-cost="SHIP"></span> in the Shipyard and is berthed automatically. Recycling a landed ship returns half its cost and whatever it carries.</p>
+ <h3>Parts</h3>
+ <p>Every starship has eight part slots, each to be tied to a technology. Parts have a weight; the ship's tonnage is its parts plus its crew and cargo, against a maximum (100 t for probes, placeholder).</p>
+ <div class="tw"><table id="t-parts"></table></div>
+ <h3>Loading</h3>
+ <p>Each ship in the Starships overview has four tabs. <b>Crew</b> takes free colonists aboard by kind (Colonists, Labourers, Scientists, Technicians, Builders, Crew). <b>Resources</b> loads units from the base stock. Both work only on a landed ship and stop at the maximum tonnage. <b>Cargo</b> will hold parts and colony modules. <b>Parts</b> shows the fitted parts.</p>
+ <div class="note todo">Still to define: what each part does per ship type, Refit (cost, time, which parts), the minimum crew and its warning, crew quarters limiting people aboard, cargo bay capacity, how weight affects the drive, and how missions use what a ship carries.</div>
+</div></section>
+
+<section class="win bev" id="missions" data-ic="mission"><h2>Missions</h2><div class="body">
+ <p>A mission takes a berthed ship and a crew of free colonists, pays its fuel up front and returns after its duration with fixed rewards, unless the ship is lost (its risk), taking the crew with it. The Gaia Ark launch wins the game.</p>
+ <div class="tw"><table id="t-mis"></table></div>
+ <div class="note todo">These missions predate the survey and colonisation system and use fixed durations. They are expected to give way to real trips and colonies.</div>
+</div></section>
+
+<section class="win bev" id="colonise" data-ic="colony"><h2>Exploration and colonisation</h2><div class="body">
+ <p>New worlds are opened in steps. The starting colony (the Moon) counts as surveyed, researched and built.</p>
+ <div class="flow">
+  <div class="st bev" data-ic="ship"><b>1 · Send a probe</b>From the orbit view in the map or from Flight plans. Costs 10 hydrogen and 5 oxygen.</div><div class="ar">›</div>
+  <div class="st bev" data-ic="mission"><b>2 · Fly</b>Trip time from the real positions of the bodies on the launch date.</div><div class="ar">›</div>
+  <div class="st bev" data-ic="project"><b>3 · Analyse</b>In orbit, start the analysis. It takes the location's length in days.</div><div class="ar">›</div>
+  <div class="st bev" data-ic="research"><b>4 · Research</b>Success unlocks “Colonise &lt;location&gt;”. A failure leaves the probe in orbit to retry or recall.</div><div class="ar">›</div>
+  <div class="st bev" data-ic="hangar"><b>5 · Build module</b>Construction offers a colonisation module, built in 25 days for<br><span data-cost="SURVEY.mc"></span></div><div class="ar">›</div>
+  <div class="st bev" data-ic="colony"><b>6 · Found colony</b><span class="st-no">Planned</span>: ship the module with colonists and supplies.</div>
+ </div>
+ <h3>Trip time</h3>
+ <p>The probe leaves on day <i>t0</i> and flies straight at <b>1946 days per AU</b> (the simplest drive: Moon to Earth in 5 days) towards where the target will be. The trip is the first time <i>T</i> at which speed × <i>T</i> reaches the distance to the target's real position at <i>t0 + T</i>. Inside one planetary system the orbit distance is used; moons share their planet's position; the belt uses Ceres. Trips therefore change with the date, which creates launch windows. A recall computes the way back from the current date.</p>
+ <h3>Analysis</h3>
+ <p>Success chance is <code>1 − difficulty × 0.8</code>. The difficulty (0 to 1) and length in days are set per location in the Editor (see Locations).</p>
+ <div class="note todo">Still to define: what a finished module does (launching it and founding the colony), what an analysis reveals, the colony module itself (size, contents), colony supplies per colonist, atmospheres per location, and the real values for difficulty, length and cost. With the simplest drive nothing beyond Uranus is reachable before 2200, so faster drives are needed.</div>
+</div></section>
+
+<section class="win bev" id="locations" data-ic="colony"><h2>Locations</h2><div class="body">
+ <p>31 locations: the Sun's planets, Pluto, the asteroid belt (as one location) and 20 moons, in three regions. Every location has a placeholder scene, a description, what it can provide, an analysis difficulty and length, and its real orbit (distance, eccentricity, period). Only the Moonbase exists and produces.</p>
+ <div class="tw"><table id="t-loc"></table></div>
+</div></section>
+
+<section class="win bev" id="map" data-ic="mission"><h2>The map</h2><div class="body">
+ <p>The main screen is a seven-level zoom of the Solar System, drawn behind the floating UI. Levels 1 to 4 are to scale around the Sun, with real orbit ellipses and planets in their real positions for the game date. The plane is tilted 40° towards the viewer; nearer bodies are drawn in front and bodies hidden behind them become see-through ghosts.</p>
+ <div class="zoom">
+  <div><b>1</b>Solar System, split into the Inner, Middle and Outer zones</div>
+  <div><b>2</b>Outer Planets, with the Kuiper belt</div>
+  <div><b>3</b>Middle Planets</div>
+  <div><b>4</b>Inner Planets, with the asteroid belt</div>
+  <div><b>5</b>Planetary system: a planet and its moons</div>
+  <div><b>6</b>Orbit of a location, with the survey panel</div>
+  <div><b>7</b>The location's main screen</div>
+ </div>
+ <ul>
+  <li>Click a zone or body to zoom in; the mouse wheel steps one level; the zoom bar jumps between levels; the Moonbase button returns to level 7 on the Moon.</li>
+  <li>Planets and moons move with their real periods (Triton backwards). Colonies are marked with an orange ring.</li>
+ </ul>
+ <div class="note todo">Planned: ships and missions shown flying on the map, real art for the orbit globes, real moon eccentricities and positions.</div>
+</div></section>
+
+<section class="win bev" id="events" data-ic="part_shields"><h2>Random events</h2><div class="body">
+ <p>Each month there is an 18% chance of an event:</p>
+ <div class="tw"><table>
+  <tr><th>Event</th><th class="n">Share</th><th>Effect</th></tr>
+  <tr><td>Meteor strike</td><td class="n">40%</td><td>Destroys a Solar array, Regolith mine, Ice extractor or Habitat module.</td></tr>
+  <tr><td>Rich vein</td><td class="n">30%</td><td>+20 to 49 iron.</td></tr>
+  <tr><td>Solar flare</td><td class="n">30%</td><td>Up to 8 stored hydrogen is lost.</td></tr>
+ </table></div>
+</div></section>
+
+<section class="win bev" id="ui" data-ic="part_computer"><h2>Interface and presentation</h2><div class="body">
+ <h3>Rendering rules</h3>
+ <ul>
+  <li>The aspect ratio is <b>16:9</b> and the reference resolution is <b>1920×1080</b>. The game is designed at that size and scaled to fit the window.</li>
+  <li>The main screen is a view of the place where the player is (the Moonbase today), filling the whole stage at the back.</li>
+  <li>All UI floats in front of it: the Resources and Research points bars, the overview screens, the date, the clock and the main menu.</li>
+ </ul>
+ <h3>Style</h3>
+ <div class="two">
+  <div><ul>
+   <li>Amiga/Atari ST look: bevelled buttons and panels, deep navy, orange accent.</li>
+   <li>One font, <b>Jura</b> (SIL Open Font License), with tightened letter-spacing.</li>
+   <li>Status shown with icons; details in hover tooltips. Greyed-out items stay readable.</li>
+   <li>Small 16×16 drawn icons for every resource, category and part.</li>
+  </ul></div>
+  <div><ul>
+   <li>Every overview screen has a 75px title bar with a centred title and a red-tinted close button. Filters and tabs stay pinned while the content scrolls.</li>
+   <li>The colony name sits alone in the centre at the top, in orange.</li>
+   <li>The date is large and bold, with weekday and time stacked at its right.</li>
+  </ul></div>
+ </div>
+ <h3>Screens</h3>
+ <div class="tw"><table>
+  <tr><th>Screen</th><th>Purpose</th></tr>
+  <tr><td>Moonbase panel</td><td>Colonists, building tiles, power and jobs; links to Science Labs, Construction, Shipyard, Starport and Flight plans.</td></tr>
+  <tr><td>Colonies</td><td>All 31 locations in three pages (Inner, Middle, Outer); colonies show their name, colonists and resources.</td></tr>
+  <tr><td>Starships</td><td>The Moon Fleet: 12 ships per page, filtered by type, with part chips, status, loading tabs, Recycle and Refit.</td></tr>
+  <tr><td>Technology</td><td>Paused and completed technologies, with seven category filters.</td></tr>
+  <tr><td>Mission Control</td><td>The log, with Main Objectives, Daily Operations and Under Investigation tabs.</td></tr>
+  <tr><td>Database</td><td>Compendium of locations (with scene previews), resources, buildings, technologies, starships and colonists.</td></tr>
+  <tr><td>Editor</td><td>Edits every game value in named configurations, exportable as JSON. The built-in Default is read-only.</td></tr>
+ </table></div>
+ <div class="note todo">Planned: Load Game and Options on the title screen, Easy and Hard difficulties, original-style art for every location scene, and a place to show the number of colonised locations.</div>
+</div></section>
+
+<section class="win bev" id="open" data-ic="refit"><h2>Open design questions</h2><div class="body">
+ <p>Grouped from <code>PROMISES.md</code>. When one is decided, its answer moves into the relevant section above.</p>
+ <div class="two">
+  <div>
+   <h4>Economy</h4><ul><li>Balancing of all costs and rates.</li><li>A source for software.</li><li>Other ways to earn research points.</li></ul>
+   <h4>Research</h4><ul><li>Manufacturing and Weapons technologies.</li><li>Drive technologies and their speeds.</li><li>Environmental technologies per atmosphere.</li></ul>
+   <h4>Colonisation</h4><ul><li>Launching the module and founding a colony.</li><li>The colony module, supplies and colonists aboard.</li><li>Atmosphere values per location.</li><li>What an analysis reveals; real difficulty, length and cost values.</li><li>Several outposts researching at once.</li></ul>
+  </div>
+  <div>
+   <h4>Starships</h4><ul><li>What each part does, per ship type.</li><li>Refit rules.</li><li>Minimum crew and its warning.</li><li>Crew quarters, cargo bay capacity, maximum tonnage and its effect on the drive.</li><li>Hop Miners, Solar Carriers, Nuclear Cruisers and Colony Ships.</li></ul>
+   <h4>Map</h4><ul><li>Ships flying on the map; real globe art; real moon orbits.</li></ul>
+   <h4>Game flow</h4><ul><li>Load Game, Options, Easy and Hard.</li><li>Real art for the location scenes.</li></ul>
+  </div>
+ </div>
+</div></section>
+
+<section class="win bev" id="log" data-ic="project"><h2>Revision history</h2><div class="body">
+ <div class="tw"><table>
+  <tr><th>Rev.</th><th>Date</th><th>Game commit</th><th>Changes</th></tr>
+  <tr><td>1</td><td>2026-11-18</td><td><code>5de238e</code></td><td>First version, written from the prototype as it stands.</td></tr>
+ </table></div>
+</div></section>
+
+<footer>The Solar Century · Game Design Document · Inspired by <i>Millennium 2.2</i>; not affiliated with the original game or its publishers.</footer>
+</main>
+</div>
+
+<script>
+/* Icons copied from index.html (16x16 box). */
+const ICON={
+ hydrogen:`<rect x="4" y="5" width="8" height="10" rx="3" fill="#8fd3ff"/><rect x="6.5" y="2.5" width="3" height="3" fill="#cfd8e8"/><rect x="5.5" y="1" width="5" height="1.8" fill="#cfd8e8"/><rect x="5.5" y="8" width="5" height="1.4" fill="#fff" opacity=".8"/>`,
+ oxygen:`<circle cx="5.5" cy="10.5" r="3.6" fill="#bfeaff" stroke="#4aa8e0"/><circle cx="11" cy="6" r="2.8" fill="#bfeaff" stroke="#4aa8e0"/><circle cx="10" cy="12.8" r="1.6" fill="#bfeaff" stroke="#4aa8e0"/>`,
+ water:`<path d="M8 1.5C8 1.5 3 7.5 3 10.2a5 5 0 0 0 10 0C13 7.5 8 1.5 8 1.5Z" fill="#3b82f6"/><path d="M6 10.5a2.2 2.2 0 0 0 1.6 2" stroke="#bfe0ff" fill="none" stroke-width="1.2"/>`,
+ nitrogen:`<rect x="6" y="6.8" width="4" height="2.4" fill="#4a6fd6"/><circle cx="4.5" cy="8" r="3.2" fill="#7aa2ff"/><circle cx="11.5" cy="8" r="3.2" fill="#7aa2ff"/>`,
+ methane:`<path d="M8 8L3 3M8 8L13 3M8 8L3 13M8 8L13 13" stroke="#9a9aa8" stroke-width="1.4"/><circle cx="8" cy="8" r="3" fill="#6b6b78"/><circle cx="3" cy="3" r="1.9" fill="#e8e4d4"/><circle cx="13" cy="3" r="1.9" fill="#e8e4d4"/><circle cx="3" cy="13" r="1.9" fill="#e8e4d4"/><circle cx="13" cy="13" r="1.9" fill="#e8e4d4"/>`,
+ sulphur:`<path d="M8 1L12.5 6L8 15L3.5 6Z" fill="#f2d516"/><path d="M3.5 6H12.5M8 1V15" stroke="#b99f00" stroke-width=".9"/>`,
+ titanium:`<path d="M8 1.5L14 5V11L8 14.5L2 11V5Z" fill="#8a94a8"/><path d="M8 1.5L14 5L8 8.5L2 5Z" fill="#b6c0d2"/>`,
+ aluminium:`<path d="M2 12L4 6H14L12 12Z" fill="#d6dbe6"/><path d="M4 6L6 3H15L14 6Z" fill="#f2f5fa"/>`,
+ copper:`<rect x="2" y="2" width="12" height="2.4" rx="1.2" fill="#d9822b"/><rect x="2" y="5.2" width="12" height="2.4" rx="1.2" fill="#e89a45"/><rect x="2" y="8.4" width="12" height="2.4" rx="1.2" fill="#d9822b"/><rect x="2" y="11.6" width="12" height="2.4" rx="1.2" fill="#e89a45"/>`,
+ silica:`<path d="M5 15V6L8 1L11 6V15Z" fill="#cfeef0" stroke="#7fb5b8"/><path d="M5 6H11" stroke="#7fb5b8"/>`,
+ iron:`<path d="M2 2H14V5H9.5V11H14V14H2V11H6.5V5H2Z" fill="#a0644a"/>`,
+ silver:`<circle cx="8" cy="8" r="6.5" fill="#c9ced8"/><circle cx="8" cy="8" r="4.2" fill="none" stroke="#8b93a3"/><path d="M4.5 5L7 3.8" stroke="#fff" stroke-width="1.2"/>`,
+ chromium:`<circle cx="8" cy="8" r="6.5" fill="#9fb3c8"/><path d="M2 10Q8 7 14 10" stroke="#44546a" fill="none"/><ellipse cx="6" cy="5.5" rx="2.4" ry="1.6" fill="#fff" opacity=".85"/>`,
+ platinum:`<path d="M3 5L5.5 2H10.5L13 5L8 14Z" fill="#e8f2ff" stroke="#7f93b3"/><path d="M3 5H13M5.5 2L8 5L10.5 2M8 5V14" stroke="#7f93b3" fill="none" stroke-width=".8"/>`,
+ uranium:`<circle cx="8" cy="8" r="7" fill="#d8e63a"/><path d="M8 8L4.5 1.94A7 7 0 0 1 11.5 1.94ZM8 8L15 8A7 7 0 0 1 11.5 14.06ZM8 8L4.5 14.06A7 7 0 0 1 1 8Z" fill="#1d2a10"/><circle cx="8" cy="8" r="1.8" fill="#1d2a10"/>`,
+ components:`<path d="M6 1v3M8 1v3M10 1v3M6 12v3M8 12v3M10 12v3M1 6h3M1 8h3M1 10h3M12 6h3M12 8h3M12 10h3" stroke="#d6dbe6" stroke-width="1"/><rect x="4" y="4" width="8" height="8" fill="#3a8f5a"/><rect x="6" y="6" width="4" height="4" fill="#1d4d2f"/>`,
+ machinery:`<g fill="#8a94a8"><rect x="6.8" y="1" width="2.4" height="3"/><rect x="6.8" y="12" width="2.4" height="3"/><rect x="1" y="6.8" width="3" height="2.4"/><rect x="12" y="6.8" width="3" height="2.4"/><rect x="6.8" y="1" width="2.4" height="3" transform="rotate(45 8 8)"/><rect x="6.8" y="1" width="2.4" height="3" transform="rotate(135 8 8)"/><rect x="6.8" y="1" width="2.4" height="3" transform="rotate(225 8 8)"/><rect x="6.8" y="1" width="2.4" height="3" transform="rotate(315 8 8)"/><circle cx="8" cy="8" r="4.6"/></g><circle cx="8" cy="8" r="2" fill="#2d3340"/>`,
+ software:`<path d="M2 2H12L14 4V14H2Z" fill="#3b4aa0"/><rect x="4" y="2" width="7" height="4.5" fill="#d6dbe6"/><rect x="8.5" y="3" width="1.8" height="2.6" fill="#3b4aa0"/><rect x="4" y="9" width="8" height="5" fill="#e8e4d4"/><path d="M5 11H11M5 12.8H9" stroke="#8a94a8" stroke-width=".8"/>`,
+ colonists:`<circle cx="8" cy="4.5" r="3" fill="#f2c9a0"/><path d="M2.5 15C2.5 10 5 8.5 8 8.5S13.5 10 13.5 15Z" fill="#1f2a7a"/>`,
+ research:`<path d="M6 1.5H10M7 1.5V6L2.5 13.5Q2 15 3.5 15H12.5Q14 15 13.5 13.5L9 6V1.5" fill="#c58cff" stroke="#6b3fa0"/><path d="M4.5 11H11.5" stroke="#fff" opacity=".7"/>`,
+ colony:`<path d="M2 14.5V11.5A6 6 0 0 1 14 11.5V14.5Z" fill="#7fe0a0" stroke="#1f7a40"/><path d="M8 5.5V1.5L11.5 2.8L8 4.1" fill="#e5484d" stroke="#e5484d" stroke-linejoin="round"/><rect x="6.4" y="10.5" width="3.2" height="4" fill="#1f7a40"/>`,
+ catvol:`<path d="M4.6 13a3.2 3.2 0 0 1-.5-6.3A4.2 4.2 0 0 1 12.2 6a3.5 3.5 0 0 1-.3 7Z" fill="#bfe6ff" stroke="#3b82c4" stroke-width="1.1" stroke-linejoin="round"/><path d="M5.5 10.5H10.5" stroke="#3b82c4" stroke-width="1.1" stroke-linecap="round"/>`,
+ catmin:`<path d="M2 14L4.2 6.5L6.5 14Z" fill="#9fe3e8" stroke="#2f8f98" stroke-linejoin="round"/><path d="M5.5 14L8.8 2L12.2 14Z" fill="#cfeef0" stroke="#2f8f98" stroke-linejoin="round"/><path d="M8.8 2V14" stroke="#2f8f98" stroke-width=".8"/><path d="M11.5 14L13 8.5L14.5 14Z" fill="#9fe3e8" stroke="#2f8f98" stroke-linejoin="round"/>`,
+ catmet:`<path d="M1.5 13.5L3 9.5H9L10.5 13.5Z" fill="#8a94a8" stroke="#4d576b" stroke-linejoin="round"/><path d="M5.5 9L7 5H13L14.5 9Z" fill="#b6c0d2" stroke="#4d576b" stroke-linejoin="round"/>`,
+ catrare:`<path d="M2.5 6L5 2.5H11L13.5 6L8 14Z" fill="#ff9ad5" stroke="#a02a78" stroke-linejoin="round"/><path d="M2.5 6H13.5M5 2.5L6.5 6L8 14L9.5 6L11 2.5" stroke="#a02a78" stroke-width=".8" fill="none" stroke-linejoin="round"/>`,
+ catman:`<path d="M2 14V7.5L5.7 10V7.5L9.4 10V7.5L13 10V14Z" fill="#b6b6c8" stroke="#4d576b" stroke-linejoin="round"/><rect x="10.3" y="2" width="2.6" height="6.5" fill="#8a94a8" stroke="#4d576b"/><rect x="4" y="11.2" width="1.8" height="1.8" fill="#ffd24a"/><rect x="7.3" y="11.2" width="1.8" height="1.8" fill="#ffd24a"/><rect x="10.6" y="11.2" width="1.8" height="1.8" fill="#ffd24a"/>`,
+ ship:`<path d="M8 1.2C10.6 3.4 11.4 6.6 11 10.5H5C4.6 6.6 5.4 3.4 8 1.2Z" fill="#e8f2ff" stroke="#5a6c8f" stroke-linejoin="round"/><circle cx="8" cy="6" r="1.4" fill="#6ea8ff" stroke="#5a6c8f" stroke-width=".7"/><path d="M5 10.5L2.8 13.6L5.4 12.6ZM11 10.5L13.2 13.6L10.6 12.6Z" fill="#e5484d" stroke="#a02a2f" stroke-linejoin="round"/><path d="M7 12.2H9L8 15Z" fill="#ffb347"/>`,
+ hangar:`<path d="M1.5 14.5V8A6.5 5.5 0 0 1 14.5 8V14.5Z" fill="#9fb3c8" stroke="#4d576b" stroke-linejoin="round"/><rect x="4.5" y="8.5" width="7" height="6" fill="#3b4a64" stroke="#4d576b"/><path d="M4.5 10.5H11.5M4.5 12.5H11.5" stroke="#9fb3c8" stroke-width=".8"/>`,
+ mission:`<path d="M2 8.2L14 2L10.6 14L8 9.4Z" fill="#6ea8ff" stroke="#2f5fb3" stroke-linejoin="round"/><path d="M14 2L8 9.4" stroke="#2f5fb3" stroke-width=".9"/>`,
+ gain:`<path d="M8 1.5L14 8H10V14.5H6V8H2Z" fill="#3fbf6a" stroke="#1f7a40"/>`,
+ recycle:`<path d="M3 8A5 5 0 0 1 11.6 4.6" fill="none" stroke="#3fbf6a" stroke-width="1.8" stroke-linecap="round"/><path d="M13 8A5 5 0 0 1 4.4 11.4" fill="none" stroke="#3fbf6a" stroke-width="1.8" stroke-linecap="round"/><path d="M12.8 1.6V5.6H8.8" fill="none" stroke="#1f7a40" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M3.2 14.4V10.4H7.2" fill="none" stroke="#1f7a40" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>`,
+ refit:`<path d="M10.6 1.8A3.6 3.6 0 0 0 7.2 6.6L1.8 12A1.7 1.7 0 0 0 4 14.2L9.4 8.8A3.6 3.6 0 0 0 14.2 5.4L12 7.6L9.6 6.4L8.4 4L10.6 1.8Z" fill="#b6c0d2" stroke="#4d576b" stroke-linejoin="round"/><circle cx="3.4" cy="12.6" r=".8" fill="#4d576b"/>`,
+ project:`<circle cx="6.5" cy="6.5" r="4.5" fill="#e8f2ff" stroke="#6b3fa0" stroke-width="1.6"/><path d="M10 10L14.5 14.5" stroke="#6b3fa0" stroke-width="2.2"/>`,
+ part_drive:`<path d="M3 2H9L12 5.5V10.5L9 14H3Z" fill="#8a94a8" stroke="#4d576b" stroke-linejoin="round"/><path d="M12 5.5L15 3.5V12.5L12 10.5Z" fill="#b6c0d2" stroke="#4d576b" stroke-linejoin="round"/><path d="M1 6H3M1 10H3" stroke="#ffb347" stroke-width="1.6" stroke-linecap="round"/><circle cx="7" cy="8" r="2" fill="#ffb347"/>`,
+ part_life:`<path d="M8 14.5S1.5 10.5 1.5 6A3.4 3.4 0 0 1 8 4.6 3.4 3.4 0 0 1 14.5 6C14.5 10.5 8 14.5 8 14.5Z" fill="#7fe0a0" stroke="#1f7a40" stroke-linejoin="round"/><path d="M8 11.5V6M8 8.5L10 6.8M8 10L6 8.5" stroke="#1f7a40" stroke-width="1.1" stroke-linecap="round"/>`,
+ part_cargo:`<path d="M1.5 5L8 2L14.5 5V12L8 15L1.5 12Z" fill="#c9a06a" stroke="#7a5a30" stroke-linejoin="round"/><path d="M1.5 5L8 8L14.5 5M8 8V15" stroke="#7a5a30" fill="none" stroke-linejoin="round"/><path d="M4.8 3.5L11.2 6.5" stroke="#7a5a30" stroke-width="1.2"/>`,
+ part_crew:`<rect x="1.5" y="9" width="13" height="5" rx="1" fill="#6b7fb8" stroke="#2f3f7a" stroke-linejoin="round"/><rect x="3" y="6.5" width="10" height="3.5" rx="1.2" fill="#e8f2ff" stroke="#2f3f7a"/><circle cx="4.8" cy="4" r="1.7" fill="#f2c9a0"/><path d="M1.5 14V15.5M14.5 14V15.5" stroke="#2f3f7a" stroke-width="1.2"/>`,
+ part_bridge:`<path d="M1.5 12L3 5.5Q8 2 13 5.5L14.5 12Z" fill="#9fb3c8" stroke="#4d576b" stroke-linejoin="round"/><path d="M4 6.2Q8 3.8 12 6.2L12.6 9H3.4Z" fill="#6ea8ff" stroke="#2f5fb3" stroke-linejoin="round"/><path d="M1.5 12H14.5V14.5H1.5Z" fill="#4d576b"/><circle cx="8" cy="11.8" r=".9" fill="#ffd24a"/>`,
+ part_computer:`<rect x="2.5" y="2.5" width="11" height="11" rx="1" fill="#2d3340" stroke="#8a94a8"/><path d="M5 1V2.5M8 1V2.5M11 1V2.5M5 13.5V15M8 13.5V15M11 13.5V15M1 5H2.5M1 8H2.5M1 11H2.5M13.5 5H15M13.5 8H15M13.5 11H15" stroke="#d6dbe6" stroke-width="1"/><path d="M5 6L7 8L5 10M8.5 10H11" stroke="#7fe0a0" stroke-width="1.3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>`,
+ part_weapons:`<circle cx="8" cy="8" r="6.3" fill="none" stroke="#e5484d" stroke-width="1.5"/><path d="M8 .8V5M8 11V15.2M.8 8H5M11 8H15.2" stroke="#e5484d" stroke-width="1.5"/><circle cx="8" cy="8" r="1.6" fill="#e5484d"/>`,
+ part_shields:`<path d="M8 1.2L14 3.2V8C14 11.6 11.4 13.8 8 15C4.6 13.8 2 11.6 2 8V3.2Z" fill="#6ea8ff" stroke="#2f5fb3" stroke-linejoin="round"/><path d="M8 1.2V15C4.6 13.8 2 11.6 2 8V3.2Z" fill="#9cc4ff"/><path d="M8 4.5V11.5M5 8H11" stroke="#fff" stroke-width="1.2" opacity=".8"/>`
+};
+/* Game data mirrored from the defaults in index.html at the revision in the top bar. Update together with the game. */
+const RN={hydrogen:'Hydrogen',oxygen:'Oxygen',water:'Water',nitrogen:'Nitrogen',methane:'Methane',sulphur:'Sulphur',titanium:'Titanium',aluminium:'Aluminium',copper:'Copper',silica:'Silica',iron:'Iron',silver:'Silver',chromium:'Chromium',platinum:'Platinum',uranium:'Uranium',components:'Components',machinery:'Machinery',software:'Software'};
+const CAT=[
+ {n:'Volatiles',i:'catvol',d:'Life support, fuel and habitat atmosphere. Methane has no use.',r:['water','oxygen','hydrogen','nitrogen','methane']},
+ {n:'Minerals',i:'catmin',d:'Non-metallic raw materials from the Regolith mines.',r:['silica','sulphur']},
+ {n:'Metals',i:'catmet',d:'Structural metals. Iron, aluminium and titanium from the Regolith mines; copper from the belt and Earth salvage.',r:['iron','aluminium','titanium','copper']},
+ {n:'Rare metals',i:'catrare',d:'Platinum from the belt; silver, chromium and uranium only from the outer moons.',r:['platinum','silver','chromium','uranium']},
+ {n:'Manufactured',i:'catman',d:'Components from the Component factory, machinery from the Machinery workshop. Software has no source yet.',r:['components','machinery','software']}];
+const WT={hydrogen:.07,oxygen:1.1,water:1,nitrogen:.8,methane:.4,sulphur:2,titanium:4.5,aluminium:2.7,copper:9,silica:2.5,iron:7.8,silver:10.5,chromium:7.2,platinum:21,uranium:19,components:.5,machinery:5,software:.01};
+const START_RES={hydrogen:30,oxygen:100,water:100,nitrogen:30,methane:5,sulphur:10,titanium:20,aluminium:40,copper:20,silica:60,iron:120,silver:0,chromium:0,platinum:0,uranium:0,components:10,machinery:20,software:10};
+const COL={water:.8,oxygen:.5};
+const B=[
+ ['solar','Solar array',{iron:8,silica:12,aluminium:4,components:1},4,48,'+4 power',2],
+ ['mine','Regolith mine',{iron:16,aluminium:8,titanium:2,components:2,machinery:4},-2,72,'+6 iron, +4 silica, +3 aluminium, +1.5 titanium, +0.5 sulphur / month',1],
+ ['ice','Ice extractor',{iron:12,aluminium:8,titanium:2,components:2,machinery:4},-2,72,'+10 water, +1 nitrogen / month',1],
+ ['elec','Electrolyser',{iron:16,aluminium:8,copper:4,components:3,machinery:4},-3,120,'18 water → 2 hydrogen + 16 oxygen / month',0],
+ ['fact','Component factory',{iron:24,aluminium:8,copper:4,silica:8,components:3,machinery:6},-3,168,'8 iron + 5 silica + 2 aluminium + 0.5 copper → 4 components / month',0],
+ ['shop','Machinery workshop',{iron:24,aluminium:12,copper:4,silica:8,components:4,machinery:6},-3,168,'10 iron + 4 aluminium + 1 titanium → 2 machinery / month',0],
+ ['lab','Science lab',{aluminium:12,copper:8,silica:8,titanium:4,components:4},-3,144,'1 research point per 20 days; −75% while a project runs',0],
+ ['hab','Habitat module',{aluminium:16,iron:16,nitrogen:8,water:16,components:3},-1,96,'Houses 6 colonists',2],
+ ['reactor','Fission reactor',{iron:32,titanium:16,chromium:8,uranium:8,components:6,machinery:8},12,200,'+12 power, burns 0.5 uranium / month (needs Nuclear power)',0]];
+const STAFF=[['Solar array','Labourers',1,2],['Regolith mine','Labourers',2,3],['Ice extractor','Labourers',2,3],['Electrolyser','Scientists',2,3],['Fission reactor','Scientists',3,5],['Science lab','Scientists',2,3],['Component factory','Technicians',2,4],['Machinery workshop','Technicians',2,4],['Construction site (each queued item)','Builders',2,4]];
+const STAFF0={solar:2,mine:2,ice:2,build:2};
+const TCATS={colony:'Colonization',energy:'Energy',mining:'Mining',manuf:'Manufacturing',life:'Life Support',ships:'Starships',weapons:'Weapons'};
+const T=[['deep','Deep drilling',25,[],'mining','Regolith mines +50%'],['hydro','Hydroponics',30,[],'life','Colonists use 40% less water'],['fusion','Fusion cells',50,['deep'],'energy','Solar arrays +50%'],['ion','Ion drive',50,['deep'],'ships','Unlocks Mars survey'],['fission','Nuclear power',60,['deep'],'energy','Unlocks the fission reactor'],['belt','Asteroid mining',80,['ion'],'mining','Unlocks Belt expedition'],['outer','Outer-system drive',100,['belt'],'ships','Unlocks Outer moons expedition'],['gaia','Gaia seed',150,['hydro','fusion','outer'],'colony','Unlocks the Gaia Ark']];
+const M=[['Earth salvage',null,{hydrogen:10,oxygen:20},3,2,.1,{iron:40,copper:15,aluminium:15,silica:10}],['Mars survey','Ion drive',{hydrogen:15,oxygen:30},5,3,.15,{water:60,nitrogen:30,sulphur:15,methane:10,rp:15}],['Belt expedition','Asteroid mining',{hydrogen:20,oxygen:40,titanium:10},6,3,.2,{copper:60,platinum:15,titanium:30,iron:80}],['Outer moons expedition','Outer-system drive',{hydrogen:35,oxygen:70,titanium:20},9,4,.25,{uranium:40,silver:20,chromium:25}],['Gaia Ark launch','Gaia seed',{hydrogen:80,oxygen:120,titanium:120,aluminium:100,iron:150,chromium:30,silver:20,platinum:20,uranium:40},10,8,0,{win:1}]];
+const SHIP={iron:16,aluminium:16,titanium:6,copper:6,components:4,software:2};
+const PORT={iron:12,aluminium:8,titanium:2,silica:8,components:2};
+const SURVEY={mc:{aluminium:40,titanium:20,components:12,machinery:10}};
+const SHIPTYPES=[['Probes','Unmanned scouts that survey locations; also flown on the early missions.','ok'],['Hop Miners','Short-range mining ships.','no'],['Solar Carriers','Cargo haulers.','no'],['Nuclear Cruisers','Fast long-range ships.','no'],['Colony Ships','Carry colony modules and colonists to found colonies.','no']];
+const PARTS=[['part_drive','Drive','Moves the ship. Faster drives shorten trips.',40,'Simplest drive'],['part_life','Life support','Keeps the crew and colonists alive on long flights.',15,''],['part_cargo','Cargo bay','Carries resources, parts and colony modules.',20,''],['part_crew','Crew quarters','Berths for the crew and colonists travelling aboard.',12,''],['part_bridge','Bridge','Command centre that coordinates the ship systems.',8,''],['part_computer',"Ship's computer",'Onboard navigation and mission control.',2,'Survey computer'],['part_weapons','Weapons','Armament for combat.',25,''],['part_shields','Shields','Protection against hostile fire and debris.',18,'']];
+/* key, name, parent, region (0 Inner, 1 Middle, 2 Outer), difficulty, length (days), a (AU) or ak (thousand km), period (days) */
+const LOC=[['mercury','Mercury','',0,.35,40,.387,0,88],['venus','Venus','',0,.8,90,.723,0,224.7],['earth','Earth','',0,.45,30,1,0,365.25],['moon','Moon','earth',0,.05,10,0,384.4,27.32],['mars','Mars','',0,.2,30,1.524,0,687],['phobos','Phobos','mars',0,.25,20,0,9.376,.319],['deimos','Deimos','mars',0,.2,15,0,23.46,1.263],['belt','Asteroid belt','',0,.3,45,2.767,0,1682],['jupiter','Jupiter','',1,.9,120,5.203,0,4333],['io','Io','jupiter',1,.85,80,0,421.7,1.769],['europa','Europa','jupiter',1,.5,70,0,671.1,3.551],['ganymede','Ganymede','jupiter',1,.4,60,0,1070.4,7.155],['callisto','Callisto','jupiter',1,.35,50,0,1882.7,16.689],['saturn','Saturn','',1,.9,150,9.537,0,10759],['titan','Titan','saturn',1,.45,90,0,1221.9,15.945],['enceladus','Enceladus','saturn',1,.5,60,0,238,1.37],['rhea','Rhea','saturn',1,.4,50,0,527.1,4.518],['iapetus','Iapetus','saturn',1,.45,50,0,3560.8,79.33],['dione','Dione','saturn',1,.4,45,0,377.4,2.737],['tethys','Tethys','saturn',1,.35,40,0,294.6,1.888],['mimas','Mimas','saturn',1,.35,35,0,185.5,.942],['uranus','Uranus','',2,.92,180,19.19,0,30687],['titania','Titania','uranus',2,.5,70,0,436.3,8.706],['oberon','Oberon','uranus',2,.5,70,0,583.5,13.463],['umbriel','Umbriel','uranus',2,.55,70,0,266,4.144],['ariel','Ariel','uranus',2,.5,65,0,190.9,2.52],['miranda','Miranda','uranus',2,.55,60,0,129.9,1.413],['neptune','Neptune','',2,.95,200,30.07,0,60190],['triton','Triton','neptune',2,.6,90,0,354.8,5.877],['pluto','Pluto','',2,.6,100,39.48,0,90560],['charon','Charon','pluto',2,.55,80,0,19.6,6.387]];
+const REG=['Inner Planets','Middle Planets','Outer Planets'];
+
+const ic=(k,s)=>ICON[k]?'<svg viewBox="0 0 16 16" width="'+(s||18)+'" height="'+(s||18)+'" aria-hidden="true">'+ICON[k]+'</svg>':'';
+const costH=c=>Object.keys(c).map(k=>k==='rp'?'<span class="cost">'+ic('research',15)+c[k]+'</span>':k==='win'?'<b class="st-ok">Victory</b>':'<span class="cost" title="'+RN[k]+'">'+ic(k,15)+c[k]+'</span>').join('');
+const lapse=d=>d<30.44?d+' d':Math.floor(d/365.25)?Math.round(d/365.25*10)/10+' y':Math.round(d/30.44*10)/10+' mo';
+const $=id=>document.getElementById(id);
+function fill(){
+ $('t-staff').innerHTML='<tr><th>Building</th><th>Job</th><th class="n">Minimum</th><th class="n">Full (+10%)</th></tr>'+STAFF.map(s=>'<tr><td>'+s[0]+'</td><td>'+s[1]+'</td><td class="n">'+s[2]+'</td><td class="n">'+s[3]+'</td></tr>').join('');
+ $('res-cats').innerHTML=CAT.map(c=>'<div class="res-cat"><div>'+ic(c.i,24)+c.n+' <small style="font-weight:400">'+c.d+'</small></div><div class="res-row">'+c.r.map(r=>'<span>'+ic(r)+RN[r]+' <small>start '+START_RES[r]+' · '+WT[r]+' t</small></span>').join('')+'</div></div>').join('');
+ $('t-bld').innerHTML='<tr><th>Building</th><th>Cost</th><th class="n">Power</th><th class="n">Build</th><th>Effect</th><th class="n">Start</th></tr>'+B.map(b=>'<tr><td><b>'+b[1]+'</b></td><td>'+costH(b[2])+'</td><td class="n" style="color:var('+(b[3]>0?'--ok':'--bad')+')">'+(b[3]>0?'+':'')+b[3]+'</td><td class="n">'+(b[4]%24?Math.floor(b[4]/24)+' d '+b[4]%24+' h':b[4]/24+' d')+'</td><td>'+b[5]+'</td><td class="n">'+b[6]+'</td></tr>').join('');
+ const tn=Object.fromEntries(T.map(t=>[t[0],t[1]]));
+ $('t-tech').innerHTML='<tr><th>Technology</th><th>Category</th><th class="n">Cost</th><th>Requires</th><th>Effect</th></tr>'+T.map(t=>'<tr><td><b>'+t[1]+'</b></td><td>'+TCATS[t[4]]+'</td><td class="n">'+ic('research',15)+' '+t[2]+'</td><td>'+(t[3].map(r=>tn[r]).join(', ')||'<span class="dim">–</span>')+'</td><td>'+t[5]+'</td></tr>').join('');
+ $('t-mis').innerHTML='<tr><th>Mission</th><th>Needs</th><th>Fuel</th><th class="n">Months</th><th class="n">Crew</th><th class="n">Risk</th><th>Returns</th></tr>'+M.map(m=>'<tr><td><b>'+m[0]+'</b></td><td>'+(m[1]||'<span class="dim">–</span>')+'</td><td>'+costH(m[2])+'</td><td class="n">'+m[3]+'</td><td class="n">'+m[4]+'</td><td class="n">'+Math.round(m[5]*100)+'%</td><td>'+costH(m[6])+'</td></tr>').join('');
+ $('t-ships').innerHTML='<tr><th>Type</th><th>Role</th><th>Status</th></tr>'+SHIPTYPES.map(s=>'<tr><td><b>'+s[0]+'</b></td><td>'+s[1]+'</td><td><span class="pill '+s[2]+'">'+(s[2]==='ok'?'Built':'Planned')+'</span></td></tr>').join('');
+ $('t-parts').innerHTML='<tr><th>Part</th><th>Purpose</th><th class="n">Weight</th><th>On a probe</th></tr>'+PARTS.map(p=>'<tr><td><span class="ic">'+ic(p[0])+'</span><b>'+p[1]+'</b></td><td>'+p[2]+'</td><td class="n">'+p[3]+' t</td><td>'+(p[4]||'<span class="dim">–</span>')+'</td></tr>').join('');
+ let h='<tr><th>Location</th><th>Region</th><th class="n">Orbit</th><th class="n">Period</th><th class="n">Difficulty</th><th class="n">Success</th><th class="n">Analysis</th><th class="n">Colonise cost</th></tr>';
+ for(const l of LOC){const sub=!!l[2],cc=Math.round(60*(1+2*l[4])*(1+l[5]/90));
+  h+='<tr><td class="'+(sub?'sub':'')+'">'+(l[0]==='moon'?'<b>'+l[1]+'</b> <span class="pill ok">Moonbase</span>':sub?l[1]:'<b>'+l[1]+'</b>')+'</td><td>'+(sub?'':REG[l[3]])+'</td><td class="n">'+(sub?l[7].toLocaleString('en-US')+' Mm':l[6]+' AU')+'</td><td class="n">'+lapse(l[8])+'</td><td class="n">'+l[4].toFixed(2)+'</td><td class="n">'+(l[0]==='moon'?'–':Math.round(Math.max(0,1-l[4]*.8)*100)+'%')+'</td><td class="n">'+l[5]+' d</td><td class="n">'+(l[0]==='moon'?'–':cc)+'</td></tr>'}
+ $('t-loc').innerHTML=h;
+ document.querySelectorAll('[data-cost]').forEach(e=>{const o={PORT,SHIP,'SURVEY.mc':SURVEY.mc}[e.dataset.cost];e.innerHTML=costH(o)});
+ document.querySelectorAll('[data-val]').forEach(e=>{e.textContent=e.dataset.val.split('.').reduce((a,k)=>a[k],{COL})});
+ document.querySelectorAll('[data-ic]').forEach(e=>{const s=ic(e.dataset.ic,e.tagName==='SECTION'?34:22);if(!s)return;if(e.tagName==='SECTION')e.querySelector('h2').insertAdjacentHTML('beforeend',s);else e.insertAdjacentHTML('afterbegin',s)});
+ $('brand').insertAdjacentHTML('afterbegin',ic('colony',22));
+ /* contents and section numbers */
+ const secs=[...document.querySelectorAll('section.win')];
+ $('toc').insertAdjacentHTML('beforeend',secs.map((s,i)=>{s.querySelector('h2').insertAdjacentHTML('afterbegin','<span class="no">'+(i+1)+'</span>');return '<a href="#'+s.id+'"><i>'+(i+1)+'</i>'+s.querySelector('h2').childNodes[1].textContent+'</a>'}).join(''));
+ const links=[...document.querySelectorAll('#toc a')];
+ const obs=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){links.forEach(a=>a.classList.toggle('on',a.getAttribute('href')==='#'+e.target.id))}})},{rootMargin:'-90px 0px -65% 0px'});
+ secs.forEach(s=>obs.observe(s));
+}
+fill();
+/* theme switch, remembered per browser */
+(function(){const r=document.documentElement;let t=null;try{t=localStorage.getItem('gdd-theme')}catch(e){}if(t)r.dataset.theme=t;
+ $('theme').onclick=()=>{const dark=r.dataset.theme?r.dataset.theme==='dark':!matchMedia('(prefers-color-scheme: light)').matches;r.dataset.theme=dark?'light':'dark';try{localStorage.setItem('gdd-theme',r.dataset.theme)}catch(e){}}})();
+</script>
+</body>
+</html>

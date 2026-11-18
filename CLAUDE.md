@@ -8,6 +8,7 @@ Single-file browser game prototype (`index.html`: HTML, CSS and vanilla JS, no b
 - Remind the owner that changes are not pushed **only once every ten changes**, not after each one, and never mention the count, the number of unpushed changes or push status in any reply before it reaches ten.
 - Tell the owner when a session is consuming a lot of time or tokens, so they can decide how to continue.
 - Things the owner says will be done later go into `PROMISES.md`. Keep that file up to date, and keep the "What is in the prototype" list in `README.md` current.
+- **`GDD.html` is the Game Design Document**, a living document styled like the game (open it in a browser). Update it in the same change whenever a feature, rule or default value changes: the prose sections, the data blocks in its `<script>` (`B`, `T`, `M`, `LOC`, `STAFF`, `CAT`, `WT`, and so on, which mirror the defaults in `index.html` and draw the tables), the "Open design questions" (in step with `PROMISES.md`), and the revision in the top bar plus a row in "Revision history" (date and game commit). Its `ICON` object is copied from `index.html`; recopy it when icons change.
 - Answer in the owner's language (they write in English here). Keep replies short: what changed, and what to check.
 - Balancing is deliberately postponed. All numbers are provisional.
 - The owner is defining **rendering rules** one at a time. Record each in "Rendering rules" below as it arrives.
