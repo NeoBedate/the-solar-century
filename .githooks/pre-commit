@@ -16,6 +16,15 @@ if [ ! -d tools/node_modules/playwright ]; then
   exit 0
 fi
 
+# The GDD's data and revision follow the game: sync them and include GDD.html in this commit.
+if echo "$files" | grep -Eq '^(index\.html|GDD\.html)$'; then
+  if ! node tools/sync-gdd.js; then
+    echo "pre-commit: tools/sync-gdd.js failed, so the commit was stopped." >&2
+    exit 1
+  fi
+  git add GDD.html
+fi
+
 echo "pre-commit: checking the game (node tools/check.js)..."
 if ! out=$(node tools/check.js 2>&1); then
   echo "$out" >&2

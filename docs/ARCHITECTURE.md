@@ -38,7 +38,7 @@ In `index.html`, the main script is split into sections that start with a commen
 
 ## GDD internals
 
-- `GDD.html` draws its tables from a block between `SYNC:BEGIN` and `SYNC:END` that `node tools/sync-gdd.js` copies verbatim from `index.html` (the constants listed in its `NAMES`, the starting state from `init()` as `START_STATE`, and the game commit as `SYNC`). A new game data object the GDD should show: add its name to `NAMES`, then use it in the GDD's `fill()`.
+- `GDD.html` draws its tables from a block between `SYNC:BEGIN` and `SYNC:END` that `node tools/sync-gdd.js` copies verbatim from `index.html` (the constants listed in its `NAMES`, the starting state from `init()` as `START_STATE`) plus a `SYNC` line with the revision number, date and history from git (written only when the GDD differs from the last commit or its data changes, so syncing never churns). A new game data object the GDD should show: add its name to `NAMES`, then use it in the GDD's `fill()`.
 - Numbers inside the GDD prose use `<span data-val="expression">` (for example `SURVEY.dpa`, `PORT.t/24`) and costs use `<span data-cost="expression">`; they are filled from the synced data, so prose never repeats a number by hand.
 - GDD-only data (what the game does not hold yet: ship roles, regions) sits under the sync block, edited by hand.
 

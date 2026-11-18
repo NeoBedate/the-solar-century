@@ -10,7 +10,7 @@ Improvements to how the game is built and tested. Each item says what it gives, 
 | 2 | Checkpoint before each commit (git hook) | Done on the desktop PC | Install it on the Mac (see below) |
 | 3 | Automatic checks on GitHub | Ready, starts with the next push | Say "push it" |
 | 4 | Balancing simulator | Later (when balancing starts) | Decide what "balanced" means |
-| 5 | Automatic GDD revision numbers | Planned | Nothing |
+| 5 | Automatic GDD revision numbers | Done | – |
 | – | Token savings: `tools/check.js`, `tools/sync-gdd.js`, short `CLAUDE.md`, short README, code signposts | Done | – |
 
 ## 1. Test scenarios from the URL
@@ -56,8 +56,8 @@ Node.js is needed (`brew install node` if it is missing).
 
 ## 5. Automatic GDD revision numbers
 
-**Gives:** the GDD's revision number and history row come from git, so they are never forgotten. (The game commit the tables were synced from is already filled in automatically.)
+**Gives:** the GDD's revision number, date and Revision history come from git, so they are never forgotten.
 
-**Claude does:** extend `tools/sync-gdd.js`.
+**How it works:** every commit that changes `GDD.html` is one revision, described by its commit message. `tools/sync-gdd.js` writes the number and history into the GDD, and the pre-commit hook runs it (and includes the GDD) whenever a commit touches the game or the GDD. The newest row reads "this version", because a commit cannot contain its own hash.
 
 **You:** nothing.

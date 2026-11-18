@@ -161,7 +161,7 @@ footer{text-align:center;color:var(--dim);font-size:13px;padding:10px 0 30px}
 <div class="top">
  <button id="back" class="back" title="Back to the game's title screen" aria-label="Back to the game's title screen"><svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="square"><path d="M10.5 2.5L5 8L10.5 13.5"/></svg><span>Back</span></button>
  <div class="ttl">The Solar Century</div>
- <div class="rev">Rev. 4<span class="dt"><span>2026-11-18</span><span id="gcommit" title="Game commit the data tables were synced from"></span></span></div>
+ <div class="rev" title="Revision of this document (counted from git)">Rev. <span id="grev"></span><span class="dt"><span id="gdate"></span><span>this version</span></span></div>
  <button id="theme" title="Switch light / dark" aria-label="Switch light or dark theme"><svg viewBox="0 0 16 16" width="20" height="20" aria-hidden="true"><circle cx="8" cy="8" r="5.5" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M8 2.5A5.5 5.5 0 0 1 8 13.5Z" fill="currentColor"/></svg></button>
 </div>
 
@@ -179,7 +179,7 @@ footer{text-align:center;color:var(--dim);font-size:13px;padding:10px 0 30px}
 </header>
 
 <section class="win bev" id="about" data-ic="mission"><h2>About this document</h2><div class="body">
- <p>This is the Game Design Document (GDD) for <b>The Solar Century</b>. It describes what the game is, how its systems work and fit together, and what is still to be designed. It is a <b>living document</b>: it is updated together with the game whenever a feature is added or changed, and the revision in the top bar names the game commit it matches.</p>
+ <p>This is the Game Design Document (GDD) for <b>The Solar Century</b>. It describes what the game is, how its systems work and fit together, and what is still to be designed. It is a <b>living document</b>: it is updated together with the game whenever a feature is added or changed, and its revision number, date and history (below, last section) are filled in from git by <code>tools/sync-gdd.js</code>.</p>
  <ul>
   <li><span class="st-ok">Built</span>: in the prototype today. <span class="st-part">Partial</span>: started, with parts missing. <span class="st-no">Planned</span>: promised but not started.</li>
   <li><b>All numbers are provisional.</b> Balancing is deliberately postponed. The live values are the Default configuration in the game's Editor; the tables here mirror them at the revision shown.</li>
@@ -412,13 +412,8 @@ footer{text-align:center;color:var(--dim);font-size:13px;padding:10px 0 30px}
 </div></section>
 
 <section class="win bev" id="log" data-ic="project"><h2>Revision history</h2><div class="body">
- <div class="tw"><table>
-  <tr><th>Rev.</th><th>Date</th><th>Game commit</th><th>Changes</th></tr>
-  <tr><td>4</td><td>2026-11-18</td><td><code>57000dc</code>+</td><td>Tables and prose numbers now come from the game data through tools/sync-gdd.js; more detail on the screens (moved from the README).</td></tr>
-  <tr><td>3</td><td>2026-11-18</td><td><code>9a9d31f</code>+</td><td>Light/dark theme switch in the main menu button; Back button in this document (same tab, back to the title screen), whose title box now sits above Contents.</td></tr>
-  <tr><td>2</td><td>2026-11-18</td><td><code>69f52a2</code>+</td><td>Title screen: Design Document button.</td></tr>
-  <tr><td>1</td><td>2026-11-18</td><td><code>5de238e</code></td><td>First version, written from the prototype as it stands.</td></tr>
- </table></div>
+ <p>Generated from git: one revision per commit that changed this document, with the commit's own description. The newest row is the version you are reading (its commit cannot be written inside itself).</p>
+ <div class="tw"><table id="t-rev"></table></div>
 </div></section>
 
 <footer>The Solar Century · Game Design Document · Inspired by <i>Millennium 2.2</i>; not affiliated with the original game or its publishers.</footer>
@@ -570,7 +565,7 @@ const PARTS=[{k:'drive',n:'Drive',d:'Moves the ship. Faster drives shorten trips
 const SHIPPARTS={probe:{drive:'Simplest drive',life:'',cargo:'',crew:'',bridge:'',computer:'Survey computer',weapons:'',shields:''}};
 const SHIPTYPES=[{k:'probe',n:'Probes'},{k:'hop',n:'Hop Miners'},{k:'solar',n:'Solar Carriers'},{k:'nuclear',n:'Nuclear Cruisers'},{k:'colony',n:'Colony Ships'}];
 const START_STATE={pop:COL.pop,res:{hydrogen:30,oxygen:100,water:100,nitrogen:30,methane:5,sulphur:10,titanium:20,aluminium:40,copper:20,silica:60,iron:120,silver:0,chromium:0,platinum:0,uranium:0,components:10,machinery:20,software:10},b:{solar:2,mine:1,ice:1,elec:0,fact:0,shop:0,lab:0,hab:2,reactor:0},staff:{solar:2,mine:2,ice:2,elec:0,reactor:0,lab:0,fact:0,shop:0,build:2},slots:Math.min(PORT.start,PORT.max)};
-const SYNC={commit:"57000dc+"};
+const SYNC={"rev":7,"date":"2026-11-18","history":[[6,"2026-11-18","021f924","Cheaper development: test and GDD-sync tools, code signposts, shorter CLAUDE.md and README, guides"],[5,"2026-11-18","57000dc","GDD Back button: same-tab navigation to the title screen; launch config for the dev server"],[4,"2026-11-18","1597f7c","GDD: move the Game Design Document box above Contents"],[3,"2026-11-18","d3ec3ac","Light/dark theme switch in the in-game main menu; Back button in the GDD"],[2,"2026-11-18","9a9d31f","Title screen: Design Document button opens GDD.html in a new tab"],[1,"2026-11-18","69f52a2","Add the Game Design Document (GDD.html), styled like the game"]]};
 /* SYNC:END */
 
 /* GDD-only data: what the game does not hold (yet). Edit by hand. */
@@ -587,7 +582,8 @@ const $=id=>document.getElementById(id);
 const scope=()=>({START,DEADLINE,RN,B,T,M,SHIP,PORT,WEAR,BOOST,STAFF,WT,CREW,COL,SURVEY,SHIPREC,START_STATE,HOME});
 const val=x=>{const s=scope();return Function(...Object.keys(s),'return ('+x+')')(...Object.values(s))};
 function fill(){
- $('gcommit').textContent=SYNC.commit||'?';
+ $('grev').textContent=SYNC.rev||'?';$('gdate').textContent=SYNC.date||'';
+ $('t-rev').innerHTML='<tr><th class="n">Rev.</th><th>Date</th><th>Commit</th><th>Changes</th></tr><tr><td class="n"><b>'+SYNC.rev+'</b></td><td>'+SYNC.date+'</td><td><b>this version</b></td><td class="dim">The text you are reading.</td></tr>'+(SYNC.history||[]).map(h=>'<tr><td class="n">'+h[0]+'</td><td>'+h[1]+'</td><td><code>'+h[2]+'</code></td><td>'+h[3].replace(/&/g,'&amp;').replace(/</g,'&lt;')+'</td></tr>').join('');
  $('t-staff').innerHTML='<tr><th>Building</th><th>Job</th><th class="n">Minimum</th><th class="n">Full (+'+Math.round(BOOST*100)+'%)</th></tr>'+Object.keys(STAFF).map(k=>{const s=STAFF[k];return '<tr><td>'+(k==='build'?'Construction site (each queued item)':B[k].n)+'</td><td>'+JOBN[s.job]+'</td><td class="n">'+s.min+'</td><td class="n">'+s.full+'</td></tr>'}).join('');
  $('res-cats').innerHTML=CAT.map(c=>'<div class="res-cat"><div>'+ic(CATI[c.n],24)+c.n+' <small style="font-weight:400">'+c.d+'</small></div><div class="res-row">'+c.r.map(r=>'<span>'+ic(r)+RN[r]+' <small>start '+START_STATE.res[r]+' · '+WT.res[r]+' t</small></span>').join('')+'</div></div>').join('');
  $('t-bld').innerHTML='<tr><th>Building</th><th>Cost</th><th class="n">Power</th><th class="n">Build</th><th>Effect</th><th class="n">Start</th></tr>'+Object.keys(B).map(k=>{const b=B[k];return '<tr><td><b>'+b.n+'</b></td><td>'+costH(b.c)+'</td><td class="n" style="color:var('+(b.p>0?'--ok':'--bad')+')">'+(b.p>0?'+':'')+b.p+'</td><td class="n">'+hrs(b.t)+'</td><td>'+b.d+(b.tech?' <small>(needs '+T[b.tech].n+')</small>':'')+'</td><td class="n">'+(START_STATE.b[k]||0)+'</td></tr>'}).join('');
