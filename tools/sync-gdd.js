@@ -17,7 +17,7 @@
 const fs=require('fs'),path=require('path'),cp=require('child_process');
 let acorn;try{acorn=require('acorn')}catch(e){console.error('acorn missing: cd tools && npm i');process.exit(2)}
 const root=path.resolve(__dirname,'..'),gamePath=path.join(root,'index.html'),gddPath=path.join(root,'GDD.html');
-const NAMES=['START','RN','B','T','TCATS','M','SHIP','PORT','WEAR','BOOST','STAFF','JOBN','WT','CREW','COL','SURVEY','LOCAN','LOCORB','CAT','CATI','LOCS','LIFE','HOME','PARTS','SHIPPARTS','SHIPDRIVE','DRIVES','EVENTS','EVTYPES','SHIPTYPES','SHIPREC','ICON'];
+const NAMES=['START','RN','B','T','TCATS','M','SHIP','PORT','WEAR','BOOST','STAFF','JOBN','WT','CREW','COL','SURVEY','LOCAN','LOCORB','CAT','CATI','LOCS','LIFE','HOME','PARTS','SHIPPARTS','SHIPDRIVE','DRIVES','ENGINES','SHIPENGINE','EVENTS','EVTYPES','SHIPTYPES','SHIPREC','ICON'];
 const html=fs.readFileSync(gamePath,'utf8');
 /* the main script is the largest <script> block */
 const scripts=[...html.matchAll(/<script>([\s\S]*?)<\/script>/g)].map(m=>m[1]).sort((a,b)=>b.length-a.length);
