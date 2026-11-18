@@ -17,7 +17,7 @@ A short summary. The full description of every system, with its current values, 
 - **Map:** seven zoom levels from the whole Solar System to the Moonbase, with real orbits and the real positions of the planets on the game date.
 - **Moonbase:** buildings, power, colonists in jobs, construction, research, the Starport and Shipyard, missions and the Mission Control log.
 - **Colonisation (first steps):** send probes, analyse locations, research "Colonise" technologies and build colonisation modules. Founding the colony comes later.
-- **Overviews:** Colonies (31 locations), Starships (the Moon Fleet, with crew and resource loading), Technology and the Database.
+- **Overviews:** Colonies (34 locations), Starships (the Moon Fleet, with crew and resource loading), Technology and the Database.
 - **Editor:** every game value in named configurations, exportable as JSON.
 
 ## Documents

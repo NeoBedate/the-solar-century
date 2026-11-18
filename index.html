@@ -260,6 +260,7 @@ button.go{background:var(--acc);color:#1a0f00}
 .ml{position:absolute;top:50%;transform:translateY(-50%);white-space:nowrap;font-size:18px;font-weight:600;color:#e8e4d4;text-shadow:0 1px 0 #000,0 0 8px #000;pointer-events:none}
 .mb:hover .mi{filter:brightness(1.25)}
 .mo{position:absolute;border:1px solid rgba(150,160,220,.28);border-radius:50%;pointer-events:none}
+.mo.irr{border-style:dashed;border-color:rgba(150,160,220,.5)}
 .mo.op{border-style:dashed;border-color:rgba(255,154,46,.5)}
 .belt{position:absolute;width:0;height:0}
 .belt i{position:absolute;background:#9a958c;border-radius:50%}
@@ -470,9 +471,9 @@ const COL={pop:8,water:.8,oxygen:.5,boost:.1};
 /* Colonisation: probe survey, analysis, technology cost and module (placeholder values) */
 const SURVEY={dpa:1946,rpBase:60,rpDiff:2,rpLen:90,fail:.8,c:{hydrogen:10,oxygen:5},mc:{aluminium:40,titanium:20,components:12,machinery:10},mt:600};
 /* per location: [analysis difficulty 0-1, analysis length in days] */
-const LOCAN={mercury:[.35,40],venus:[.8,90],earth:[.45,30],moon:[.05,10],mars:[.2,30],phobos:[.25,20],deimos:[.2,15],belt:[.3,45],jupiter:[.9,120],io:[.85,80],europa:[.5,70],ganymede:[.4,60],callisto:[.35,50],saturn:[.9,150],titan:[.45,90],enceladus:[.5,60],rhea:[.4,50],iapetus:[.45,50],dione:[.4,45],tethys:[.35,40],mimas:[.35,35],uranus:[.92,180],titania:[.5,70],oberon:[.5,70],umbriel:[.55,70],ariel:[.5,65],miranda:[.55,60],neptune:[.95,200],triton:[.6,90],pluto:[.6,100],charon:[.55,80]};
+const LOCAN={mercury:[.35,40],venus:[.8,90],earth:[.45,30],moon:[.05,10],mars:[.2,30],phobos:[.25,20],deimos:[.2,15],belt:[.3,45],jupiter:[.9,120],io:[.85,80],europa:[.5,70],ganymede:[.4,60],callisto:[.35,50],leda:[.5,70],saturn:[.9,150],titan:[.45,90],enceladus:[.5,60],rhea:[.4,50],iapetus:[.45,50],dione:[.4,45],tethys:[.35,40],mimas:[.35,35],hyperion:[.45,60],phoebe:[.5,80],uranus:[.92,180],titania:[.5,70],oberon:[.5,70],umbriel:[.55,70],ariel:[.5,65],miranda:[.55,60],neptune:[.95,200],triton:[.6,90],pluto:[.6,100],charon:[.55,80]};
 /* Real orbital data per location: [a = distance from the Sun in AU (planets, belt), ak = distance from its planet in thousand km (moons), eccentricity, period in days] */
-const LOCORB={mercury:[.387,0,.206,88],venus:[.723,0,.007,224.7],earth:[1,0,.017,365.25],moon:[0,384.4,.055,27.32],mars:[1.524,0,.093,687],phobos:[0,9.376,.015,.319],deimos:[0,23.46,.0002,1.263],belt:[2.767,0,.076,1682],jupiter:[5.203,0,.049,4333],io:[0,421.7,.004,1.769],europa:[0,671.1,.009,3.551],ganymede:[0,1070.4,.001,7.155],callisto:[0,1882.7,.007,16.689],saturn:[9.537,0,.057,10759],titan:[0,1221.9,.029,15.945],enceladus:[0,238,.005,1.37],rhea:[0,527.1,.001,4.518],iapetus:[0,3560.8,.028,79.33],dione:[0,377.4,.002,2.737],tethys:[0,294.6,.0001,1.888],mimas:[0,185.5,.02,.942],uranus:[19.19,0,.046,30687],titania:[0,436.3,.001,8.706],oberon:[0,583.5,.001,13.463],umbriel:[0,266,.004,4.144],ariel:[0,190.9,.001,2.52],miranda:[0,129.9,.001,1.413],neptune:[30.07,0,.009,60190],triton:[0,354.8,0,5.877],pluto:[39.48,0,.249,90560],charon:[0,19.6,.0002,6.387]};
+const LOCORB={mercury:[.387,0,.206,88],venus:[.723,0,.007,224.7],earth:[1,0,.017,365.25],moon:[0,384.4,.055,27.32],mars:[1.524,0,.093,687],phobos:[0,9.376,.015,.319],deimos:[0,23.46,.0002,1.263],belt:[2.767,0,.076,1682],jupiter:[5.203,0,.049,4333],io:[0,421.7,.004,1.769],europa:[0,671.1,.009,3.551],ganymede:[0,1070.4,.001,7.155],callisto:[0,1882.7,.007,16.689],leda:[0,11165,.164,240.9],saturn:[9.537,0,.057,10759],titan:[0,1221.9,.029,15.945],enceladus:[0,238,.005,1.37],rhea:[0,527.1,.001,4.518],iapetus:[0,3560.8,.028,79.33],dione:[0,377.4,.002,2.737],tethys:[0,294.6,.0001,1.888],mimas:[0,185.5,.02,.942],hyperion:[0,1481.1,.123,21.28],phoebe:[0,12952,.156,550.5],uranus:[19.19,0,.046,30687],titania:[0,436.3,.001,8.706],oberon:[0,583.5,.001,13.463],umbriel:[0,266,.004,4.144],ariel:[0,190.9,.001,2.52],miranda:[0,129.9,.001,1.413],neptune:[30.07,0,.009,60190],triton:[0,354.8,0,5.877],pluto:[39.48,0,.249,90560],charon:[0,19.6,.0002,6.387]};
 /* ===== STATE (init) AND COLONISTS: jobs, staffing, free colonists ===== */
 let S;
 function init(){S={diff,cur:null,proj:{},y:START,m:1,d:1,h:0,speed:0,brown:false,q:[],nobuild:false,staff:{solar:2,mine:2,ice:2,elec:0,reactor:0,lab:0,fact:0,shop:0,build:2},res:{hydrogen:30,oxygen:100,water:100,nitrogen:30,methane:5,sulphur:10,titanium:20,aluminium:40,copper:20,silica:60,iron:120,silver:0,chromium:0,platinum:0,uranium:0,components:10,machinery:20,software:10},pop:COL.pop,rp:0,b:{solar:2,mine:1,ice:1,elec:0,fact:0,shop:0,lab:0,hab:2,reactor:0},slots:Math.min(PORT.start,PORT.max),names:{},cargo:{},colonies:Object.fromEntries(Object.keys(LOCD).filter(k=>LOCD[k].start).map(k=>[k,1])),tech:{},ships:1,out:[],over:false,end:null,log:[],sv:{},mods:{}};
@@ -718,6 +719,7 @@ const LOCS=[
  {k:'europa',n:'Europa',p:'jupiter',d:'Ice-shelled moon hiding a global ocean of liquid water.'},
  {k:'ganymede',n:'Ganymede',p:'jupiter',d:'The largest moon in the Solar System, bigger than Mercury, with its own magnetic field.'},
  {k:'callisto',n:'Callisto',p:'jupiter',d:'Heavily cratered ice-and-rock moon, outside the worst of the radiation around Jupiter.'},
+ {k:'leda',n:'Leda',p:'jupiter',d:'Tiny outer moon of Jupiter, a dark rock only about 20 km across.'},
  {k:'saturn',n:'Saturn',d:'Ringed giant with many icy moons. The outer moons hold silver, chromium and uranium.'},
  {k:'titan',n:'Titan',p:'saturn',d:'Large moon with a thick nitrogen atmosphere and lakes of liquid methane.'},
  {k:'enceladus',n:'Enceladus',p:'saturn',d:'Small, bright, icy moon whose geysers vent water from a hidden ocean.'},
@@ -726,6 +728,8 @@ const LOCS=[
  {k:'dione',n:'Dione',p:'saturn',d:'Icy moon with long bright cliffs and a thin cloud of oxygen.'},
  {k:'tethys',n:'Tethys',p:'saturn',d:'Almost pure water ice, marked by a huge canyon and a giant crater.'},
  {k:'mimas',n:'Mimas',p:'saturn',d:'Small icy moon dominated by one enormous crater.'},
+ {k:'hyperion',n:'Hyperion',p:'saturn',d:'Sponge-like, tumbling moon of Saturn with an irregular shape and a chaotic spin.'},
+ {k:'phoebe',n:'Phoebe',p:'saturn',d:'Dark, distant moon of Saturn that circles it backwards, probably a captured body.'},
  {k:'uranus',n:'Uranus',d:'Distant ice giant tipped on its side, with a dark, cold system of moons.'},
  {k:'titania',n:'Titania',p:'uranus',d:'The largest moon of Uranus, with canyons and scarps.'},
  {k:'oberon',n:'Oberon',p:'uranus',d:'Old, dark, heavily cratered moon at the edge of the Uranian system.'},
@@ -741,8 +745,8 @@ const LOCRES={
  mercury:{iron:30000,aluminium:4000,titanium:3000,silica:20000,sulphur:5000,platinum:200},
  venus:{sulphur:25000,nitrogen:8000},
  earth:{water:20000,oxygen:20000,nitrogen:30000,iron:5000,copper:2000,aluminium:2000,silica:1500},
- moon:{iron:12000,aluminium:8000,titanium:2500,silica:20000,sulphur:600,water:3000,nitrogen:400},
- mars:{water:20000,nitrogen:3000,sulphur:1500,methane:200,iron:30000,aluminium:6000,silica:25000,titanium:1500},
+ moon:{hydrogen:375,oxygen:2625,water:375,nitrogen:375,titanium:5625,aluminium:3937,silica:4125,iron:3375},
+ mars:{hydrogen:375,oxygen:750,water:1500,nitrogen:492,silica:4500,iron:5625,silver:750},
  phobos:{iron:600,silica:800,water:300,titanium:100},
  deimos:{silica:400,water:300,iron:200},
  belt:{copper:8000,platinum:1200,titanium:3000,iron:20000},
@@ -750,26 +754,31 @@ const LOCRES={
  io:{sulphur:30000,iron:4000,silica:6000,chromium:1500},
  europa:{water:60000,oxygen:3000,sulphur:800,silver:600},
  ganymede:{water:50000,silica:15000,iron:8000,silver:800,uranium:400},
- callisto:{water:30000,silica:10000,iron:5000,methane:500,chromium:900,uranium:300},
- saturn:{hydrogen:100000},
- titan:{methane:50000,nitrogen:40000,water:20000,chromium:600,silver:300},
- enceladus:{water:10000,nitrogen:500,methane:300},
- rhea:{water:8000,silica:3000,uranium:200},
+ callisto:{hydrogen:375,nitrogen:375,sulphur:750,titanium:2625,aluminium:1687,copper:1125,silica:3750,iron:3000,silver:375,platinum:750},
+ leda:{hydrogen:375,nitrogen:375,methane:3000,sulphur:1125,copper:750,silica:1875,iron:1312,uranium:937},
+ saturn:{hydrogen:5625,oxygen:750,water:375,nitrogen:2625,methane:375,sulphur:1125,silica:5625,iron:3375},
+ titan:{hydrogen:750,oxygen:187,nitrogen:1875,methane:562,silver:1125,platinum:1500,uranium:1687},
+ enceladus:{hydrogen:750,oxygen:375,water:375,nitrogen:375,aluminium:2250,silica:2437,iron:1312},
+ rhea:{hydrogen:187,oxygen:187,water:187,nitrogen:375,silica:5625,platinum:3937},
  iapetus:{water:6000,silica:2500,iron:800},
  dione:{water:5000,silica:2000},
- tethys:{water:5000},
+ tethys:{hydrogen:562,oxygen:281,water:375,nitrogen:187,methane:187,aluminium:1312,copper:750,silica:4500,uranium:4125},
  mimas:{water:2500,silica:800},
- uranus:{hydrogen:50000,methane:20000},
- titania:{water:6000,silica:3000,methane:600,chromium:400,silver:200},
- oberon:{water:5000,silica:2500,methane:500,uranium:250},
- umbriel:{silica:2000,water:3000},
- ariel:{water:3000,silica:1500,methane:300},
- miranda:{water:1200,silica:600},
- neptune:{hydrogen:50000,methane:20000},
- triton:{nitrogen:20000,water:8000,methane:4000,silver:500,chromium:500,uranium:300},
- pluto:{nitrogen:6000,methane:2000,water:10000},
+ hyperion:{methane:375,sulphur:1875,aluminium:1687,copper:750,uranium:562},
+ phoebe:{hydrogen:375,oxygen:375,water:187,nitrogen:562,methane:375,titanium:1500,silica:3750,iron:1312},
+ uranus:{hydrogen:187,nitrogen:750,methane:2062,sulphur:375,titanium:562,copper:2625,silica:3000,iron:1312,uranium:750},
+ titania:{hydrogen:1312,oxygen:187,water:187,methane:1875,sulphur:1125,copper:375,silica:3000,silver:937},
+ oberon:{hydrogen:375,oxygen:375,water:937,nitrogen:562,titanium:750,aluminium:375,silica:2625,iron:937,uranium:1593},
+ umbriel:{hydrogen:187,oxygen:375,nitrogen:187,sulphur:1500,silica:5250},
+ ariel:{hydrogen:562,oxygen:187,nitrogen:1687,methane:187,sulphur:1218,aluminium:3187,silica:4921,platinum:937},
+ miranda:{copper:375,silica:5625,iron:1500,silver:3375,platinum:375},
+ neptune:{hydrogen:562,methane:1687,sulphur:562,aluminium:3000,copper:2437,silica:1312,iron:1687,platinum:2625,uranium:187},
+ triton:{hydrogen:1312,oxygen:1125,water:1500,nitrogen:562,methane:375,titanium:2625,silica:3375,chromium:3187,platinum:187},
+ pluto:{hydrogen:937,nitrogen:375,methane:1687,sulphur:937,silica:4875,platinum:1687,uranium:750},
  charon:{water:6000,methane:1500,nitrogen:800}};
-const LOCD={};for(const l of LOCS)LOCD[l.k]=Object.assign({n:l.n,d:l.d},l.p?{p:l.p}:{},l.col?{col:l.col}:{},{start:l.k==='moon',res:Object.assign({},LOCRES[l.k]),adiff:LOCAN[l.k][0],alen:LOCAN[l.k][1],a:LOCORB[l.k][0],ak:LOCORB[l.k][1],ecc:LOCORB[l.k][2],per:LOCORB[l.k][3]});
+/* Lifeform of each colony location, from its atmospheric conditions (locations not listed cannot host a colony yet) */
+const LIFE={leda:'Human',hyperion:'Sulphuroid',phoebe:'Human',moon:'Human',mars:'Martian',callisto:'Human',saturn:'Hydrogoid',enceladus:'Human',tethys:'Human',rhea:'Human',titan:'Nitroid',uranus:'Methanoid',miranda:'Human',ariel:'Human',umbriel:'Sulphuroid',titania:'Methanoid',oberon:'Human',neptune:'Methanoid',triton:'Methanoid',pluto:'Methanoid'};
+const LOCD={};for(const l of LOCS)LOCD[l.k]=Object.assign({n:l.n,d:l.d},l.p?{p:l.p}:{},l.col?{col:l.col}:{},{start:l.k==='moon',life:LIFE[l.k]||'',res:Object.assign({},LOCRES[l.k]),adiff:LOCAN[l.k][0],alen:LOCAN[l.k][1],a:LOCORB[l.k][0],ak:LOCORB[l.k][1],ecc:LOCORB[l.k][2],per:LOCORB[l.k][3]});
 const HOME='moon',AUKM=149597870.7;
 const sunA=k=>LOCD[k].a||sunA(LOCD[k].p);
 function distAU(f,t){if(f===t)return 0;const ak=x=>LOCD[x].p?LOCD[x].ak:0;return sysOf(f)===sysOf(t)?Math.abs(ak(f)-ak(t))*1000/AUKM:Math.abs(sunA(f)-sunA(t))}
@@ -797,7 +806,7 @@ const dbLst=a=>a.length?a.join(', '):'none';
 function dbData(){
  const lk=Object.keys(LOCD),E={loc:[],res:[],bld:[],tech:[],ship:[],col:[]};
  for(const k of lk){const l=LOCD[k],pr=Object.keys(l.res||{}).filter(r=>l.res[r]>0);
-  E.loc.push({k,n:l.n,i:ico('colony'),d:l.d,f:[['Orbits',l.p?LOCD[l.p].n:'the Sun'],['Colony',S&&S.colonies&&S.colonies[k]?(l.col||l.n):'none'],['Can provide',dbLst(pr.map(r=>RN[r]+' '+l.res[r].toLocaleString('en-US')))],['Analysis length',l.alen+' days'],['Analysis difficulty',Math.round(l.adiff*100)+'%'],['Orbit',l.p?Math.round(l.ak*1000).toLocaleString('en-US')+' km around '+LOCD[l.p].n:fmtAU(l.a)+' AU from the Sun'],['Orbital period',lapse(l.per)],['Eccentricity',String(l.ecc)],['Distance from the Moonbase today',k===HOME?'0':S?fmtAU(distNow(HOME,k,daysJ()))+' AU':'-'],['Probe trip if launched today',k===HOME?'none':S?lapse(tripD(k)):'-']]})}
+  E.loc.push({k,n:l.n,i:ico('colony'),d:l.d,f:[['Orbits',l.p?LOCD[l.p].n:'the Sun'],['Colony',S&&S.colonies&&S.colonies[k]?(l.col||l.n):'none'],['Lifeform',l.life||'none (not habitable yet)'],['Can provide',dbLst(pr.map(r=>RN[r]+' '+l.res[r].toLocaleString('en-US')))],['Analysis length',l.alen+' days'],['Analysis difficulty',Math.round(l.adiff*100)+'%'],['Orbit',l.p?Math.round(l.ak*1000).toLocaleString('en-US')+' km around '+LOCD[l.p].n:fmtAU(l.a)+' AU from the Sun'],['Orbital period',lapse(l.per)],['Eccentricity',String(l.ecc)],['Distance from the Moonbase today',k===HOME?'0':S?fmtAU(distNow(HOME,k,daysJ()))+' AU':'-'],['Probe trip if launched today',k===HOME?'none':S?lapse(tripD(k)):'-']]})}
  for(const r in RN){const c=CAT.find(c=>c.r.includes(r)),by=Object.keys(B).filter(k=>B[k].out&&B[k].out[r]!==undefined).map(k=>B[k].n),us=Object.keys(B).filter(k=>B[k].inp&&B[k].inp[r]!==undefined).map(k=>B[k].n),cn=Object.keys(B).filter(k=>B[k].c&&B[k].c[r]).map(k=>B[k].n),at=lk.filter(k=>(LOCD[k].res||{})[r]>0).map(k=>LOCD[k].n);
   E.res.push({n:RN[r],i:ico(r),d:'',f:[['Category',c?c.n:'-'],['Weight',WT.res[r]+' t per unit'],['Produced by',dbLst(by)],['Consumed by',dbLst(us)],['Used to build',dbLst(cn)],['Found at',at.length>8?at.slice(0,8).join(', ')+' and '+(at.length-8)+' more':dbLst(at)]]})}
  for(const k in B){const b=B[k],st=STAFF[k];
@@ -842,6 +851,7 @@ const SCENES={
  europa:MOON_OF('linear-gradient(#dfeaf0,#9fb4c0)',PL(72,22,190,bands(JUPB))),
  ganymede:MOON_OF('linear-gradient(#8a8174,#4d463e)',PL(74,22,120,bands(JUPB))),
  callisto:MOON_OF('linear-gradient(#5b5249,#2e2924)',PL(76,20,70,bands(JUPB))),
+ leda:MOON_OF('linear-gradient(#4a4440,#24211f)',PL(80,18,30,bands(JUPB))),
  saturn:GAS(SATB,{x:82,y:12,r:8,c:'#fff'}),
  titan:{sky:['#6b3f12','#e0a448'],hz:66,gr:'linear-gradient(#4a2e16,#2a190c)',bd:[{x:72,y:24,r:70,c:bands(SATB),o:.55,ring:1}]},
  enceladus:MOON_OF('linear-gradient(#f4f8fb,#c7d6e0)',PL(70,26,190,bands(SATB),1)),
@@ -850,6 +860,8 @@ const SCENES={
  dione:MOON_OF('linear-gradient(#d2d3d6,#85878c)',PL(72,22,95,bands(SATB),1)),
  tethys:MOON_OF('linear-gradient(#e8ebee,#aab3ba)',PL(70,24,135,bands(SATB),1)),
  mimas:MOON_OF('linear-gradient(#b6b6b8,#6a6a6e)',PL(66,28,210,bands(SATB),1)),
+ hyperion:MOON_OF('linear-gradient(#9a8268,#5c4a38)',PL(72,22,60,bands(SATB),1)),
+ phoebe:MOON_OF('linear-gradient(#3e3a38,#1a1918)',PL(80,18,36,bands(SATB),1)),
  uranus:GAS(URAB,{x:82,y:12,r:6,c:'#fff'}),
  titania:MOON_OF('linear-gradient(#746b64,#403a35)',PL(72,22,90,bands(URAB))),
  oberon:MOON_OF('linear-gradient(#54473f,#2c2420)',PL(76,20,62,bands(URAB))),
@@ -881,13 +893,13 @@ const PLN=Object.keys(EPH).filter(k=>k!=='belt');
 const RETRO={triton:1};/* orbits backwards */
 const PER=k=>LOCD[k].per*(RETRO[k]?-1:1);/* real orbital period in days, from the location data */
 const PLR={mercury:50,venus:70,earth:70,mars:55,belt:80,jupiter:150,saturn:120,uranus:95,neptune:95,pluto:40};
-const MR={moon:22,phobos:8,deimos:6,io:18,europa:16,ganymede:24,callisto:22,titan:26,enceladus:8,rhea:14,iapetus:14,dione:12,tethys:12,mimas:8,titania:16,oberon:15,umbriel:14,ariel:14,miranda:10,triton:20,charon:20};
-const GLOBE={mercury:'#8a8478',venus:'#e0b050',earth:'radial-gradient(circle at 40% 35%,#6a4a3c,#2a1a14)',moon:'#a8a39c',mars:'#b5532f',phobos:'#6a6058',deimos:'#9a9086',belt:'#7e7a72',jupiter:bands(JUPB),io:'radial-gradient(circle at 40% 35%,#ecd04e,#c9722a)',europa:'#dfeaf0',ganymede:'#8a8174',callisto:'#5b5249',saturn:bands(SATB),titan:'#d99a3a',enceladus:'#f4f8fb',rhea:'#c4bfb8',iapetus:'linear-gradient(90deg,#241e1a 50%,#dcd8d0 50%)',dione:'#d2d3d6',tethys:'#e8ebee',mimas:'#b6b6b8',uranus:bands(URAB),titania:'#746b64',oberon:'#54473f',umbriel:'#403e3c',ariel:'#cbc8c3',miranda:'#b2ada6',neptune:bands(NEPB),triton:'#ecdcd4',pluto:'#c8ab8c',charon:'#92929a'};
+const MR={moon:22,phobos:8,deimos:6,io:18,europa:16,ganymede:24,callisto:22,leda:5,titan:26,enceladus:8,rhea:14,iapetus:14,dione:12,tethys:12,mimas:8,hyperion:9,phoebe:8,titania:16,oberon:15,umbriel:14,ariel:14,miranda:10,triton:20,charon:20};
+const GLOBE={mercury:'#8a8478',venus:'#e0b050',earth:'radial-gradient(circle at 40% 35%,#6a4a3c,#2a1a14)',moon:'#a8a39c',mars:'#b5532f',phobos:'#6a6058',deimos:'#9a9086',belt:'#7e7a72',jupiter:bands(JUPB),io:'radial-gradient(circle at 40% 35%,#ecd04e,#c9722a)',europa:'#dfeaf0',ganymede:'#8a8174',callisto:'#5b5249',leda:'#4a4440',saturn:bands(SATB),titan:'#d99a3a',enceladus:'#f4f8fb',rhea:'#c4bfb8',iapetus:'linear-gradient(90deg,#241e1a 50%,#dcd8d0 50%)',dione:'#d2d3d6',tethys:'#e8ebee',mimas:'#b6b6b8',hyperion:'#9a8268',phoebe:'#3e3a38',uranus:bands(URAB),titania:'#746b64',oberon:'#54473f',umbriel:'#403e3c',ariel:'#cbc8c3',miranda:'#b2ada6',neptune:bands(NEPB),triton:'#ecdcd4',pluto:'#c8ab8c',charon:'#92929a'};
 const regOf=k=>colPageOf({k,p:LOCD[k].p}),sysOf=k=>LOCD[k].p||k;
 const daysJ=()=>(Date.UTC(S.y,S.m-1,S.d,S.h)-Date.UTC(2000,0,1,12))/864e5;/* days since J2000 */
 const phase=(k,i)=>(Object.keys(LOCD).indexOf(k)*2.399+i)%(2*Math.PI);
 /* Zoom levels 1-4 are drawn to scale around the Sun: LVL gives pixels per AU, the Sun's size, the base planet size and the region shown. REGLV is the level of each region (Inner, Middle, Outer). ZONES are the AU limits of the regions at level 1. */
-const CX=960,CY=540,D2R=Math.PI/180,TILT=40,TY=Math.cos(TILT*Math.PI/180),LVL={1:{s:7.5,sun:9,base:5},2:{s:10.4,sun:12,base:12,reg:2},3:{s:47,sun:18,base:14,reg:1},4:{s:160,sun:34,base:14,reg:0}},REGLV=[4,3,2],ZONES=[[0,4.1],[4.1,14],[14,56]],SYSR=430,SYSG={saturn:.6};
+const CX=960,CY=540,D2R=Math.PI/180,TILT=40,TY=Math.cos(TILT*Math.PI/180),LVL={1:{s:7.5,sun:9,base:5},2:{s:10.4,sun:12,base:12,reg:2},3:{s:47,sun:18,base:14,reg:1},4:{s:160,sun:34,base:14,reg:0}},REGLV=[4,3,2],ZONES=[[0,4.1],[4.1,14],[14,56]],SYSR=430,SYSG={saturn:.35,jupiter:.6},IRR=new Set(['leda','phoebe']);
 const rpx=(k,base)=>Math.max(3.5,Math.round(base*Math.pow(RKM[k]/6371,.35)*10)/10);
 function kepler(k,t){const l=LOCD[k],w=EPH[k][1]*D2R,e=l.ecc,M=(EPH[k][0]-EPH[k][1]+360*t/l.per)*D2R;let E=M;for(let i=0;i<8;i++)E-=(E-e*Math.sin(E)-M)/(1-e*Math.cos(E));
  const x=l.a*(Math.cos(E)-e),y=l.a*Math.sqrt(1-e*e)*Math.sin(E);return[x*Math.cos(w)-y*Math.sin(w),x*Math.sin(w)+y*Math.cos(w)]}
@@ -919,10 +931,10 @@ function mapHtml(){const z=U.view.z;let h='<div class="sk" style="background:'+S
   h+=sun(V.sun);
   if(z===1&&S.colonies&&PLN.concat(Object.keys(LOCD)).some(k=>regOf(k)===0&&S.colonies[k]))h+='<i class="mc" style="left:'+(CX-V.sun-6)+'px;top:'+(CY-V.sun-6)+'px;width:'+2*(V.sun+6)+'px;height:'+2*(V.sun+6)+'px"></i>';
   for(const k of PLN){if(z===1?regOf(k)===0:regOf(k)!==V.reg)continue;h+=mapBody(k,rpx(k,V.base),{kep:s,cr:z===1?4:8,any:1})}}
- else if(z===5){const p=sysOf(U.loc),ms=Object.keys(LOCD).filter(k=>LOCD[k].p===p).sort((a,b)=>LOCD[a].ak-LOCD[b].ak),mx=ms.length?LOCD[ms[ms.length-1]].ak:1,g=SYSG[p]||1,rr=k=>ms.length>1?SYSR*Math.pow(LOCD[k].ak/mx,g):SYSR,R=Math.min(PLR[p],Math.round((ms.length?rr(ms[0]):SYSR)*.62));
+ else if(z===5){const p=sysOf(U.loc),ms=Object.keys(LOCD).filter(k=>LOCD[k].p===p).sort((a,b)=>LOCD[a].ak-LOCD[b].ak),reg=ms.filter(k=>!IRR.has(k)),irr=ms.filter(k=>IRR.has(k)),mx=reg.length?LOCD[reg[reg.length-1]].ak:1,g=SYSG[p]||1,rr=k=>IRR.has(k)?(irr.length>1?SYSR*(.88+.12*irr.indexOf(k)/(irr.length-1)):SYSR):reg.length>1&&irr.length?SYSR*.7*Math.pow(LOCD[k].ak/mx,g):ms.length>1?SYSR*Math.pow(LOCD[k].ak/mx,g):SYSR,R=Math.min(PLR[p],Math.round((ms.length?rr(ms[0]):SYSR)*.62));
   h+=p==='belt'?dotBand(0,520,90,3,true):'';
   h+=mapBody(p,R,{label:true,cr:10,ring:p==='saturn'});
-  ms.forEach(k=>{const r=rr(k);h+=mapRing(r)+mapBody(k,MR[k],{T:PER(k),r,ph:phase(k,1),cr:7})})}
+  ms.forEach(k=>{const r=rr(k);h+=mapRing(r,IRR.has(k)?'irr':'')+mapBody(k,MR[k],{T:PER(k),r,ph:phase(k,1),cr:7})})}
  else{const k=U.loc,R=300;
   h+=mapBody(k,R,{label:false,cr:12,ring:k==='saturn'})+mapRing(400,'op')+'<div class="mk" data-rad="10" data-per="2" data-r="400" data-ph="'+phase(k,2)+'" style="width:0;height:0"><i></i></div>'+'<div class="mt">'+(S.colonies&&S.colonies[k]?'Colony: '+esc(LOCD[k].col||LOCD[k].n):'No colony')+'<small>Click the globe to land</small></div>'}
  return h}

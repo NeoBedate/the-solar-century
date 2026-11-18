@@ -7,6 +7,7 @@
   node tools/check.js --shot base          also save a screenshot (tools/out/base.png). Several: --shot base,map3,title
                                            targets: title, newgame, editor, gdd, menu, map1..map7, and the screens
                                            base col ships tov db build tech yard port flight log
+  --loc saturn       location the map shots centre on (use with --shot map5)
   --scale 0.5        screenshot scale (default 0.5, so 960x540; use 1 for full size, 0.25 for a thumbnail)
   --clip x,y,w,h     only this region, in 1920x1080 stage pixels
   --theme light|dark colour scheme (default dark)
@@ -50,7 +51,7 @@ const SCR=['base','col','ships','tov','db','build','tech','yard','port','flight'
  }
  for(const s of shots){
   if(SCR.includes(s)){await g.evaluate(s=>{U.view.z=7;go(s)},s);await snap(g,s)}
-  else if(/^map[1-7]$/.test(s)){await g.evaluate(z=>{go('base');U.view.z=z;render()},+s[3]);await snap(g,s)}
+  else if(/^map[1-7]$/.test(s)){await g.evaluate(([z,l])=>{if(l)U.loc=l;go('base');U.view.z=z;render()},[+s[3],opt('loc')||'']);await snap(g,s)}
   else if(s==='menu'){await g.evaluate(()=>{go('base');U.view.z=7;render()});await g.click('#menu');await snap(g,s);await g.click('#dstay')}
  }
  if(ev)log.push('eval '+ev+' = '+JSON.stringify(await g.evaluate(e=>eval(e),ev)));
