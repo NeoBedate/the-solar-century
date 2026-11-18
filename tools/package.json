@@ -1,0 +1,9 @@
+{
+  "name": "solar-century-tools",
+  "private": true,
+  "description": "Dev tools only (tests, GDD sync). The game itself has no dependencies.",
+  "devDependencies": {
+    "acorn": "^8.12.0",
+    "playwright": "^1.48.0"
+  }
+}

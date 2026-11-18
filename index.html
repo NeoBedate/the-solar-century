@@ -11,7 +11,8 @@ box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:en
 @media (prefers-color-scheme:light){:root:not([data-theme="dark"]){--bg:#d9d4c3;--panel:#f1ede0;--hi:#ffffff;--lo:#58543f;--ink:#1c1f3d;--dim:#55587a;--acc:#c2560a;--ok:#1d7a42;--bad:#b3261e;--reg:#8d8672}}
 :root[data-theme="dark"]{color-scheme:dark}
 :root[data-theme="light"]{--bg:#d9d4c3;--panel:#f1ede0;--hi:#ffffff;--lo:#58543f;--ink:#1c1f3d;--dim:#55587a;--acc:#c2560a;--ok:#1d7a42;--bad:#b3261e;--reg:#8d8672;color-scheme:light}
-.dmrow{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-bottom:10px;margin-bottom:10px;border-bottom:2px dashed var(--lo)}.dmrow .clk{display:inline-flex;align-items:center;gap:7px;height:35px;padding:0 12px;line-height:1}
+.dmrow{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-bottom:10px;margin-bottom:10px;border-bottom:2px dashed var(--lo)}
+.dmrow .clk{display:inline-flex;align-items:center;gap:7px;height:35px;padding:0 12px;line-height:1}
 html{scroll-padding-top:env(safe-area-inset-top,0px)}
 *{box-sizing:border-box}
 .seg{display:inline-flex}.seg .clk{padding:3px 8px;line-height:0}.seg .clk+.clk{margin-left:-3px}.seg .clk[aria-pressed=true]{position:relative}.clk svg{display:block}#menu.clk{padding:4px 9px}
@@ -20,12 +21,112 @@ button,input,select,textarea{letter-spacing:inherit}
 h1,h2{font-family:'Jura',system-ui,sans-serif;font-weight:700;margin:0}
 .wrap{max-width:1100px;margin:0 auto;padding:12px}
 .win{background:var(--panel);border:3px solid;border-color:var(--hi) var(--lo) var(--lo) var(--hi);margin-bottom:12px}
-.win>h2{background:var(--acc);color:#1a0f00;font-size:14px;padding:5px 8px;position:sticky;top:0;z-index:3}.sticky{position:sticky;top:75px;z-index:2;background:var(--panel);padding-top:8px;padding-bottom:8px}#cols,#shipsList,#tovList,#scr-db>.in{padding-top:0}.sticky .sgrid{margin-bottom:0}.row.shiprow{display:grid;grid-template-columns:auto auto auto auto 1fr auto;grid-template-rows:auto auto;grid-template-areas:"ico name grp tabs chips btns" "ico type grp tabs chips btns";column-gap:12px;row-gap:6px;align-items:center}.sico{grid-area:ico;align-self:stretch;display:flex;align-items:center;padding:0 8px;border:2px solid #8a7f6a;border-radius:4px;background:#cdc3ab}.sico svg{width:54px;height:54px}.sgroup{grid-area:grp;align-self:stretch;display:flex;border:2px solid #8a7f6a;border-radius:4px;background:#e4dccb;overflow:hidden}.fv{display:flex;flex-direction:column;width:36px;border-right:1px solid #8a7f6a}.fvc{flex:1;display:flex;align-items:center;justify-content:center;opacity:.4}.fvc+.fvc{border-top:1px solid #8a7f6a}.fvc.on{opacity:1;background:var(--acc)}.smis{width:192px;padding:0 8px;font-size:14px;display:flex;flex-direction:column;box-sizing:content-box}.smis>span{flex:1;display:flex;align-items:center;white-space:nowrap;overflow:hidden}.sname{grid-area:name}.shname{font:inherit;font-size:22px;font-weight:700;width:260px;background:transparent;border:1px solid transparent;border-radius:3px;padding:1px 4px;color:inherit}.shname:hover,.shname:focus{border-color:#8a7f6a;background:#fffdf6}.ston{margin-left:28px}.stabs{grid-area:tabs;align-self:stretch;display:grid;grid-template-columns:repeat(2,auto);grid-auto-rows:1fr;gap:0}.stab{display:flex;align-items:center;gap:5px;font-size:12px;padding:2px 8px}.stab svg{width:16px;height:16px}.stab[aria-pressed=true]{background:var(--acc);color:#1a0f00}.lg{grid-area:chips;justify-self:end;align-self:stretch;display:grid;gap:4px;grid-auto-rows:31px}.lg-crew{grid-template-columns:repeat(3,auto)}.lg-res{grid-template-columns:repeat(9,auto)}.lg-cargo{width:300px;border:2px solid #8a7f6a;border-radius:4px;background:#e4dccb;align-items:center;justify-items:center}.litem{display:flex;align-items:stretch;gap:0}.lcell{flex:1;display:flex;align-items:center;gap:6px;border:2px solid #8a7f6a;border-radius:4px;background:#e4dccb;padding:0 8px;font-size:13px}.lname{min-width:78px}.lnum{min-width:22px;text-align:center;font-size:14px}.lpm{display:flex;flex-direction:column;gap:0;margin-left:-2px}.lpm button+button{margin-top:-2px}.lpm button{flex:1;width:24px;height:14px;min-height:0;padding:0;line-height:1;font-size:13px;overflow:hidden;border:2px solid #8a7f6a;border-radius:3px;box-shadow:none;background:#f3eddd;color:#1a1a2e;display:flex;align-items:center;justify-content:center}.lpm button:disabled{opacity:.4}.lpm button:not(:disabled):hover{background:var(--acc)}.stype{grid-area:type;font-size:13px;opacity:.65;padding-left:5px}.sbtns{grid-area:btns;align-self:stretch;display:flex;flex-direction:column;gap:4px;width:120px}.srec,.srf{flex:1;display:flex;align-items:center;justify-content:center;gap:5px}.srec svg,.srf svg{width:18px;height:18px}.pchips{grid-area:chips;justify-self:end;align-self:stretch;grid-auto-rows:1fr;display:grid;grid-template-columns:repeat(4,auto);justify-content:end;gap:0;padding:0 2px 2px 0}.pchip:hover .tp,.pchip:focus .tp{opacity:1}.pchip{position:relative;margin:0 -2px -2px 0;display:inline-flex;align-items:stretch;border:2px solid #8a7f6a;border-radius:4px;background:#e4dccb;font-size:14px}.pchip .pic{flex:none;display:flex;align-items:center;padding:0 4px;background:#cdc3ab}.pchip .pwt{flex:none;display:flex;align-items:center;justify-content:center;width:44px;border-left:1px solid #8a7f6a;font-size:12px}.pchip .ptxt{border-left:1px solid #8a7f6a;padding:3px 7px;display:flex;align-items:center;justify-content:flex-start;text-align:left;box-sizing:content-box;width:14ch;overflow:hidden;white-space:nowrap}.pchip.dim>.pic svg,.pchip.dim>.pwt,.pchip.dim>.ptxt{opacity:.5}
-.win>h2.wh .xb{position:absolute;right:8px;top:50%;transform:translateY(-50%)}.win>h2.wh{display:flex;justify-content:center;align-items:center;min-height:75px;padding-top:0;padding-bottom:0;font-size:26px}.xb{padding:2px 8px;line-height:0;height:35px;background:#f0d2c6;color:#7a1e12}.xb svg{width:20px;height:20px}
+.win>h2{background:var(--acc);color:#1a0f00;font-size:14px;padding:5px 8px;position:sticky;top:0;z-index:3}
+.sticky{position:sticky;top:75px;z-index:2;background:var(--panel);padding-top:8px;padding-bottom:8px}
+#cols,#shipsList,#tovList,#scr-db>.in{padding-top:0}
+.sticky .sgrid{margin-bottom:0}
+.row.shiprow{display:grid;grid-template-columns:auto auto auto auto 1fr auto;grid-template-rows:auto auto;grid-template-areas:"ico name grp tabs chips btns" "ico type grp tabs chips btns";column-gap:12px;row-gap:6px;align-items:center}
+.sico{grid-area:ico;align-self:stretch;display:flex;align-items:center;padding:0 8px;border:2px solid #8a7f6a;border-radius:4px;background:#cdc3ab}
+.sico svg{width:54px;height:54px}
+.sgroup{grid-area:grp;align-self:stretch;display:flex;border:2px solid #8a7f6a;border-radius:4px;background:#e4dccb;overflow:hidden}
+.fv{display:flex;flex-direction:column;width:36px;border-right:1px solid #8a7f6a}
+.fvc{flex:1;display:flex;align-items:center;justify-content:center;opacity:.4}
+.fvc+.fvc{border-top:1px solid #8a7f6a}
+.fvc.on{opacity:1;background:var(--acc)}
+.smis{width:192px;padding:0 8px;font-size:14px;display:flex;flex-direction:column;box-sizing:content-box}
+.smis>span{flex:1;display:flex;align-items:center;white-space:nowrap;overflow:hidden}
+.sname{grid-area:name}
+.shname{font:inherit;font-size:22px;font-weight:700;width:260px;background:transparent;border:1px solid transparent;border-radius:3px;padding:1px 4px;color:inherit}
+.shname:hover,.shname:focus{border-color:#8a7f6a;background:#fffdf6}
+.ston{margin-left:28px}
+.stabs{grid-area:tabs;align-self:stretch;display:grid;grid-template-columns:repeat(2,auto);grid-auto-rows:1fr;gap:0}
+.stab{display:flex;align-items:center;gap:5px;font-size:12px;padding:2px 8px}
+.stab svg{width:16px;height:16px}
+.stab[aria-pressed=true]{background:var(--acc);color:#1a0f00}
+.lg{grid-area:chips;justify-self:end;align-self:stretch;display:grid;gap:4px;grid-auto-rows:31px}
+.lg-crew{grid-template-columns:repeat(3,auto)}
+.lg-res{grid-template-columns:repeat(9,auto)}
+.lg-cargo{width:300px;border:2px solid #8a7f6a;border-radius:4px;background:#e4dccb;align-items:center;justify-items:center}
+.litem{display:flex;align-items:stretch;gap:0}
+.lcell{flex:1;display:flex;align-items:center;gap:6px;border:2px solid #8a7f6a;border-radius:4px;background:#e4dccb;padding:0 8px;font-size:13px}
+.lname{min-width:78px}
+.lnum{min-width:22px;text-align:center;font-size:14px}
+.lpm{display:flex;flex-direction:column;gap:0;margin-left:-2px}
+.lpm button+button{margin-top:-2px}
+.lpm button{flex:1;width:24px;height:14px;min-height:0;padding:0;line-height:1;font-size:13px;overflow:hidden;border:2px solid #8a7f6a;border-radius:3px;box-shadow:none;background:#f3eddd;color:#1a1a2e;display:flex;align-items:center;justify-content:center}
+.lpm button:disabled{opacity:.4}
+.lpm button:not(:disabled):hover{background:var(--acc)}
+.stype{grid-area:type;font-size:13px;opacity:.65;padding-left:5px}
+.sbtns{grid-area:btns;align-self:stretch;display:flex;flex-direction:column;gap:4px;width:120px}
+.srec,.srf{flex:1;display:flex;align-items:center;justify-content:center;gap:5px}
+.srec svg,.srf svg{width:18px;height:18px}
+.pchips{grid-area:chips;justify-self:end;align-self:stretch;grid-auto-rows:1fr;display:grid;grid-template-columns:repeat(4,auto);justify-content:end;gap:0;padding:0 2px 2px 0}
+.pchip:hover .tp,.pchip:focus .tp{opacity:1}
+.pchip{position:relative;margin:0 -2px -2px 0;display:inline-flex;align-items:stretch;border:2px solid #8a7f6a;border-radius:4px;background:#e4dccb;font-size:14px}
+.pchip .pic{flex:none;display:flex;align-items:center;padding:0 4px;background:#cdc3ab}
+.pchip .pwt{flex:none;display:flex;align-items:center;justify-content:center;width:44px;border-left:1px solid #8a7f6a;font-size:12px}
+.pchip .ptxt{border-left:1px solid #8a7f6a;padding:3px 7px;display:flex;align-items:center;justify-content:flex-start;text-align:left;box-sizing:content-box;width:14ch;overflow:hidden;white-space:nowrap}
+.pchip.dim>.pic svg,.pchip.dim>.pwt,.pchip.dim>.ptxt{opacity:.5}
+.win>h2.wh .xb{position:absolute;right:8px;top:50%;transform:translateY(-50%)}
+.win>h2.wh{display:flex;justify-content:center;align-items:center;min-height:75px;padding-top:0;padding-bottom:0;font-size:26px}
+.xb{padding:2px 8px;line-height:0;height:35px;background:#f0d2c6;color:#7a1e12}
+.xb svg{width:20px;height:20px}
 .in{padding:8px 10px}
 header.win .in{display:flex;flex-wrap:wrap;gap:6px 18px;align-items:center;justify-content:space-between}
 h1{font-size:14px}
-header.bare{margin-bottom:10px}header.bare .in.hdr{display:flex;flex-direction:column;flex-wrap:nowrap;align-items:stretch;gap:5px;padding:0 2px}.loc.off .nm{color:var(--dim)}.loc.off .ci{opacity:.65}.loc.off .ci svg{filter:grayscale(1)}.loc .nm{position:relative;cursor:default}.loc .nm::after{content:attr(data-d);position:absolute;left:0;top:100%;margin-top:4px;width:340px;padding:4px 8px;background:var(--ink);color:var(--bg);border:2px solid var(--acc);font-size:14px;line-height:1.1;white-space:normal;opacity:0;pointer-events:none;z-index:20}.loc .nm:hover::after,.loc .nm:focus::after{opacity:1}.loc .nm:focus{outline:2px solid var(--acc);outline-offset:2px}.sgrid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:8px}.sgrid.c7{grid-template-columns:repeat(7,1fr)}.sbox{cursor:pointer;font:inherit;color:inherit;display:flex;flex-direction:column;align-items:center;gap:2px;padding:8px 6px;background:var(--bg);border:3px solid;border-color:var(--lo) var(--hi) var(--hi) var(--lo)}.sbox b{font:400 22px/1 'Jura',system-ui,sans-serif;color:var(--acc)}.sbox span{font:600 12px 'Jura',system-ui,sans-serif;color:var(--dim);text-align:center}.sbox.dim{opacity:.6}.sbox[aria-pressed=true]{opacity:1}.sbox[aria-pressed=true] b,.sbox[aria-pressed=true] span{color:#1a0f00}.ct.dim>svg{filter:grayscale(1);opacity:.55}.tp .t1{display:block;white-space:normal}.dbe{border-bottom:1px dashed var(--lo);padding:4px 0}.dbe summary{cursor:pointer;padding:3px 0}.dbe .ci{display:inline-block;vertical-align:-5px;margin-right:6px}.dbe .ci svg{width:22px;height:22px}.pend{font:600 12px 'Jura',system-ui,sans-serif;color:var(--dim);font-style:normal;margin-left:8px}.dbb{padding:2px 0 6px 30px}.dbb p{margin:0 0 4px}.dbb dl{margin:0;display:grid;grid-template-columns:max-content 1fr;gap:2px 14px}.dbb dt{color:var(--dim)}.dbb dd{margin:0}#dbList{margin-top:8px}.rh{font:600 14px 'Jura',system-ui,sans-serif;color:var(--acc);margin:12px 0 2px}#shipsList .ci{display:inline-block;vertical-align:-5px;margin-right:6px}.loc.sub>div:first-child{margin-left:24px}.loc .lc{display:flex;gap:6px;align-items:center;flex:none}.loc .lpop{margin-left:auto;margin-right:16px;font-size:13px;white-space:nowrap}.loc .ct{position:relative;display:inline-flex;cursor:help}.loc .tp,.pchip .tp{position:absolute;right:0;top:100%;margin-top:4px;min-width:310px;padding:5px 8px;background:var(--ink);color:var(--bg);border:2px solid var(--acc);font-size:13px;line-height:1.15;opacity:0;pointer-events:none;z-index:30;display:block}.loc .ct:hover .tp,.loc .ct:focus .tp{opacity:1}.loc .ct:focus{outline:2px solid var(--acc);outline-offset:2px}.loc .th{display:block;font:600 13px 'Jura',system-ui,sans-serif;color:#ffb066;margin-bottom:3px}.loc .tr{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:14px;align-items:center;white-space:nowrap}.loc .tr i{font-style:normal;display:flex;align-items:center;gap:4px}.loc .tr i:nth-child(n+2){justify-content:flex-end}.loc .tr.h{color:#ffb066;font-size:11px;border-bottom:1px dashed #6b6b78;margin-bottom:2px}.loc .tr svg{width:14px;height:14px}.loc.off .ct>svg{filter:grayscale(1);opacity:.6}.pgh{display:flex;justify-content:space-between;align-items:center;padding:0 0 6px}.pgh b{font:600 16px 'Jura',system-ui,sans-serif;color:var(--acc)}.loc .ci{display:inline-block;vertical-align:-5px;margin-right:6px}.loc .st{font:600 13px 'Jura',system-ui,sans-serif;white-space:nowrap;color:var(--dim)}.loc:not(.off) .st{color:#1f7a40}.hdr .date{font-size:17px;line-height:1}.hdr #menu.clk{padding:2px 8px}
+header.bare{margin-bottom:10px}
+header.bare .in.hdr{display:flex;flex-direction:column;flex-wrap:nowrap;align-items:stretch;gap:5px;padding:0 2px}
+.loc.off .nm{color:var(--dim)}
+.loc.off .ci{opacity:.65}
+.loc.off .ci svg{filter:grayscale(1)}
+.loc .nm{position:relative;cursor:default}
+.loc .nm::after{content:attr(data-d);position:absolute;left:0;top:100%;margin-top:4px;width:340px;padding:4px 8px;background:var(--ink);color:var(--bg);border:2px solid var(--acc);font-size:14px;line-height:1.1;white-space:normal;opacity:0;pointer-events:none;z-index:20}
+.loc .nm:hover::after,.loc .nm:focus::after{opacity:1}
+.loc .nm:focus{outline:2px solid var(--acc);outline-offset:2px}
+.sgrid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:8px}
+.sgrid.c7{grid-template-columns:repeat(7,1fr)}
+.sbox{cursor:pointer;font:inherit;color:inherit;display:flex;flex-direction:column;align-items:center;gap:2px;padding:8px 6px;background:var(--bg);border:3px solid;border-color:var(--lo) var(--hi) var(--hi) var(--lo)}
+.sbox b{font:400 22px/1 'Jura',system-ui,sans-serif;color:var(--acc)}
+.sbox span{font:600 12px 'Jura',system-ui,sans-serif;color:var(--dim);text-align:center}
+.sbox.dim{opacity:.6}
+.sbox[aria-pressed=true]{opacity:1}
+.sbox[aria-pressed=true] b,.sbox[aria-pressed=true] span{color:#1a0f00}
+.ct.dim>svg{filter:grayscale(1);opacity:.55}
+.tp .t1{display:block;white-space:normal}
+.dbe{border-bottom:1px dashed var(--lo);padding:4px 0}
+.dbe summary{cursor:pointer;padding:3px 0}
+.dbe .ci{display:inline-block;vertical-align:-5px;margin-right:6px}
+.dbe .ci svg{width:22px;height:22px}
+.pend{font:600 12px 'Jura',system-ui,sans-serif;color:var(--dim);font-style:normal;margin-left:8px}
+.dbb{padding:2px 0 6px 30px}
+.dbb p{margin:0 0 4px}
+.dbb dl{margin:0;display:grid;grid-template-columns:max-content 1fr;gap:2px 14px}
+.dbb dt{color:var(--dim)}
+.dbb dd{margin:0}
+#dbList{margin-top:8px}
+.rh{font:600 14px 'Jura',system-ui,sans-serif;color:var(--acc);margin:12px 0 2px}
+#shipsList .ci{display:inline-block;vertical-align:-5px;margin-right:6px}
+.loc.sub>div:first-child{margin-left:24px}
+.loc .lc{display:flex;gap:6px;align-items:center;flex:none}
+.loc .lpop{margin-left:auto;margin-right:16px;font-size:13px;white-space:nowrap}
+.loc .ct{position:relative;display:inline-flex;cursor:help}
+.loc .tp,.pchip .tp{position:absolute;right:0;top:100%;margin-top:4px;min-width:310px;padding:5px 8px;background:var(--ink);color:var(--bg);border:2px solid var(--acc);font-size:13px;line-height:1.15;opacity:0;pointer-events:none;z-index:30;display:block}
+.loc .ct:hover .tp,.loc .ct:focus .tp{opacity:1}
+.loc .ct:focus{outline:2px solid var(--acc);outline-offset:2px}
+.loc .th{display:block;font:600 13px 'Jura',system-ui,sans-serif;color:#ffb066;margin-bottom:3px}
+.loc .tr{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:14px;align-items:center;white-space:nowrap}
+.loc .tr i{font-style:normal;display:flex;align-items:center;gap:4px}
+.loc .tr i:nth-child(n+2){justify-content:flex-end}
+.loc .tr.h{color:#ffb066;font-size:11px;border-bottom:1px dashed #6b6b78;margin-bottom:2px}
+.loc .tr svg{width:14px;height:14px}
+.loc.off .ct>svg{filter:grayscale(1);opacity:.6}
+.pgh{display:flex;justify-content:space-between;align-items:center;padding:0 0 6px}
+.pgh b{font:600 16px 'Jura',system-ui,sans-serif;color:var(--acc)}
+.loc .ci{display:inline-block;vertical-align:-5px;margin-right:6px}
+.loc .st{font:600 13px 'Jura',system-ui,sans-serif;white-space:nowrap;color:var(--dim)}
+.loc:not(.off) .st{color:#1f7a40}
+.hdr .date{font-size:17px;line-height:1}
+.hdr #menu.clk{padding:2px 8px}
 .date{color:var(--acc);font-size:20px}
 .date .dt{display:inline-flex;flex-direction:column;margin-left:7px;font-size:12px;line-height:1.1;font-weight:600}.date .dt span:first-child{color:#6fdcff}
 .res{display:flex;flex-wrap:wrap;gap:6px 16px}
@@ -33,16 +134,46 @@ header.bare{margin-bottom:10px}header.bare .in.hdr{display:flex;flex-direction:c
 .chip svg{display:block}.chip.dim svg{opacity:.55}
 .chip::after{content:attr(data-n);position:absolute;left:50%;top:100%;transform:translateX(-50%);margin-top:5px;padding:1px 7px;background:var(--ink);color:var(--bg);border:2px solid var(--acc);font-size:14px;white-space:nowrap;opacity:0;pointer-events:none;z-index:20}
 .chip:hover::after,.chip:focus::after{opacity:1}
-.chip.rich::after{content:none}.chip .rt{position:absolute;left:0;top:100%;margin-top:5px;display:flex;align-items:center;gap:5px;padding:1px 7px;background:var(--ink);color:var(--bg);border:2px solid var(--acc);font-size:14px;white-space:nowrap;opacity:0;pointer-events:none;z-index:20}.chip.rich:hover .rt,.chip.rich:focus .rt{opacity:1}
+.chip.rich::after{content:none}
+.chip .rt{position:absolute;left:0;top:100%;margin-top:5px;display:flex;align-items:center;gap:5px;padding:1px 7px;background:var(--ink);color:var(--bg);border:2px solid var(--acc);font-size:14px;white-space:nowrap;opacity:0;pointer-events:none;z-index:20}
+.chip.rich:hover .rt,.chip.rich:focus .rt{opacity:1}
 .chip:focus{outline:2px solid var(--acc);outline-offset:2px}
 .res .chip:nth-last-child(-n+4)::after{left:auto;right:0;transform:none}#res{display:flex;flex-wrap:wrap;gap:6px 14px}#res .chip::after{left:0;right:auto;transform:none}
-.colony{display:flex;justify-content:space-between;align-items:center;gap:8px}.colony .chip::after{left:auto;right:0;transform:none}.colony .chip b{font:400 15px 'Jura',system-ui,sans-serif}.popr{justify-content:flex-end;padding-bottom:0}.colname{position:absolute;left:50%;top:12px;transform:translateX(-50%);z-index:5;height:35px;display:flex;align-items:center;white-space:nowrap;font-size:26px;font-weight:600;color:var(--acc);text-shadow:0 2px 0 #000a,0 0 12px #000c;pointer-events:none}
+.colony{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.colony .chip::after{left:auto;right:0;transform:none}
+.colony .chip b{font:400 15px 'Jura',system-ui,sans-serif}
+.popr{justify-content:flex-end;padding-bottom:0}
+.colname{position:absolute;left:50%;top:12px;transform:translateX(-50%);z-index:5;height:35px;display:flex;align-items:center;white-space:nowrap;font-size:26px;font-weight:600;color:var(--acc);text-shadow:0 2px 0 #000a,0 0 12px #000c;pointer-events:none}
 .stage{position:fixed;left:50%;top:50%;width:1920px;height:1080px;overflow:hidden;transform-origin:center center;transform:translate(-50%,-50%);background:#02030f}
 .stage .scene{z-index:0}
 .stage header.bare{position:absolute;left:16px;right:16px;top:12px;margin:0;z-index:5;pointer-events:none}.stage header.bare .hdr>*{pointer-events:auto}
 .stage main>.win{position:absolute;left:16px;right:16px;top:95px;bottom:16px;margin:0;overflow:auto;z-index:4;box-shadow:0 0 0 2px #000a}
 .stage main>#scr-base{top:130px;left:auto;right:16px;bottom:auto;width:400px;max-height:calc(100% - 146px)}
-.rpb.rsb{gap:0;padding:0;height:auto;flex-direction:column;align-items:stretch}.rrow{display:flex;height:29px}.rrow+.rrow{border-top:2px dashed var(--lo)}.rrow:first-child .rg{flex:1 0 auto}.rg{display:flex;align-items:center;height:100%;padding:0 12px 0 38px;gap:5.12px}.rsb .rg+.rg{border-left:2px dashed var(--lo)}.rg,#res{position:relative}.cic-bg{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:0}.cic-bg svg{position:absolute;left:18px;top:50%;width:32px;height:32px;transform:translate(-50%,-50%);opacity:.35}.rg .cic-bg,#res .cic-bg{right:auto;width:32px;background:#cdc3ab;border-right:2px solid #8a7f6a}.rg .cic-bg svg,#res .cic-bg svg{left:50%;width:28px;height:28px;opacity:1}.rg .chip.cic{position:absolute;left:0;top:0;bottom:0;width:100px;max-width:100%;z-index:1}.rg .chip:not(.cic){position:relative;z-index:2}.rpb.rrb{padding:0;width:106px}#res{display:flex;align-items:center;height:100%;flex:1;padding-left:32px}#res .chip{position:relative;z-index:2;width:100%;justify-content:center;font-size:18px}.rg .chip{font-size:18px;gap:4px}.rg .chip svg{width:18px;height:18px}.rg .chip b{font-weight:700;color:var(--ink);display:inline-block;width:44px;text-align:center}#res b{font-weight:700}.rt svg{width:16px;height:16px}.rg .sep{color:var(--dim);font-size:18px}.rg .chip b.up,.rpb .chip b.up{color:var(--ok)}.rg .chip b.down,.rpb .chip b.down{color:var(--bad)}.rt .rr{font-size:14px;margin-left:2px}
+.rpb.rsb{gap:0;padding:0;height:auto;flex-direction:column;align-items:stretch}
+.rrow{display:flex;height:29px}
+.rrow+.rrow{border-top:2px dashed var(--lo)}
+.rrow:first-child .rg{flex:1 0 auto}
+.rg{display:flex;align-items:center;height:100%;padding:0 12px 0 38px;gap:5.12px}
+.rsb .rg+.rg{border-left:2px dashed var(--lo)}
+.rg,#res{position:relative}
+.cic-bg{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:0}
+.cic-bg svg{position:absolute;left:18px;top:50%;width:32px;height:32px;transform:translate(-50%,-50%);opacity:.35}
+.rg .cic-bg,#res .cic-bg{right:auto;width:32px;background:#cdc3ab;border-right:2px solid #8a7f6a}
+.rg .cic-bg svg,#res .cic-bg svg{left:50%;width:28px;height:28px;opacity:1}
+.rg .chip.cic{position:absolute;left:0;top:0;bottom:0;width:100px;max-width:100%;z-index:1}
+.rg .chip:not(.cic){position:relative;z-index:2}
+.rpb.rrb{padding:0;width:106px}
+#res{display:flex;align-items:center;height:100%;flex:1;padding-left:32px}
+#res .chip{position:relative;z-index:2;width:100%;justify-content:center;font-size:18px}
+.rg .chip{font-size:18px;gap:4px}
+.rg .chip svg{width:18px;height:18px}
+.rg .chip b{font-weight:700;color:var(--ink);display:inline-block;width:44px;text-align:center}
+#res b{font-weight:700}
+.rt svg{width:16px;height:16px}
+.rg .sep{color:var(--dim);font-size:18px}
+.rg .chip b.up,.rpb .chip b.up{color:var(--ok)}
+.rg .chip b.down,.rpb .chip b.down{color:var(--bad)}
+.rt .rr{font-size:14px;margin-left:2px}
 .scene.quiet .hot{display:none}
 .cat{margin-bottom:10px}.cat:last-child{margin-bottom:0}
 .cat-n{position:relative;font:600 13px/1.25 'Jura',system-ui,sans-serif;color:var(--acc);border-bottom:2px dashed var(--lo);padding-bottom:3px;margin-bottom:5px;cursor:help}
@@ -64,7 +195,12 @@ header.bare{margin-bottom:10px}header.bare .in.hdr{display:flex;flex-direction:c
 .rps{font-size:14px;color:var(--dim)}
 .hdr .nav button,.hdr #menu{height:35px}
 header.bare .in.hdr{display:grid;grid-template-columns:auto 1fr auto;grid-template-rows:35px auto 35px;gap:5px 0;align-items:start;padding:0 2px}
-.hdr .nav{display:flex;justify-content:space-between;align-items:flex-start}.hdr .ov{display:flex;margin-left:12px}.hdr .dm{grid-column:3;display:flex;align-items:center;gap:12px;justify-self:end}.hdr .rsb{grid-column:1;grid-row:2;justify-self:start}.hdr .seg{grid-column:3;grid-row:2;justify-self:end}.hdr .rrb{grid-column:1;grid-row:3;justify-self:start}
+.hdr .nav{display:flex;justify-content:space-between;align-items:flex-start}
+.hdr .ov{display:flex;margin-left:12px}
+.hdr .dm{grid-column:3;display:flex;align-items:center;gap:12px;justify-self:end}
+.hdr .rsb{grid-column:1;grid-row:2;justify-self:start}
+.hdr .seg{grid-column:3;grid-row:2;justify-self:end}
+.hdr .rrb{grid-column:1;grid-row:3;justify-self:start}
 .hdr #back{width:106px}
 
 .hdr #menu{height:35px}
@@ -81,14 +217,62 @@ button[aria-pressed=true],button[aria-checked=true]{background:var(--acc);color:
 button.go{background:var(--acc);color:#1a0f00}
 .map{display:flex;flex-wrap:wrap;gap:3px;min-height:64px;padding:10px;background:linear-gradient(var(--lo) 0 40%,var(--reg) 40% 100%);border-bottom:3px solid var(--lo)}
 .tile{width:30px;height:30px;display:grid;place-items:center;font:600 14px 'Jura',system-ui,sans-serif;color:#10122c;border:2px solid;border-color:#fff8 #0006 #0006 #fff8}
-.t-solar{background:#6ea8ff}.t-mine{background:#c98a4b}.t-ice{background:#8fe3f0}.t-elec{background:#ff9a2e}.t-lab{background:#c58cff}.t-hab{background:#7fe0a0}.t-reactor{background:#e6e36a}.t-fact{background:#b6b6c8}.t-shop{background:#9fb3c8}.t-port{background:#e0a0c8}
+.t-solar{background:#6ea8ff}
+.t-mine{background:#c98a4b}
+.t-ice{background:#8fe3f0}
+.t-elec{background:#ff9a2e}
+.t-lab{background:#c58cff}
+.t-hab{background:#7fe0a0}
+.t-reactor{background:#e6e36a}
+.t-fact{background:#b6b6c8}
+.t-shop{background:#9fb3c8}
+.t-port{background:#e0a0c8}
 .bar{height:10px;background:var(--lo);margin-top:3px}.bar i{display:block;height:100%;background:var(--ok)}
 .bad{color:var(--bad)}.ok{color:var(--ok)}.dim{color:var(--dim)}
 #log{min-height:240px;padding:8px 10px;font-size:15px}
 #log div{padding:1px 0}
 .end{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
 .scene{position:absolute;inset:0;overflow:hidden;background:#02030f}
-.sbg,.sk,.gd{position:absolute;inset:0}.sbg{overflow:hidden;pointer-events:none}.gd{bottom:0;box-shadow:inset 0 10px 30px #0007}.sb{position:absolute;border-radius:50%}.scene.away .hot{display:none}#mapbg{pointer-events:auto}#mapbg[data-zone="0"],#mapbg[data-zone="1"],#mapbg[data-zone="2"]{cursor:pointer}.zn,.zl{position:absolute;pointer-events:none;opacity:0;transition:opacity .15s}.zn{border-radius:50%}.zl{transform:translate(-50%,-100%);text-align:center;white-space:nowrap;font-size:26px;font-weight:600;color:#ffd9a8;text-shadow:0 2px 0 #000,0 0 10px #000}.zl small{display:block;font-size:15px;font-weight:400;color:#c9b79c}#mapbg[data-zone="0"] .zn0,#mapbg[data-zone="0"] .zl0,#mapbg[data-zone="1"] .zn1,#mapbg[data-zone="1"] .zl1,#mapbg[data-zone="2"] .zn2,#mapbg[data-zone="2"] .zl2{opacity:1}.orbs{position:absolute;left:0;top:0;pointer-events:none}.orbs ellipse{fill:none;stroke:rgba(150,160,220,.22);stroke-width:1}.orbs ellipse.on{stroke:rgba(170,180,240,.5)}.belt.kb i{background:#6b7090;opacity:.55}.bl{position:absolute;transform:translate(-50%,-50%);white-space:nowrap;font-size:15px;color:#9aa0c8;text-shadow:0 1px 0 #000,0 0 6px #000;pointer-events:none}.mb,.mk,.sunb{transition:opacity .25s}.mb::before{content:'';position:absolute;inset:-9px}.mb{position:absolute;left:0;top:0;cursor:pointer;will-change:transform}.mi,.mr,.mc{position:absolute;display:block}.mi{inset:0;border-radius:50%}.mr{border:3px solid rgba(235,220,170,.6);border-radius:50%;transform:rotate(-16deg)}.mc{border:2px solid #ff9a2e;border-radius:50%;box-shadow:0 0 10px #ff9a2e99}.ml{position:absolute;top:50%;transform:translateY(-50%);white-space:nowrap;font-size:18px;font-weight:600;color:#e8e4d4;text-shadow:0 1px 0 #000,0 0 8px #000;pointer-events:none}.mb:hover .mi{filter:brightness(1.25)}.mo{position:absolute;border:1px solid rgba(150,160,220,.28);border-radius:50%;pointer-events:none}.mo.op{border-style:dashed;border-color:rgba(255,154,46,.5)}.belt{position:absolute;width:0;height:0}.belt i{position:absolute;background:#9a958c;border-radius:50%}.mk{position:absolute;left:0;top:0}.mk i{position:absolute;left:-7px;top:-7px;width:14px;height:14px;background:var(--acc);transform:rotate(45deg);border:2px solid #fff}.mt{position:absolute;left:0;right:0;bottom:90px;text-align:center;font-size:24px;font-weight:600;color:#e8e4d4;text-shadow:0 2px 0 #000,0 0 10px #000;pointer-events:none}.mt small{display:block;font-size:16px;font-weight:400;color:#9aa0c8}.stage #orbpanel{position:absolute;right:40px;bottom:70px;width:460px;z-index:3;margin:0}.zoombar{position:absolute;bottom:16px;left:50%;transform:translateX(-50%);z-index:3;display:flex}.zoombar button{height:35px;padding:0 14px;margin-left:-3px;font-size:16px}.zoombar button:first-child{margin-left:0}.pvw{position:relative;width:320px;height:180px;overflow:hidden;border:2px solid var(--lo);margin:4px 0 8px;background:#02030f}.pvw .sbg{width:1920px;height:1080px;inset:auto;left:0;top:0;transform:scale(.16667);transform-origin:0 0}
+.sbg,.sk,.gd{position:absolute;inset:0}
+.sbg{overflow:hidden;pointer-events:none}
+.gd{bottom:0;box-shadow:inset 0 10px 30px #0007}
+.sb{position:absolute;border-radius:50%}
+.scene.away .hot{display:none}
+#mapbg{pointer-events:auto}
+#mapbg[data-zone="0"],#mapbg[data-zone="1"],#mapbg[data-zone="2"]{cursor:pointer}
+.zn,.zl{position:absolute;pointer-events:none;opacity:0;transition:opacity .15s}
+.zn{border-radius:50%}
+.zl{transform:translate(-50%,-100%);text-align:center;white-space:nowrap;font-size:26px;font-weight:600;color:#ffd9a8;text-shadow:0 2px 0 #000,0 0 10px #000}
+.zl small{display:block;font-size:15px;font-weight:400;color:#c9b79c}
+#mapbg[data-zone="0"] .zn0,#mapbg[data-zone="0"] .zl0,#mapbg[data-zone="1"] .zn1,#mapbg[data-zone="1"] .zl1,#mapbg[data-zone="2"] .zn2,#mapbg[data-zone="2"] .zl2{opacity:1}
+.orbs{position:absolute;left:0;top:0;pointer-events:none}
+.orbs ellipse{fill:none;stroke:rgba(150,160,220,.22);stroke-width:1}
+.orbs ellipse.on{stroke:rgba(170,180,240,.5)}
+.belt.kb i{background:#6b7090;opacity:.55}
+.bl{position:absolute;transform:translate(-50%,-50%);white-space:nowrap;font-size:15px;color:#9aa0c8;text-shadow:0 1px 0 #000,0 0 6px #000;pointer-events:none}
+.mb,.mk,.sunb{transition:opacity .25s}
+.mb::before{content:'';position:absolute;inset:-9px}
+.mb{position:absolute;left:0;top:0;cursor:pointer;will-change:transform}
+.mi,.mr,.mc{position:absolute;display:block}
+.mi{inset:0;border-radius:50%}
+.mr{border:3px solid rgba(235,220,170,.6);border-radius:50%;transform:rotate(-16deg)}
+.mc{border:2px solid #ff9a2e;border-radius:50%;box-shadow:0 0 10px #ff9a2e99}
+.ml{position:absolute;top:50%;transform:translateY(-50%);white-space:nowrap;font-size:18px;font-weight:600;color:#e8e4d4;text-shadow:0 1px 0 #000,0 0 8px #000;pointer-events:none}
+.mb:hover .mi{filter:brightness(1.25)}
+.mo{position:absolute;border:1px solid rgba(150,160,220,.28);border-radius:50%;pointer-events:none}
+.mo.op{border-style:dashed;border-color:rgba(255,154,46,.5)}
+.belt{position:absolute;width:0;height:0}
+.belt i{position:absolute;background:#9a958c;border-radius:50%}
+.mk{position:absolute;left:0;top:0}
+.mk i{position:absolute;left:-7px;top:-7px;width:14px;height:14px;background:var(--acc);transform:rotate(45deg);border:2px solid #fff}
+.mt{position:absolute;left:0;right:0;bottom:90px;text-align:center;font-size:24px;font-weight:600;color:#e8e4d4;text-shadow:0 2px 0 #000,0 0 10px #000;pointer-events:none}
+.mt small{display:block;font-size:16px;font-weight:400;color:#9aa0c8}
+.stage #orbpanel{position:absolute;right:40px;bottom:70px;width:460px;z-index:3;margin:0}
+.zoombar{position:absolute;bottom:16px;left:50%;transform:translateX(-50%);z-index:3;display:flex}
+.zoombar button{height:35px;padding:0 14px;margin-left:-3px;font-size:16px}
+.zoombar button:first-child{margin-left:0}
+.pvw{position:relative;width:320px;height:180px;overflow:hidden;border:2px solid var(--lo);margin:4px 0 8px;background:#02030f}
+.pvw .sbg{width:1920px;height:1080px;inset:auto;left:0;top:0;transform:scale(.16667);transform-origin:0 0}
 .ph{position:absolute;left:16px;bottom:10px;font-size:13px;color:#9aa0c8}
 .hot{position:absolute;width:240px;padding:6px 4px;text-align:center;display:flex;flex-direction:column;gap:2px;background:var(--panel);color:var(--ink)}
 .hot b{font:600 13px/1.2 'Jura',system-ui,sans-serif}
@@ -227,6 +411,8 @@ dialog::backdrop{background:#000a}
 <dialog id="dlg"><p id="dmsg"></p><button class="go" id="dok">Close</button> <button id="drestart" hidden>New game</button></dialog>
 
 <script>
+/* Sections start with a comment line "===== NAME =====": search for "===== " to jump between them. */
+/* ===== GAME DATA: defaults for buildings, technologies, missions, staffing, weights (editable in the Editor through DATA) ===== */
 const START=2100,DEADLINE=2200,WD=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
 const dim=(y,m)=>new Date(Date.UTC(y,m,0)).getUTCDate(),wday=(y,m,d)=>WD[new Date(Date.UTC(y,m-1,d)).getUTCDay()];
 const RN={hydrogen:'Hydrogen',oxygen:'Oxygen',water:'Water',nitrogen:'Nitrogen',methane:'Methane',sulphur:'Sulphur',titanium:'Titanium',aluminium:'Aluminium',copper:'Copper',silica:'Silica',iron:'Iron',silver:'Silver',chromium:'Chromium',platinum:'Platinum',uranium:'Uranium',components:'Components',machinery:'Machinery',software:'Software'};
@@ -287,6 +473,7 @@ const SURVEY={dpa:1946,rpBase:60,rpDiff:2,rpLen:90,fail:.8,c:{hydrogen:10,oxygen
 const LOCAN={mercury:[.35,40],venus:[.8,90],earth:[.45,30],moon:[.05,10],mars:[.2,30],phobos:[.25,20],deimos:[.2,15],belt:[.3,45],jupiter:[.9,120],io:[.85,80],europa:[.5,70],ganymede:[.4,60],callisto:[.35,50],saturn:[.9,150],titan:[.45,90],enceladus:[.5,60],rhea:[.4,50],iapetus:[.45,50],dione:[.4,45],tethys:[.35,40],mimas:[.35,35],uranus:[.92,180],titania:[.5,70],oberon:[.5,70],umbriel:[.55,70],ariel:[.5,65],miranda:[.55,60],neptune:[.95,200],triton:[.6,90],pluto:[.6,100],charon:[.55,80]};
 /* Real orbital data per location: [a = distance from the Sun in AU (planets, belt), ak = distance from its planet in thousand km (moons), eccentricity, period in days] */
 const LOCORB={mercury:[.387,0,.206,88],venus:[.723,0,.007,224.7],earth:[1,0,.017,365.25],moon:[0,384.4,.055,27.32],mars:[1.524,0,.093,687],phobos:[0,9.376,.015,.319],deimos:[0,23.46,.0002,1.263],belt:[2.767,0,.076,1682],jupiter:[5.203,0,.049,4333],io:[0,421.7,.004,1.769],europa:[0,671.1,.009,3.551],ganymede:[0,1070.4,.001,7.155],callisto:[0,1882.7,.007,16.689],saturn:[9.537,0,.057,10759],titan:[0,1221.9,.029,15.945],enceladus:[0,238,.005,1.37],rhea:[0,527.1,.001,4.518],iapetus:[0,3560.8,.028,79.33],dione:[0,377.4,.002,2.737],tethys:[0,294.6,.0001,1.888],mimas:[0,185.5,.02,.942],uranus:[19.19,0,.046,30687],titania:[0,436.3,.001,8.706],oberon:[0,583.5,.001,13.463],umbriel:[0,266,.004,4.144],ariel:[0,190.9,.001,2.52],miranda:[0,129.9,.001,1.413],neptune:[30.07,0,.009,60190],triton:[0,354.8,0,5.877],pluto:[39.48,0,.249,90560],charon:[0,19.6,.0002,6.387]};
+/* ===== STATE (init) AND COLONISTS: jobs, staffing, free colonists ===== */
 let S;
 function init(){S={diff,cur:null,proj:{},screen:'base',loc:(LOCD[new URLSearchParams(location.search).get('loc')]?new URLSearchParams(location.search).get('loc'):'moon'),view:{z:(+new URLSearchParams(location.search).get('z')>=1&&+new URLSearchParams(location.search).get('z')<=7?+new URLSearchParams(location.search).get('z'):7)},y:START,m:1,d:1,h:0,speed:0,brown:false,q:[],nobuild:false,staff:{solar:2,mine:2,ice:2,elec:0,reactor:0,lab:0,fact:0,shop:0,build:2},res:{hydrogen:30,oxygen:100,water:100,nitrogen:30,methane:5,sulphur:10,titanium:20,aluminium:40,copper:20,silica:60,iron:120,silver:0,chromium:0,platinum:0,uranium:0,components:10,machinery:20,software:10},pop:COL.pop,rp:0,b:{solar:2,mine:1,ice:1,elec:0,fact:0,shop:0,lab:0,hab:2,reactor:0},slots:Math.min(PORT.start,PORT.max),names:{},cargo:{},colonies:Object.fromEntries(Object.keys(LOCD).filter(k=>LOCD[k].start).map(k=>[k,1])),tech:{},ships:1,out:[],over:false,log:[],sv:{},mods:{}};
  for(const k in S.colonies){S.sv[k]={done:1};S.mods[k]=1;S.tech['col_'+k]=1}
@@ -304,14 +491,23 @@ function freeCol(){return Math.max(0,S.pop-crewOut()-assigned())}
 function jobCount(j){let a=0;for(const k in STAFF)if(STAFF[k].job===j)a+=S.staff[k];return a}
 function staffCap(k){return k==='build'?Math.max(1,S.q.length)*STAFF.build.full:S.b[k]*STAFF[k].full}
 function assign(k,d){if(S.over||!STAFF[k])return;const nv=S.staff[k]+d;if(nv<0||(d>0&&(freeCol()<d||nv>staffCap(k))))return;S.staff[k]=nv;render()}
-function fit(){let over=assigned()+crewOut()-S.pop,lost=0;while(over>0){let kk=null;for(const k in S.staff)if(S.staff[k]>0&&(kk===null||S.staff[k]>S.staff[kk]))kk=k;if(kk===null)break;S.staff[kk]--;over--;lost++}if(lost)say('Fewer colonists than posts: '+lost+' job'+(lost>1?'s':'')+' left empty.','bad')}
+function fit(){let over=assigned()+crewOut()-S.pop,lost=0;
+ while(over>0){let kk=null;
+ for(const k in S.staff)if(S.staff[k]>0&&(kk===null||S.staff[k]>S.staff[kk]))kk=k;
+ if(kk===null)break;
+ S.staff[kk]--;
+ over--;
+ lost++}
+ if(lost)say('Fewer colonists than posts: '+lost+' job'+(lost>1?'s':'')+' left empty.','bad')}
 function sitePlan(){let rem=S.staff.build;const s=STAFF.build;return S.q.map(()=>{if(rem>=s.full){rem-=s.full;return 2}if(rem>=s.min){rem-=s.min;return 1}return 0})}
 function jobsLine(){return 'Colonists: '+['labourer','scientist','technician','builder'].map(j=>JOBN[j]+' '+jobCount(j)).join(' · ')+' · Crew '+crewOut()+' · Free '+freeCol()}
-function ctl(k,status){const A=S.staff[k],cap=staffCap(k);return '<div class="stf">'+JOBN[STAFF[k].job]+'<button '+(A>0&&!S.over?'':'disabled')+' onclick="assign(\''+k+'\',-1)" aria-label="Remove one">−</button><b>'+A+'</b><button '+(A<cap&&freeCol()>0&&!S.over?'':'disabled')+' onclick="assign(\''+k+'\',1)" aria-label="Add one">+</button><span>'+status+'</span></div>'}
+function ctl(k,status){const A=S.staff[k],cap=staffCap(k);
+ return '<div class="stf">'+JOBN[STAFF[k].job]+'<button '+(A>0&&!S.over?'':'disabled')+' onclick="assign(\''+k+'\',-1)" aria-label="Remove one">−</button><b>'+A+'</b><button '+(A<cap&&freeCol()>0&&!S.over?'':'disabled')+' onclick="assign(\''+k+'\',1)" aria-label="Add one">+</button><span>'+status+'</span></div>'}
 function stf(k){const s=STAFF[k];if(!s||!S.b[k])return '';const n=S.b[k],w=work(k),m=manned(k);
  return ctl(k,'<span class="'+(w<n?'bad':'ok')+'">'+w+'/'+n+' working</span>'+(m?' <span class="ok">+'+m+' boosted</span>':''))}
 function builderRow(){const s=STAFF.build,plan=sitePlan(),run=plan.filter(x=>x).length;
  return '<div class="row"><div>Builders<small>Each construction site needs '+s.min+' builders to progress, '+s.full+' to build '+Math.round(BOOST*100)+'% faster. Sites are staffed in queue order.</small></div>'+ctl('build',S.q.length?'<span class="'+(run<S.q.length?'bad':'ok')+'">'+run+'/'+S.q.length+' sites working</span>':'<span class="dim">no sites</span>')+'</div>'}
+/* ===== POWER, CONSTRUCTION AND RESEARCH ===== */
 function pow(){let p=0,u=0;for(const k in B){const b=B[k];if(b.p>0){let x=eff(k)*b.p;if(k==='solar'&&S.tech.fusion)x*=1.5;if(k==='reactor'&&(S.res.uranium<.01||S.res.machinery<.01))x=0;p+=x}else u+=work(k)*-b.p}return{p,u,e:u?Math.min(1,p/u):1}}
 function can(c){return Object.keys(c).every(k=>Math.floor(S.res[k])>=c[k])}
 function pay(c){for(const k in c)S.res[k]-=c[k]}
@@ -320,11 +516,18 @@ function build(k){if(S.over||!can(B[k].c))return;pay(B[k].c);S.q.push({k,left:B[
 const startCost=k=>S.proj[k]&&S.proj[k].state==='paused'?Math.ceil(T[k].rp/2):T[k].rp;
 const rpRate=()=>eff('lab')*pow().e*(S.cur?.25:1)/20;
 function canResearch(k){const t=T[k];return !S.over&&visT(k)&&!S.cur&&work('lab')>0&&!S.tech[k]&&t.req.every(r=>S.tech[r])&&Math.floor(S.rp)>=startCost(k)}
-function research(k){if(!canResearch(k))return;const t=T[k],p=S.proj[k],resume=p&&p.state==='paused',c=startCost(k);S.rp-=c;S.proj[k]={left:p?p.left:t.rp*24,state:'active'};S.cur=k;say((resume?'Research resumed: ':'Research started: ')+t.n+' (cost '+c+' research points up front, then '+t.rp/100+' per day).');render()}
+function research(k){if(!canResearch(k))return;
+ const t=T[k],p=S.proj[k],resume=p&&p.state==='paused',c=startCost(k);
+ S.rp-=c;
+ S.proj[k]={left:p?p.left:t.rp*24,state:'active'};
+ S.cur=k;
+ say((resume?'Research resumed: ':'Research started: ')+t.n+' (cost '+c+' research points up front, then '+t.rp/100+' per day).');
+ render()}
 function pauseResearch(why){if(!S.cur)return;const k=S.cur,t=T[k],c=Math.ceil(t.rp/2);S.proj[k].state='paused';S.cur=null;
  if(why)say('WARNING: development of '+t.n+' has stopped ('+why+'). Progress is kept; resuming costs '+c+' research points.','bad');
  else say('Research paused: '+t.n+'. Progress is kept; resuming costs '+c+' research points.');
  render()}
+/* ===== STARPORT AND STARSHIPS: berths, loading (crew, resources), tonnage, recycling, Shipyard ===== */
 const portSlots=()=>S.slots,owned=()=>S.ships+S.out.length,BQ=k=>k==='berth'?{n:'Starport berth',g:'P'}:k.startsWith('colmod:')?{n:'Colonisation module – '+LOCD[k.slice(7)].n,g:'C'}:B[k],berthsQ=()=>S.q.filter(q=>q.k==='berth');
 function berths(){const qs=berthsQ(),held={};S.out.forEach(o=>{if(o.b!==undefined)held[o.b]=o});let h=S.ships;const a=[];
  for(let i=0;i<PORT.max;i++){
@@ -349,13 +552,20 @@ function recycle(bi){const BS=berths();if(S.over||!BS[bi]||BS[bi].s!=='hangar')r
  for(const M of [S.names,S.cargo])for(let m=H.indexOf(bi)+1;m<H.length;m++){if(M[H[m]]!==undefined)M[H[m-1]]=M[H[m]];else delete M[H[m-1]]}
  for(const M of [S.names,S.cargo])delete M[H[H.length-1]];S.ships--;for(const k in back)S.res[k]+=back[k];say('Starship recycled: '+nm+' (returned '+cost(back)+').','ok');render()}
 function buildShip(){if(S.over||!can(SHIP)||owned()>=portSlots())return;pay(SHIP);S.ships++;say('A new probe rolls out and is berthed in the Starport ('+owned()+'/'+portSlots()+' slots).','ok');render()}
+/* ===== SURVEY AND COLONISATION: probes, analysis, Colonise technologies, colonisation modules ===== */
 const visT=k=>{const t=T[k];return !t.loc||!!S.tech[k]||!!(S.sv[t.loc]&&S.sv[t.loc].done)};
 const svProbe=k=>S.out.find(o=>o.k==='survey'&&o.loc===k),svChance=k=>Math.max(0,1-LOCD[k].adiff*SURVEY.fail);
 const oN=o=>o.k==='survey'?'Survey of '+LOCD[o.loc].n:M[o.k].n,oWhen=o=>o.k==='survey'&&o.ph==='orbit'?'in orbit':dur(o.left)+' to go';
 const SVPH={fly:'flying there',orbit:'in orbit',scan:'analysing',back:'returning'};
 const oLbl=o=>o.k==='survey'?oN(o)+' · '+SVPH[o.ph]+(o.ph==='orbit'?'':' ('+dur(o.left)+')'):M[o.k].n+' ('+dur(o.left)+', crew '+o.crew+')';
 let svSel=null;
-function svSend(k){if(S.over||S.ships<1||!can(SURVEY.c)||svProbe(k)||S.colonies[k]||(S.sv[k]&&S.sv[k].done))return;pay(SURVEY.c);const bi=berths().findIndex(x=>x.s==='hangar');S.ships--;S.out.push({k:'survey',loc:k,ph:'fly',left:tripD(k)*24,crew:0,b:bi<0?undefined:bi});say('Probe launched to '+LOCD[k].n+' ('+dur(tripD(k)*24)+').');render()}
+function svSend(k){if(S.over||S.ships<1||!can(SURVEY.c)||svProbe(k)||S.colonies[k]||(S.sv[k]&&S.sv[k].done))return;
+ pay(SURVEY.c);
+ const bi=berths().findIndex(x=>x.s==='hangar');
+ S.ships--;
+ S.out.push({k:'survey',loc:k,ph:'fly',left:tripD(k)*24,crew:0,b:bi<0?undefined:bi});
+ say('Probe launched to '+LOCD[k].n+' ('+dur(tripD(k)*24)+').');
+ render()}
 function svStart(k){const o=svProbe(k);if(S.over||!o||o.ph!=='orbit'||(S.sv[k]&&S.sv[k].done))return;o.ph='scan';o.left=LOCD[k].alen*24;say('Analysis of '+LOCD[k].n+' started ('+LOCD[k].alen+' days).');render()}
 function svRecall(k){const o=svProbe(k);if(S.over||!o||o.ph!=='orbit')return;o.ph='back';o.left=tripFrom(k,HOME)*24;say('Probe recalled from '+LOCD[k].n+' ('+dur(o.left)+').');render()}
 function svTick(o){o.left--;if(o.left>0)return;const n=LOCD[o.loc].n;
@@ -367,7 +577,8 @@ function svTick(o){o.left--;if(o.left>0)return;const n=LOCD[o.loc].n;
 function buildMod(k){if(S.over||!S.tech['col_'+k]||S.mods[k]||S.q.some(q=>q.k==='colmod:'+k)||!can(SURVEY.mc))return;pay(SURVEY.mc);S.q.push({k:'colmod:'+k,left:SURVEY.mt});say('Construction started: colonisation module for '+LOCD[k].n+' ('+dur(SURVEY.mt)+').');render()}
 function svHtml(){const pr=S.out.filter(o=>o.k==='survey'),free=Object.keys(LOCD).filter(k=>!S.colonies[k]&&!(S.sv[k]&&S.sv[k].done)&&!svProbe(k));if(!svSel||free.indexOf(svSel)<0)svSel=free[0]||null;
  let h='<h4 class="rh">Survey flights</h4>';
- h+=pr.map(o=>{const k=o.loc,dn=S.sv[k]&&S.sv[k].done,b=o.ph==='orbit'?(dn?'':'<button class="go" onclick="svStart(\''+k+'\')">Start analysis</button> ')+'<button onclick="svRecall(\''+k+'\')">Recall</button>':'';return '<div class="row"><div>'+esc(LOCD[k].n)+'<small>Probe '+SVPH[o.ph]+(o.ph==='orbit'?'':' · '+dur(o.left)+' left')+(dn?' · analysis complete':' · analysis '+LOCD[k].alen+' days, '+Math.round(svChance(k)*100)+'% success')+'</small></div><div>'+b+'</div></div>'}).join('');
+ h+=pr.map(o=>{const k=o.loc,dn=S.sv[k]&&S.sv[k].done,b=o.ph==='orbit'?(dn?'':'<button class="go" onclick="svStart(\''+k+'\')">Start analysis</button> ')+'<button onclick="svRecall(\''+k+'\')">Recall</button>':'';
+  return '<div class="row"><div>'+esc(LOCD[k].n)+'<small>Probe '+SVPH[o.ph]+(o.ph==='orbit'?'':' · '+dur(o.left)+' left')+(dn?' · analysis complete':' · analysis '+LOCD[k].alen+' days, '+Math.round(svChance(k)*100)+'% success')+'</small></div><div>'+b+'</div></div>'}).join('');
  h+='<div class="row"><div>Send a probe to a location<small>Costs '+cost(SURVEY.c)+'. Needs a probe in the hangar. The trip and the analysis depend on the location.</small></div><div><select id="svsel" onchange="svSel=this.value">'+free.map(k=>'<option value="'+k+'"'+(k===svSel?' selected':'')+'>'+esc(LOCD[k].n)+' ('+lapse(tripD(k))+')</option>').join('')+'</select> <button '+(svSel&&S.ships>0&&can(SURVEY.c)&&!S.over?'':'disabled')+' onclick="svSend(svSel)">Send probe</button></div></div>';
  return h}
 function orbHtml(){const k=S.loc,l=LOCD[k],pr=svProbe(k),sv=S.sv[k]||{};let st='',act='';
@@ -381,7 +592,10 @@ function orbHtml(){const k=S.loc,l=LOCD[k],pr=svProbe(k),sv=S.sv[k]||{};let st='
   else{st='No probe sent yet.';act='<button '+(S.ships>0&&can(SURVEY.c)&&!S.over?'':'disabled')+' onclick="svSend(\''+k+'\')">Send probe</button>'+(S.ships<1?' <span class="bad">no probe in the hangar</span>':!can(SURVEY.c)?' <span class="bad">needs '+cost(SURVEY.c)+'</span>':'')}
   if(pr&&pr.ph==='orbit')act+='<button onclick="svRecall(\''+k+'\')">Recall probe</button>'}
  return '<h2>Survey of '+esc(l.n)+'</h2><div class="in"><div class="row"><div>Analysis<small>Length '+l.alen+' days · difficulty '+Math.round(l.adiff*100)+'% · success chance '+Math.round(svChance(k)*100)+'% per attempt</small></div></div><div class="row"><div>Probe trip<small>'+lapse(tripD(l.k||k))+' ('+fmtAU(distNow(HOME,k,daysJ()))+' AU today) · launch cost '+cost(SURVEY.c)+'</small></div></div><div class="row"><div>'+st+'</div><div>'+act+'</div></div></div>'}
-function modRows(){const ks=Object.keys(LOCD).filter(k=>S.tech['col_'+k]&&!S.mods[k]),built=Object.keys(S.mods).filter(k=>S.mods[k]&&!S.colonies[k]);return (ks.length?'<h4 class="rh">Colonisation modules</h4>':'')+ks.map(k=>{const q=S.q.some(x=>x.k==='colmod:'+k);return '<div class="row"><div>Colonisation module – '+esc(LOCD[k].n)+'<small>'+cost(SURVEY.mc)+' · takes '+dur(SURVEY.mt)+'</small></div><button '+(!q&&can(SURVEY.mc)&&!S.over?'':'disabled')+' onclick="buildMod(\''+k+'\')">'+(q?'Queued':'Build')+'</button></div>'}).join('')+(built.length?'<div class="dim" style="padding-top:6px">Modules built: '+built.map(k=>esc(LOCD[k].n)).join(', ')+'</div>':'')}
+function modRows(){const ks=Object.keys(LOCD).filter(k=>S.tech['col_'+k]&&!S.mods[k]),built=Object.keys(S.mods).filter(k=>S.mods[k]&&!S.colonies[k]);
+ return (ks.length?'<h4 class="rh">Colonisation modules</h4>':'')+ks.map(k=>{const q=S.q.some(x=>x.k==='colmod:'+k);
+ return '<div class="row"><div>Colonisation module – '+esc(LOCD[k].n)+'<small>'+cost(SURVEY.mc)+' · takes '+dur(SURVEY.mt)+'</small></div><button '+(!q&&can(SURVEY.mc)&&!S.over?'':'disabled')+' onclick="buildMod(\''+k+'\')">'+(q?'Queued':'Build')+'</button></div>'}).join('')+(built.length?'<div class="dim" style="padding-top:6px">Modules built: '+built.map(k=>esc(LOCD[k].n)).join(', ')+'</div>':'')}
+/* ===== MISSIONS AND THE GAME CLOCK: launch, tick (one game hour), daily, monthly ===== */
 function launch(k){const m=M[k],cr=CREW[k];if(S.over||S.ships<1||!can(m.c)||freeCol()<cr)return;
  pay(m.c);const bi=berths().findIndex(x=>x.s==='hangar');S.ships--;S.out.push({k,left:m.t*720,crew:cr,b:bi<0?undefined:bi});say('Launched: '+m.n+' ('+Math.round(m.t*30)+' days, crew of '+cr+').');render()}
 function tick(){
@@ -406,7 +620,15 @@ function tick(){
  const idle=plan.some(x=>x===0);
  if(idle&&!S.nobuild){S.nobuild=true;say('Construction stalled: not enough builders. Assign more in Construction.','bad')}else if(!idle&&S.nobuild){S.nobuild=false;say('Construction has builders again.','ok')}
  const done=S.q.filter(q=>q.left<=0);S.q=S.q.filter(q=>q.left>0);
- for(const q of done){if(q.k.startsWith('colmod:')){const l=q.k.slice(7);S.mods[l]=1;say('The colonisation module for '+LOCD[l].n+' is complete. Launching it is not implemented yet.','ok');continue}if(q.k==='berth'){S.slots++;say('Starport expanded: berth '+S.slots+' of '+PORT.max+' is ready.','ok');continue}S.b[q.k]++;say('Construction complete: '+B[q.k].n+'.'+(STAFF[q.k]?' Assign at least '+STAFF[q.k].min+' '+JOBN[STAFF[q.k].job].toLowerCase()+' per building to run it.':''),'ok')}
+ for(const q of done){if(q.k.startsWith('colmod:')){const l=q.k.slice(7);
+  S.mods[l]=1;
+  say('The colonisation module for '+LOCD[l].n+' is complete. Launching it is not implemented yet.','ok');
+  continue}
+  if(q.k==='berth'){S.slots++;
+  say('Starport expanded: berth '+S.slots+' of '+PORT.max+' is ready.','ok');
+  continue}
+  S.b[q.k]++;
+  say('Construction complete: '+B[q.k].n+'.'+(STAFF[q.k]?' Assign at least '+STAFF[q.k].min+' '+JOBN[STAFF[q.k].job].toLowerCase()+' per building to run it.':''),'ok')}
  const back=S.out.filter(o=>o.k!=='survey'&&o.left<=0);S.out=S.out.filter(o=>o.k==='survey'||o.left>0);
  for(const o of back){const m=M[o.k];
   if(Math.random()<m.risk){say(m.n+': ship lost in transit. The crew of '+(o.crew||2)+' is gone.','bad');S.pop=Math.max(0,S.pop-(o.crew||2));continue}
@@ -428,6 +650,7 @@ function monthly(){const R=S.res,cap=S.b.hab*B.hab.cap;
   if(ev<.4){const k=['solar','mine','ice','hab'].filter(x=>S.b[x]>0);if(k.length){const x=k[Math.floor(Math.random()*k.length)];S.b[x]--;say('Meteor strike destroys a '+B[x].n.toLowerCase()+'.','bad')}}
   else if(ev<.7){const g=20+Math.floor(Math.random()*30);R.iron+=g;say('Survey team finds a rich vein: +'+g+' iron.','ok')}
   else{const l=Math.min(Math.floor(R.hydrogen),8);R.hydrogen-=l;say('Solar flare ruins stored hydrogen: −'+l+'.','bad')}}}
+/* ===== FORMATTING, ICONS AND THE RESOURCES BAR ===== */
 const pad=n=>String(n).padStart(2,'0');
 const dur=h=>h>=24?lapse(Math.ceil(h/24)):Math.ceil(h)+' h';
 const cache={};function set(id,h){if(cache[id]!==h){cache[id]=h;$(id).innerHTML=h}}
@@ -482,7 +705,8 @@ function labStatus(){const n=S.b.lab,w=work('lab'),e=pow().e;
  const rate=eff('lab')*e*(S.cur?.25:1)/20;
  const rp=rate>0?(rate>=.1?rate.toFixed(2)+' per day':'1 per '+Math.round(1/rate)+' days'):'stopped';
  let h='<div class="row"><div>'+n+' science lab'+(n>1?'s':'')+' ('+w+' staffed)<small>'+(w<n?'Assign scientists in Construction. ':'')+'Research points: '+rp+(S.cur?' (cut by 75% while a project is active)':' (full pace)')+'</small></div></div>';
- if(S.cur){const t=T[S.cur],p=S.proj[S.cur],tot=t.rp*24;h+='<div class="row"><div>Project: '+t.n+'<small>'+Math.ceil(p.left/24)+' days left · costs '+t.rp/100+' research points / day</small><div class="bar"><i style="width:'+Math.min(100,Math.round((1-p.left/tot)*100))+'%"></i></div></div><button onclick="pauseResearch()">Pause</button></div>'}
+ if(S.cur){const t=T[S.cur],p=S.proj[S.cur],tot=t.rp*24;
+  h+='<div class="row"><div>Project: '+t.n+'<small>'+Math.ceil(p.left/24)+' days left · costs '+t.rp/100+' research points / day</small><div class="bar"><i style="width:'+Math.min(100,Math.round((1-p.left/tot)*100))+'%"></i></div></div><button onclick="pauseResearch()">Pause</button></div>'}
  else h+='<div class="row dim">No project active. Starting a technology spends its research points up front, then a little every day. Resuming a paused one costs half the upfront points.</div>';
  return h}
 const FAR=['silver','chromium','uranium'];
@@ -500,10 +724,13 @@ function resRate(){const P=pow(),e=P.e,R=S.res,d={};for(const r in RN)d[r]=0;
    for(const x in inp)d[x]-=inp[x]/30;for(const x in b.out||{})d[x]+=b.out[x]*mult*bm*e/30}}
  d.water-=S.pop*COL.water*(S.tech.hydro?.6:1)/30;d.oxygen-=S.pop*COL.oxygen/30;return d}
 const n3=n=>n<1000?String(n):n<1e6?Math.floor(n/1000)+'k':Math.floor(n/1e6)+'M';
-const rchip=(k,val,rate,dim)=>{const v=+rate.toFixed(2),g=(v>0?'+':'')+v+' per day';return '<span class="chip rich'+(dim?' dim':'')+'" tabindex="0" aria-label="'+RN[k]+' '+val+', '+g+'"><b class="'+(v>0?'up':v<0?'down':'')+'">'+n3(val)+'</b><span class="rt">'+ico(k)+RN[k]+'<small class="rr">'+g+'</small></span></span>'};
+const rchip=(k,val,rate,dim)=>{const v=+rate.toFixed(2),g=(v>0?'+':'')+v+' per day';
+ return '<span class="chip rich'+(dim?' dim':'')+'" tabindex="0" aria-label="'+RN[k]+' '+val+', '+g+'"><b class="'+(v>0?'up':v<0?'down':'')+'">'+n3(val)+'</b><span class="rt">'+ico(k)+RN[k]+'<small class="rr">'+g+'</small></span></span>'};
 const RROWS=[['Volatiles','Metals'],['Minerals','Rare metals','Manufactured']];
-const stock=()=>{const d=resRate();return RROWS.map(row=>'<div class="rrow">'+CAT.filter(c=>row.includes(c.n)).sort((a,b)=>row.indexOf(a.n)-row.indexOf(b.n)).map(c=>'<div class="rg"><span class="cic-bg"><svg viewBox="0 0 16 16" aria-hidden="true">'+ICON[CATI[c.n]]+'</svg></span><span class="chip cic" tabindex="0" data-n="'+c.n+'" aria-label="'+c.n+'"></span>'+c.r.map(k=>rchip(k,Math.floor(S.res[k]),d[k],FAR.includes(k))).join('<span class="sep">·</span>')+'</div>').join('')+'</div>').join('')};
+const stock=()=>{const d=resRate();
+ return RROWS.map(row=>'<div class="rrow">'+CAT.filter(c=>row.includes(c.n)).sort((a,b)=>row.indexOf(a.n)-row.indexOf(b.n)).map(c=>'<div class="rg"><span class="cic-bg"><svg viewBox="0 0 16 16" aria-hidden="true">'+ICON[CATI[c.n]]+'</svg></span><span class="chip cic" tabindex="0" data-n="'+c.n+'" aria-label="'+c.n+'"></span>'+c.r.map(k=>rchip(k,Math.floor(S.res[k]),d[k],FAR.includes(k))).join('<span class="sep">·</span>')+'</div>').join('')+'</div>').join('')};
 let logTab='obj';
+/* ===== LOCATIONS: data, real orbits, distances, probe trips ===== */
 const LOCS=[
  {k:'mercury',n:'Mercury',d:'Scorched, airless world closest to the Sun. Plentiful solar energy and little else.'},
  {k:'venus',n:'Venus',d:'Crushing, acid-laced atmosphere. Only floating habitats in the cloud tops are realistic.'},
@@ -586,7 +813,10 @@ function lapse(d){if(d<1)return Math.max(1,Math.round(d*24))+' h';const M=365.25
 const LOCL=()=>Object.keys(LOCD).map(k=>Object.assign({k},LOCD[k]));
 function prodRate(r){let t=0;const e=pow().e;for(const k in B){const o=B[k].out;if(!o||o[r]===undefined)continue;const mult=k==='mine'&&S.tech.deep?1.5:1,w=work(k),mb=manned(k);for(let i=0;i<w;i++)t+=o[r]*mult*(i<mb?1+BOOST:1)*e}return t}
 const fmtN=n=>n>0?n.toLocaleString('en-US'):'–';
-function resTip(l,cat){const c=!!S.colonies[l.k];return '<span class="tp"><b class="th">'+cat.n+'</b><span class="tr h"><i></i><i>Producing/mo</i><i>Can provide</i></span>'+cat.r.map(r=>{const pr=c&&l.k==='moon'?prodRate(r):0;return '<span class="tr"><i>'+ico(r)+RN[r]+'</i><i>'+(pr>0?'+'+(+pr.toFixed(1)):'–')+'</i><i>'+fmtN((l.res||{})[r]||0)+'</i></span>'}).join('')+'</span>'}
+function resTip(l,cat){const c=!!S.colonies[l.k];
+ return '<span class="tp"><b class="th">'+cat.n+'</b><span class="tr h"><i></i><i>Producing/mo</i><i>Can provide</i></span>'+cat.r.map(r=>{const pr=c&&l.k==='moon'?prodRate(r):0;
+ return '<span class="tr"><i>'+ico(r)+RN[r]+'</i><i>'+(pr>0?'+'+(+pr.toFixed(1)):'–')+'</i><i>'+fmtN((l.res||{})[r]||0)+'</i></span>'}).join('')+'</span>'}
+/* ===== COLONIES AND DATABASE OVERVIEWS ===== */
 const COLPAGES=['Inner Planets','Middle Planets','Outer Planets'];
 const colPageOf=l=>{const r=l.p||l.k;return ['mercury','venus','earth','mars','belt'].includes(r)?0:['jupiter','saturn'].includes(r)?1:2};let colPage=0;
 let dbTab='loc';
@@ -612,13 +842,14 @@ function dbHtml(){const E=dbData();let h='';
  const tabs=DBTABS.map(t=>'<button data-dt="'+t[0]+'" aria-pressed="'+(dbTab===t[0])+'">'+t[1]+' ('+E[t[0]].length+')</button>').join('');
  h=E[dbTab].map(x=>'<details class="dbe"><summary><span class="ci">'+x.i+'</span>'+esc(x.n)+'</summary><div class="dbb">'+(x.k&&dbTab==='loc'?'<div class="pvw"><div class="sbg">'+sceneHtml(x.k)+'</div></div>':'')+(x.d?'<p>'+esc(x.d)+'</p>':'')+'<dl>'+x.f.map(f=>'<dt>'+f[0]+'</dt><dd>'+esc(f[1])+'</dd>').join('')+'</dl></div></details>').join('');
  return [tabs,h]}
+/* ===== STARSHIPS OVERVIEW DATA: pager, parts, ship types ===== */
 let tovFilter=null;const shipTab={};const SHIPS_PER=12;let shipFilter=null,shipPage=0;
 const pgArr=(attr,d,on,t)=>'<button class="clk pgb" '+attr+'="'+d+'" title="'+t+'" aria-label="'+t+'"'+(on?'':' disabled')+'><svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="square"><path d="'+(d<0?'M10.5 2.5L5 8L10.5 13.5':'M5.5 2.5L11 8L5.5 13.5')+'"/></svg></button>';
 const PARTS=[{k:'drive',n:'Drive',d:'Moves the ship. Faster drives shorten trips.'},{k:'life',n:'Life support',d:'Keeps the crew and colonists alive on long flights.'},{k:'cargo',n:'Cargo bay',d:'Carries resources, parts and colony modules.'},{k:'crew',n:'Crew quarters',d:'Berths for the crew and colonists travelling aboard.'},{k:'bridge',n:'Bridge',d:'Command centre that coordinates the ship systems.'},{k:'computer',n:"Ship's computer",d:'Onboard navigation and mission control.'},{k:'weapons',n:'Weapons',d:'Armament for combat.'},{k:'shields',n:'Shields',d:'Protection against hostile fire and debris.'}];
 /* Placeholder part descriptions per ship type (empty string = the ship has no such part). Real definitions are still to do, see PROMISES.md. */
 const SHIPPARTS={probe:{drive:'Simplest drive',life:'',cargo:'',crew:'',bridge:'',computer:'Survey computer',weapons:'',shields:''}};
 const SHIPTYPES=[{k:'probe',n:'Probes'},{k:'hop',n:'Hop Miners'},{k:'solar',n:'Solar Carriers'},{k:'nuclear',n:'Nuclear Cruisers'},{k:'colony',n:'Colony Ships'}];
-/* ===== Placeholder scenes: what each location looks like (CSS shapes drawn on the 1920x1080 stage) ===== */
+/* ===== LOCATION SCENES: placeholder art, CSS shapes drawn on the 1920x1080 stage ===== */
 const bands=a=>'linear-gradient(180deg,'+a.map((c,i)=>c+' '+(i*100/a.length).toFixed(1)+'% '+((i+1)*100/a.length).toFixed(1)+'%').join(',')+')';
 const JUPB=['#e8d3a8','#c88f5a','#f1e4c8','#a8643a','#d9b887','#8f5a34','#e6cfa0','#b9784a'],SATB=['#e4cf8e','#c9a85c','#efe0aa','#b8964e','#dcc47c','#a98a48','#e9d79a'],URAB=['#a6dfe0','#86cdd2','#b8e8e8','#7cc6cc','#a0dadc'],NEPB=['#2a4fb8','#3b6fd9','#1f3a8a','#4f84e6','#2d56c4','#1c3a96'];
 const GAS=(a,sun)=>({sky:bands(a),hz:100,sun});
@@ -669,8 +900,8 @@ function sceneHtml(k){const s=SCENES[k]||SCENES.moon,hz=s.hz===undefined?66:s.hz
   if(b.ring&&typeof b.ring!=='string')h+='<div class="sb" style="left:'+b.x+'%;top:'+b.y+'%;width:'+Math.round(r*3)+'px;height:'+Math.round(r*.7)+'px;margin:-'+Math.round(r*.35)+'px 0 0 -'+Math.round(r*1.5)+'px;border:'+Math.max(2,Math.round(r*.07))+'px solid rgba(235,220,170,.55);transform:rotate(-16deg);opacity:'+(b.o||1)+'"></div>'}
  if(hz<100)h+='<div class="gd" style="top:'+hz+'%;background:'+s.gr+'"></div>';
  return h}
-/* ===== The map: five zoom levels (1 Solar System, 2 region, 3 planetary system, 4 orbit of a location, 5 main screen) ===== */
 /* Real ephemeris for the map: [mean longitude at J2000 in degrees, longitude of perihelion in degrees]; the semi-major axis, eccentricity and period come from LOCD */
+/* ===== MAP: seven zoom levels (1 Solar System, 2-4 regions, 5 planetary system, 6 orbit, 7 main screen); Kepler positions, orbits, wheel and clicks ===== */
 const EPH={mercury:[252.25,77.46],venus:[181.98,131.6],earth:[100.46,102.94],mars:[355.45,336.06],jupiter:[34.4,14.73],saturn:[49.95,92.6],uranus:[313.24,170.95],neptune:[304.88,44.96],pluto:[238.93,224.07],belt:[159.6,154]};/* belt = Ceres */
 const RKM={mercury:2440,venus:6052,earth:6371,mars:3390,jupiter:69911,saturn:58232,uranus:25362,neptune:24622,pluto:1188};/* real radii, only used to rank the drawn sizes */
 const PLN=Object.keys(EPH).filter(k=>k!=='belt');
@@ -687,7 +918,9 @@ const CX=960,CY=540,D2R=Math.PI/180,TILT=40,TY=Math.cos(TILT*Math.PI/180),LVL={1
 const rpx=(k,base)=>Math.max(3.5,Math.round(base*Math.pow(RKM[k]/6371,.35)*10)/10);
 function kepler(k,t){const l=LOCD[k],w=EPH[k][1]*D2R,e=l.ecc,M=(EPH[k][0]-EPH[k][1]+360*t/l.per)*D2R;let E=M;for(let i=0;i<8;i++)E-=(E-e*Math.sin(E)-M)/(1-e*Math.cos(E));
  const x=l.a*(Math.cos(E)-e),y=l.a*Math.sqrt(1-e*e)*Math.sin(E);return[x*Math.cos(w)-y*Math.sin(w),x*Math.sin(w)+y*Math.cos(w)]}
-function zoneHtml(){const s=LVL[1].s;return ZONES.map((z,i)=>{const r=z[1]*s,a=z[0]*s;return '<i class="zn zn'+i+'" style="width:'+2*r+'px;height:'+2*r+'px;margin:-'+r+'px 0 0 -'+r+'px;left:'+CX+'px;top:'+CY+'px;transform:scaleY('+TY+');background:radial-gradient(circle closest-side,transparent '+a+'px,rgba(255,154,46,.9) '+a+'px,rgba(255,154,46,.9) '+(a+1.5)+'px,rgba(255,154,46,.13) '+(a+1.5)+'px)"></i><div class="zl zl'+i+'" style="left:'+CX+'px;top:'+Math.round(CY-r*TY-8)+'px">'+esc(COLPAGES[i])+'<small>Click to zoom in</small></div>'}).join('')}
+function zoneHtml(){const s=LVL[1].s;
+ return ZONES.map((z,i)=>{const r=z[1]*s,a=z[0]*s;
+ return '<i class="zn zn'+i+'" style="width:'+2*r+'px;height:'+2*r+'px;margin:-'+r+'px 0 0 -'+r+'px;left:'+CX+'px;top:'+CY+'px;transform:scaleY('+TY+');background:radial-gradient(circle closest-side,transparent '+a+'px,rgba(255,154,46,.9) '+a+'px,rgba(255,154,46,.9) '+(a+1.5)+'px,rgba(255,154,46,.13) '+(a+1.5)+'px)"></i><div class="zl zl'+i+'" style="left:'+CX+'px;top:'+Math.round(CY-r*TY-8)+'px">'+esc(COLPAGES[i])+'<small>Click to zoom in</small></div>'}).join('')}
 function zoneAt(e){const m=$('mapbg').getBoundingClientRect(),k=m.width/1920,d=Math.hypot((e.clientX-m.left)/k-CX,((e.clientY-m.top)/k-CY)/TY)/LVL[1].s;return ZONES.findIndex(z=>d>=z[0]&&d<z[1])}
 function mapBody(k,R,o){o=o||{};const sh='box-shadow:inset -'+Math.round(R*.3)+'px -'+Math.round(R*.2)+'px '+Math.round(R*.6)+'px rgba(0,0,0,.55);';
  const col=S.colonies&&(S.colonies[k]||(o.any&&Object.keys(LOCD).some(m=>LOCD[m].p===k&&S.colonies[m])));
@@ -695,7 +928,8 @@ function mapBody(k,R,o){o=o||{};const sh='box-shadow:inset -'+Math.round(R*.3)+'
   '<i class="mi" style="background:'+GLOBE[k]+';'+sh+'"></i>'+(k==='saturn'||o.ring?'<i class="mr" style="left:-'+Math.round(R*.55)+'px;right:-'+Math.round(R*.55)+'px;top:'+Math.round(R*.65)+'px;bottom:'+Math.round(R*.65)+'px"></i>':'')+(col?'<i class="mc" style="inset:-'+(o.cr||6)+'px"></i>':'')+(o.label===false?'':'<span class="ml" style="left:'+(2*R+8)+'px">'+esc(LOCD[k].n)+'</span>')+'</div>'}
 function mapRing(r,cls){return '<i class="mo'+(cls?' '+cls:'')+'" style="width:'+2*r+'px;height:'+2*r+'px;margin:-'+r+'px 0 0 -'+r+'px;left:'+CX+'px;top:'+CY+'px;transform:scaleY('+TY+')"></i>'}
 /* real orbit ellipses: the Sun sits at a focus, so the centre is shifted away from the perihelion */
-function orbitSvg(s,reg){let h='<svg class="orbs" width="1920" height="1080" viewBox="0 0 1920 1080"><g transform="translate('+CX+' '+CY+') scale(1 '+TY+') translate(-'+CX+' -'+CY+')">';for(const k of PLN){const l=LOCD[k],w=EPH[k][1],e=l.ecc,cx=CX-l.a*e*Math.cos(w*D2R)*s,cy=CY+l.a*e*Math.sin(w*D2R)*s;
+function orbitSvg(s,reg){let h='<svg class="orbs" width="1920" height="1080" viewBox="0 0 1920 1080"><g transform="translate('+CX+' '+CY+') scale(1 '+TY+') translate(-'+CX+' -'+CY+')">';
+ for(const k of PLN){const l=LOCD[k],w=EPH[k][1],e=l.ecc,cx=CX-l.a*e*Math.cos(w*D2R)*s,cy=CY+l.a*e*Math.sin(w*D2R)*s;
   h+='<ellipse'+(regOf(k)===reg?' class="on"':'')+' cx="'+cx.toFixed(1)+'" cy="'+cy.toFixed(1)+'" rx="'+(l.a*s).toFixed(1)+'" ry="'+(l.a*s*Math.sqrt(1-e*e)).toFixed(1)+'" transform="rotate('+(-w)+' '+cx.toFixed(1)+' '+cy.toFixed(1)+')"/>'}
  return h+'</g></svg>'}
 /* a band of dots between two radii (px); clickable and turning with the belt's period when it is the asteroid belt */
@@ -716,7 +950,8 @@ function mapHtml(){const z=S.view.z;let h='<div class="sk" style="background:'+S
   h+=p==='belt'?dotBand(0,520,90,3,true):'';
   h+=mapBody(p,R,{label:true,cr:10,ring:p==='saturn'});
   ms.forEach(k=>{const r=rr(k);h+=mapRing(r)+mapBody(k,MR[k],{T:PER(k),r,ph:phase(k,1),cr:7})})}
- else{const k=S.loc,R=300;h+=mapBody(k,R,{label:false,cr:12,ring:k==='saturn'})+mapRing(400,'op')+'<div class="mk" data-rad="10" data-per="2" data-r="400" data-ph="'+phase(k,2)+'" style="width:0;height:0"><i></i></div>'+'<div class="mt">'+(S.colonies&&S.colonies[k]?'Colony: '+esc(LOCD[k].col||LOCD[k].n):'No colony')+'<small>Click the globe to land</small></div>'}
+ else{const k=S.loc,R=300;
+  h+=mapBody(k,R,{label:false,cr:12,ring:k==='saturn'})+mapRing(400,'op')+'<div class="mk" data-rad="10" data-per="2" data-r="400" data-ph="'+phase(k,2)+'" style="width:0;height:0"><i></i></div>'+'<div class="mt">'+(S.colonies&&S.colonies[k]?'Colony: '+esc(LOCD[k].col||LOCD[k].n):'No colony')+'<small>Click the globe to land</small></div>'}
  return h}
 /* planets follow their real Kepler orbits for the game date; moons (circular, arbitrary starting phase) use their real periods; everything turns counter-clockwise as seen from the north */
 function updateOrbits(){const m=$('mapbg');if(!m||m.hidden)return;const t=daysJ()+(S.speed&&typeof acc!=='undefined'?acc/S.speed/24:0);
@@ -733,22 +968,46 @@ const ZNAMES=()=>[['Solar System','Solar System'],[COLPAGES[2],COLPAGES[2]],[COL
 function viewTitle(){const z=S.view.z,l=LOCD[S.loc];return z===1?'Solar System':z<=4?COLPAGES[4-z]:z===5?ZNAMES()[4][0]:z===6?l.n+' – orbit':(S.loc==='moon'?'Moonbase – Mare Tranquillitatis':(S.colonies&&S.colonies[S.loc]?l.col||l.n:l.n))}
 function zoomTo(z){S.view.z=z;go('base')}
 function mapClick(k){const z=S.view.z;if(z===1)S.view.z=REGLV[regOf(k)];else if(z<=4){S.loc=k;S.view.z=5}else if(z===5){S.loc=k;S.view.z=6}else if(z===6)S.view.z=7;go('base')}
+/* ===== SCREENS AND RENDER ===== */
 const SCR=['base','col','ships','tov','db','build','tech','yard','port','flight','log'];
 function go(s){S.screen=s;render()}
-SCR.filter(s=>s!=='base').forEach(s=>{const h=$('scr-'+s).querySelector('h2');h.classList.add('wh');h.insertAdjacentHTML('beforeend','<button class="xb" title="Close (Esc)" aria-label="Close"><svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="square"><path d="M3 3L13 13M13 3L3 13"/></svg></button>');h.querySelector('.xb').onclick=()=>go('base')});
+SCR.filter(s=>s!=='base').forEach(s=>{const h=$('scr-'+s).querySelector('h2');
+ h.classList.add('wh');
+ h.insertAdjacentHTML('beforeend','<button class="xb" title="Close (Esc)" aria-label="Close"><svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="square"><path d="M3 3L13 13M13 3L3 13"/></svg></button>');
+ h.querySelector('.xb').onclick=()=>go('base')});
 function fit(){const q=+new URLSearchParams(location.search).get('scale'),k=q>0?q:Math.min(innerWidth/1920,innerHeight/1080);$('game').style.transform='translate(-50%,-50%) scale('+k+')'}
 addEventListener('resize',fit);
 function render(){
- SCR.forEach(s=>$('scr-'+s).hidden=S.screen!==s);$('scene').classList.toggle('quiet',S.screen!=='base');{const z=S.view.z,away=S.loc!=='moon'||z<7;$('scene').classList.toggle('away',away);$('scenebg').hidden=z<7;$('mapbg').hidden=z>=7;set('scenebg',z>=7?sceneHtml(S.loc):'');set('mapbg',z<7?mapHtml():'');if(S.screen==='base'&&away)$('scr-base').hidden=true;$('colname').textContent=viewTitle();document.querySelector('.ph').hidden=z<7;$('orbpanel').hidden=z!==6;if(z===6)set('orbpanel',orbHtml());set('zoombar',ZNAMES().map((n,i)=>'<button data-z="'+(i+1)+'" aria-pressed="'+(z===i+1)+'" title="Zoom level '+(i+1)+'">'+(i+1)+' · '+esc(n[1])+'</button>').join(''));updateOrbits()}$('back').setAttribute('aria-pressed',String(S.screen==='base'));
+ SCR.forEach(s=>$('scr-'+s).hidden=S.screen!==s);
+  $('scene').classList.toggle('quiet',S.screen!=='base');
+  {const z=S.view.z,away=S.loc!=='moon'||z<7;
+  $('scene').classList.toggle('away',away);
+  $('scenebg').hidden=z<7;
+  $('mapbg').hidden=z>=7;
+  set('scenebg',z>=7?sceneHtml(S.loc):'');
+  set('mapbg',z<7?mapHtml():'');
+  if(S.screen==='base'&&away)$('scr-base').hidden=true;
+  $('colname').textContent=viewTitle();
+  document.querySelector('.ph').hidden=z<7;
+  $('orbpanel').hidden=z!==6;
+  if(z===6)set('orbpanel',orbHtml());
+  set('zoombar',ZNAMES().map((n,i)=>'<button data-z="'+(i+1)+'" aria-pressed="'+(z===i+1)+'" title="Zoom level '+(i+1)+'">'+(i+1)+' · '+esc(n[1])+'</button>').join(''));
+  updateOrbits()}
+  $('back').setAttribute('aria-pressed',String(S.screen==='base'));
  $('b-build').textContent=S.q.length?S.q.length+' in progress':'Idle';
  $('b-tech').textContent=S.cur?T[S.cur].n:'Idle';
- $('colbtn').setAttribute('aria-pressed',String(S.screen==='col'));$('shipbtn').setAttribute('aria-pressed',String(S.screen==='ships'));$('tovbtn').setAttribute('aria-pressed',String(S.screen==='tov'));$('dbbtn').setAttribute('aria-pressed',String(S.screen==='db'));$('logbtn').setAttribute('aria-pressed',String(S.screen==='log'));
+ $('colbtn').setAttribute('aria-pressed',String(S.screen==='col'));
+  $('shipbtn').setAttribute('aria-pressed',String(S.screen==='ships'));
+  $('tovbtn').setAttribute('aria-pressed',String(S.screen==='tov'));
+  $('dbbtn').setAttribute('aria-pressed',String(S.screen==='db'));
+  $('logbtn').setAttribute('aria-pressed',String(S.screen==='log'));
  $('b-yard').textContent=S.ships+' in hangar';
  $('b-port').textContent=owned()+'/'+S.slots+' berths';
  $('b-flight').textContent=S.out.length+' in flight';
  set('pop',chip('colonists','Colonists ('+freeCol()+' free)',S.pop+'/'+S.b.hab*B.hab.cap));
  set('date',S.y+'-'+pad(S.m)+'-'+pad(S.d)+'<span class="dt"><span>'+wday(S.y,S.m,S.d)+'</span><span>'+pad(S.h)+':00</span></span>');
- {const v=+rpRate().toFixed(3),g=(v>0?'+':'')+v+' per day';set('res','<span class="cic-bg"><svg viewBox="0 0 16 16" aria-hidden="true">'+ICON.research+'</svg></span><span class="chip rich" tabindex="0" aria-label="Research points '+Math.floor(S.rp)+', '+g+'"><b class="'+(v>0?'up':v<0?'down':'')+'">'+Math.floor(S.rp)+'</b><span class="rt">'+ico('research')+'Research points<small class="rr">'+g+'</small></span></span>')}
+ {const v=+rpRate().toFixed(3),g=(v>0?'+':'')+v+' per day';
+  set('res','<span class="cic-bg"><svg viewBox="0 0 16 16" aria-hidden="true">'+ICON.research+'</svg></span><span class="chip rich" tabindex="0" aria-label="Research points '+Math.floor(S.rp)+', '+g+'"><b class="'+(v>0?'up':v<0?'down':'')+'">'+Math.floor(S.rp)+'</b><span class="rt">'+ico('research')+'Research points<small class="rr">'+g+'</small></span></span>')}
  set('stock',stock());
  let t='<div class="tile t-port" title="Starport">P</div>';for(const k in B)for(let i=0;i<S.b[k];i++)t+='<div class="tile t-'+k+'" title="'+B[k].n+'">'+B[k].g+'</div>';
  for(const q of S.q)t+='<div class="tile" style="background:transparent;border-style:dashed;color:var(--ink)" title="Under construction: '+BQ(q.k).n+'">'+BQ(q.k).g+'</div>';
@@ -773,7 +1032,12 @@ function render(){
  h+=svHtml();
  if(S.out.length)h+='<div class="dim" style="padding-top:6px">In flight: '+S.out.map(oLbl).join(', ')+'</div>';
  set('yard',y);set('port',pt);
- const np=COLPAGES.length;colPage=Math.min(colPage,np-1);const arr=(d,on,t)=>'<button class="clk pgb" data-cp="'+d+'" title="'+t+'" aria-label="'+t+'"'+(on?'':' disabled')+'><svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="square"><path d="'+(d<0?'M10.5 2.5L5 8L10.5 13.5':'M5.5 2.5L11 8L5.5 13.5')+'"/></svg></button>';set('cols','<div class="sticky"><div class="pgh">'+arr(-1,colPage>0,'Previous page')+'<b>'+COLPAGES[colPage]+'</b>'+arr(1,colPage<np-1,'Next page')+'</div></div>'+LOCL().filter(l=>colPageOf(l)===colPage).map(l=>{const c=!!S.colonies[l.k];return '<div class="row loc'+(c?'':' off')+(l.p?' sub':'')+'"><div><span class="ci" role="img" title="'+(c?'Colonised':'No colony')+'" aria-label="'+(c?'Colonised':'No colony')+'">'+ico('colony')+'</span><span class="nm" tabindex="0" data-d="'+esc(l.d)+'">'+l.n+'</span>'+(c?'<small>Colony: '+(l.col||l.n)+'</small>':'')+'</div>'+(c?'<span class="lpop">'+S.pop+' colonists</span>':'')+'<span class="lc">'+CAT.map(k=>'<span class="ct" tabindex="0" aria-label="'+k.n+'"><svg viewBox="0 0 16 16" width="20" height="20" aria-hidden="true">'+ICON[CATI[k.n]]+'</svg>'+resTip(l,k)+'</span>').join('')+'</span></div>'}).join(''));set('flights',h);
+ const np=COLPAGES.length;
+  colPage=Math.min(colPage,np-1);
+  const arr=(d,on,t)=>'<button class="clk pgb" data-cp="'+d+'" title="'+t+'" aria-label="'+t+'"'+(on?'':' disabled')+'><svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="square"><path d="'+(d<0?'M10.5 2.5L5 8L10.5 13.5':'M5.5 2.5L11 8L5.5 13.5')+'"/></svg></button>';
+  set('cols','<div class="sticky"><div class="pgh">'+arr(-1,colPage>0,'Previous page')+'<b>'+COLPAGES[colPage]+'</b>'+arr(1,colPage<np-1,'Next page')+'</div></div>'+LOCL().filter(l=>colPageOf(l)===colPage).map(l=>{const c=!!S.colonies[l.k];
+  return '<div class="row loc'+(c?'':' off')+(l.p?' sub':'')+'"><div><span class="ci" role="img" title="'+(c?'Colonised':'No colony')+'" aria-label="'+(c?'Colonised':'No colony')+'">'+ico('colony')+'</span><span class="nm" tabindex="0" data-d="'+esc(l.d)+'">'+l.n+'</span>'+(c?'<small>Colony: '+(l.col||l.n)+'</small>':'')+'</div>'+(c?'<span class="lpop">'+S.pop+' colonists</span>':'')+'<span class="lc">'+CAT.map(k=>'<span class="ct" tabindex="0" aria-label="'+k.n+'"><svg viewBox="0 0 16 16" width="20" height="20" aria-hidden="true">'+ICON[CATI[k.n]]+'</svg>'+resTip(l,k)+'</span>').join('')+'</span></div>'}).join(''));
+  set('flights',h);
  {const d=dbHtml();set('db-tabs',d[0]);set('dbList',d[1])}
  {let n=0;const cnt={probe:owned()};
   const sb=t=>'<button class="sbox'+(cnt[t.k]?'':' dim')+'" data-sf="'+t.k+'" aria-pressed="'+(shipFilter===t.k)+'" title="'+(shipFilter===t.k?'Show all starships':'Show only '+t.n)+'"><b>'+(cnt[t.k]||0)+'</b><span>'+t.n+'</span></button>';
@@ -781,10 +1045,12 @@ function render(){
   const pm=(i,kind,key,h,n,addOk)=>'<span class="lpm"><button data-cg="'+i+':'+kind+':'+key+':1" aria-label="Add" '+(h&&addOk?'':'disabled')+'>+</button><button data-cg="'+i+':'+kind+':'+key+':-1" aria-label="Remove" '+(h&&n>0?'':'disabled')+'>&minus;</button></span>';
   const shipBody=(i,h)=>{const tab=shipTab[i]||'parts',c=S.cargo[i]||{crew:{},res:{}},room=WT.max.probe-tonsOf('probe',i);
    if(tab==='crew')return '<div class="lg lg-crew">'+CREWT.map(t=>{const n=c.crew[t.k]||0;return '<span class="litem"><span class="lcell"><span class="lname">'+t.n+'</span><b class="lnum">'+n+'</b></span>'+pm(i,'crew',t.k,h,n,freeCol()>=1&&room>=WT.crew)+'</span>'}).join('')+'</div>';
-   if(tab==='res')return '<div class="lg lg-res">'+RK.map(r=>{const n=c.res[r]||0;return '<span class="litem"><span class="lcell" title="'+RN[r]+' ('+WT.res[r]+' t per unit)"><svg viewBox="0 0 16 16" width="18" height="18" aria-hidden="true">'+ICON[r]+'</svg><b class="lnum">'+n+'</b></span>'+pm(i,'res',r,h,n,Math.floor(S.res[r])>=1&&room>=WT.res[r])+'</span>'}).join('')+'</div>';
+   if(tab==='res')return '<div class="lg lg-res">'+RK.map(r=>{const n=c.res[r]||0;
+    return '<span class="litem"><span class="lcell" title="'+RN[r]+' ('+WT.res[r]+' t per unit)"><svg viewBox="0 0 16 16" width="18" height="18" aria-hidden="true">'+ICON[r]+'</svg><b class="lnum">'+n+'</b></span>'+pm(i,'res',r,h,n,Math.floor(S.res[r])>=1&&room>=WT.res[r])+'</span>'}).join('')+'</div>';
    if(tab==='cargo')return '<div class="lg lg-cargo"><span class="dim">Empty</span></div>';
    return pchips('probe')};
-  const pchips=t=>{const sp=SHIPPARTS[t]||{};return '<div class="pchips">'+PARTS.map(p=>'<span class="pchip'+(sp[p.k]?'':' dim')+'" tabindex="0" aria-label="'+p.n+': '+(sp[p.k]||'none')+'"><span class="pic"><svg viewBox="0 0 16 16" width="22" height="22" aria-hidden="true">'+ICON['part_'+p.k]+'</svg></span><span class="pwt">'+(sp[p.k]?WT.part[p.k]+' t':'-')+'</span><span class="ptxt">'+(sp[p.k]||'None')+'</span><span class="tp"><b class="th">'+p.n+'</b><span class="t1">'+p.d+'</span><span class="t1">'+(sp[p.k]?'Fitted: '+sp[p.k]:'Not fitted')+'</span></span></span>').join('')+'</div>'};
+  const pchips=t=>{const sp=SHIPPARTS[t]||{};
+   return '<div class="pchips">'+PARTS.map(p=>'<span class="pchip'+(sp[p.k]?'':' dim')+'" tabindex="0" aria-label="'+p.n+': '+(sp[p.k]||'none')+'"><span class="pic"><svg viewBox="0 0 16 16" width="22" height="22" aria-hidden="true">'+ICON['part_'+p.k]+'</svg></span><span class="pwt">'+(sp[p.k]?WT.part[p.k]+' t':'-')+'</span><span class="ptxt">'+(sp[p.k]||'None')+'</span><span class="tp"><b class="th">'+p.n+'</b><span class="t1">'+p.d+'</span><span class="t1">'+(sp[p.k]?'Fitted: '+sp[p.k]:'Not fitted')+'</span></span></span>').join('')+'</div>'};
   const fic=k=>'<svg viewBox="0 0 16 16" width="20" height="20" aria-hidden="true">'+ICON[k]+'</svg>';
   const fv=h=>'<span class="fv"><span class="fvc'+(h?'':' on')+'" title="In mission">'+fic('mission')+'</span><span class="fvc'+(h?' on':'')+'" title="Landed">'+fic('hangar')+'</span></span>';
   const all=[];BS.forEach((b,i)=>{if(b.s!=='hangar'&&b.s!=='away')return;n++;const h=b.s==='hangar',nm=S.names[i]!==undefined?S.names[i]:'Probe '+n;
@@ -792,7 +1058,8 @@ function render(){
   const sel=all.filter(x=>!shipFilter||x.t===shipFilter),npg=Math.max(1,Math.ceil(sel.length/SHIPS_PER));shipPage=Math.min(shipPage,npg-1);
   const shown=sel.slice(shipPage*SHIPS_PER,(shipPage+1)*SHIPS_PER),fn=shipFilter?SHIPTYPES.find(t=>t.k===shipFilter).n:'';
   const hdr='<div class="pgh">'+pgArr('data-xp',-1,shipPage>0,'Previous page')+'<b>Moon Fleet</b>'+pgArr('data-xp',1,shipPage<npg-1,'Next page')+'</div>';
-  {const ae=document.activeElement;if(!(ae&&ae.classList&&ae.classList.contains('shname')))set('shipsList','<div class="sticky">'+hdr+'<div class="sgrid">'+SHIPTYPES.map(sb).join('')+'</div></div>'+(shown.map(x=>x.h).join('')||'<div class="dim">'+(shipFilter?'No '+fn+'.':'No starships. Build one in the Shipyard.')+'</div>'))}}
+  {const ae=document.activeElement;
+   if(!(ae&&ae.classList&&ae.classList.contains('shname')))set('shipsList','<div class="sticky">'+hdr+'<div class="sgrid">'+SHIPTYPES.map(sb).join('')+'</div></div>'+(shown.map(x=>x.h).join('')||'<div class="dim">'+(shipFilter?'No '+fn+'.':'No starships. Build one in the Shipyard.')+'</div>'))}}
  {const act=Object.keys(S.proj).filter(k=>S.proj[k].state==='active'),pau=Object.keys(S.proj).filter(k=>S.proj[k].state!=='active'),done=Object.keys(S.tech);
   const pr=k=>{const tot=T[k].rp*24,left=S.proj[k].left;return Math.round((1-left/tot)*100)+'% · '+Math.ceil(left/24)+' days left'};
   const fk=k=>!tovFilter||T[k].cat===tovFilter,fp=pau.filter(fk),fd=done.filter(fk),row=(k,st)=>'<div class="row"><div>'+T[k].n+'<small>'+tcn(k)+' · '+st+'</small></div></div>';
@@ -811,6 +1078,7 @@ function render(){
  set('log',S.log.slice(0,40).map(l=>'<div class="'+l[1]+'">'+l[0]+'</div>').join(''));
  document.querySelectorAll('[data-sp]').forEach(b=>b.setAttribute('aria-pressed',String(+b.dataset.sp===S.speed)));
 }
+/* ===== INPUT: clock, buttons and screen event handlers ===== */
 document.querySelectorAll('[data-lt]').forEach(b=>b.onclick=()=>{logTab=b.dataset.lt;render()});
 document.querySelectorAll('[data-sp]').forEach(b=>b.onclick=()=>{S.speed=+b.dataset.sp;render()});
 $('step').onclick=()=>{S.speed=0;tick();render()};
@@ -832,13 +1100,39 @@ $('zoombar').addEventListener('click',e=>{const b=e.target.closest('[data-z]');i
 $('colbtn').onclick=()=>go('col');$('dbbtn').onclick=()=>go('db');$('logbtn').onclick=()=>go('log');
 $('db-tabs').addEventListener('click',e=>{const b=e.target.closest('[data-dt]');if(b){dbTab=b.dataset.dt;render()}});
 $('tovList').addEventListener('click',e=>{const f=e.target.closest('[data-rf]');if(f){tovFilter=tovFilter===f.dataset.rf?null:f.dataset.rf;render()}});
-$('shipsList').addEventListener('click',e=>{const f=e.target.closest('[data-sf]'),x=e.target.closest('[data-xp]');if(f){shipFilter=shipFilter===f.dataset.sf?null:f.dataset.sf;shipPage=0;render()}else if(x){shipPage=Math.max(0,shipPage+(+x.dataset.xp));render()}});$('shipsList').addEventListener('click',e=>{const r=e.target.closest('[data-rc]'),t=e.target.closest('[data-st]'),g=e.target.closest('[data-cg]');if(r)recycle(+r.dataset.rc);else if(t){const q=t.dataset.st.split(':');shipTab[q[0]]=q[1];render()}else if(g&&!g.disabled){const q=g.dataset.cg.split(':');cgAdd(+q[0],q[1],q[2],+q[3])}});$('shipsList').addEventListener('input',e=>{const i=e.target.closest('.shname');if(i)S.names[i.dataset.b]=i.value});$('shipsList').addEventListener('change',e=>{if(e.target.closest('.shname'))render()});$('shipbtn').onclick=()=>go('ships');$('tovbtn').onclick=()=>go('tov');
+$('shipsList').addEventListener('click',e=>{const f=e.target.closest('[data-sf]'),x=e.target.closest('[data-xp]');
+ if(f){shipFilter=shipFilter===f.dataset.sf?null:f.dataset.sf;
+ shipPage=0;
+ render()}else if(x){shipPage=Math.max(0,shipPage+(+x.dataset.xp));
+ render()}});
+$('shipsList').addEventListener('click',e=>{const r=e.target.closest('[data-rc]'),t=e.target.closest('[data-st]'),g=e.target.closest('[data-cg]');
+ if(r)recycle(+r.dataset.rc);else if(t){const q=t.dataset.st.split(':');
+ shipTab[q[0]]=q[1];
+ render()}else if(g&&!g.disabled){const q=g.dataset.cg.split(':');
+ cgAdd(+q[0],q[1],q[2],+q[3])}});
+$('shipsList').addEventListener('input',e=>{const i=e.target.closest('.shname');
+ if(i)S.names[i.dataset.b]=i.value});
+$('shipsList').addEventListener('change',e=>{if(e.target.closest('.shname'))render()});
+$('shipbtn').onclick=()=>go('ships');
+$('tovbtn').onclick=()=>go('tov');
 $('cols').addEventListener('click',e=>{const b=e.target.closest('[data-cp]');if(b){colPage=Math.max(0,colPage+(+b.dataset.cp));render()}});
 addEventListener('keydown',e=>{if(e.key==='Escape'&&mode==='game'&&S.screen!=='base'&&!$('dlg').open)go('base')});
 $('dok').onclick=()=>$('dlg').close();
 $('drestart').onclick=()=>{$('dlg').close();$('drestart').hidden=true;$('dok').hidden=false;init();render()};
+/* ===== MODES: title screen, new game, game, editor, exit; main menu dialog and theme ===== */
 let mode='title',diff='normal';
-function setMode(m){mode=m;if(m==='game')fit();$('title').hidden=m!=='title';$('game').hidden=m!=='game';$('bye').hidden=m!=='exit';$('newgame').hidden=m!=='new';$('editor').hidden=m!=='editor';if(m==='editor')enterEd();if(m==='new'){cfPick();$('d-start').focus()}if(m==='title')$('m-new').focus();if(m==='game')render()}
+function setMode(m){mode=m;
+ if(m==='game')fit();
+ $('title').hidden=m!=='title';
+ $('game').hidden=m!=='game';
+ $('bye').hidden=m!=='exit';
+ $('newgame').hidden=m!=='new';
+ $('editor').hidden=m!=='editor';
+ if(m==='editor')enterEd();
+ if(m==='new'){cfPick();
+ $('d-start').focus()}
+ if(m==='title')$('m-new').focus();
+ if(m==='game')render()}
 $('m-new').onclick=()=>setMode('new');
 $('d-start').onclick=()=>{applyData(cfById(CF.sel).d);init();setMode('game')};
 $('d-back').onclick=()=>setMode('title');
@@ -852,11 +1146,13 @@ const themeLbl=()=>{$('dtheme-l').textContent='Switch to '+(isDark()?'light':'da
 $('dtheme').onclick=()=>{const t=isDark()?'light':'dark';document.documentElement.dataset.theme=t;try{localStorage.setItem('solar-century-theme',t)}catch(e){}themeLbl()};
 $('dstay').onclick=()=>$('dmenu').close();
 $('dleave').onclick=()=>{$('dmenu').close();setMode('title')};
-/* ===== Editor ===== */
+/* ===== CONFIGURATIONS: DATA, applyData, generated technologies, saved configurations ===== */
 const RK=Object.keys(RN);
 const DATA={B,T,M,SHIP,STAFF,CREW,COL,PORT,LOCD,SURVEY,WT},DEF=JSON.stringify(DATA),KEY='solar-century-configs',OKEYS=['B','T','M','SHIP','STAFF','CREW','COL'];
 const lst=o=>Object.keys(o).map(k=>o[k]+' '+RN[k].toLowerCase()).join(' + ');
-function genTechs(){for(const k in T)if(T[k].gen)delete T[k];for(const k in LOCD){const l=LOCD[k];T['col_'+k]={n:'Colonise '+l.n,rp:Math.max(1,Math.round(SURVEY.rpBase*(1+SURVEY.rpDiff*l.adiff)*(1+l.alen/SURVEY.rpLen))),req:[],cat:'colony',d:'Allows building a colonisation module for '+l.n,loc:k,gen:1}}}
+function genTechs(){for(const k in T)if(T[k].gen)delete T[k];
+ for(const k in LOCD){const l=LOCD[k];
+ T['col_'+k]={n:'Colonise '+l.n,rp:Math.max(1,Math.round(SURVEY.rpBase*(1+SURVEY.rpDiff*l.adiff)*(1+l.alen/SURVEY.rpLen))),req:[],cat:'colony',d:'Allows building a colonisation module for '+l.n,loc:k,gen:1}}}
 function refreshD(){
  genTechs();
  for(const k in M)M[k].d=M[k].r.win?'Rebuilds Earth and wins the game':fmt(M[k].r);
@@ -866,7 +1162,15 @@ function refreshD(){
   else if(b.out)b.d=(b.inp?lst(b.inp)+' → '+lst(b.out):fmt(b.out))+' / month';
   else if(b.inp)b.d=(b.p>0?'+'+b.p+' power, ':'')+'burns '+lst(b.inp)+' / month';
   else if(k!=='lab')b.d=b.p>0?'+'+b.p+' power':'No output'}}
-function applyData(d){const dd=JSON.parse(DEF);for(const n in DATA){const t=DATA[n];for(const k of Object.keys(t))delete t[k];Object.assign(t,dd[n],d[n]||{})}for(const k in T)if(!T[k].cat&&dd.T[k])T[k].cat=dd.T[k].cat;for(const k in LOCD)for(const f of ['adiff','alen','a','ak','ecc','per'])if(LOCD[k][f]===undefined&&dd.LOCD[k])LOCD[k][f]=dd.LOCD[k][f];delete B.port;BOOST=COL.boost;refreshD()}
+function applyData(d){const dd=JSON.parse(DEF);
+ for(const n in DATA){const t=DATA[n];
+ for(const k of Object.keys(t))delete t[k];
+ Object.assign(t,dd[n],d[n]||{})}
+ for(const k in T)if(!T[k].cat&&dd.T[k])T[k].cat=dd.T[k].cat;
+ for(const k in LOCD)for(const f of ['adiff','alen','a','ak','ecc','per'])if(LOCD[k][f]===undefined&&dd.LOCD[k])LOCD[k][f]=dd.LOCD[k][f];
+ delete B.port;
+ BOOST=COL.boost;
+ refreshD()}
 const CF={list:[],edit:'default',sel:'default'};
 const cfById=id=>id==='default'?{id:'default',name:'Default',d:JSON.parse(DEF)}:CF.list.find(c=>c.id===id);
 const validD=d=>!!d&&OKEYS.every(k=>d[k]&&typeof d[k]==='object');
@@ -884,8 +1188,10 @@ function newConfig(d,name){const id='c'+Date.now().toString(36);CF.list.push({id
 function cfPick(){const all=[{id:'default',name:'Default'}].concat(CF.list);$('cf-pick').innerHTML=all.map(c=>'<option value="'+c.id+'"'+(c.id===CF.sel?' selected':'')+'>'+esc(c.name)+'</option>').join('');cfNote()}
 function cfNote(){$('cf-note').textContent=CF.sel==='default'?'Default: the standard Normal balance.':'Custom configuration: the values set in the Editor.'}
 const esc=s=>String(s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;');
+/* ===== EDITOR ===== */
 const fl=(t,i,w)=>'<label class="fl'+(w?' w':'')+'"><span>'+t+'</span>'+i+'</label>';
-const num=(p,v,o)=>{o=o||{};return '<input type="number" data-p="'+p+'" value="'+(v===undefined?'':(o.pct?+(v*100).toFixed(2):v))+'" step="'+(o.int?1:'any')+'"'+(o.min===null?'':' min="'+(o.min===undefined?0:o.min)+'"')+(o.int?' data-int="1"':'')+(o.pct?' data-pct="1"':'')+(o.g?' data-g="1"':'')+'>'};
+const num=(p,v,o)=>{o=o||{};
+ return '<input type="number" data-p="'+p+'" value="'+(v===undefined?'':(o.pct?+(v*100).toFixed(2):v))+'" step="'+(o.int?1:'any')+'"'+(o.min===null?'':' min="'+(o.min===undefined?0:o.min)+'"')+(o.int?' data-int="1"':'')+(o.pct?' data-pct="1"':'')+(o.g?' data-g="1"':'')+'>'};
 const txt=(p,v)=>'<input type="text" data-p="'+p+'" value="'+esc(v)+'">';
 const grid=(p,obj,extra)=>'<div class="eg">'+RK.concat(extra||[]).map(r=>fl(r==='rp'?'Research points':RN[r],num(p+'.'+r,obj&&obj[r],{g:1}))).join('')+'</div>';
 const techSel=(p,cur)=>'<select data-p="'+p+'"><option value="">(none)</option>'+Object.keys(T).filter(t=>!T[t].gen).map(t=>'<option value="'+t+'"'+(cur===t?' selected':'')+'>'+esc(T[t].n)+'</option>').join('')+'</select>';
@@ -903,12 +1209,16 @@ function edW(){return '<details'+(edOpen==='wt'?' open':'')+'><summary>Weights (
 function edS(){return edW()+'<details'+(edOpen==='ship'?' open':'')+'><summary>Probe (build cost)</summary>'+grid('SHIP',SHIP)+'</details><details'+(edOpen==='port'?' open':'')+'><summary>Starport (berth expansion)</summary><div class="ef">'+fl('Maximum berths',num('PORT.max',PORT.max,{int:1,min:1}))+fl('Berths at start',num('PORT.start',PORT.start,{int:1,min:1}))+fl('Expansion time (hours)',num('PORT.t',PORT.t,{min:1}))+'</div><h4>Cost per new berth</h4>'+grid('PORT.c',PORT.c)+'</details>'+Object.keys(M).map(k=>{const m=M[k],P='M.'+k+'.';
  return '<details'+(edOpen===k?' open':'')+'><summary>'+esc(m.n)+'</summary><div class="ef">'+fl('Name',txt(P+'n',m.n))+fl('Duration (months)',num(P+'t',m.t,{min:.1}))+fl('Risk of loss (%)',num(P+'risk',m.risk,{pct:1}))+fl('Crew (colonists)',num('CREW.'+k,CREW[k],{int:1}))+fl('Requires tech',techSel(P+'tech',m.tech))+'</div><h4>Launch cost</h4>'+grid(P+'c',m.c)+'<h4>Returns</h4>'+(m.r.win?'<p class="dim">Wins the game when it arrives.</p>':grid(P+'r',m.r,['rp']))+'</details>'}).join('')}
 function edC(){return '<div class="ef">'+fl('Starting colonists',num('COL.pop',COL.pop,{int:1,min:1}))+fl('Water per colonist / month',num('COL.water',COL.water))+fl('Oxygen per colonist / month',num('COL.oxygen',COL.oxygen))+fl('Boost when fully manned (%)',num('COL.boost',COL.boost,{pct:1}))+'</div><h4>Staffing per building (colonists)</h4><div class="eg">'+
- Object.keys(STAFF).map(k=>{const s=STAFF[k],P='STAFF.'+k+'.';return '<div class="sg"><b>'+(k==='build'?'Construction site':esc(B[k].n))+'</b><span class="dim">'+JOBN[s.job]+'</span>'+fl('Minimum to run',num(P+'min',s.min,{int:1,min:1}))+fl('Full crew (boost)',num(P+'full',s.full,{int:1,min:2}))+'</div>'}).join('')+'</div>'}
+ Object.keys(STAFF).map(k=>{const s=STAFF[k],P='STAFF.'+k+'.';
+  return '<div class="sg"><b>'+(k==='build'?'Construction site':esc(B[k].n))+'</b><span class="dim">'+JOBN[s.job]+'</span>'+fl('Minimum to run',num(P+'min',s.min,{int:1,min:1}))+fl('Full crew (boost)',num(P+'full',s.full,{int:1,min:2}))+'</div>'}).join('')+'</div>'}
 let edTab='b',edOpen=null;
 function edL(){return '<details'+(edOpen==='survey'?' open':'')+'><summary>Colonisation (survey, technology and module)</summary><p class="dim">A probe surveys a location; each analysis fails with a chance of difficulty × the failure factor. A successful analysis unlocks the technology “Colonise …”, which costs base × (1 + difficulty × factor) × (1 + length / divisor) research points. That technology unlocks the colonisation module.</p><div class="ef">'+fl('Technology base cost (points)',num('SURVEY.rpBase',SURVEY.rpBase,{min:1}))+fl('Difficulty factor on cost',num('SURVEY.rpDiff',SURVEY.rpDiff,{min:0}))+fl('Length divisor on cost (days)',num('SURVEY.rpLen',SURVEY.rpLen,{min:1}))+fl('Failure factor (% of difficulty)',num('SURVEY.fail',SURVEY.fail,{pct:1}))+fl('Module build time (hours)',num('SURVEY.mt',SURVEY.mt,{min:1}))+fl('Probe days per AU (simplest drive)',num('SURVEY.dpa',SURVEY.dpa,{min:1}))+'</div><h4>Probe cost per survey flight</h4>'+grid('SURVEY.c',SURVEY.c)+'<h4>Colonisation module cost</h4>'+grid('SURVEY.mc',SURVEY.mc)+'</details><p class="dim">Planets and moons for the Colonies screen. “Colonised at start” shows a location as a colony in colour; only the Moonbase can produce for now. “Can provide” is the amount each resource the location can supply.</p>'+Object.keys(LOCD).map(k=>{const l=LOCD[k],P='LOCD.'+k+'.';
  return '<details'+(edOpen===k?' open':'')+'><summary>'+(l.p?'↳ ':'')+esc(l.n)+'</summary><div class="ef">'+fl('Name',txt(P+'n',l.n))+fl('Colony name (when colonised)',txt(P+'col',l.col||''))+fl('Description',txt(P+'d',l.d),1)+fl('Analysis length (days)',num(P+'alen',l.alen,{int:1,min:1}))+fl('Analysis difficulty (%)',num(P+'adiff',l.adiff,{pct:1}))+(l.p?fl('Orbit radius around its planet (thousand km)',num(P+'ak',l.ak,{min:.001})):fl('Distance from the Sun (AU)',num(P+'a',l.a,{min:.01})))+fl('Eccentricity',num(P+'ecc',l.ecc,{max:1}))+fl('Orbital period (days)',num(P+'per',l.per,{min:.1}))+'<label class="ck" style="grid-column:1/-1"><input type="checkbox" data-p="'+P+'start"'+(l.start?' checked':'')+(k==='moon'?' disabled':'')+'>Colonised at start'+(k==='moon'?' (the Moonbase always is)':'')+'</label></div><h4>Can provide</h4>'+grid(P+'res',l.res)+'</details>'}).join('')}
 const TABS=[['b','Buildings'],['t','Tech'],['s','Starships'],['c','Colonists'],['l','Locations']];
-function renderEd(){cfBar();$('ed-tabs').innerHTML=TABS.map(t=>'<button data-tab="'+t[0]+'" aria-pressed="'+(edTab===t[0])+'">'+t[1]+'</button>').join('');const ro=CF.edit==='default';$('ed-body').innerHTML='<fieldset'+(ro?' disabled':'')+'>'+(ro?'<p class="dim">The Default configuration is read-only. Press “New” above to create your own configuration.</p>':'')+({b:edB,t:edT,s:edS,c:edC,l:edL})[edTab]()+'</fieldset>'}
+function renderEd(){cfBar();
+ $('ed-tabs').innerHTML=TABS.map(t=>'<button data-tab="'+t[0]+'" aria-pressed="'+(edTab===t[0])+'">'+t[1]+'</button>').join('');
+ const ro=CF.edit==='default';
+ $('ed-body').innerHTML='<fieldset'+(ro?' disabled':'')+'>'+(ro?'<p class="dim">The Default configuration is read-only. Press “New” above to create your own configuration.</p>':'')+({b:edB,t:edT,s:edS,c:edC,l:edL})[edTab]()+'</fieldset>'}
 const getP=p=>p.split('.').reduce((o,k)=>o==null?o:o[k],DATA);
 function setP(p,v){const a=p.split('.'),last=a.pop(),chain=[];let o=DATA;
  for(const k of a){if(o[k]==null)o[k]={};chain.push([o,k]);o=o[k]}
