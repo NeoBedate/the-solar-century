@@ -38,8 +38,8 @@ code{font:600 .9em 'Jura',monospace;color:var(--cyan);background:var(--panel2);p
 
 /* top bar, like the game's header: name in the centre, revision as the date at the right */
 .top{position:sticky;top:0;z-index:10;display:flex;align-items:center;gap:12px;padding:10px 16px;background:linear-gradient(var(--space) 70%,transparent)}
-.top .brand{height:42px;display:flex;align-items:center;gap:8px;padding:0 14px;font-weight:700;font-size:16px}
-.top .brand svg{width:22px;height:22px}
+.toc .brand{height:42px;display:flex;align-items:center;justify-content:center;gap:8px;padding:0 10px;margin-bottom:10px;font-weight:700;font-size:16px;white-space:nowrap}
+.toc .brand svg{width:22px;height:22px;flex:none}
 .top .ttl{flex:1;text-align:center;color:var(--acc);font-size:26px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .top .rev{color:var(--acc);font-size:20px;font-weight:700;display:flex;align-items:center;white-space:nowrap}
 .top .rev .dt{display:inline-flex;flex-direction:column;margin-left:7px;font-size:12px;line-height:1.1;font-weight:600}.top .rev .dt span:first-child{color:var(--cyan)}
@@ -143,7 +143,7 @@ footer{text-align:center;color:var(--dim);font-size:13px;padding:10px 0 30px}
 @media (max-width:900px){
  .layout{grid-template-columns:minmax(0,1fr);padding:6px 16px 40px}
  nav.toc{position:static;max-height:none;display:grid;grid-template-columns:1fr 1fr}
- nav.toc .hd{grid-column:1/-1}
+ nav.toc .hd,nav.toc .brand{grid-column:1/-1}
  nav.toc a{margin-top:-3px}
  .two{grid-template-columns:1fr}
  .top .ttl{font-size:18px}.top .rev .dt{display:none}
@@ -152,7 +152,7 @@ footer{text-align:center;color:var(--dim);font-size:13px;padding:10px 0 30px}
  section.win>h2{font-size:20px;padding:0 54px}
  section.win>h2 svg{display:none}
 }
-@media (max-width:520px){.top .brand{display:none}.top .rev{font-size:15px}nav.toc{grid-template-columns:1fr}}
+@media (max-width:520px){.top .rev{font-size:15px}nav.toc{grid-template-columns:1fr}}
 @media print{.top,nav.toc{display:none}.layout{display:block}body::before{display:none}body{background:#fff;color:#000}}
 </style>
 </head>
@@ -160,14 +160,13 @@ footer{text-align:center;color:var(--dim);font-size:13px;padding:10px 0 30px}
 
 <div class="top">
  <button id="back" class="back" title="Back to the game's main screen" aria-label="Back to the game's main screen"><svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="square"><path d="M10.5 2.5L5 8L10.5 13.5"/></svg><span>Back</span></button>
- <div class="brand bev" id="brand"><span>Game Design Document</span></div>
  <div class="ttl">The Solar Century</div>
  <div class="rev">Rev. 3<span class="dt"><span>2026-11-18</span><span>9a9d31f+</span></span></div>
  <button id="theme" title="Switch light / dark" aria-label="Switch light or dark theme"><svg viewBox="0 0 16 16" width="20" height="20" aria-hidden="true"><circle cx="8" cy="8" r="5.5" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M8 2.5A5.5 5.5 0 0 1 8 13.5Z" fill="currentColor"/></svg></button>
 </div>
 
 <div class="layout">
-<nav class="toc" id="toc" aria-label="Contents"><div class="hd">Contents</div></nav>
+<nav class="toc" id="toc" aria-label="Contents"><div class="brand bev" id="brand"><span>Game Design Document</span></div><div class="hd">Contents</div></nav>
 <main>
 
 <header class="cover bev" id="top">
@@ -414,7 +413,7 @@ footer{text-align:center;color:var(--dim);font-size:13px;padding:10px 0 30px}
 <section class="win bev" id="log" data-ic="project"><h2>Revision history</h2><div class="body">
  <div class="tw"><table>
   <tr><th>Rev.</th><th>Date</th><th>Game commit</th><th>Changes</th></tr>
-  <tr><td>3</td><td>2026-11-18</td><td><code>9a9d31f</code>+</td><td>Light/dark theme switch in the main menu button; Back button in this document.</td></tr>
+  <tr><td>3</td><td>2026-11-18</td><td><code>9a9d31f</code>+</td><td>Light/dark theme switch in the main menu button; Back button in this document, whose title box now sits above Contents.</td></tr>
   <tr><td>2</td><td>2026-11-18</td><td><code>69f52a2</code>+</td><td>Title screen: Design Document button.</td></tr>
   <tr><td>1</td><td>2026-11-18</td><td><code>5de238e</code></td><td>First version, written from the prototype as it stands.</td></tr>
  </table></div>
