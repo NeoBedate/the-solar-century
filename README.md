@@ -11,7 +11,7 @@ Open `index.html` in any modern browser. No build step and no dependencies. The 
 ## What is in the prototype
 
 **Menus and setup**
-- Title screen with New Game, Load Game, Options, Editor and Exit. Load Game and Options are not working yet.
+- Title screen with New Game, Load Game, Options, Editor, Design Document (opens `GDD.html` in a new tab) and Exit. Load Game and Options are not working yet.
 - New Game offers a difficulty screen (only Normal is available) and a Select Configuration choice.
 - Editor with tabs for Buildings, Tech, Starships, Colonists and Locations. Edits live in named configurations. The built-in Default is read-only, and configurations can be exported and imported as JSON.
 

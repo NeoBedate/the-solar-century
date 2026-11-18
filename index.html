@@ -134,6 +134,7 @@ dialog::backdrop{background:#000a}
   <button id="m-load" disabled title="Coming soon">Load Game</button>
   <button id="m-opt" disabled title="Coming soon">Options</button>
   <button id="m-edit">Editor</button>
+  <button id="m-gdd" title="Opens the Game Design Document in a new tab">Design Document</button>
   <button id="m-exit">Exit</button>
  </div></nav>
 </div></div>
@@ -839,6 +840,7 @@ $('m-new').onclick=()=>setMode('new');
 $('d-start').onclick=()=>{applyData(cfById(CF.sel).d);init();setMode('game')};
 $('d-back').onclick=()=>setMode('title');
 document.querySelectorAll('.diff:not(:disabled)').forEach(b=>b.onclick=()=>{diff=b.dataset.d;document.querySelectorAll('.diff').forEach(x=>x.setAttribute('aria-checked',String(x===b)));$('d-note').textContent=b.dataset.note});
+$('m-gdd').onclick=()=>window.open('GDD.html','_blank');
 $('m-exit').onclick=()=>{window.close();setMode('exit')};
 $('m-back').onclick=()=>setMode('title');
 $('menu').onclick=()=>{S.speed=0;render();if(S.over)setMode('title');else $('dmenu').showModal()};
