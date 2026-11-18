@@ -1172,10 +1172,14 @@ function render(){
 }
 /* ===== INPUT: clock, buttons and screen event handlers ===== */
 document.querySelectorAll('[data-lt]').forEach(b=>b.onclick=()=>{logTab=b.dataset.lt;render()});
-document.querySelectorAll('[data-sp]').forEach(b=>b.onclick=()=>{S.speed=+b.dataset.sp;render()});
+/* acc = milliseconds into the current game hour at the current speed. Changing speed keeps the same fraction of the hour
+   (otherwise time banked at a slow speed turns into several hours at once at a faster one). */
+document.querySelectorAll('[data-sp]').forEach(b=>b.onclick=()=>{const v=+b.dataset.sp;acc=S.speed&&v?acc/S.speed*v:0;S.speed=v;render()});
 $('step').onclick=()=>{S.speed=0;tick();render()};
 let last=performance.now(),acc=0;
-setInterval(()=>{const n=performance.now(),dt=n-last;last=n;if(!S.speed||S.over||mode!=='game'||$('dlg').open||$('dmenu').open){acc=0;return}acc+=dt;let c=0;while(acc>=S.speed&&!S.over&&c<20){acc-=S.speed;tick();c++}acc=Math.min(acc,S.speed);if(c)render()},100);
+/* At most one game hour per callback (every 100 ms, and the fastest speed is 500 ms per hour), each one rendered, so the clock never
+   jumps hours. When the browser delays the timer (background tab, busy page) the lost time is dropped instead of caught up in a burst. */
+setInterval(()=>{const n=performance.now(),dt=n-last;last=n;if(!S.speed||S.over||mode!=='game'||$('dlg').open||$('dmenu').open){acc=0;return}acc+=dt;if(acc>=S.speed){acc=Math.min(acc-S.speed,S.speed-1);tick();render()}},100);
 document.querySelectorAll('[data-go]').forEach(b=>b.onclick=()=>go(b.dataset.go));
 $('back').onclick=()=>{U.loc='moon';U.view.z=7;go('base')};
 $('mapbg').addEventListener('click',e=>{const b=e.target.closest('[data-mk]');if(b)mapClick(b.dataset.mk);else if(U.view.z===1){const g=zoneAt(e);if(g>=0){U.view.z=REGLV[g];go('base')}}});
