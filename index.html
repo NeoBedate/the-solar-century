@@ -60,7 +60,7 @@ h1,h2{font-family:'Jura',system-ui,sans-serif;font-weight:700;margin:0}
 .sbtns{grid-area:btns;align-self:stretch;display:flex;flex-direction:column;gap:4px;width:120px}
 .srec,.srf{flex:1;display:flex;align-items:center;justify-content:center;gap:5px}
 .srec svg,.srf svg{width:18px;height:18px}
-.pchips{grid-area:chips;justify-self:end;align-self:stretch;grid-auto-rows:1fr;display:grid;grid-template-columns:repeat(4,auto);justify-content:end;gap:0;padding:0 2px 2px 0}
+.pchips{grid-area:chips;justify-self:end;align-self:stretch;grid-auto-rows:1fr;display:grid;grid-template-columns:repeat(5,auto);justify-content:end;gap:0;padding:0 2px 2px 0}
 .pchip:hover .tp,.pchip:focus .tp{opacity:1}
 .pchip{position:relative;margin:0 -2px -2px 0;display:inline-flex;align-items:stretch;border:2px solid #8a7f6a;border-radius:4px;background:#e4dccb;font-size:14px}
 .pchip .pic{flex:none;display:flex;align-items:center;padding:0 4px;background:#cdc3ab}
@@ -446,7 +446,7 @@ const T={
  atm_methanoid:{life:'Methanoid',n:'Colony module: Methanoid',rp:120,req:[],cat:'colony',d:'Allows colonisation modules for locations with a Methanoid atmosphere'},
  gaia:{n:'Gaia seed',rp:150,req:['hydro','fusion','outer'],cat:'colony',d:'Unlocks the Gaia Ark'}
 };
-const TCATS=[{k:'colony',n:'Colonization'},{k:'energy',n:'Energy'},{k:'mining',n:'Mining'},{k:'manuf',n:'Manufacturing'},{k:'life',n:'Life Support'},{k:'ships',n:'Starships'},{k:'weapons',n:'Weapons'}],tcn=k=>(TCATS.find(c=>c.k===T[k].cat)||{n:'Uncategorised'}).n;
+const TCATS=[{k:'colony',n:'Colonization'},{k:'energy',n:'Energy'},{k:'mining',n:'Mining'},{k:'manuf',n:'Manufacturing'},{k:'life',n:'Life Support'},{k:'ships',n:'Starships'},{k:'lab',n:'Laboratory',d:'Onboard research and analysis of samples and survey data.'},{k:'weapons',n:'Weapons'}],tcn=k=>(TCATS.find(c=>c.k===T[k].cat)||{n:'Uncategorised'}).n;
 const M={
  earth:{n:'Earth salvage',tech:null,c:{hydrogen:10,oxygen:20},t:3,risk:.1,r:{iron:40,copper:15,aluminium:15,silica:10}},
  mars:{n:'Mars survey',tech:'ion',c:{hydrogen:15,oxygen:30},t:5,risk:.15,r:{water:60,nitrogen:30,sulphur:15,methane:10,rp:15}},
@@ -474,7 +474,7 @@ const STAFF={
 };
 const JOBN={labourer:'Labourers',scientist:'Scientists',technician:'Technicians',builder:'Builders'};
 /* Weights in tonnes (provisional). Everything a starship carries weighs: each unit of a resource, each part, and each crew member (the same for everyone). */
-const WT={res:{hydrogen:.07,oxygen:1.1,water:1,nitrogen:.8,methane:.4,sulphur:2,titanium:4.5,aluminium:2.7,copper:9,silica:2.5,iron:7.8,silver:10.5,chromium:7.2,platinum:21,uranium:19,components:.5,machinery:5,software:.01,food:.5},part:{drive:40,life:15,cargo:20,crew:12,bridge:8,computer:2,weapons:25,shields:18},crew:.1,max:{probe:100}};
+const WT={res:{hydrogen:.07,oxygen:1.1,water:1,nitrogen:.8,methane:.4,sulphur:2,titanium:4.5,aluminium:2.7,copper:9,silica:2.5,iron:7.8,silver:10.5,chromium:7.2,platinum:21,uranium:19,components:.5,machinery:5,software:.01,food:.5},part:{drive:40,engine:30,life:15,cargo:20,crew:12,bridge:8,computer:2,lab:10,weapons:25,shields:18},crew:.1,max:{probe:100}};
 const CREW={earth:2,mars:3,belt:3,outer:4,gaia:8};
 /* Colonists: starting number, full-crew bonus and what each lifeform needs per colonist per month (air = the gas it breathes; provisional) */
 const COL={pop:80,boost:.1,rates:{
@@ -688,6 +688,8 @@ const ICON={
  refit:`<path d="M10.6 1.8A3.6 3.6 0 0 0 7.2 6.6L1.8 12A1.7 1.7 0 0 0 4 14.2L9.4 8.8A3.6 3.6 0 0 0 14.2 5.4L12 7.6L9.6 6.4L8.4 4L10.6 1.8Z" fill="#b6c0d2" stroke="#4d576b" stroke-linejoin="round"/><circle cx="3.4" cy="12.6" r=".8" fill="#4d576b"/>`,
  project:`<circle cx="6.5" cy="6.5" r="4.5" fill="#e8f2ff" stroke="#6b3fa0" stroke-width="1.6"/><path d="M10 10L14.5 14.5" stroke="#6b3fa0" stroke-width="2.2"/>`,
  part_drive:`<path d="M3 2H9L12 5.5V10.5L9 14H3Z" fill="#8a94a8" stroke="#4d576b" stroke-linejoin="round"/><path d="M12 5.5L15 3.5V12.5L12 10.5Z" fill="#b6c0d2" stroke="#4d576b" stroke-linejoin="round"/><path d="M1 6H3M1 10H3" stroke="#ffb347" stroke-width="1.6" stroke-linecap="round"/><circle cx="7" cy="8" r="2" fill="#ffb347"/>`,
+ part_engine:`<circle cx="8" cy="8" r="6" fill="#ffb347" stroke="#a8641a"/><path d="M9 2.5L5 9H8L7 13.5L11 7H8Z" fill="#fff3c4" stroke="#a8641a" stroke-width=".8" stroke-linejoin="round"/>`,
+ part_lab:`<path d="M6 2H10M7 2V6L2.5 13.2Q2 14.5 3.4 14.5H12.6Q14 14.5 13.5 13.2L9 6V2" fill="#e8f2ff" stroke="#2f3f7a" stroke-linejoin="round"/><path d="M4.4 10.5H11.6L13.2 13.2Q13.6 14 12.6 14H3.4Q2.4 14 2.8 13.2Z" fill="#7fe0a0" stroke="#1f7a40" stroke-linejoin="round"/><circle cx="7" cy="12" r=".8" fill="#fff"/>`,
  part_life:`<path d="M8 14.5S1.5 10.5 1.5 6A3.4 3.4 0 0 1 8 4.6 3.4 3.4 0 0 1 14.5 6C14.5 10.5 8 14.5 8 14.5Z" fill="#7fe0a0" stroke="#1f7a40" stroke-linejoin="round"/><path d="M8 11.5V6M8 8.5L10 6.8M8 10L6 8.5" stroke="#1f7a40" stroke-width="1.1" stroke-linecap="round"/>`,
  part_cargo:`<path d="M1.5 5L8 2L14.5 5V12L8 15L1.5 12Z" fill="#c9a06a" stroke="#7a5a30" stroke-linejoin="round"/><path d="M1.5 5L8 8L14.5 5M8 8V15" stroke="#7a5a30" fill="none" stroke-linejoin="round"/><path d="M4.8 3.5L11.2 6.5" stroke="#7a5a30" stroke-width="1.2"/>`,
  part_crew:`<rect x="1.5" y="9" width="13" height="5" rx="1" fill="#6b7fb8" stroke="#2f3f7a" stroke-linejoin="round"/><rect x="3" y="6.5" width="10" height="3.5" rx="1.2" fill="#e8f2ff" stroke="#2f3f7a"/><circle cx="4.8" cy="4" r="1.7" fill="#f2c9a0"/><path d="M1.5 14V15.5M14.5 14V15.5" stroke="#2f3f7a" stroke-width="1.2"/>`,
@@ -852,9 +854,9 @@ function dbHtml(){const E=dbData();let h='';
 /* ===== STARSHIPS OVERVIEW DATA: pager, parts, ship types ===== */
 let tovFilter=null;const shipTab={};const SHIPS_PER=12;let shipFilter=null,shipPage=0;
 const pgArr=(attr,d,on,t)=>'<button class="clk pgb" '+attr+'="'+d+'" title="'+t+'" aria-label="'+t+'"'+(on?'':' disabled')+'><svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="square"><path d="'+(d<0?'M10.5 2.5L5 8L10.5 13.5':'M5.5 2.5L11 8L5.5 13.5')+'"/></svg></button>';
-const PARTS=[{k:'drive',n:'Drive',d:'Moves the ship. Faster drives shorten trips.'},{k:'life',n:'Life support',d:'Keeps the crew and colonists alive on long flights.'},{k:'cargo',n:'Cargo bay',d:'Carries resources, parts and colony modules.'},{k:'crew',n:'Crew quarters',d:'Berths for the crew and colonists travelling aboard.'},{k:'bridge',n:'Bridge',d:'Command centre that coordinates the ship systems.'},{k:'computer',n:"Ship's computer",d:'Onboard navigation and mission control.'},{k:'weapons',n:'Weapons',d:'Armament for combat.'},{k:'shields',n:'Shields',d:'Protection against hostile fire and debris.'}];
+const PARTS=[{k:'drive',n:'Drive',d:'Moves the ship. Faster drives shorten trips.'},{k:'engine',n:'Engine',d:'Produces the power the drive and the ship systems need.'},{k:'life',n:'Life support',d:'Keeps the crew and colonists alive on long flights.'},{k:'cargo',n:'Cargo bay',d:'Carries resources, parts and colony modules.'},{k:'crew',n:'Crew quarters',d:'Berths for the crew and colonists travelling aboard.'},{k:'bridge',n:'Bridge',d:'Command centre that coordinates the ship systems.'},{k:'computer',n:"Ship's computer",d:'Onboard navigation and mission control.'},{k:'weapons',n:'Weapons',d:'Armament for combat.'},{k:'shields',n:'Shields',d:'Protection against hostile fire and debris.'}];
 /* Placeholder part descriptions per ship type (empty string = the ship has no such part). Real definitions are still to do, see PROMISES.md. */
-const SHIPPARTS={probe:{drive:'Simplest drive',life:'',cargo:'',crew:'',bridge:'',computer:'Survey computer',weapons:'',shields:''}};
+const SHIPPARTS={probe:{drive:'Simplest drive',engine:'',life:'',cargo:'',crew:'',bridge:'',computer:'Survey computer',lab:'',weapons:'',shields:''}};
 const SHIPTYPES=[{k:'probe',n:'Probes'},{k:'hop',n:'Hop Miners'},{k:'solar',n:'Solar Carriers'},{k:'nuclear',n:'Nuclear Cruisers'},{k:'colony',n:'Colony Ships'}];
 /* ===== LOCATION SCENES: placeholder art, CSS shapes drawn on the 1920x1080 stage ===== */
 const bands=a=>'linear-gradient(180deg,'+a.map((c,i)=>c+' '+(i*100/a.length).toFixed(1)+'% '+((i+1)*100/a.length).toFixed(1)+'%').join(',')+')';
