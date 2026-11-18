@@ -515,12 +515,12 @@ const LIFESUP={
  hydroponic:{n:'Hydroponic ring',rr:.5,energy:2,wt:50,c:{titanium:8,aluminium:12,copper:8,silica:10,components:12,machinery:8,software:2},tech:'lshydro',d:'A rotating ring of crops turns carbon dioxide back into oxygen and food. Recoups 1 oxygen for every 2 consumed, but it is expensive to build.'},
  biosphere:{n:'Biosphere',rr:1,energy:1,wt:120,c:{titanium:24,aluminium:30,silica:30,copper:16,chromium:6,components:30,machinery:20,software:8},tech:'lsbio',d:'A complete living ecosystem sealed inside the ship. Recoups every oxygen it consumes, and it is very expensive to build.'}
 };
-/* Starship cargo bays (provisional). There are no types, only sizes. cap = tonnes of cargo (resources, parts, colony modules) the bay holds; wt = the bay's own tonnes; c = build cost; tech = technology that unlocks it (null = known at start). A bay can hold a colony module only when cap is at least SURVEY.mw, so only medium, large and huge can. No ship fits one yet and cargo is not used yet, see PROMISES.md. */
+/* Starship cargo bays (provisional). There are no types, only sizes. cap = tonnes of cargo (resources, parts, colony modules) the bay holds; wt = the bay's own tonnes; c = build cost; tech = technology that unlocks it (null = known at start). A bay can hold a colony module only when cap is at least SURVEY.mw, so with the current numbers only large and huge can. No ship fits one yet and cargo is not used yet, see PROMISES.md. */
 const CARGO={
  small:{n:'Small cargo bay',cap:50,wt:20,c:{iron:10,aluminium:6,components:2},tech:null,d:'A small hold for resources and parts. Too small to carry a colony module.'},
- medium:{n:'Medium cargo bay',cap:200,wt:50,c:{iron:24,aluminium:16,titanium:4,components:6,machinery:3},tech:'cgmedium',d:'A hold big enough to carry one colony module, or a good load of resources and parts.'},
- large:{n:'Large cargo bay',cap:600,wt:120,c:{iron:40,aluminium:30,titanium:12,components:14,machinery:8},tech:'cglarge',d:'A large hold that carries several colony modules, or a great load of resources.'},
- huge:{n:'Huge cargo bay',cap:2000,wt:300,c:{iron:80,aluminium:60,titanium:30,chromium:8,components:30,machinery:20,software:4},tech:'cghuge',d:'An enormous hold, the biggest ever built. It carries a whole colonisation fleet in one ship.'}
+ medium:{n:'Medium cargo bay',cap:120,wt:35,c:{iron:24,aluminium:16,titanium:4,components:6,machinery:3},tech:'cgmedium',d:'A mid-sized hold for resources and parts. Too small to carry a colony module.'},
+ large:{n:'Large cargo bay',cap:235,wt:55,c:{iron:40,aluminium:30,titanium:12,components:14,machinery:8},tech:'cglarge',d:'A large hold. It can carry one colony module, with a little room to spare.'},
+ huge:{n:'Huge cargo bay',cap:380,wt:70,c:{iron:80,aluminium:60,titanium:30,chromium:8,components:30,machinery:20,software:4},tech:'cghuge',d:'The biggest hold ever built. It carries one colony module with plenty of room to spare for supplies.'}
 };
 const CREW={earth:2,mars:3,belt:3,outer:4,gaia:8};
 /* Colonists: starting number, full-crew bonus and what each lifeform needs per colonist per month (air = the gas it breathes; provisional) */
@@ -532,7 +532,7 @@ const COL={pop:80,boost:.1,rates:{
  Sulphuroid:{air:'sulphur',a:.05,water:.03,food:.07},
  Methanoid:{air:'methane',a:.06,water:.03,food:.06}}};
 /* Colonisation: probe survey, analysis, technology cost and module (placeholder values) */
-const SURVEY={rpBase:60,rpDiff:2,rpLen:90,fail:.8,c:{hydrogen:10,oxygen:5},mc:{titanium:1100,aluminium:700,copper:100,silica:400,platinum:100,components:200,machinery:100},mpop:50,mmonths:12,mt:600,mw:150};
+const SURVEY={rpBase:60,rpDiff:2,rpLen:90,fail:.8,c:{hydrogen:10,oxygen:5},mc:{titanium:1100,aluminium:700,copper:100,silica:400,platinum:100,components:200,machinery:100},mpop:50,mmonths:12,mt:600,mw:200};
 /* per location: [analysis difficulty 0-1, analysis length in days] */
 const LOCAN={mercury:[.35,40],venus:[.8,90],earth:[.45,30],moon:[.05,10],mars:[.2,30],phobos:[.25,20],deimos:[.2,15],belt:[.3,45],jupiter:[.9,120],io:[.85,80],europa:[.5,70],ganymede:[.4,60],callisto:[.35,50],leda:[.5,70],saturn:[.9,150],titan:[.45,90],enceladus:[.5,60],rhea:[.4,50],iapetus:[.45,50],dione:[.4,45],tethys:[.35,40],mimas:[.35,35],hyperion:[.45,60],phoebe:[.5,80],uranus:[.92,180],titania:[.5,70],oberon:[.5,70],umbriel:[.55,70],ariel:[.5,65],miranda:[.55,60],neptune:[.95,200],triton:[.6,90],pluto:[.6,100],charon:[.55,80]};
 /* Real orbital data per location: [a = distance from the Sun in AU (planets, belt), ak = distance from its planet in thousand km (moons), eccentricity, period in days] */
