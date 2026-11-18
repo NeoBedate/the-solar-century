@@ -7,8 +7,8 @@ Improvements to how the game is built and tested. Each item says what it gives, 
 | # | Improvement | Status | Your part |
 |---|---|---|---|
 | 1 | Test scenarios from the URL (`?state=`, `?seed=`) | Planned | Choose the situations worth saving |
-| 2 | Checkpoint before each commit (git hook) | Done on the desktop PC | Install it on the Mac (see below) |
-| 3 | Automatic checks on GitHub | Ready, starts with the next push | Say "push it" |
+| 2 | Checkpoint before each commit (git hook) | Done on the desktop PC and the Mac | – |
+| 3 | Automatic checks on GitHub | Done, running on every push (all runs green so far) | Look at the Actions tab now and then |
 | 4 | Balancing simulator | Later (when balancing starts) | Decide what "balanced" means |
 | 5 | Automatic GDD revision numbers | Done | – |
 | – | Token savings: `tools/check.js`, `tools/sync-gdd.js`, short `CLAUDE.md`, short README, code signposts | Done | – |
@@ -27,9 +27,9 @@ Improvements to how the game is built and tested. Each item says what it gives, 
 
 **How it works:** the hook is `.githooks/pre-commit`. It runs only when a commit includes `index.html`, `GDD.html` or a file in `tools/` (documents alone are not checked), takes about 5 seconds, and when it stops a commit it prints the page error that caused it. On a computer without Node.js or without the tools set up it prints a warning and lets the commit through.
 
-**Installed on:** the desktop PC.
+**Installed on:** the desktop PC and the Mac (Node from Homebrew, the tools in `tools/node_modules`, the Playwright Chromium, and `core.hooksPath` set to `.githooks`). The hook file must be executable or git ignores it with a hint (it was not at first; the repository now stores it executable), and the hook adds the Homebrew folders to its own PATH so it also works from GitHub Desktop or an editor.
 
-**You, on the Mac (once):** in Terminal, from the repository folder, after pulling:
+**On a new computer (once):** in Terminal, from the repository folder, after pulling:
 
 ```
 cd tools && npm i && npx playwright install chromium && cd ..
@@ -44,7 +44,7 @@ Node.js is needed (`brew install node` if it is missing).
 
 **How it works:** the workflow is `.github/workflows/check.yml`. On every push to `main` (and on pull requests) GitHub installs the tools, runs `tools/check.js`, checks that the GDD data matches the game (`tools/sync-gdd.js --check`), and keeps three screenshots for 7 days (Actions tab, the run, "Artifacts"). You can also start it by hand: Actions tab, "Game check", "Run workflow".
 
-**You:** say "push it"; the first run starts with that push. Check the result on GitHub (green tick or red cross next to the commit, or the Actions tab). If a run fails, GitHub emails you; tell Claude and it will read the log.
+**You:** the runs start by themselves with each push. Check the result on GitHub (green tick or red cross next to the commit, or the Actions tab). If a run fails, GitHub emails you; tell Claude and it will read the log.
 
 ## 4. Balancing simulator
 
