@@ -10,6 +10,8 @@
 box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 @media (prefers-color-scheme:light){:root:not([data-theme="dark"]){--bg:#d9d4c3;--panel:#f1ede0;--hi:#ffffff;--lo:#58543f;--ink:#1c1f3d;--dim:#55587a;--acc:#c2560a;--ok:#1d7a42;--bad:#b3261e;--reg:#8d8672}}
 :root[data-theme="dark"]{color-scheme:dark}
+:root[data-theme="light"]{--bg:#d9d4c3;--panel:#f1ede0;--hi:#ffffff;--lo:#58543f;--ink:#1c1f3d;--dim:#55587a;--acc:#c2560a;--ok:#1d7a42;--bad:#b3261e;--reg:#8d8672;color-scheme:light}
+.dmrow{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-bottom:10px;margin-bottom:10px;border-bottom:2px dashed var(--lo)}.dmrow .clk{display:inline-flex;align-items:center;gap:7px;height:35px;padding:0 12px;line-height:1}
 html{scroll-padding-top:env(safe-area-inset-top,0px)}
 *{box-sizing:border-box}
 .seg{display:inline-flex}.seg .clk{padding:3px 8px;line-height:0}.seg .clk+.clk{margin-left:-3px}.seg .clk[aria-pressed=true]{position:relative}.clk svg{display:block}#menu.clk{padding:4px 9px}
@@ -124,6 +126,7 @@ dialog::backdrop{background:#000a}
 #editor .ck input{width:auto}
 #editor textarea{margin-top:8px;font-size:12px}
 </style>
+<script>/* light/dark theme chosen in the main menu (shared with GDD.html) */try{const t=localStorage.getItem('solar-century-theme');if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
 </head>
 <body>
 <div class="title" id="title"><div class="tbox">
@@ -220,7 +223,7 @@ dialog::backdrop{background:#000a}
 <section class="win"><h2>Game data</h2><div class="in" id="ed-body"></div></section>
 <section class="win"><h2>Data</h2><div class="in"><div class="end"><button id="ed-reset">Reset to Default values</button><button id="ed-exp">Export</button><button id="ed-imp">Import</button></div><textarea id="ed-json" rows="5" spellcheck="false" placeholder="Export fills this box. Paste exported data here and press Import."></textarea></div></section>
 </div>
-<dialog id="dmenu"><p>Return to the main menu? The current game can’t be resumed yet, so its progress will be lost.</p><button id="dstay">Stay</button> <button class="go" id="dleave">Return to main menu</button></dialog>
+<dialog id="dmenu"><div class="dmrow"><span>Theme</span><button id="dtheme" class="clk"><svg viewBox="0 0 16 16" width="20" height="20" aria-hidden="true"><circle cx="8" cy="8" r="5.5" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M8 2.5A5.5 5.5 0 0 1 8 13.5Z" fill="currentColor"/></svg><span id="dtheme-l">Switch to light</span></button></div><p>Return to the main menu? The current game can’t be resumed yet, so its progress will be lost.</p><button id="dstay">Stay</button> <button class="go" id="dleave">Return to main menu</button></dialog>
 <dialog id="dlg"><p id="dmsg"></p><button class="go" id="dok">Close</button> <button id="drestart" hidden>New game</button></dialog>
 
 <script>
@@ -843,7 +846,10 @@ document.querySelectorAll('.diff:not(:disabled)').forEach(b=>b.onclick=()=>{diff
 $('m-gdd').onclick=()=>window.open('GDD.html','_blank');
 $('m-exit').onclick=()=>{window.close();setMode('exit')};
 $('m-back').onclick=()=>setMode('title');
-$('menu').onclick=()=>{S.speed=0;render();if(S.over)setMode('title');else $('dmenu').showModal()};
+$('menu').onclick=()=>{S.speed=0;render();if(S.over)setMode('title');else{themeLbl();$('dmenu').showModal()}};
+const isDark=()=>{const t=document.documentElement.dataset.theme;return t?t==='dark':!matchMedia('(prefers-color-scheme: light)').matches};
+const themeLbl=()=>{$('dtheme-l').textContent='Switch to '+(isDark()?'light':'dark')};themeLbl();
+$('dtheme').onclick=()=>{const t=isDark()?'light':'dark';document.documentElement.dataset.theme=t;try{localStorage.setItem('solar-century-theme',t)}catch(e){}themeLbl()};
 $('dstay').onclick=()=>$('dmenu').close();
 $('dleave').onclick=()=>{$('dmenu').close();setMode('title')};
 /* ===== Editor ===== */

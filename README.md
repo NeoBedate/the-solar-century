@@ -17,7 +17,7 @@ Open `index.html` in any modern browser. No build step and no dependencies. The 
 
 **Main interface**
 - A fixed 1920x1080 (16:9) stage that scales to fit the window (add `?scale=0.5` to the URL to force a scale). The Moonbase scene fills it as the main screen, and the panels, overview screens, date and clock float in front.
-- Top bar with Moonbase, Colonies, Starships, Technology, Mission Control and Database buttons, the date, a hamburger menu and a grouped icon clock (pause, +1 hour and five speeds, from 1 hour per 30 seconds to 1 hour per half second).
+- Top bar with Moonbase, Colonies, Starships, Technology, Mission Control and Database buttons, the date, a hamburger menu (a light/dark theme switch and a return to the main menu) and a grouped icon clock (pause, +1 hour and five speeds, from 1 hour per 30 seconds to 1 hour per half second).
 - Two bars on the second line of the top bar, left-aligned under the Moonbase button: first one bar holding all the resources in two rows of nine (Volatiles and Metals above; Minerals, Rare metals and Manufactured below), with dashed dividers between its sections and rows; each quantity has a fixed slot for three digits and switches to k (thousands) and M (millions) above 999, with the Research points in their own bar right below it, as wide as the Moonbase button. The Research points icon is drawn dimmed behind the number, like the category icons. The Research points number is green when growing, normal when stale and red when diminishing, and whose tooltip shows the icon, the name and the points gained per day in smaller text. In the resources bar, the 18 resources are each shown only as its quantity, separated by "·" and in a fixed order, grouped in five sections (Volatiles, Minerals, Metals, Rare metals and Manufactured) each with its category icon drawn dimmed behind the numbers, clipped to the bar. A quantity is green when the resource is growing, in the normal text colour when stale and red when diminishing. Hovering a category icon shows its name; hovering a resource shows its icon, its name and, in smaller text, its net growth per day (production and consumption by buildings and colonists, not counting missions).
 
 **Colonisation (first steps)**
@@ -49,7 +49,7 @@ Open `index.html` in any modern browser. No build step and no dependencies. The 
 
 ## Game Design Document
 
-[GDD.html](GDD.html) describes the game's design: vision, core loop, every system and its current values, and the open design questions. Open it in a browser. It is updated together with the game.
+[GDD.html](GDD.html) describes the game's design: vision, core loop, every system and its current values, and the open design questions. Open it in a browser or from the title screen; its Back button returns to the game. It shares the light/dark theme chosen in the game. It is updated together with the game.
 
 ## Things to do
 

@@ -12,6 +12,7 @@
   in the <script> at the end (GDATA), which mirror the defaults in index.html.
   The icons in ICON are copied from index.html.
 -->
+<script>try{const t=localStorage.getItem('solar-century-theme');if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
 <style>
 :root{--bg:#0a0e2a;--panel:#141a4a;--panel2:#10153d;--hi:#5b6bd6;--lo:#05071a;--ink:#e8e4d4;--dim:#9aa0c8;--acc:#ff9a2e;--cyan:#6fdcff;--ok:#5fd68a;--bad:#ff5a5a;--warn:#ffd24a;--space:#02030f;color-scheme:dark}
 @media (prefers-color-scheme:light){:root:not([data-theme="dark"]){--bg:#d9d4c3;--panel:#f1ede0;--panel2:#e6e1d1;--hi:#ffffff;--lo:#58543f;--ink:#1c1f3d;--dim:#55587a;--acc:#c2560a;--cyan:#0a6f96;--ok:#1d7a42;--bad:#b3261e;--warn:#8a6400;--space:#cfc9b6;color-scheme:light}}
@@ -43,6 +44,7 @@ code{font:600 .9em 'Jura',monospace;color:var(--cyan);background:var(--panel2);p
 .top .rev{color:var(--acc);font-size:20px;font-weight:700;display:flex;align-items:center;white-space:nowrap}
 .top .rev .dt{display:inline-flex;flex-direction:column;margin-left:7px;font-size:12px;line-height:1.1;font-weight:600}.top .rev .dt span:first-child{color:var(--cyan)}
 .top button{font:inherit;font-size:15px;color:var(--ink);background:var(--panel);border:3px solid;border-color:var(--hi) var(--lo) var(--lo) var(--hi);height:42px;padding:0 10px;cursor:pointer;line-height:0}
+.top button.back{display:flex;align-items:center;gap:6px;padding:0 14px 0 10px;line-height:1;font-size:16px;font-weight:600}
 .top button:active{border-color:var(--lo) var(--hi) var(--hi) var(--lo)}
 
 .layout{display:grid;grid-template-columns:240px minmax(0,1fr);gap:22px;max-width:1340px;margin:0 auto;padding:6px 16px 60px}
@@ -150,16 +152,17 @@ footer{text-align:center;color:var(--dim);font-size:13px;padding:10px 0 30px}
  section.win>h2{font-size:20px;padding:0 54px}
  section.win>h2 svg{display:none}
 }
-@media (max-width:520px){.top .brand span{display:none}.top .rev{font-size:15px}nav.toc{grid-template-columns:1fr}}
+@media (max-width:520px){.top .brand{display:none}.top .rev{font-size:15px}nav.toc{grid-template-columns:1fr}}
 @media print{.top,nav.toc{display:none}.layout{display:block}body::before{display:none}body{background:#fff;color:#000}}
 </style>
 </head>
 <body>
 
 <div class="top">
+ <button id="back" class="back" title="Back to the game's main screen" aria-label="Back to the game's main screen"><svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="square"><path d="M10.5 2.5L5 8L10.5 13.5"/></svg><span>Back</span></button>
  <div class="brand bev" id="brand"><span>Game Design Document</span></div>
  <div class="ttl">The Solar Century</div>
- <div class="rev">Rev. 2<span class="dt"><span>2026-11-18</span><span>69f52a2+</span></span></div>
+ <div class="rev">Rev. 3<span class="dt"><span>2026-11-18</span><span>9a9d31f+</span></span></div>
  <button id="theme" title="Switch light / dark" aria-label="Switch light or dark theme"><svg viewBox="0 0 16 16" width="20" height="20" aria-hidden="true"><circle cx="8" cy="8" r="5.5" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M8 2.5A5.5 5.5 0 0 1 8 13.5Z" fill="currentColor"/></svg></button>
 </div>
 
@@ -373,12 +376,14 @@ footer{text-align:center;color:var(--dim);font-size:13px;padding:10px 0 30px}
    <li>Every overview screen has a 75px title bar with a centred title and a red-tinted close button. Filters and tabs stay pinned while the content scrolls.</li>
    <li>The colony name sits alone in the centre at the top, in orange.</li>
    <li>The date is large and bold, with weekday and time stacked at its right.</li>
+   <li>Dark and light themes, switched from the main menu button (hamburger) and remembered; this document follows the same choice.</li>
   </ul></div>
  </div>
  <h3>Screens</h3>
  <div class="tw"><table>
   <tr><th>Screen</th><th>Purpose</th></tr>
-  <tr><td>Title screen</td><td>New Game, Load Game, Options, Editor, Design Document (opens this document in a new tab) and Exit.</td></tr>
+  <tr><td>Title screen</td><td>New Game, Load Game, Options, Editor, Design Document (opens this document in a new tab; its Back button returns to the game) and Exit.</td></tr>
+  <tr><td>Main menu button</td><td>The hamburger at the top right: switch between light and dark themes, or return to the title screen.</td></tr>
   <tr><td>Moonbase panel</td><td>Colonists, building tiles, power and jobs; links to Science Labs, Construction, Shipyard, Starport and Flight plans.</td></tr>
   <tr><td>Colonies</td><td>All 31 locations in three pages (Inner, Middle, Outer); colonies show their name, colonists and resources.</td></tr>
   <tr><td>Starships</td><td>The Moon Fleet: 12 ships per page, filtered by type, with part chips, status, loading tabs, Recycle and Refit.</td></tr>
@@ -409,6 +414,7 @@ footer{text-align:center;color:var(--dim);font-size:13px;padding:10px 0 30px}
 <section class="win bev" id="log" data-ic="project"><h2>Revision history</h2><div class="body">
  <div class="tw"><table>
   <tr><th>Rev.</th><th>Date</th><th>Game commit</th><th>Changes</th></tr>
+  <tr><td>3</td><td>2026-11-18</td><td><code>9a9d31f</code>+</td><td>Light/dark theme switch in the main menu button; Back button in this document.</td></tr>
   <tr><td>2</td><td>2026-11-18</td><td><code>69f52a2</code>+</td><td>Title screen: Design Document button.</td></tr>
   <tr><td>1</td><td>2026-11-18</td><td><code>5de238e</code></td><td>First version, written from the prototype as it stands.</td></tr>
  </table></div>
@@ -527,9 +533,11 @@ function fill(){
  secs.forEach(s=>obs.observe(s));
 }
 fill();
-/* theme switch, remembered per browser */
-(function(){const r=document.documentElement;let t=null;try{t=localStorage.getItem('gdd-theme')}catch(e){}if(t)r.dataset.theme=t;
- $('theme').onclick=()=>{const dark=r.dataset.theme?r.dataset.theme==='dark':!matchMedia('(prefers-color-scheme: light)').matches;r.dataset.theme=dark?'light':'dark';try{localStorage.setItem('gdd-theme',r.dataset.theme)}catch(e){}}})();
+/* theme switch, shared with the game's main menu (same storage key) */
+(function(){const r=document.documentElement;
+ $('theme').onclick=()=>{const dark=r.dataset.theme?r.dataset.theme==='dark':!matchMedia('(prefers-color-scheme: light)').matches;r.dataset.theme=dark?'light':'dark';try{localStorage.setItem('solar-century-theme',r.dataset.theme)}catch(e){}}})();
+/* Back: close this tab when the game opened it, else go to the game's main screen */
+$('back').onclick=()=>{let o=null;try{o=window.opener}catch(e){}if(o&&!o.closed){try{o.focus()}catch(e){}window.close()}else location.href='index.html'};
 </script>
 </body>
 </html>
