@@ -42,16 +42,16 @@ const SCR=['base','col','ships','tov','db','build','tech','yard','port','flight'
  if(days)await g.evaluate(n=>{for(let i=0;i<n*24;i++)tick();render()},days);
  if(!quick){
   for(const s of SCR)await g.evaluate(s=>go(s),s);
-  for(const z of [1,2,3,4,5,6,7])await g.evaluate(z=>{go('base');S.view.z=z;render()},z);
+  for(const z of [1,2,3,4,5,6,7])await g.evaluate(z=>{go('base');U.view.z=z;render()},z);
   await g.evaluate(()=>{for(const t of DBTABS){dbTab=t[0];go('db')}go('base')});
   await g.evaluate(()=>{for(let i=0;i<90*24;i++)tick();render()});
   const st=await g.evaluate(()=>({date:S.y+'-'+S.m+'-'+S.d,pop:S.pop,over:S.over,rp:+S.rp.toFixed(2)}));
   log.push('game ok: 90 days run, '+JSON.stringify(st));
  }
  for(const s of shots){
-  if(SCR.includes(s)){await g.evaluate(s=>{S.view.z=7;go(s)},s);await snap(g,s)}
-  else if(/^map[1-7]$/.test(s)){await g.evaluate(z=>{go('base');S.view.z=z;render()},+s[3]);await snap(g,s)}
-  else if(s==='menu'){await g.evaluate(()=>{go('base');S.view.z=7;render()});await g.click('#menu');await snap(g,s);await g.click('#dstay')}
+  if(SCR.includes(s)){await g.evaluate(s=>{U.view.z=7;go(s)},s);await snap(g,s)}
+  else if(/^map[1-7]$/.test(s)){await g.evaluate(z=>{go('base');U.view.z=z;render()},+s[3]);await snap(g,s)}
+  else if(s==='menu'){await g.evaluate(()=>{go('base');U.view.z=7;render()});await g.click('#menu');await snap(g,s);await g.click('#dstay')}
  }
  if(ev)log.push('eval '+ev+' = '+JSON.stringify(await g.evaluate(e=>eval(e),ev)));
  if(!quick||shots.includes('editor')){

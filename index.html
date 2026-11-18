@@ -475,12 +475,11 @@ const LOCAN={mercury:[.35,40],venus:[.8,90],earth:[.45,30],moon:[.05,10],mars:[.
 const LOCORB={mercury:[.387,0,.206,88],venus:[.723,0,.007,224.7],earth:[1,0,.017,365.25],moon:[0,384.4,.055,27.32],mars:[1.524,0,.093,687],phobos:[0,9.376,.015,.319],deimos:[0,23.46,.0002,1.263],belt:[2.767,0,.076,1682],jupiter:[5.203,0,.049,4333],io:[0,421.7,.004,1.769],europa:[0,671.1,.009,3.551],ganymede:[0,1070.4,.001,7.155],callisto:[0,1882.7,.007,16.689],saturn:[9.537,0,.057,10759],titan:[0,1221.9,.029,15.945],enceladus:[0,238,.005,1.37],rhea:[0,527.1,.001,4.518],iapetus:[0,3560.8,.028,79.33],dione:[0,377.4,.002,2.737],tethys:[0,294.6,.0001,1.888],mimas:[0,185.5,.02,.942],uranus:[19.19,0,.046,30687],titania:[0,436.3,.001,8.706],oberon:[0,583.5,.001,13.463],umbriel:[0,266,.004,4.144],ariel:[0,190.9,.001,2.52],miranda:[0,129.9,.001,1.413],neptune:[30.07,0,.009,60190],triton:[0,354.8,0,5.877],pluto:[39.48,0,.249,90560],charon:[0,19.6,.0002,6.387]};
 /* ===== STATE (init) AND COLONISTS: jobs, staffing, free colonists ===== */
 let S;
-function init(){S={diff,cur:null,proj:{},screen:'base',loc:(LOCD[new URLSearchParams(location.search).get('loc')]?new URLSearchParams(location.search).get('loc'):'moon'),view:{z:(+new URLSearchParams(location.search).get('z')>=1&&+new URLSearchParams(location.search).get('z')<=7?+new URLSearchParams(location.search).get('z'):7)},y:START,m:1,d:1,h:0,speed:0,brown:false,q:[],nobuild:false,staff:{solar:2,mine:2,ice:2,elec:0,reactor:0,lab:0,fact:0,shop:0,build:2},res:{hydrogen:30,oxygen:100,water:100,nitrogen:30,methane:5,sulphur:10,titanium:20,aluminium:40,copper:20,silica:60,iron:120,silver:0,chromium:0,platinum:0,uranium:0,components:10,machinery:20,software:10},pop:COL.pop,rp:0,b:{solar:2,mine:1,ice:1,elec:0,fact:0,shop:0,lab:0,hab:2,reactor:0},slots:Math.min(PORT.start,PORT.max),names:{},cargo:{},colonies:Object.fromEntries(Object.keys(LOCD).filter(k=>LOCD[k].start).map(k=>[k,1])),tech:{},ships:1,out:[],over:false,log:[],sv:{},mods:{}};
+function init(){S={diff,cur:null,proj:{},y:START,m:1,d:1,h:0,speed:0,brown:false,q:[],nobuild:false,staff:{solar:2,mine:2,ice:2,elec:0,reactor:0,lab:0,fact:0,shop:0,build:2},res:{hydrogen:30,oxygen:100,water:100,nitrogen:30,methane:5,sulphur:10,titanium:20,aluminium:40,copper:20,silica:60,iron:120,silver:0,chromium:0,platinum:0,uranium:0,components:10,machinery:20,software:10},pop:COL.pop,rp:0,b:{solar:2,mine:1,ice:1,elec:0,fact:0,shop:0,lab:0,hab:2,reactor:0},slots:Math.min(PORT.start,PORT.max),names:{},cargo:{},colonies:Object.fromEntries(Object.keys(LOCD).filter(k=>LOCD[k].start).map(k=>[k,1])),tech:{},ships:1,out:[],over:false,end:null,log:[],sv:{},mods:{}};
  for(const k in S.colonies){S.sv[k]={done:1};S.mods[k]=1;S.tech['col_'+k]=1}
  say('Year '+START+'. The asteroid has scorched Earth. The Moon colony is humanity’s last foothold.');
  say('Silver, chromium and uranium cannot be mined on the Moon or in the asteroid belt. Look further out.');
  say('Build industry, research new drives, and launch the Gaia Ark before '+DEADLINE+'.')}
-const $=id=>document.getElementById(id);
 function say(t,cls){S.log.unshift([t,cls||''])}
 function work(k){const s=STAFF[k],n=S.b[k];return s?Math.min(n,Math.floor(S.staff[k]/s.min)):n}
 function manned(k){const s=STAFF[k];if(!s)return 0;const w=work(k);return Math.min(w,Math.floor((S.staff[k]-w*s.min)/Math.max(1,s.full-s.min)))}
@@ -490,7 +489,7 @@ function assigned(){let a=0;for(const k in S.staff)a+=S.staff[k];return a}
 function freeCol(){return Math.max(0,S.pop-crewOut()-assigned())}
 function jobCount(j){let a=0;for(const k in STAFF)if(STAFF[k].job===j)a+=S.staff[k];return a}
 function staffCap(k){return k==='build'?Math.max(1,S.q.length)*STAFF.build.full:S.b[k]*STAFF[k].full}
-function assign(k,d){if(S.over||!STAFF[k])return;const nv=S.staff[k]+d;if(nv<0||(d>0&&(freeCol()<d||nv>staffCap(k))))return;S.staff[k]=nv;render()}
+function assign(k,d){if(S.over||!STAFF[k])return;const nv=S.staff[k]+d;if(nv<0||(d>0&&(freeCol()<d||nv>staffCap(k))))return;S.staff[k]=nv}
 function fitStaff(){let over=assigned()+crewOut()-S.pop,lost=0;
  while(over>0){let kk=null;
  for(const k in S.staff)if(S.staff[k]>0&&(kk===null||S.staff[k]>S.staff[kk]))kk=k;
@@ -502,7 +501,7 @@ function fitStaff(){let over=assigned()+crewOut()-S.pop,lost=0;
 function sitePlan(){let rem=S.staff.build;const s=STAFF.build;return S.q.map(()=>{if(rem>=s.full){rem-=s.full;return 2}if(rem>=s.min){rem-=s.min;return 1}return 0})}
 function jobsLine(){return 'Colonists: '+['labourer','scientist','technician','builder'].map(j=>JOBN[j]+' '+jobCount(j)).join(' · ')+' · Crew '+crewOut()+' · Free '+freeCol()}
 function ctl(k,status){const A=S.staff[k],cap=staffCap(k);
- return '<div class="stf">'+JOBN[STAFF[k].job]+'<button '+(A>0&&!S.over?'':'disabled')+' onclick="assign(\''+k+'\',-1)" aria-label="Remove one">−</button><b>'+A+'</b><button '+(A<cap&&freeCol()>0&&!S.over?'':'disabled')+' onclick="assign(\''+k+'\',1)" aria-label="Add one">+</button><span>'+status+'</span></div>'}
+ return '<div class="stf">'+JOBN[STAFF[k].job]+'<button '+(A>0&&!S.over?'':'disabled')+' onclick="act(assign,\''+k+'\',-1)" aria-label="Remove one">−</button><b>'+A+'</b><button '+(A<cap&&freeCol()>0&&!S.over?'':'disabled')+' onclick="act(assign,\''+k+'\',1)" aria-label="Add one">+</button><span>'+status+'</span></div>'}
 function stf(k){const s=STAFF[k];if(!s||!S.b[k])return '';const n=S.b[k],w=work(k),m=manned(k);
  return ctl(k,'<span class="'+(w<n?'bad':'ok')+'">'+w+'/'+n+' working</span>'+(m?' <span class="ok">+'+m+' boosted</span>':''))}
 function builderRow(){const s=STAFF.build,plan=sitePlan(),run=plan.filter(x=>x).length;
@@ -512,7 +511,7 @@ function pow(){let p=0,u=0;for(const k in B){const b=B[k];if(b.p>0){let x=eff(k)
 function can(c){return Object.keys(c).every(k=>Math.floor(S.res[k])>=c[k])}
 function pay(c){for(const k in c)S.res[k]-=c[k]}
 function cost(c){return Object.keys(c).map(k=>c[k]+' '+RN[k].toLowerCase()).join(', ')}
-function build(k){if(S.over||!can(B[k].c))return;pay(B[k].c);S.q.push({k,left:B[k].t});say('Construction started: '+B[k].n+' ('+dur(B[k].t)+').');render()}
+function build(k){if(S.over||!can(B[k].c))return;pay(B[k].c);S.q.push({k,left:B[k].t});say('Construction started: '+B[k].n+' ('+dur(B[k].t)+').')}
 const startCost=k=>S.proj[k]&&S.proj[k].state==='paused'?Math.ceil(T[k].rp/2):T[k].rp;
 const rpRate=()=>eff('lab')*pow().e*(S.cur?.25:1)/20;
 function canResearch(k){const t=T[k];return !S.over&&visT(k)&&!S.cur&&work('lab')>0&&!S.tech[k]&&t.req.every(r=>S.tech[r])&&Math.floor(S.rp)>=startCost(k)}
@@ -521,12 +520,10 @@ function research(k){if(!canResearch(k))return;
  S.rp-=c;
  S.proj[k]={left:p?p.left:t.rp*24,state:'active'};
  S.cur=k;
- say((resume?'Research resumed: ':'Research started: ')+t.n+' (cost '+c+' research points up front, then '+t.rp/100+' per day).');
- render()}
+ say((resume?'Research resumed: ':'Research started: ')+t.n+' (cost '+c+' research points up front, then '+t.rp/100+' per day).');}
 function pauseResearch(why){if(!S.cur)return;const k=S.cur,t=T[k],c=Math.ceil(t.rp/2);S.proj[k].state='paused';S.cur=null;
  if(why)say('WARNING: development of '+t.n+' has stopped ('+why+'). Progress is kept; resuming costs '+c+' research points.','bad');
- else say('Research paused: '+t.n+'. Progress is kept; resuming costs '+c+' research points.');
- render()}
+ else say('Research paused: '+t.n+'. Progress is kept; resuming costs '+c+' research points.');}
 /* ===== STARPORT AND STARSHIPS: berths, loading (crew, resources), tonnage, recycling, Shipyard ===== */
 const portSlots=()=>S.slots,owned=()=>S.ships+S.out.length,BQ=k=>k==='berth'?{n:'Starport berth',g:'P'}:k.startsWith('colmod:')?{n:'Colonisation module – '+LOCD[k.slice(7)].n,g:'C'}:B[k],berthsQ=()=>S.q.filter(q=>q.k==='berth');
 function berths(){const qs=berthsQ(),held={};S.out.forEach(o=>{if(o.b!==undefined)held[o.b]=o});let h=S.ships;const a=[];
@@ -535,69 +532,45 @@ function berths(){const qs=berthsQ(),held={};S.out.forEach(o=>{if(o.b!==undefine
   else if(i<S.slots+qs.length)a.push({s:'queued',q:qs[i-S.slots]});
   else a.push({s:'locked'})}
  return a}
-function expand(){if(S.over||!can(PORT.c)||S.slots+berthsQ().length>=PORT.max)return;pay(PORT.c);S.q.push({k:'berth',left:PORT.t});say('Starport expansion started: berth '+(S.slots+berthsQ().length)+' ('+dur(PORT.t)+').');render()}
+function expand(){if(S.over||!can(PORT.c)||S.slots+berthsQ().length>=PORT.max)return;pay(PORT.c);S.q.push({k:'berth',left:PORT.t});say('Starport expansion started: berth '+(S.slots+berthsQ().length)+' ('+dur(PORT.t)+').')}
 const CREWT=[{k:'colonist',n:'Colonists'},{k:'labourer',n:'Labourers'},{k:'scientist',n:'Scientists'},{k:'technician',n:'Technicians'},{k:'builder',n:'Builders'},{k:'crew',n:'Crew'}];
 const cg=i=>S.cargo[i]||(S.cargo[i]={crew:{},res:{}}),crewLoaded=i=>{const c=S.cargo[i];return c?Object.values(c.crew).reduce((a,b)=>a+b,0):0};
 const tonsOf=(t,i,extraCrew)=>{const sp=SHIPPARTS[t]||{},c=S.cargo[i],pt=PARTS.reduce((a,p)=>a+(sp[p.k]?WT.part[p.k]:0),0),rs=c?Object.keys(c.res).reduce((a,r)=>a+c.res[r]*WT.res[r],0):0;return Math.round((pt+rs+(crewLoaded(i)+(extraCrew||0))*WT.crew)*100)/100};
 function cgAdd(i,kind,key,d){const BS=berths();if(S.over||!BS[i]||BS[i].s!=='hangar')return;const c=cg(i);
  if(kind==='crew'){const n=c.crew[key]||0;if(d>0){if(freeCol()<1||tonsOf('probe',i)+WT.crew>WT.max.probe)return;c.crew[key]=n+1}else{if(n<1)return;c.crew[key]=n-1}}
- else{const n=c.res[key]||0;if(d>0){if(Math.floor(S.res[key])<1||tonsOf('probe',i)+WT.res[key]>WT.max.probe)return;S.res[key]-=1;c.res[key]=n+1}else{if(n<1)return;S.res[key]+=1;c.res[key]=n-1}}
- render()}
+ else{const n=c.res[key]||0;if(d>0){if(Math.floor(S.res[key])<1||tonsOf('probe',i)+WT.res[key]>WT.max.probe)return;S.res[key]-=1;c.res[key]=n+1}else{if(n<1)return;S.res[key]+=1;c.res[key]=n-1}}}
 const SHIPREC=.5;/* share of a ship's cost returned when it is recycled (provisional) */
 const recBack=()=>Object.fromEntries(Object.keys(SHIP).map(k=>[k,Math.floor(SHIP[k]*SHIPREC)]).filter(e=>e[1]>0));
 function recycle(bi){const BS=berths();if(S.over||!BS[bi]||BS[bi].s!=='hangar')return;const nm=S.names[bi]!==undefined?S.names[bi]:'this starship',back=recBack();
- if(!confirm('Recycle '+nm+'? It will be scrapped for good and return '+cost(back)+'.'))return;
  const H=[];BS.forEach((b,i)=>{if(b.s==='hangar')H.push(i)});
  const lc=S.cargo[bi];if(lc)for(const r in lc.res)S.res[r]+=lc.res[r];
  for(const M of [S.names,S.cargo])for(let m=H.indexOf(bi)+1;m<H.length;m++){if(M[H[m]]!==undefined)M[H[m-1]]=M[H[m]];else delete M[H[m-1]]}
- for(const M of [S.names,S.cargo])delete M[H[H.length-1]];S.ships--;for(const k in back)S.res[k]+=back[k];say('Starship recycled: '+nm+' (returned '+cost(back)+').','ok');render()}
-function buildShip(){if(S.over||!can(SHIP)||owned()>=portSlots())return;pay(SHIP);S.ships++;say('A new probe rolls out and is berthed in the Starport ('+owned()+'/'+portSlots()+' slots).','ok');render()}
+ for(const M of [S.names,S.cargo])delete M[H[H.length-1]];S.ships--;for(const k in back)S.res[k]+=back[k];say('Starship recycled: '+nm+' (returned '+cost(back)+').','ok')}
+function buildShip(){if(S.over||!can(SHIP)||owned()>=portSlots())return;pay(SHIP);S.ships++;say('A new probe rolls out and is berthed in the Starport ('+owned()+'/'+portSlots()+' slots).','ok')}
 /* ===== SURVEY AND COLONISATION: probes, analysis, Colonise technologies, colonisation modules ===== */
 const visT=k=>{const t=T[k];return !t.loc||!!S.tech[k]||!!(S.sv[t.loc]&&S.sv[t.loc].done)};
 const svProbe=k=>S.out.find(o=>o.k==='survey'&&o.loc===k),svChance=k=>Math.max(0,1-LOCD[k].adiff*SURVEY.fail);
 const oN=o=>o.k==='survey'?'Survey of '+LOCD[o.loc].n:M[o.k].n,oWhen=o=>o.k==='survey'&&o.ph==='orbit'?'in orbit':dur(o.left)+' to go';
 const SVPH={fly:'flying there',orbit:'in orbit',scan:'analysing',back:'returning'};
 const oLbl=o=>o.k==='survey'?oN(o)+' · '+SVPH[o.ph]+(o.ph==='orbit'?'':' ('+dur(o.left)+')'):M[o.k].n+' ('+dur(o.left)+', crew '+o.crew+')';
-let svSel=null;
 function svSend(k){if(S.over||S.ships<1||!can(SURVEY.c)||svProbe(k)||S.colonies[k]||(S.sv[k]&&S.sv[k].done))return;
  pay(SURVEY.c);
  const bi=berths().findIndex(x=>x.s==='hangar');
  S.ships--;
  S.out.push({k:'survey',loc:k,ph:'fly',left:tripD(k)*24,crew:0,b:bi<0?undefined:bi});
- say('Probe launched to '+LOCD[k].n+' ('+dur(tripD(k)*24)+').');
- render()}
-function svStart(k){const o=svProbe(k);if(S.over||!o||o.ph!=='orbit'||(S.sv[k]&&S.sv[k].done))return;o.ph='scan';o.left=LOCD[k].alen*24;say('Analysis of '+LOCD[k].n+' started ('+LOCD[k].alen+' days).');render()}
-function svRecall(k){const o=svProbe(k);if(S.over||!o||o.ph!=='orbit')return;o.ph='back';o.left=tripFrom(k,HOME)*24;say('Probe recalled from '+LOCD[k].n+' ('+dur(o.left)+').');render()}
+ say('Probe launched to '+LOCD[k].n+' ('+dur(tripD(k)*24)+').');}
+function svStart(k){const o=svProbe(k);if(S.over||!o||o.ph!=='orbit'||(S.sv[k]&&S.sv[k].done))return;o.ph='scan';o.left=LOCD[k].alen*24;say('Analysis of '+LOCD[k].n+' started ('+LOCD[k].alen+' days).')}
+function svRecall(k){const o=svProbe(k);if(S.over||!o||o.ph!=='orbit')return;o.ph='back';o.left=tripFrom(k,HOME)*24;say('Probe recalled from '+LOCD[k].n+' ('+dur(o.left)+').')}
 function svTick(o){o.left--;if(o.left>0)return;const n=LOCD[o.loc].n;
  if(o.ph==='fly'){o.ph='orbit';say('The probe has reached the orbit of '+n+'. Start the analysis from its orbit view or Flight plans.','ok')}
  else if(o.ph==='scan'){const sv=S.sv[o.loc]=S.sv[o.loc]||{};o.ph='orbit';
   if(Math.random()<svChance(o.loc)){sv.done=1;say('Analysis of '+n+' succeeded. The technology “'+T['col_'+o.loc].n+'” is now available.','ok')}
   else{sv.fails=(sv.fails||0)+1;say('Analysis of '+n+' failed. The probe is still in orbit: try again or recall it.','bad')}}
  else if(o.ph==='back'){S.ships++;S.out.splice(S.out.indexOf(o),1);say('The probe from '+n+' is back in the Starport.','ok')}}
-function buildMod(k){if(S.over||!S.tech['col_'+k]||S.mods[k]||S.q.some(q=>q.k==='colmod:'+k)||!can(SURVEY.mc))return;pay(SURVEY.mc);S.q.push({k:'colmod:'+k,left:SURVEY.mt});say('Construction started: colonisation module for '+LOCD[k].n+' ('+dur(SURVEY.mt)+').');render()}
-function svHtml(){const pr=S.out.filter(o=>o.k==='survey'),free=Object.keys(LOCD).filter(k=>!S.colonies[k]&&!(S.sv[k]&&S.sv[k].done)&&!svProbe(k));if(!svSel||free.indexOf(svSel)<0)svSel=free[0]||null;
- let h='<h4 class="rh">Survey flights</h4>';
- h+=pr.map(o=>{const k=o.loc,dn=S.sv[k]&&S.sv[k].done,b=o.ph==='orbit'?(dn?'':'<button class="go" onclick="svStart(\''+k+'\')">Start analysis</button> ')+'<button onclick="svRecall(\''+k+'\')">Recall</button>':'';
-  return '<div class="row"><div>'+esc(LOCD[k].n)+'<small>Probe '+SVPH[o.ph]+(o.ph==='orbit'?'':' · '+dur(o.left)+' left')+(dn?' · analysis complete':' · analysis '+LOCD[k].alen+' days, '+Math.round(svChance(k)*100)+'% success')+'</small></div><div>'+b+'</div></div>'}).join('');
- h+='<div class="row"><div>Send a probe to a location<small>Costs '+cost(SURVEY.c)+'. Needs a probe in the hangar. The trip and the analysis depend on the location.</small></div><div><select id="svsel" onchange="svSel=this.value">'+free.map(k=>'<option value="'+k+'"'+(k===svSel?' selected':'')+'>'+esc(LOCD[k].n)+' ('+lapse(tripD(k))+')</option>').join('')+'</select> <button '+(svSel&&S.ships>0&&can(SURVEY.c)&&!S.over?'':'disabled')+' onclick="svSend(svSel)">Send probe</button></div></div>';
- return h}
-function orbHtml(){const k=S.loc,l=LOCD[k],pr=svProbe(k),sv=S.sv[k]||{};let st='',act='';
- if(S.colonies[k])st='<b class="ok">Colony: '+esc(l.col||l.n)+'</b>';
- else{const tk='col_'+k;
-  if(sv.done)st='<b class="ok">Analysis complete.</b> '+(S.mods[k]?'Colonisation module built.':S.tech[tk]?'Colonisation researched: build the module in Construction.':'Research “'+esc(T[tk].n)+'” ('+T[tk].rp+' points) in Science Labs.');
-  else if(pr&&pr.ph==='fly')st='Probe on its way: arrives in '+dur(pr.left)+'.';
-  else if(pr&&pr.ph==='scan')st='Analysis in progress: '+Math.ceil(pr.left/24)+' days left.';
-  else if(pr&&pr.ph==='back')st='Probe returning: '+dur(pr.left)+'.';
-  else if(pr&&pr.ph==='orbit'){st='Probe in orbit.'+(sv.fails?' Failed attempts: '+sv.fails+'.':'');act='<button class="go" onclick="svStart(\''+k+'\')">Start analysis</button> '}
-  else{st='No probe sent yet.';act='<button '+(S.ships>0&&can(SURVEY.c)&&!S.over?'':'disabled')+' onclick="svSend(\''+k+'\')">Send probe</button>'+(S.ships<1?' <span class="bad">no probe in the hangar</span>':!can(SURVEY.c)?' <span class="bad">needs '+cost(SURVEY.c)+'</span>':'')}
-  if(pr&&pr.ph==='orbit')act+='<button onclick="svRecall(\''+k+'\')">Recall probe</button>'}
- return '<h2>Survey of '+esc(l.n)+'</h2><div class="in"><div class="row"><div>Analysis<small>Length '+l.alen+' days · difficulty '+Math.round(l.adiff*100)+'% · success chance '+Math.round(svChance(k)*100)+'% per attempt</small></div></div><div class="row"><div>Probe trip<small>'+lapse(tripD(l.k||k))+' ('+fmtAU(distNow(HOME,k,daysJ()))+' AU today) · launch cost '+cost(SURVEY.c)+'</small></div></div><div class="row"><div>'+st+'</div><div>'+act+'</div></div></div>'}
-function modRows(){const ks=Object.keys(LOCD).filter(k=>S.tech['col_'+k]&&!S.mods[k]),built=Object.keys(S.mods).filter(k=>S.mods[k]&&!S.colonies[k]);
- return (ks.length?'<h4 class="rh">Colonisation modules</h4>':'')+ks.map(k=>{const q=S.q.some(x=>x.k==='colmod:'+k);
- return '<div class="row"><div>Colonisation module – '+esc(LOCD[k].n)+'<small>'+cost(SURVEY.mc)+' · takes '+dur(SURVEY.mt)+'</small></div><button '+(!q&&can(SURVEY.mc)&&!S.over?'':'disabled')+' onclick="buildMod(\''+k+'\')">'+(q?'Queued':'Build')+'</button></div>'}).join('')+(built.length?'<div class="dim" style="padding-top:6px">Modules built: '+built.map(k=>esc(LOCD[k].n)).join(', ')+'</div>':'')}
+function buildMod(k){if(S.over||!S.tech['col_'+k]||S.mods[k]||S.q.some(q=>q.k==='colmod:'+k)||!can(SURVEY.mc))return;pay(SURVEY.mc);S.q.push({k:'colmod:'+k,left:SURVEY.mt});say('Construction started: colonisation module for '+LOCD[k].n+' ('+dur(SURVEY.mt)+').')}
 /* ===== MISSIONS AND THE GAME CLOCK: launch, tick (one game hour), daily, monthly ===== */
 function launch(k){const m=M[k],cr=CREW[k];if(S.over||S.ships<1||!can(m.c)||freeCol()<cr)return;
- pay(m.c);const bi=berths().findIndex(x=>x.s==='hangar');S.ships--;S.out.push({k,left:m.t*720,crew:cr,b:bi<0?undefined:bi});say('Launched: '+m.n+' ('+Math.round(m.t*30)+' days, crew of '+cr+').');render()}
+ pay(m.c);const bi=berths().findIndex(x=>x.s==='hangar');S.ships--;S.out.push({k,left:m.t*720,crew:cr,b:bi<0?undefined:bi});say('Launched: '+m.n+' ('+Math.round(m.t*30)+' days, crew of '+cr+').')}
 function tick(){
  if(S.over)return;fitStaff();const P=pow(),e=P.e,R=S.res,H=720;
  if(e<1&&!S.brown){S.brown=true;say('Power shortfall: machines run at '+Math.round(e*100)+'%.','bad')}
@@ -633,15 +606,15 @@ function tick(){
  for(const o of back){const m=M[o.k];
   if(Math.random()<m.risk){say(m.n+': ship lost in transit. The crew of '+(o.crew||2)+' is gone.','bad');S.pop=Math.max(0,S.pop-(o.crew||2));continue}
   S.ships++;
-  if(m.r.win){S.over=true;say('The Gaia Ark has reached Earth. Green shoots break the ash.','ok');end('Victory in '+S.y+'! The Gaia Ark has seeded Earth with new life. Humanity has a home again.');continue}
+  if(m.r.win){S.over=true;say('The Gaia Ark has reached Earth. Green shoots break the ash.','ok');S.end='Victory in '+S.y+'! The Gaia Ark has seeded Earth with new life. Humanity has a home again.';continue}
   for(const k in m.r){if(k==='rp')S.rp+=m.r[k];else R[k]+=m.r[k]}
   say(m.n+': ship returns with '+m.d+'.','ok')}
  S.h++;
  if(S.h>=24){S.h=0;S.d++;daily()}
  if(S.d>dim(S.y,S.m)){S.d=1;S.m++;monthly()}
  if(S.m>12){S.m=1;S.y++}
- if(!S.over&&S.pop<=0){S.over=true;end('The colony has fallen silent. No one is left on the Moon.')}
- else if(!S.over&&S.y>=DEADLINE){S.over=true;end('Time is up. Earth’s orbit decays and the colony never launched the Ark.')}
+ if(!S.over&&S.pop<=0){S.over=true;S.end='The colony has fallen silent. No one is left on the Moon.'}
+ else if(!S.over&&S.y>=DEADLINE){S.over=true;S.end='Time is up. Earth’s orbit decays and the colony never launched the Ark.'}
 }
 function daily(){const R=S.res;if(S.pop>0&&(R.water<=.001||R.oxygen<=.001)){S.pop--;say((R.water<=.001?'No water':'No oxygen')+': a colonist dies.','bad')}}
 function monthly(){const R=S.res,cap=S.b.hab*B.hab.cap;
@@ -653,8 +626,8 @@ function monthly(){const R=S.res,cap=S.b.hab*B.hab.cap;
 /* ===== FORMATTING, ICONS AND THE RESOURCES BAR ===== */
 const pad=n=>String(n).padStart(2,'0');
 const dur=h=>h>=24?lapse(Math.ceil(h/24)):Math.ceil(h)+' h';
+const $=id=>document.getElementById(id);
 const cache={};function set(id,h){if(cache[id]!==h){cache[id]=h;$(id).innerHTML=h}}
-function end(msg){$('dmsg').textContent=msg;$('drestart').hidden=false;$('dok').hidden=true;$('dlg').showModal()}
 const ICON={
  hydrogen:`<rect x="4" y="5" width="8" height="10" rx="3" fill="#8fd3ff"/><rect x="6.5" y="2.5" width="3" height="3" fill="#cfd8e8"/><rect x="5.5" y="1" width="5" height="1.8" fill="#cfd8e8"/><rect x="5.5" y="8" width="5" height="1.4" fill="#fff" opacity=".8"/>`,
  oxygen:`<circle cx="5.5" cy="10.5" r="3.6" fill="#bfeaff" stroke="#4aa8e0"/><circle cx="11" cy="6" r="2.8" fill="#bfeaff" stroke="#4aa8e0"/><circle cx="10" cy="12.8" r="1.6" fill="#bfeaff" stroke="#4aa8e0"/>`,
@@ -706,7 +679,7 @@ function labStatus(){const n=S.b.lab,w=work('lab'),e=pow().e;
  const rp=rate>0?(rate>=.1?rate.toFixed(2)+' per day':'1 per '+Math.round(1/rate)+' days'):'stopped';
  let h='<div class="row"><div>'+n+' science lab'+(n>1?'s':'')+' ('+w+' staffed)<small>'+(w<n?'Assign scientists in Construction. ':'')+'Research points: '+rp+(S.cur?' (cut by 75% while a project is active)':' (full pace)')+'</small></div></div>';
  if(S.cur){const t=T[S.cur],p=S.proj[S.cur],tot=t.rp*24;
-  h+='<div class="row"><div>Project: '+t.n+'<small>'+Math.ceil(p.left/24)+' days left · costs '+t.rp/100+' research points / day</small><div class="bar"><i style="width:'+Math.min(100,Math.round((1-p.left/tot)*100))+'%"></i></div></div><button onclick="pauseResearch()">Pause</button></div>'}
+  h+='<div class="row"><div>Project: '+t.n+'<small>'+Math.ceil(p.left/24)+' days left · costs '+t.rp/100+' research points / day</small><div class="bar"><i style="width:'+Math.min(100,Math.round((1-p.left/tot)*100))+'%"></i></div></div><button onclick="act(pauseResearch)">Pause</button></div>'}
  else h+='<div class="row dim">No project active. Starting a technology spends its research points up front, then a little every day. Resuming a paused one costs half the upfront points.</div>';
  return h}
 const FAR=['silver','chromium','uranium'];
@@ -936,7 +909,7 @@ function orbitSvg(s,reg){let h='<svg class="orbs" width="1920" height="1080" vie
 function dotBand(r0,r1,n,sz,belt){let d='';for(let i=0;i<n;i++){const a=i*2.399,rr=r0+(r1-r0)*(((i*7919)%1000)/1000),s=1+(i%sz);d+='<i style="left:'+Math.round(Math.cos(a)*rr)+'px;top:'+Math.round(Math.sin(a)*rr)+'px;width:'+s+'px;height:'+s+'px"></i>'}
  return '<div class="belt'+(belt?'':' kb')+'"'+(belt?' data-rot="'+PER('belt')+'" data-mk="belt"':'')+' style="left:'+CX+'px;top:'+CY+'px;transform:scaleY('+TY+')">'+d+'</div>'}
 const bandLabel=(t,r,ang)=>'<div class="bl" style="left:'+Math.round(CX+Math.cos(ang)*r)+'px;top:'+Math.round(CY-Math.sin(ang)*r*TY)+'px">'+t+'</div>';
-function mapHtml(){const z=S.view.z;let h='<div class="sk" style="background:'+STARS+';opacity:.8"></div>';
+function mapHtml(){const z=U.view.z;let h='<div class="sk" style="background:'+STARS+';opacity:.8"></div>';
  const sun=r=>'<div class="sb sunb" data-rad="'+r+'" style="z-index:'+CY+';left:'+CX+'px;top:'+CY+'px;width:'+2*r+'px;height:'+2*r+'px;margin:-'+r+'px 0 0 -'+r+'px;background:#fff3c8;box-shadow:0 0 '+r*2+'px '+r+'px #ffb84a99"></div>';
  if(z<=4){const V=LVL[z],s=V.s;h+=orbitSvg(s,z===1?-1:V.reg);
   if(z===1)h+=zoneHtml();
@@ -946,11 +919,11 @@ function mapHtml(){const z=S.view.z;let h='<div class="sk" style="background:'+S
   h+=sun(V.sun);
   if(z===1&&S.colonies&&PLN.concat(Object.keys(LOCD)).some(k=>regOf(k)===0&&S.colonies[k]))h+='<i class="mc" style="left:'+(CX-V.sun-6)+'px;top:'+(CY-V.sun-6)+'px;width:'+2*(V.sun+6)+'px;height:'+2*(V.sun+6)+'px"></i>';
   for(const k of PLN){if(z===1?regOf(k)===0:regOf(k)!==V.reg)continue;h+=mapBody(k,rpx(k,V.base),{kep:s,cr:z===1?4:8,any:1})}}
- else if(z===5){const p=sysOf(S.loc),ms=Object.keys(LOCD).filter(k=>LOCD[k].p===p).sort((a,b)=>LOCD[a].ak-LOCD[b].ak),mx=ms.length?LOCD[ms[ms.length-1]].ak:1,g=SYSG[p]||1,rr=k=>ms.length>1?SYSR*Math.pow(LOCD[k].ak/mx,g):SYSR,R=Math.min(PLR[p],Math.round((ms.length?rr(ms[0]):SYSR)*.62));
+ else if(z===5){const p=sysOf(U.loc),ms=Object.keys(LOCD).filter(k=>LOCD[k].p===p).sort((a,b)=>LOCD[a].ak-LOCD[b].ak),mx=ms.length?LOCD[ms[ms.length-1]].ak:1,g=SYSG[p]||1,rr=k=>ms.length>1?SYSR*Math.pow(LOCD[k].ak/mx,g):SYSR,R=Math.min(PLR[p],Math.round((ms.length?rr(ms[0]):SYSR)*.62));
   h+=p==='belt'?dotBand(0,520,90,3,true):'';
   h+=mapBody(p,R,{label:true,cr:10,ring:p==='saturn'});
   ms.forEach(k=>{const r=rr(k);h+=mapRing(r)+mapBody(k,MR[k],{T:PER(k),r,ph:phase(k,1),cr:7})})}
- else{const k=S.loc,R=300;
+ else{const k=U.loc,R=300;
   h+=mapBody(k,R,{label:false,cr:12,ring:k==='saturn'})+mapRing(400,'op')+'<div class="mk" data-rad="10" data-per="2" data-r="400" data-ph="'+phase(k,2)+'" style="width:0;height:0"><i></i></div>'+'<div class="mt">'+(S.colonies&&S.colonies[k]?'Colony: '+esc(LOCD[k].col||LOCD[k].n):'No colony')+'<small>Click the globe to land</small></div>'}
  return h}
 /* planets follow their real Kepler orbits for the game date; moons (circular, arbitrary starting phase) use their real periods; everything turns counter-clockwise as seen from the north */
@@ -963,14 +936,39 @@ function updateOrbits(){const m=$('mapbg');if(!m||m.hidden)return;const t=daysJ(
  /* see-through: a body that is partly hidden behind a nearer one turns into a ghost */
  const bs=[...m.querySelectorAll('.mb,.mk,.sunb')].map(e=>({e,x:e._x===undefined?CX:e._x,y:e._y===undefined?CY:e._y,r:+e.dataset.rad||0}));
  for(const a of bs){let g=0;for(const b of bs)if(b!==a&&b.y>a.y&&Math.hypot(a.x-b.x,a.y-b.y)<(a.r+b.r)*.9){g=1;break}const o=g?.3:1;if(a.e._o!==o){a.e._o=o;a.e.style.opacity=o}}}
-(function frame(){try{if(S&&mode==='game'&&S.view.z<7)updateOrbits()}catch(e){}requestAnimationFrame(frame)})();
-const ZNAMES=()=>[['Solar System','Solar System'],[COLPAGES[2],COLPAGES[2]],[COLPAGES[1],COLPAGES[1]],[COLPAGES[0],COLPAGES[0]],[(sysOf(S.loc)==='belt'?'Asteroid belt':LOCD[sysOf(S.loc)].n+' system'),'System'],[LOCD[S.loc].n+' orbit','Orbit'],[LOCD[S.loc].n+' surface','Surface']];
-function viewTitle(){const z=S.view.z,l=LOCD[S.loc];return z===1?'Solar System':z<=4?COLPAGES[4-z]:z===5?ZNAMES()[4][0]:z===6?l.n+' – orbit':(S.loc==='moon'?'Moonbase – Mare Tranquillitatis':(S.colonies&&S.colonies[S.loc]?l.col||l.n:l.n))}
-function zoomTo(z){S.view.z=z;go('base')}
-function mapClick(k){const z=S.view.z;if(z===1)S.view.z=REGLV[regOf(k)];else if(z<=4){S.loc=k;S.view.z=5}else if(z===5){S.loc=k;S.view.z=6}else if(z===6)S.view.z=7;go('base')}
+(function frame(){try{if(U&&mode==='game'&&U.view.z<7)updateOrbits()}catch(e){}requestAnimationFrame(frame)})();
+const ZNAMES=()=>[['Solar System','Solar System'],[COLPAGES[2],COLPAGES[2]],[COLPAGES[1],COLPAGES[1]],[COLPAGES[0],COLPAGES[0]],[(sysOf(U.loc)==='belt'?'Asteroid belt':LOCD[sysOf(U.loc)].n+' system'),'System'],[LOCD[U.loc].n+' orbit','Orbit'],[LOCD[U.loc].n+' surface','Surface']];
+function viewTitle(){const z=U.view.z,l=LOCD[U.loc];return z===1?'Solar System':z<=4?COLPAGES[4-z]:z===5?ZNAMES()[4][0]:z===6?l.n+' – orbit':(U.loc==='moon'?'Moonbase – Mare Tranquillitatis':(S.colonies&&S.colonies[U.loc]?l.col||l.n:l.n))}
+function zoomTo(z){U.view.z=z;go('base')}
+function mapClick(k){const z=U.view.z;if(z===1)U.view.z=REGLV[regOf(k)];else if(z<=4){U.loc=k;U.view.z=5}else if(z===5){U.loc=k;U.view.z=6}else if(z===6)U.view.z=7;go('base')}
 /* ===== SCREENS AND RENDER ===== */
 const SCR=['base','col','ships','tov','db','build','tech','yard','port','flight','log'];
-function go(s){S.screen=s;render()}
+let U;/* UI state, not part of the game: open screen, location on view, map zoom */
+function initUI(){const q=new URLSearchParams(location.search),l=q.get('loc'),z=+q.get('z');U={screen:'base',loc:LOCD[l]?l:'moon',view:{z:z>=1&&z<=7?z:7}}}/* ?loc= and ?z= are testing shortcuts */
+function act(f,...a){f(...a);render()}/* buttons run a game action through this, then redraw */
+let endShown=null;/* the game (S) whose end message was already shown */
+function go(s){U.screen=s;render()}
+let svSel=null;/* location picked in the survey list (UI) */
+function svHtml(){const pr=S.out.filter(o=>o.k==='survey'),free=Object.keys(LOCD).filter(k=>!S.colonies[k]&&!(S.sv[k]&&S.sv[k].done)&&!svProbe(k));if(!svSel||free.indexOf(svSel)<0)svSel=free[0]||null;
+ let h='<h4 class="rh">Survey flights</h4>';
+ h+=pr.map(o=>{const k=o.loc,dn=S.sv[k]&&S.sv[k].done,b=o.ph==='orbit'?(dn?'':'<button class="go" onclick="act(svStart,\''+k+'\')">Start analysis</button> ')+'<button onclick="act(svRecall,\''+k+'\')">Recall</button>':'';
+  return '<div class="row"><div>'+esc(LOCD[k].n)+'<small>Probe '+SVPH[o.ph]+(o.ph==='orbit'?'':' · '+dur(o.left)+' left')+(dn?' · analysis complete':' · analysis '+LOCD[k].alen+' days, '+Math.round(svChance(k)*100)+'% success')+'</small></div><div>'+b+'</div></div>'}).join('');
+ h+='<div class="row"><div>Send a probe to a location<small>Costs '+cost(SURVEY.c)+'. Needs a probe in the hangar. The trip and the analysis depend on the location.</small></div><div><select id="svsel" onchange="svSel=this.value">'+free.map(k=>'<option value="'+k+'"'+(k===svSel?' selected':'')+'>'+esc(LOCD[k].n)+' ('+lapse(tripD(k))+')</option>').join('')+'</select> <button '+(svSel&&S.ships>0&&can(SURVEY.c)&&!S.over?'':'disabled')+' onclick="act(svSend,svSel)">Send probe</button></div></div>';
+ return h}
+function orbHtml(){const k=U.loc,l=LOCD[k],pr=svProbe(k),sv=S.sv[k]||{};let st='',act='';
+ if(S.colonies[k])st='<b class="ok">Colony: '+esc(l.col||l.n)+'</b>';
+ else{const tk='col_'+k;
+  if(sv.done)st='<b class="ok">Analysis complete.</b> '+(S.mods[k]?'Colonisation module built.':S.tech[tk]?'Colonisation researched: build the module in Construction.':'Research “'+esc(T[tk].n)+'” ('+T[tk].rp+' points) in Science Labs.');
+  else if(pr&&pr.ph==='fly')st='Probe on its way: arrives in '+dur(pr.left)+'.';
+  else if(pr&&pr.ph==='scan')st='Analysis in progress: '+Math.ceil(pr.left/24)+' days left.';
+  else if(pr&&pr.ph==='back')st='Probe returning: '+dur(pr.left)+'.';
+  else if(pr&&pr.ph==='orbit'){st='Probe in orbit.'+(sv.fails?' Failed attempts: '+sv.fails+'.':'');act='<button class="go" onclick="act(svStart,\''+k+'\')">Start analysis</button> '}
+  else{st='No probe sent yet.';act='<button '+(S.ships>0&&can(SURVEY.c)&&!S.over?'':'disabled')+' onclick="act(svSend,\''+k+'\')">Send probe</button>'+(S.ships<1?' <span class="bad">no probe in the hangar</span>':!can(SURVEY.c)?' <span class="bad">needs '+cost(SURVEY.c)+'</span>':'')}
+  if(pr&&pr.ph==='orbit')act+='<button onclick="act(svRecall,\''+k+'\')">Recall probe</button>'}
+ return '<h2>Survey of '+esc(l.n)+'</h2><div class="in"><div class="row"><div>Analysis<small>Length '+l.alen+' days · difficulty '+Math.round(l.adiff*100)+'% · success chance '+Math.round(svChance(k)*100)+'% per attempt</small></div></div><div class="row"><div>Probe trip<small>'+lapse(tripD(l.k||k))+' ('+fmtAU(distNow(HOME,k,daysJ()))+' AU today) · launch cost '+cost(SURVEY.c)+'</small></div></div><div class="row"><div>'+st+'</div><div>'+act+'</div></div></div>'}
+function modRows(){const ks=Object.keys(LOCD).filter(k=>S.tech['col_'+k]&&!S.mods[k]),built=Object.keys(S.mods).filter(k=>S.mods[k]&&!S.colonies[k]);
+ return (ks.length?'<h4 class="rh">Colonisation modules</h4>':'')+ks.map(k=>{const q=S.q.some(x=>x.k==='colmod:'+k);
+ return '<div class="row"><div>Colonisation module – '+esc(LOCD[k].n)+'<small>'+cost(SURVEY.mc)+' · takes '+dur(SURVEY.mt)+'</small></div><button '+(!q&&can(SURVEY.mc)&&!S.over?'':'disabled')+' onclick="act(buildMod,\''+k+'\')">'+(q?'Queued':'Build')+'</button></div>'}).join('')+(built.length?'<div class="dim" style="padding-top:6px">Modules built: '+built.map(k=>esc(LOCD[k].n)).join(', ')+'</div>':'')}
 SCR.filter(s=>s!=='base').forEach(s=>{const h=$('scr-'+s).querySelector('h2');
  h.classList.add('wh');
  h.insertAdjacentHTML('beforeend','<button class="xb" title="Close (Esc)" aria-label="Close"><svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="square"><path d="M3 3L13 13M13 3L3 13"/></svg></button>');
@@ -978,29 +976,30 @@ SCR.filter(s=>s!=='base').forEach(s=>{const h=$('scr-'+s).querySelector('h2');
 function fit(){const q=+new URLSearchParams(location.search).get('scale'),k=q>0?q:Math.min(innerWidth/1920,innerHeight/1080);$('game').style.transform='translate(-50%,-50%) scale('+k+')'}
 addEventListener('resize',fit);
 function render(){
- SCR.forEach(s=>$('scr-'+s).hidden=S.screen!==s);
-  $('scene').classList.toggle('quiet',S.screen!=='base');
-  {const z=S.view.z,away=S.loc!=='moon'||z<7;
+ if(S.end&&endShown!==S){endShown=S;$('dmsg').textContent=S.end;$('drestart').hidden=false;$('dok').hidden=true;$('dlg').showModal()}
+ SCR.forEach(s=>$('scr-'+s).hidden=U.screen!==s);
+  $('scene').classList.toggle('quiet',U.screen!=='base');
+  {const z=U.view.z,away=U.loc!=='moon'||z<7;
   $('scene').classList.toggle('away',away);
   $('scenebg').hidden=z<7;
   $('mapbg').hidden=z>=7;
-  set('scenebg',z>=7?sceneHtml(S.loc):'');
+  set('scenebg',z>=7?sceneHtml(U.loc):'');
   set('mapbg',z<7?mapHtml():'');
-  if(S.screen==='base'&&away)$('scr-base').hidden=true;
+  if(U.screen==='base'&&away)$('scr-base').hidden=true;
   $('colname').textContent=viewTitle();
   document.querySelector('.ph').hidden=z<7;
   $('orbpanel').hidden=z!==6;
   if(z===6)set('orbpanel',orbHtml());
   set('zoombar',ZNAMES().map((n,i)=>'<button data-z="'+(i+1)+'" aria-pressed="'+(z===i+1)+'" title="Zoom level '+(i+1)+'">'+(i+1)+' · '+esc(n[1])+'</button>').join(''));
   updateOrbits()}
-  $('back').setAttribute('aria-pressed',String(S.screen==='base'));
+  $('back').setAttribute('aria-pressed',String(U.screen==='base'));
  $('b-build').textContent=S.q.length?S.q.length+' in progress':'Idle';
  $('b-tech').textContent=S.cur?T[S.cur].n:'Idle';
- $('colbtn').setAttribute('aria-pressed',String(S.screen==='col'));
-  $('shipbtn').setAttribute('aria-pressed',String(S.screen==='ships'));
-  $('tovbtn').setAttribute('aria-pressed',String(S.screen==='tov'));
-  $('dbbtn').setAttribute('aria-pressed',String(S.screen==='db'));
-  $('logbtn').setAttribute('aria-pressed',String(S.screen==='log'));
+ $('colbtn').setAttribute('aria-pressed',String(U.screen==='col'));
+  $('shipbtn').setAttribute('aria-pressed',String(U.screen==='ships'));
+  $('tovbtn').setAttribute('aria-pressed',String(U.screen==='tov'));
+  $('dbbtn').setAttribute('aria-pressed',String(U.screen==='db'));
+  $('logbtn').setAttribute('aria-pressed',String(U.screen==='log'));
  $('b-yard').textContent=S.ships+' in hangar';
  $('b-port').textContent=owned()+'/'+S.slots+' berths';
  $('b-flight').textContent=S.out.length+' in flight';
@@ -1013,10 +1012,10 @@ function render(){
  for(const q of S.q)t+='<div class="tile" style="background:transparent;border-style:dashed;color:var(--ink)" title="Under construction: '+BQ(q.k).n+'">'+BQ(q.k).g+'</div>';
  set('map',t);const P=pow();
  set('power','Power '+P.p+' made / '+P.u+' needed <span class="'+(P.e<1?'bad':'ok')+'">('+Math.round(P.e*100)+'% efficiency)</span><div class="bar"><i style="width:'+Math.round(P.e*100)+'%"></i></div><div class="dim" style="padding-top:6px">'+jobsLine()+'</div>');
- set('build',builderRow()+Object.keys(B).filter(k=>!B[k].tech||S.tech[B[k].tech]).map(k=>'<div class="row"><div>'+B[k].n+' ×'+S.b[k]+'<small>'+B[k].d+' · power '+(B[k].p>0?'+':'')+B[k].p+' · '+cost(B[k].c)+(B[k].c.machinery?' · upkeep '+(+(B[k].c.machinery*WEAR).toFixed(2))+' machinery / month':'')+' · takes '+dur(B[k].t)+(STAFF[k]?' · staff: '+STAFF[k].min+' '+JOBN[STAFF[k].job].toLowerCase()+' per building, '+STAFF[k].full+' for +'+Math.round(BOOST*100)+'%':'')+'</small></div>'+stf(k)+'<button '+(can(B[k].c)&&!S.over?'':'disabled')+' onclick="build(\''+k+'\')">Build</button></div>').join('')+modRows()+(S.q.length?'<div class="dim" style="padding-top:6px">Under construction: '+S.q.map((q,i)=>BQ(q.k).n+' ('+dur(q.left)+(sitePlan()[i]?'':', waiting for builders')+')').join(', ')+'</div>':''));
+ set('build',builderRow()+Object.keys(B).filter(k=>!B[k].tech||S.tech[B[k].tech]).map(k=>'<div class="row"><div>'+B[k].n+' ×'+S.b[k]+'<small>'+B[k].d+' · power '+(B[k].p>0?'+':'')+B[k].p+' · '+cost(B[k].c)+(B[k].c.machinery?' · upkeep '+(+(B[k].c.machinery*WEAR).toFixed(2))+' machinery / month':'')+' · takes '+dur(B[k].t)+(STAFF[k]?' · staff: '+STAFF[k].min+' '+JOBN[STAFF[k].job].toLowerCase()+' per building, '+STAFF[k].full+' for +'+Math.round(BOOST*100)+'%':'')+'</small></div>'+stf(k)+'<button '+(can(B[k].c)&&!S.over?'':'disabled')+' onclick="act(build,\''+k+'\')">Build</button></div>').join('')+modRows()+(S.q.length?'<div class="dim" style="padding-top:6px">Under construction: '+S.q.map((q,i)=>BQ(q.k).n+' ('+dur(q.left)+(sitePlan()[i]?'':', waiting for builders')+')').join(', ')+'</div>':''));
  set('tech','<div class="row"><div>Research points: '+Math.floor(S.rp)+' <span class="rps">+'+(+rpRate().toFixed(3))+' per day</span></div><div class="rps">Labs working: '+work('lab')+' of '+S.b.lab+'</div></div>'+labStatus()+Object.keys(T).filter(visT).map(k=>{const x=T[k],ok=x.req.every(r=>S.tech[r]),done=S.tech[k];
-  return '<div class="row"><div>'+x.n+(done?' <span class="ok">done</span>':'')+(S.cur===k?' <span class="ok">in progress</span>':S.proj[k]?' <span class="bad">paused, '+Math.ceil(S.proj[k].left/24)+' days left</span>':'')+'<small>'+x.d+(done?'':' · '+x.rp+' points up front + '+x.rp/100+' / day, '+x.rp+' days'+(x.req.length?' · needs '+x.req.map(r=>T[r].n).join(', '):''))+'</small></div>'+(done||S.cur===k?'':'<button '+(canResearch(k)?'':'disabled')+' onclick="research(\''+k+'\')">'+(S.proj[k]?'Resume ('+startCost(k)+' pts)':'Research')+'</button>')+'</div>'}).join(''));
- let y='<div class="row"><div>Probes in hangar: '+S.ships+'<small>'+cost(SHIP)+' each</small><small>Starport: '+owned()+'/'+S.slots+' berths used'+(S.out.length?' ('+S.out.length+' away on missions)':'')+(owned()>=S.slots?' <span class="bad">· no free berth: expand the Starport'+(S.slots>=PORT.max?' (already at the maximum of '+PORT.max+')':'')+'</span>':'')+'</small></div><button '+(can(SHIP)&&!S.over&&owned()<S.slots?'':'disabled')+' onclick="buildShip()">Build probe</button></div>';
+  return '<div class="row"><div>'+x.n+(done?' <span class="ok">done</span>':'')+(S.cur===k?' <span class="ok">in progress</span>':S.proj[k]?' <span class="bad">paused, '+Math.ceil(S.proj[k].left/24)+' days left</span>':'')+'<small>'+x.d+(done?'':' · '+x.rp+' points up front + '+x.rp/100+' / day, '+x.rp+' days'+(x.req.length?' · needs '+x.req.map(r=>T[r].n).join(', '):''))+'</small></div>'+(done||S.cur===k?'':'<button '+(canResearch(k)?'':'disabled')+' onclick="act(research,\''+k+'\')">'+(S.proj[k]?'Resume ('+startCost(k)+' pts)':'Research')+'</button>')+'</div>'}).join(''));
+ let y='<div class="row"><div>Probes in hangar: '+S.ships+'<small>'+cost(SHIP)+' each</small><small>Starport: '+owned()+'/'+S.slots+' berths used'+(S.out.length?' ('+S.out.length+' away on missions)':'')+(owned()>=S.slots?' <span class="bad">· no free berth: expand the Starport'+(S.slots>=PORT.max?' (already at the maximum of '+PORT.max+')':'')+'</span>':'')+'</small></div><button '+(can(SHIP)&&!S.over&&owned()<S.slots?'':'disabled')+' onclick="act(buildShip)">Build probe</button></div>';
  const BS=berths(),nq=berthsQ().length,nx=BS.findIndex(x=>x.s==='locked');
  let pt='<div class="row"><div>Starport<small>'+S.slots+' of '+PORT.max+' berths built · '+owned()+' occupied. Only the berths grow: each expansion costs '+cost(PORT.c)+' and takes '+dur(PORT.t)+'. New probes from the Shipyard are berthed here automatically.</small></div></div>'+
   BS.map((b,i)=>{const n='Berth '+(i+1);let d,x='';
@@ -1024,11 +1023,11 @@ function render(){
    else if(b.s==='away')d='<b>Probe</b> · away on '+oN(b.o)+' ('+oWhen(b.o)+', crew '+b.o.crew+')';
    else if(b.s==='empty')d='<span class="dim">Empty berth</span>';
    else if(b.s==='queued')d='<span class="dim">Under construction · '+dur(b.q.left)+(sitePlan()[S.q.indexOf(b.q)]?'':' · waiting for builders')+'</span>';
-   else{d='<span class="dim">Not built</span>';if(i===nx)x='<button '+(can(PORT.c)&&!S.over?'':'disabled')+' onclick="expand()">Expand</button>'}
+   else{d='<span class="dim">Not built</span>';if(i===nx)x='<button '+(can(PORT.c)&&!S.over?'':'disabled')+' onclick="act(expand)">Expand</button>'}
    return '<div class="row berth"><div>'+n+'<small>'+d+'</small></div>'+x+'</div>'}).join('');
  let h='';
  for(const k in M){const m=M[k];if(m.tech&&!S.tech[m.tech])continue;
-  h+='<div class="row"><div>'+m.n+'<small>Brings '+m.d+' · '+Math.round(m.t*30)+' days · '+Math.round(m.risk*100)+'% risk · costs '+cost(m.c)+' · crew '+CREW[k]+(freeCol()<CREW[k]?' <span class="bad">(needs '+CREW[k]+' free colonists)</span>':'')+'</small></div><button '+(S.ships>0&&can(m.c)&&freeCol()>=CREW[k]&&!S.over?'':'disabled')+' onclick="launch(\''+k+'\')">Launch</button></div>'}
+  h+='<div class="row"><div>'+m.n+'<small>Brings '+m.d+' · '+Math.round(m.t*30)+' days · '+Math.round(m.risk*100)+'% risk · costs '+cost(m.c)+' · crew '+CREW[k]+(freeCol()<CREW[k]?' <span class="bad">(needs '+CREW[k]+' free colonists)</span>':'')+'</small></div><button '+(S.ships>0&&can(m.c)&&freeCol()>=CREW[k]&&!S.over?'':'disabled')+' onclick="act(launch,\''+k+'\')">Launch</button></div>'}
  h+=svHtml();
  if(S.out.length)h+='<div class="dim" style="padding-top:6px">In flight: '+S.out.map(oLbl).join(', ')+'</div>';
  set('yard',y);set('port',pt);
@@ -1085,17 +1084,17 @@ $('step').onclick=()=>{S.speed=0;tick();render()};
 let last=performance.now(),acc=0;
 setInterval(()=>{const n=performance.now(),dt=n-last;last=n;if(!S.speed||S.over||mode!=='game'||$('dlg').open||$('dmenu').open){acc=0;return}acc+=dt;let c=0;while(acc>=S.speed&&!S.over&&c<20){acc-=S.speed;tick();c++}acc=Math.min(acc,S.speed);if(c)render()},100);
 document.querySelectorAll('[data-go]').forEach(b=>b.onclick=()=>go(b.dataset.go));
-$('back').onclick=()=>{S.loc='moon';S.view.z=7;go('base')};
-$('mapbg').addEventListener('click',e=>{const b=e.target.closest('[data-mk]');if(b)mapClick(b.dataset.mk);else if(S.view.z===1){const g=zoneAt(e);if(g>=0){S.view.z=REGLV[g];go('base')}}});
-$('mapbg').addEventListener('mousemove',e=>{if(S.view.z===1)$('mapbg').dataset.zone=zoneAt(e)});
+$('back').onclick=()=>{U.loc='moon';U.view.z=7;go('base')};
+$('mapbg').addEventListener('click',e=>{const b=e.target.closest('[data-mk]');if(b)mapClick(b.dataset.mk);else if(U.view.z===1){const g=zoneAt(e);if(g>=0){U.view.z=REGLV[g];go('base')}}});
+$('mapbg').addEventListener('mousemove',e=>{if(U.view.z===1)$('mapbg').dataset.zone=zoneAt(e)});
 $('mapbg').addEventListener('mouseleave',()=>{$('mapbg').dataset.zone='-1'});
 let wheelAt=0;
-$('game').addEventListener('wheel',e=>{if(mode!=='game'||S.screen!=='base'||S.over||$('dlg').open||$('dmenu').open||e.target.closest('.win,header,#zoombar'))return;e.preventDefault();const n=performance.now();if(n-wheelAt<220||!e.deltaY)return;wheelAt=n;const z=S.view.z;
- if(e.deltaY>0){if(z===5)zoomTo(REGLV[regOf(S.loc)]);else if(z>1)zoomTo(z-1);return}
+$('game').addEventListener('wheel',e=>{if(mode!=='game'||U.screen!=='base'||S.over||$('dlg').open||$('dmenu').open||e.target.closest('.win,header,#zoombar'))return;e.preventDefault();const n=performance.now();if(n-wheelAt<220||!e.deltaY)return;wheelAt=n;const z=U.view.z;
+ if(e.deltaY>0){if(z===5)zoomTo(REGLV[regOf(U.loc)]);else if(z>1)zoomTo(z-1);return}
  if(z>=7)return;const b=e.target.closest('[data-mk]');
  if(z===1){const g=b?regOf(b.dataset.mk):zoneAt(e);zoomTo(g>=0?REGLV[g]:2);return}
- if(z<=4){if(b){S.loc=b.dataset.mk;zoomTo(5)}else if(z<4)zoomTo(z+1);else{if(regOf(S.loc)!==0)S.loc='earth';zoomTo(5)}return}
- if(b)S.loc=b.dataset.mk;zoomTo(z+1)},{passive:false});
+ if(z<=4){if(b){U.loc=b.dataset.mk;zoomTo(5)}else if(z<4)zoomTo(z+1);else{if(regOf(U.loc)!==0)U.loc='earth';zoomTo(5)}return}
+ if(b)U.loc=b.dataset.mk;zoomTo(z+1)},{passive:false});
 $('zoombar').addEventListener('click',e=>{const b=e.target.closest('[data-z]');if(b)zoomTo(+b.dataset.z)});
 $('colbtn').onclick=()=>go('col');$('dbbtn').onclick=()=>go('db');$('logbtn').onclick=()=>go('log');
 $('db-tabs').addEventListener('click',e=>{const b=e.target.closest('[data-dt]');if(b){dbTab=b.dataset.dt;render()}});
@@ -1106,19 +1105,19 @@ $('shipsList').addEventListener('click',e=>{const f=e.target.closest('[data-sf]'
  render()}else if(x){shipPage=Math.max(0,shipPage+(+x.dataset.xp));
  render()}});
 $('shipsList').addEventListener('click',e=>{const r=e.target.closest('[data-rc]'),t=e.target.closest('[data-st]'),g=e.target.closest('[data-cg]');
- if(r)recycle(+r.dataset.rc);else if(t){const q=t.dataset.st.split(':');
+ if(r){const bi=+r.dataset.rc,nm=S.names[bi]!==undefined?S.names[bi]:'this starship';if(confirm('Recycle '+nm+'? It will be scrapped for good and return '+cost(recBack())+'.'))act(recycle,bi)}else if(t){const q=t.dataset.st.split(':');
  shipTab[q[0]]=q[1];
  render()}else if(g&&!g.disabled){const q=g.dataset.cg.split(':');
- cgAdd(+q[0],q[1],q[2],+q[3])}});
+ act(cgAdd,+q[0],q[1],q[2],+q[3])}});
 $('shipsList').addEventListener('input',e=>{const i=e.target.closest('.shname');
  if(i)S.names[i.dataset.b]=i.value});
 $('shipsList').addEventListener('change',e=>{if(e.target.closest('.shname'))render()});
 $('shipbtn').onclick=()=>go('ships');
 $('tovbtn').onclick=()=>go('tov');
 $('cols').addEventListener('click',e=>{const b=e.target.closest('[data-cp]');if(b){colPage=Math.max(0,colPage+(+b.dataset.cp));render()}});
-addEventListener('keydown',e=>{if(e.key==='Escape'&&mode==='game'&&S.screen!=='base'&&!$('dlg').open)go('base')});
+addEventListener('keydown',e=>{if(e.key==='Escape'&&mode==='game'&&U.screen!=='base'&&!$('dlg').open)go('base')});
 $('dok').onclick=()=>$('dlg').close();
-$('drestart').onclick=()=>{$('dlg').close();$('drestart').hidden=true;$('dok').hidden=false;init();render()};
+$('drestart').onclick=()=>{$('dlg').close();$('drestart').hidden=true;$('dok').hidden=false;init();initUI();render()};
 /* ===== MODES: title screen, new game, game, editor, exit; main menu dialog and theme ===== */
 let mode='title',diff='normal';
 function setMode(m){mode=m;
@@ -1134,7 +1133,7 @@ function setMode(m){mode=m;
  if(m==='title')$('m-new').focus();
  if(m==='game')render()}
 $('m-new').onclick=()=>setMode('new');
-$('d-start').onclick=()=>{applyData(cfById(CF.sel).d);init();setMode('game')};
+$('d-start').onclick=()=>{applyData(cfById(CF.sel).d);init();initUI();setMode('game')};
 $('d-back').onclick=()=>setMode('title');
 document.querySelectorAll('.diff:not(:disabled)').forEach(b=>b.onclick=()=>{diff=b.dataset.d;document.querySelectorAll('.diff').forEach(x=>x.setAttribute('aria-checked',String(x===b)));$('d-note').textContent=b.dataset.note});
 $('m-gdd').onclick=()=>{location.href='GDD.html'};
@@ -1259,7 +1258,7 @@ $('cf-del').onclick=()=>{if(CF.edit==='default')return;CF.list=CF.list.filter(c=
 $('cf-pick').onchange=()=>{CF.sel=$('cf-pick').value;cfSave();cfNote()};
 $('m-edit').onclick=()=>setMode('editor');
 refreshD();loadConfigs();
-init();render();setMode('title');
+init();initUI();render();setMode('title');
 </script>
 </body>
 </html>
