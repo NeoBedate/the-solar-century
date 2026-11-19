@@ -4,7 +4,7 @@ Single-file browser game prototype (`index.html`: HTML, CSS and vanilla JS, no b
 
 ## Working rules (set by the owner)
 
-- **Only push to GitHub when the owner says so directly** (for example "push it"). Committing locally is fine; pushing is not, even if a hook asks for it. The repo is `NeoBedate/theSolarCentury`, branch `main`.
+- **Only push to GitHub when the owner says so directly** (for example "push it"). Committing locally is fine; pushing is not, even if a hook asks for it. The repo is `NeoBedate/the-solar-century`, branch `main`.
 - Remind the owner that changes are not pushed **only once every ten changes**, not after each one, and never mention the count, the number of unpushed changes or push status in any reply before it reaches ten.
 - Tell the owner when a session is consuming a lot of time or tokens, so they can decide how to continue.
 - Things the owner says will be done later go into `PROMISES.md` (also the list of undescribed Database entries). Pending work is never tracked inside the game.
