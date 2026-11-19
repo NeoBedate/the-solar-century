@@ -274,6 +274,8 @@ button.go{background:var(--acc);color:#1a0f00}
 .zoombar button{height:35px;padding:0 14px;margin-left:-3px;font-size:16px}
 .zoombar button:first-child{margin-left:0}
 .pvw{position:relative;width:320px;height:180px;overflow:hidden;border:2px solid var(--lo);margin:4px 0 8px;background:#02030f}
+.pvw.art{width:480px;height:270px}
+.pvw.art svg{display:block;width:100%;height:100%}
 .pvw .sbg{width:1920px;height:1080px;inset:auto;left:0;top:0;transform:scale(.16667);transform-origin:0 0}
 .ph{position:absolute;left:16px;bottom:10px;font-size:13px;color:#9aa0c8}
 .hot{position:absolute;width:240px;padding:6px 4px;text-align:center;display:flex;flex-direction:column;gap:2px;background:var(--panel);color:var(--ink)}
@@ -874,6 +876,157 @@ const fmtN=n=>n>0?n.toLocaleString('en-US'):'–';
 function resTip(l,cat){const c=!!S.colonies[l.k];
  return '<span class="tp"><b class="th">'+cat.n+'</b><span class="tr h"><i></i><i>Producing/mo</i><i>Can provide</i></span>'+cat.r.map(r=>{const pr=c&&l.k==='moon'?prodRate(r):0;
  return '<span class="tr"><i>'+ico(r)+RN[r]+'</i><i>'+(pr>0?'+'+(+pr.toFixed(1)):'–')+'</i><i>'+fmtN((l.res||{})[r]||0)+'</i></span>'}).join('')+'</span>'}
+/* ===== BUILDING ILLUSTRATIONS: detailed SVG art per building (480x270, lunar surface, sun from the upper left), shown in Database > Buildings ===== */
+/* artSvg(k) draws the shared backdrop (sky, stars, Earth, hills, ground, craters) and then ART[k](G). G makes gradients whose ids are prefixed
+   with the building key, so several open entries never clash: G.v vertical, G.h horizontal (lit side first), G.r radial, G.glow, G.hz hazard
+   stripes, G.sh a blurred ground shadow falling to the right. The colours are artwork inside a dark frame, the same in both themes. */
+const n1=v=>+v.toFixed(1);
+function artSvg(k){const f=ART[k];if(!f)return '';
+ const p='a'+k+'-',defs=[],u=id=>'url(#'+p+id+')',st=a=>a.map((c,i)=>'<stop offset="'+(a.length>1?i/(a.length-1):0).toFixed(2)+'" stop-color="'+c+'"/>').join('');
+ let hz=0,seed=0;for(const c of k)seed=(seed*31+c.charCodeAt(0))>>>0;
+ const rnd=()=>(seed=(seed*1664525+1013904223)>>>0)/4294967296;
+ const G={u,rnd,
+  v:(id,...a)=>(defs.push('<linearGradient id="'+p+id+'" x1="0" y1="0" x2="0" y2="1">'+st(a)+'</linearGradient>'),u(id)),
+  h:(id,...a)=>(defs.push('<linearGradient id="'+p+id+'" x1="0" y1="0" x2="1" y2="0">'+st(a)+'</linearGradient>'),u(id)),
+  r:(id,...a)=>(defs.push('<radialGradient id="'+p+id+'" cx=".36" cy=".32" r=".75">'+st(a)+'</radialGradient>'),u(id)),
+  glow:(id,c)=>(defs.push('<radialGradient id="'+p+id+'"><stop offset="0" stop-color="'+c+'" stop-opacity=".85"/><stop offset="1" stop-color="'+c+'" stop-opacity="0"/></radialGradient>'),u(id)),
+  hz:()=>(hz++||defs.push('<pattern id="'+p+'hz" width="10" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="10" height="10" fill="#f2c230"/><rect width="5" height="10" fill="#1c1c1c"/></pattern>'),u('hz')),
+  sh:(x,y,rx)=>'<ellipse cx="'+n1(x+rx*.3)+'" cy="'+y+'" rx="'+rx+'" ry="'+n1(rx*.1+3)+'" fill="#000" opacity=".5" filter="'+u('bl')+'"/>',
+  /* y of an arch from (x0,yb) over control height c to (x0+w,yb), at x */
+  arch:(x0,w,yb,c,x)=>{const t=(x-x0)/w;return n1((1-t)*(1-t)*yb+2*t*(1-t)*c+t*t*yb)}};
+ defs.push('<filter id="'+p+'bl" x="-20%" y="-100%" width="140%" height="300%"><feGaussianBlur stdDeviation="2.2"/></filter>');
+ let s='<rect width="480" height="200" fill="'+G.v('sky','#000','#02040d','#0a0f2c')+'"/>';
+ for(let i=0;i<55;i++){const r=rnd()<.12?1.3:.5+rnd()*.5;s+='<circle cx="'+n1(rnd()*480)+'" cy="'+n1(rnd()*170)+'" r="'+r.toFixed(2)+'" fill="#fff" opacity="'+(.3+rnd()*.65).toFixed(2)+'"/>'}
+ s+='<circle cx="410" cy="44" r="24" fill="'+G.glow('eg','#5aa8ff')+'" opacity=".45"/><circle cx="410" cy="44" r="15" fill="'+G.r('earth','#c9e8ff','#4f8ff0','#1d4fae','#0b2460')+'"/>'
+  +'<path d="M400 38q5-4 11-1t9 4M403 50q6 2 12-1M398 45q3 1 5 0" stroke="#fff" stroke-width="1.5" fill="none" opacity=".55" stroke-linecap="round"/>'
+  +'<circle cx="410" cy="44" r="15" fill="'+G.h('term','rgba(2,3,15,0)','rgba(2,3,15,.05)','rgba(2,3,15,.9)')+'"/>';
+ s+='<path d="M0 188L34 180L80 184L128 171L170 179L214 168L262 177L318 172L366 182L410 170L452 178L480 174V200H0Z" fill="'+G.v('hill','#77726a','#56534b')+'"/>'
+  +'<path d="M128 171L170 179L150 181ZM214 168L262 177L236 179ZM410 170L452 178L428 180Z" fill="#000" opacity=".22"/>';
+ s+='<rect y="190" width="480" height="80" fill="'+G.v('gnd','#958f80','#777264','#4c483f')+'"/>';
+ for(let i=0;i<70;i++){const y=194+rnd()*76,sc=(y-190)/80;s+='<ellipse cx="'+n1(rnd()*480)+'" cy="'+n1(y)+'" rx="'+n1(.6+sc*2.6*rnd())+'" ry="'+n1(.3+sc*.9*rnd())+'" fill="'+(rnd()<.5?'#4a463d':'#b5af9f')+'" opacity=".7"/>'}
+ for(const [x,y,r] of [[40,258,26],[452,250,20],[300,264,12],[146,206,8],[350,200,6]])
+  s+='<ellipse cx="'+x+'" cy="'+y+'" rx="'+(r+2)+'" ry="'+n1(r*.24+1.5)+'" fill="#b9b3a2"/><ellipse cx="'+(x+1)+'" cy="'+n1(y+.6)+'" rx="'+r+'" ry="'+n1(r*.2+1)+'" fill="#4e4a41"/><path d="M'+n1(x-r*.2)+' '+n1(y+r*.2)+'h'+n1(r*.9)+'" stroke="#a7a190" stroke-width="1" opacity=".6"/>';
+ const b=f(G);
+ return '<svg viewBox="0 0 480 270" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="'+esc(B[k].n)+'"><defs>'+defs.join('')+'</defs>'+s+b+'</svg>'}
+const ART={
+ solar:G=>{const cell=G.v('cell','#3563cf','#17358a','#0a1a4a'),met=G.h('met','#eef1f5','#a9afb9','#5d636c');
+  const panel=(x,y,w,h,k)=>{let s='<polygon points="'+[x,y,x+w,y,x+w+k,y+h,x+k,y+h]+'" fill="'+cell+'" stroke="#d6dae1" stroke-width="1.4"/>';
+   for(let i=1;i<6;i++){const t=i/6;s+='<line x1="'+n1(x+w*t)+'" y1="'+y+'" x2="'+n1(x+k+w*t)+'" y2="'+(y+h)+'" stroke="#9cbaff" stroke-width=".6" opacity=".45"/>'}
+   for(let j=1;j<3;j++){const t=j/3;s+='<line x1="'+n1(x+k*t)+'" y1="'+n1(y+h*t)+'" x2="'+n1(x+w+k*t)+'" y2="'+n1(y+h*t)+'" stroke="#9cbaff" stroke-width=".6" opacity=".45"/>'}
+   return s+'<polygon points="'+[x+3,y+2,n1(x+w*.42),y+2,n1(x+w*.42+k*.4),n1(y+h*.4),n1(x+3+k*.4),n1(y+h*.4)]+'" fill="#fff" opacity=".14"/>'};
+  const unit=(x,top,w,h,k,gy)=>{const cx=x+w/2+k/2;return G.sh(cx+6,gy+1,w*.5)+'<rect x="'+(cx-2)+'" y="'+(top+h-4)+'" width="4" height="'+(gy-top-h+4)+'" fill="'+met+'"/><rect x="'+(cx-9)+'" y="'+(gy-3)+'" width="18" height="4" fill="#4d5159"/>'+panel(x,top,w,h,k)};
+  let s='';for(const x of [70,170,270])s+=unit(x,150,88,26,12,198);
+  for(const x of [20,146,272])s+=unit(x,168,108,40,18,240);
+  return s+'<path d="M344 238q30 9 70 0" stroke="#1d1d1d" stroke-width="2" fill="none"/>'+G.sh(432,244,24)
+   +'<rect x="410" y="212" width="44" height="32" fill="'+G.h('inv','#ebe8df','#aaa79e','#68665f')+'" stroke="#34332f"/><rect x="416" y="218" width="16" height="8" fill="#16201a"/><rect x="418" y="220" width="6" height="2" fill="#5fd68a"/><circle cx="446" cy="222" r="2.2" fill="#5fd68a"/><path d="M416 232h32M416 237h32" stroke="#5b5a55"/>'},
+ mine:G=>{const met=G.h('met','#eef1f5','#a9afb9','#5d636c'),wall=G.h('wall','#ddd6c4','#a8a08c','#6c6557'),heap=G.v('heap','#b6af9b','#878070','#5c574b'),mach=G.h('mach','#ffd77a','#e39d2c','#94580e');
+  let s='<ellipse cx="78" cy="246" rx="66" ry="13" fill="#aaa391"/><ellipse cx="80" cy="247.5" rx="60" ry="10" fill="'+G.v('pit','#25231f','#4b473e')+'"/>';
+  s+=G.sh(440,238,40)+'<path d="M390 240Q432 182 478 240Z" fill="'+heap+'"/><path d="M390 240Q416 204 432 196Q422 220 420 240Z" fill="#fff" opacity=".13"/>';
+  s+=G.sh(330,232,76)+'<rect x="262" y="132" width="98" height="100" fill="'+wall+'" stroke="#3a362f"/>'
+   +'<polygon points="360,168 412,180 412,232 360,232" fill="'+G.h('lean','#9d9682','#665f51')+'" stroke="#3a362f"/>'
+   +'<polygon points="270,108 342,108 324,132 288,132" fill="'+met+'" stroke="#3a362f"/><rect x="266" y="103" width="80" height="6" fill="#d4d8de" stroke="#3a362f" stroke-width=".8"/>'
+   +'<rect x="262" y="140" width="98" height="7" fill="'+G.hz()+'"/>';
+  for(let i=0;i<4;i++)s+='<rect x="'+(272+i*21)+'" y="160" width="13" height="9" fill="#ffd27a"/><rect x="'+(272+i*21)+'" y="160" width="13" height="3" fill="#fff4cf"/>';
+  s+='<rect x="298" y="196" width="26" height="36" fill="#2b2823" stroke="#171512"/><rect x="309" y="200" width="4" height="10" fill="#ffd27a"/><rect x="372" y="152" width="8" height="22" fill="'+met+'"/><rect x="370" y="150" width="12" height="4" fill="#cfd3d9"/>'
+   +'<path d="M366 200h40M366 212h40" stroke="#4f493e"/>';
+  const a=[188,204],b2=[300,112],dx=b2[0]-a[0],dy=b2[1]-a[1],L=Math.hypot(dx,dy),nx=-dy/L*6,ny=dx/L*6;
+  s+='<path d="M232 '+n1(a[1]+(232-a[0])*dy/dx+4)+'V232M268 '+n1(a[1]+(268-a[0])*dy/dx+4)+'V232" stroke="#6b6f76" stroke-width="3"/>';
+  let z='M'+a[0]+' '+a[1];for(let i=1;i<=12;i++){const t=i/12,o=i%2?1:0;z+='L'+n1(a[0]+dx*t+nx*o)+' '+n1(a[1]+dy*t+ny*o)}
+  s+='<path d="'+z+'" stroke="#9aa0a8" stroke-width="1.2" fill="none"/><line x1="'+a[0]+'" y1="'+a[1]+'" x2="'+b2[0]+'" y2="'+b2[1]+'" stroke="#cfd3d9" stroke-width="2.4"/><line x1="'+n1(a[0]+nx)+'" y1="'+n1(a[1]+ny)+'" x2="'+n1(b2[0]+nx)+'" y2="'+n1(b2[1]+ny)+'" stroke="#7d838c" stroke-width="2"/>';
+  for(let i=1;i<10;i++){const t=i/10;s+='<ellipse cx="'+n1(a[0]+dx*t-nx*.35)+'" cy="'+n1(a[1]+dy*t-ny*.35)+'" rx="2.6" ry="1.6" fill="#8d8676"/>'}
+  s+=G.sh(170,230,52)+'<line x1="150" y1="196" x2="76" y2="224" stroke="'+mach+'" stroke-width="7" stroke-linecap="round"/>';
+  for(let i=0;i<8;i++){const t=i*Math.PI/4,x=72+Math.cos(t)*21,y=226+Math.sin(t)*21;s+='<rect x="'+n1(x-4)+'" y="'+n1(y-4)+'" width="8" height="8" fill="#5a544a" stroke="#2a2723" transform="rotate('+n1(t*57.3)+' '+n1(x)+' '+n1(y)+')"/>'}
+  s+='<circle cx="72" cy="226" r="18" fill="none" stroke="'+mach+'" stroke-width="4"/><circle cx="72" cy="226" r="5" fill="#3a3630"/><path d="M72 208V244M54 226H90" stroke="#c88a26" stroke-width="2"/>'
+   +'<rect x="118" y="214" width="96" height="18" rx="9" fill="#2c2b29"/>';
+  for(let i=0;i<6;i++)s+='<circle cx="'+(128+i*15.2)+'" cy="223" r="5.5" fill="#55534f" stroke="#1a1918"/>';
+  return s+'<rect x="128" y="182" width="74" height="34" rx="3" fill="'+mach+'" stroke="#5a3608"/><rect x="134" y="188" width="22" height="13" fill="'+G.v('cab','#9fe7ff','#2b6f8f')+'" stroke="#3a2a10"/><rect x="164" y="190" width="32" height="5" fill="'+G.hz()+'"/><rect x="186" y="170" width="6" height="14" fill="#5d636c"/><circle cx="189" cy="168" r="2.4" fill="#ff5a3a"/>'},
+ ice:G=>{const met=G.h('met','#eef1f5','#a9afb9','#5d636c'),tank=G.v('tank','#ffffff','#e2edf7','#a3b8cc','#5f7386');
+  let s='<ellipse cx="186" cy="238" rx="156" ry="27" fill="#aea795"/><ellipse cx="190" cy="240.5" rx="146" ry="22" fill="'+G.v('cr','#161513','#38352f')+'"/>';
+  for(const [x,y,rx,ry,o] of [[150,246,34,5,.5],[236,239,24,4,.6],[106,236,16,3,.4],[282,246,18,3,.45],[196,252,26,4,.35]])s+='<ellipse cx="'+x+'" cy="'+y+'" rx="'+rx+'" ry="'+ry+'" fill="#cfe6ff" opacity="'+o+'"/>';
+  for(let i=0;i<14;i++)s+='<circle cx="'+n1(80+G.rnd()*220)+'" cy="'+n1(234+G.rnd()*18)+'" r=".8" fill="#fff" opacity=".9"/>';
+  s+=G.sh(214,246,40)+'<path d="M166 246L190 112L214 246" stroke="'+met+'" stroke-width="4" fill="none"/>';
+  for(let i=1;i<7;i++){const y=112+i*19,w=(y-112)*24/134;s+='<path d="M'+n1(190-w)+' '+y+'H'+n1(190+w)+(i<6?'L'+n1(190-w-3.4)+' '+(y+19):'')+'" stroke="#9aa0a8" stroke-width="1.4" fill="none"/>'}
+  s+='<rect x="181" y="104" width="18" height="10" fill="'+met+'" stroke="#3d4147"/><circle cx="190" cy="100" r="2.6" fill="#ff5a3a"/><circle cx="190" cy="100" r="7" fill="'+G.glow('red','#ff5a3a')+'"/><line x1="190" y1="114" x2="190" y2="252" stroke="#3d4147" stroke-width="2"/><rect x="180" y="226" width="20" height="14" fill="'+G.h('dbox','#d8d3c6','#8e887a')+'" stroke="#34312b"/>';
+  const cyl=(x,y,w,h)=>'<rect x="'+x+'" y="'+y+'" width="'+w+'" height="'+h+'" fill="'+tank+'"/>'+[.25,.5,.75].map(t=>'<line x1="'+n1(x+w*t)+'" y1="'+y+'" x2="'+n1(x+w*t)+'" y2="'+(y+h)+'" stroke="#7d90a3" stroke-width="1"/>').join('')+'<ellipse cx="'+(x+w)+'" cy="'+(y+h/2)+'" rx="'+n1(h*.22)+'" ry="'+h/2+'" fill="#b9c9d8" stroke="#5f7386"/><ellipse cx="'+x+'" cy="'+(y+h/2)+'" rx="'+n1(h*.22)+'" ry="'+h/2+'" fill="#f6fafd" stroke="#8ea2b6"/><rect x="'+(x+6)+'" y="'+(y+3)+'" width="'+(w-12)+'" height="3" fill="#fff" opacity=".7"/>';
+  s+=G.sh(400,232,66)+'<rect x="344" y="214" width="8" height="18" fill="#4d5159"/><rect x="430" y="214" width="8" height="18" fill="#4d5159"/>'+cyl(330,186,120,28)+cyl(342,160,96,26);
+  s+='<path d="M200 196H296V200H330" stroke="'+met+'" stroke-width="4" fill="none"/><circle cx="246" cy="196" r="3.4" fill="#d24a3a"/>'+G.sh(316,232,16)
+   +'<rect x="298" y="206" width="28" height="26" fill="'+G.h('heat','#c8c2b4','#7a7466')+'" stroke="#34312b"/><circle cx="312" cy="219" r="16" fill="'+G.glow('hot','#ff8a3a')+'"/><rect x="304" y="214" width="16" height="10" fill="#ff9a4a"/><path d="M304 217h16M304 221h16" stroke="#a8410c"/>';
+  return s},
+ elec:G=>{const met=G.h('met','#eef1f5','#a9afb9','#5d636c'),wall=G.h('wall','#f1efe8','#c4c0b4','#7b776c');
+  const cap=(x,y,w,h,f,band,lb)=>G.sh(x+w/2+8,y+h+1,w*.8)+'<rect x="'+(x+4)+'" y="'+(y+h-8)+'" width="5" height="10" fill="#3d4147"/><rect x="'+(x+w-9)+'" y="'+(y+h-8)+'" width="5" height="10" fill="#3d4147"/><rect x="'+x+'" y="'+y+'" width="'+w+'" height="'+(h-4)+'" rx="'+w/2+'" fill="'+f+'" stroke="#3d4147"/><rect x="'+x+'" y="'+(y+h*.38)+'" width="'+w+'" height="14" fill="'+band+'"/><text x="'+(x+w/2)+'" y="'+(y+h*.38+11)+'" font-size="11" font-weight="700" fill="#fff" text-anchor="middle">'+lb+'</text><rect x="'+(x+w*.2)+'" y="'+(y+10)+'" width="4" height="'+(h-30)+'" rx="2" fill="#fff" opacity=".55"/>';
+  let s=G.sh(250,232,104)+'<rect x="140" y="150" width="196" height="82" rx="6" fill="'+wall+'" stroke="#3a372f"/><rect x="134" y="143" width="208" height="10" rx="3" fill="'+met+'" stroke="#3a372f"/>';
+  for(let x=168;x<336;x+=28)s+='<line x1="'+x+'" y1="153" x2="'+x+'" y2="232" stroke="#000" opacity=".14"/>';
+  for(let i=0;i<5;i++)s+='<rect x="'+(152+i*36)+'" y="166" width="22" height="10" fill="#8fe6ff"/><rect x="'+(152+i*36)+'" y="166" width="22" height="3" fill="#e6fbff"/>';
+  s+='<rect x="180" y="124" width="10" height="20" fill="'+met+'"/><rect x="178" y="121" width="14" height="4" fill="#d4d8de"/><rect x="298" y="130" width="8" height="14" fill="'+met+'"/><rect x="226" y="196" width="24" height="36" fill="#2b2823"/><rect x="235" y="201" width="6" height="8" fill="#8fe6ff"/><circle cx="270" cy="200" r="2.4" fill="#5fd68a"/><circle cx="280" cy="200" r="2.4" fill="#ffd24a"/>'
+   +'<path d="M0 248C60 248 112 240 150 232" stroke="#4f86c0" stroke-width="4" fill="none"/><path d="M0 246.6C60 246.6 112 238.6 150 230.6" stroke="#a9d3ff" stroke-width="1" fill="none"/>';
+  s+=cap(74,100,42,132,G.h('h2','#eef6ff','#a3c3ea','#4f6f9a','#2b4160'),'#2f6fd6','H₂')+cap(362,88,52,144,G.h('o2','#ffffff','#dde1e6','#8e949d','#4c5158'),'#d8562b','O₂');
+  return s+'<path d="M116 188H140M336 196H362" stroke="'+met+'" stroke-width="5"/><circle cx="128" cy="188" r="4" fill="#d24a3a" stroke="#5a1a12"/><circle cx="349" cy="196" r="4" fill="#d24a3a" stroke="#5a1a12"/>'},
+ fact:G=>{const met=G.h('met','#eef1f5','#a9afb9','#5d636c'),x0=70,w=320,yb=168,c=96;
+  let s=G.sh(250,232,170)+'<path d="M70 232V168Q230 96 390 168V232Z" fill="'+G.v('roof','#efede6','#c1bcae','#7f7a6d')+'" stroke="#3a362f"/><path d="M70 232V168Q230 96 390 168V232Z" fill="'+G.h('lit','rgba(255,255,255,.2)','rgba(0,0,0,0)','rgba(0,0,0,.34)')+'"/>';
+  for(let x=110;x<390;x+=40)s+='<line x1="'+x+'" y1="'+G.arch(x0,w,yb,c,x)+'" x2="'+x+'" y2="232" stroke="#000" opacity=".2"/>';
+  s+='<path d="M90 160Q230 108 370 160" stroke="#fff" stroke-width="2" fill="none" opacity=".35"/>';
+  for(let x=82;x<380;x+=22)if(x<190||x>268)s+='<rect x="'+x+'" y="184" width="12" height="8" fill="#ffd27a"/><rect x="'+x+'" y="184" width="12" height="2.5" fill="#fff4cf"/>';
+  s+='<rect x="196" y="170" width="70" height="62" fill="'+G.hz()+'"/><rect x="202" y="176" width="58" height="56" fill="'+G.v('door','#ffe0a0','#f0a040','#b35e14')+'"/><rect x="214" y="206" width="20" height="26" fill="#5a3a18" opacity=".55"/><rect x="236" y="214" width="16" height="18" fill="#5a3a18" opacity=".45"/><circle cx="231" cy="220" r="40" fill="'+G.glow('dg','#ffb860')+'" opacity=".5"/>';
+  s+='<polygon points="318,128 372,104 380,112 326,136" fill="'+G.v('rad','#ffffff','#c9ced5')+'" stroke="#5d636c"/><polygon points="332,140 386,116 394,124 340,148" fill="'+G.v('rad2','#f4f6f8','#b9bec6')+'" stroke="#5d636c"/><path d="M340 124l8 7M356 117l8 7M354 136l8 7M370 129l8 7" stroke="#8a9099"/><path d="M330 138V150M350 146V154" stroke="#5d636c" stroke-width="2"/>';
+  s+=G.sh(52,232,26)+'<rect x="26" y="210" width="24" height="22" fill="'+G.h('crate','#c9a46a','#8a6a3a')+'" stroke="#3e2c14"/><rect x="48" y="218" width="20" height="14" fill="'+G.h('crate2','#b8925a','#7a5a2e')+'" stroke="#3e2c14"/><path d="M26 221h24M38 210v22" stroke="#3e2c14" opacity=".5"/>';
+  return s+'<path d="M282 232V214L300 200L318 210" stroke="#e0a020" stroke-width="5" fill="none" stroke-linejoin="round" stroke-linecap="round"/><circle cx="300" cy="200" r="3.5" fill="#3a3630"/><circle cx="282" cy="214" r="3.5" fill="#3a3630"/><rect x="276" y="228" width="14" height="4" fill="#3a3630"/><path d="M318 210l6-4M318 210l5 5" stroke="#9aa0a8" stroke-width="2"/>'},
+ shop:G=>{const met=G.h('met','#eef1f5','#a9afb9','#5d636c'),wall=G.h('wall','#d7d2c6','#a19b8d','#68635a'),yel=G.h('yel','#ffdd78','#e3a524','#8c620e');
+  let s=G.sh(240,232,126)+'<rect x="110" y="150" width="240" height="82" fill="'+wall+'" stroke="#38352e"/>';
+  for(let i=0;i<4;i++){const x=110+i*60;s+='<polygon points="'+[x,150,x,124,x+60,150]+'" fill="'+G.h('saw'+i,'#c8ccd2','#7f858e')+'" stroke="#38352e"/><polygon points="'+[x,150,x,124,x+8,128,x+8,150]+'" fill="#bfe9ff"/><polygon points="'+[x,138,x,124,x+8,128,x+8,140]+'" fill="#fff" opacity=".6"/>'}
+  s+='<rect x="168" y="166" width="94" height="66" fill="'+G.v('in','#ffc070','#e07a26','#8a3a0c')+'"/><rect x="168" y="166" width="94" height="12" fill="'+G.hz()+'"/><circle cx="215" cy="208" r="44" fill="'+G.glow('ig','#ffb050')+'" opacity=".45"/>'
+   +'<rect x="182" y="208" width="44" height="24" fill="#3a2410" opacity=".85"/><circle cx="236" cy="210" r="11" fill="none" stroke="#3a2410" stroke-width="5" stroke-dasharray="4 3"/><circle cx="236" cy="210" r="4" fill="#3a2410"/>'
+   +'<rect x="286" y="198" width="22" height="34" fill="#2b2823"/><rect x="292" y="204" width="10" height="8" fill="#ffd27a"/><rect x="124" y="170" width="30" height="10" fill="#ffd27a"/><rect x="316" y="170" width="24" height="10" fill="#ffd27a"/>';
+  s+=G.sh(410,238,52)+'<path d="M364 236L374 150M448 236L438 150" stroke="'+yel+'" stroke-width="6"/><path d="M366 222L372 180L446 222L440 180" stroke="#b48018" stroke-width="1.5" fill="none"/><rect x="354" y="142" width="104" height="9" fill="'+yel+'" stroke="#5a3e08"/><rect x="398" y="150" width="20" height="9" fill="#4d4a44"/><line x1="408" y1="159" x2="408" y2="188" stroke="#2a2826" stroke-width="1.5"/><path d="M404 188h8l-4 6z" fill="#2a2826"/>'
+   +'<rect x="394" y="194" width="28" height="18" rx="2" fill="'+met+'" stroke="#3d4147"/><circle cx="401" cy="203" r="4" fill="#5d636c"/><circle cx="415" cy="203" r="4" fill="#5d636c"/>';
+  return s+G.sh(70,234,34)+'<rect x="40" y="212" width="26" height="22" fill="'+G.h('crate','#7f8fa3','#4c5868')+'" stroke="#20262e"/><rect x="66" y="220" width="30" height="14" fill="'+G.h('crate2','#c9a46a','#8a6a3a')+'" stroke="#3e2c14"/><path d="M40 223h26M53 212v22" stroke="#20262e" opacity=".5"/><g stroke="#9aa0a8" stroke-width="3"><line x1="44" y1="210" x2="92" y2="210"/><line x1="46" y1="205" x2="90" y2="205"/></g>'},
+ farm:G=>{const glass=G.h('glass','rgba(215,240,255,.42)','rgba(170,215,255,.1)','rgba(110,160,210,.3)'),ins=G.v('ins','#3a1438','#1a0a1c'),grow=G.glow('grow','#ff6ad5');
+  const vault=(x,w,yb,h)=>{const c=yb-h*1.6,d='M'+x+' '+yb+'Q'+(x+w/2)+' '+n1(c)+' '+(x+w)+' '+yb+'Z';
+   let s=G.sh(x+w/2,yb+1,w*.55)+'<path d="'+d+'" fill="'+ins+'"/><ellipse cx="'+(x+w/2)+'" cy="'+(yb-h*.35)+'" rx="'+w*.5+'" ry="'+h*.55+'" fill="'+grow+'" opacity=".6"/>';
+   for(let r=0;r<3;r++){const y=yb-6-r*14;for(let px=x+7;px<x+w-6;px+=7)if(G.arch(x,w,yb,c,px)<y-6)s+='<ellipse cx="'+px+'" cy="'+y+'" rx="4.2" ry="3.2" fill="'+(px%14?'#55d872':'#2f9a48')+'"/>';
+    s+='<line x1="'+(x+5)+'" y1="'+(y+3)+'" x2="'+(x+w-5)+'" y2="'+(y+3)+'" stroke="#c9c2d6" stroke-width="1" opacity=".6"/>'}
+   s+='<path d="'+d+'" fill="'+glass+'" stroke="#dbe8f2" stroke-width="1.4"/>';
+   for(let i=1;i<6;i++){const px=x+w*i/6;s+='<line x1="'+n1(px)+'" y1="'+G.arch(x,w,yb,c,px)+'" x2="'+n1(px)+'" y2="'+yb+'" stroke="#dbe8f2" stroke-width=".9" opacity=".7"/>'}
+   let hl='';for(let t=.1;t<=.42;t+=.04){const px=x+w*t;hl+=(hl?'L':'M')+n1(px+2)+' '+n1(G.arch(x,w,yb,c,px)+4)}
+   return s+'<path d="'+hl+'" stroke="#fff" stroke-width="2.4" fill="none" opacity=".55" stroke-linecap="round" stroke-linejoin="round"/>'};
+  let s='<rect x="28" y="228" width="428" height="6" fill="'+G.h('base','#cfd3d9','#7d838c')+'"/>'+vault(36,132,230,64)+vault(178,156,230,78)+vault(344,108,230,56);
+  return s+'<rect x="166" y="212" width="14" height="12" fill="#b9bec6" stroke="#4d5159"/><rect x="332" y="214" width="14" height="10" fill="#b9bec6" stroke="#4d5159"/>'+G.sh(462,234,12)+'<rect x="452" y="196" width="20" height="38" rx="9" fill="'+G.h('wt','#ffffff','#9fb6cc','#55687a')+'" stroke="#3d4147"/><rect x="452" y="210" width="20" height="5" fill="#2f6fd6"/>'},
+ lab:G=>{const met=G.h('met','#eef1f5','#a9afb9','#5d636c'),wall=G.h('wall','#f6f5f0','#cbcac2','#86857c');
+  let s=G.sh(240,232,112)+'<rect x="130" y="178" width="204" height="54" rx="12" fill="'+wall+'" stroke="#3a3830"/>';
+  for(let x=158;x<334;x+=26)s+='<line x1="'+x+'" y1="180" x2="'+x+'" y2="230" stroke="#000" opacity=".1"/>';
+  for(let i=0;i<4;i++)s+='<circle cx="'+(254+i*20)+'" cy="198" r="5.5" fill="'+G.r('pw'+i,'#e6fbff','#6fdcff','#1d7fa8')+'" stroke="#4d5159" stroke-width="1.5"/>';
+  s+='<rect x="146" y="158" width="88" height="22" fill="'+met+'" stroke="#3a3830"/><path d="M146 160A44 44 0 0 1 234 160Z" fill="'+G.r('dome','#ffffff','#d3d7de','#7b818b','#41464e')+'" stroke="#3a3830"/>'
+   +'<path d="M185 117L197 117L201 160L181 160Z" fill="#090b12"/><line x1="190" y1="150" x2="212" y2="108" stroke="'+met+'" stroke-width="8"/><circle cx="212" cy="108" r="4.5" fill="#9fe7ff" stroke="#3d4147"/>'
+   +'<rect x="150" y="200" width="22" height="32" fill="#2b2823"/><rect x="156" y="205" width="10" height="9" fill="#ffd27a"/><rect x="306" y="150" width="4" height="30" fill="#5d636c"/><circle cx="308" cy="148" r="2.6" fill="#ff5a3a"/><circle cx="308" cy="148" r="8" fill="'+G.glow('red','#ff5a3a')+'"/>';
+  s+=G.sh(388,236,30)+'<rect x="364" y="216" width="30" height="20" fill="'+G.h('cab','#d8d3c6','#8e887a')+'" stroke="#34312b"/><rect x="376" y="146" width="6" height="72" fill="'+met+'"/><g transform="rotate(-28 380 138)"><ellipse cx="380" cy="138" rx="34" ry="13" fill="'+G.v('dish','#ffffff','#bcc1c9','#6f757e')+'" stroke="#3d4147"/><ellipse cx="383" cy="135" rx="24" ry="8" fill="#000" opacity=".12"/></g><path d="M364 132L392 108M396 146L392 108" stroke="#7d838c" stroke-width="1.5"/><rect x="388" y="102" width="8" height="8" fill="#5d636c"/>'
+   +'<path d="M379 230Q360 240 334 222" stroke="#1d1d1d" stroke-width="2" fill="none"/>';
+  return s+G.sh(70,236,18)+'<path d="M58 236L70 206L82 236M70 206V236" stroke="#9aa0a8" stroke-width="1.6" fill="none"/><rect x="62" y="196" width="18" height="12" fill="'+met+'" stroke="#3d4147"/><circle cx="76" cy="202" r="2" fill="#5fd68a"/>'},
+ hab:G=>{const fab=G.v('fab','#ffffff','#ece8de','#b6b0a2','#77726a'),heap=G.v('heap','#b6af9b','#878070','#5c574b');
+  let s=G.sh(70,226,40)+'<path d="M36 224A38 38 0 0 1 112 224Z" fill="'+G.r('dome','#ffffff','#e6e1d6','#a29c8e','#5f5a51')+'" stroke="#3a3830"/><path d="M50 216A26 26 0 0 1 66 192" stroke="#fff" stroke-width="2" fill="none" opacity=".6"/><circle cx="84" cy="208" r="4" fill="#ffd27a" stroke="#5e5a52"/>';
+  s+=G.sh(240,232,140)+'<rect x="104" y="146" width="250" height="64" rx="32" fill="'+fab+'" stroke="#3a3830"/>';
+  for(let x=134;x<340;x+=18)s+='<line x1="'+x+'" y1="148" x2="'+x+'" y2="208" stroke="#000" opacity=".1"/>';
+  s+='<rect x="130" y="152" width="200" height="4" rx="2" fill="#fff" opacity=".8"/>';
+  for(let x=150;x<330;x+=34)s+='<circle cx="'+x+'" cy="174" r="6.5" fill="'+G.r('port'+x,'#fff6d0','#ffc95a','#b8721a')+'" stroke="#5e5a52" stroke-width="2"/>';
+  s+='<path d="M86 234Q98 196 140 196H322Q362 196 374 234Z" fill="'+heap+'"/>';
+  for(let r=0;r<3;r++)for(let x=110+r*8;x<354-r*8;x+=16)s+='<path d="M'+x+' '+(204+r*10)+'q8-4 16 0" stroke="#5a554a" stroke-width="1" fill="none" opacity=".6"/>';
+  s+='<path d="M98 222Q110 200 140 199" stroke="#fff" stroke-width="2" fill="none" opacity=".2"/><rect x="348" y="174" width="50" height="32" rx="8" fill="'+fab+'" stroke="#3a3830"/><rect x="380" y="180" width="14" height="24" rx="2" fill="#b6b0a2" stroke="#3a3830"/><rect x="384" y="184" width="6" height="6" fill="#8fe6ff"/><circle cx="387" cy="170" r="2.4" fill="#5fd68a"/>'
+   +'<line x1="240" y1="146" x2="240" y2="118" stroke="#5d636c" stroke-width="2"/><path d="M230 120Q240 112 250 120Z" fill="#d4d8de" stroke="#5d636c"/><circle cx="240" cy="116" r="1.8" fill="#ff5a3a"/>';
+  return s+G.sh(440,244,32)+'<path d="M410 236L414 220L430 214H458L470 222V236Z" fill="'+G.h('rover','#f2f0ea','#b7b2a6','#6f6a60')+'" stroke="#3a3830"/><rect x="432" y="217" width="18" height="7" fill="#2b6f8f"/><line x1="460" y1="214" x2="460" y2="202" stroke="#5d636c" stroke-width="1.6"/><rect x="456" y="198" width="8" height="5" fill="#5d636c"/><circle cx="420" cy="238" r="6" fill="#2c2b29" stroke="#55534f" stroke-width="2"/><circle cx="440" cy="238" r="6" fill="#2c2b29" stroke="#55534f" stroke-width="2"/><circle cx="460" cy="238" r="6" fill="#2c2b29" stroke="#55534f" stroke-width="2"/>'},
+ reactor:G=>{const met=G.h('met','#eef1f5','#a9afb9','#5d636c'),heap=G.v('heap','#b6af9b','#878070','#5c574b'),rad=G.v('rad','#ffffff','#d7dbe1','#9ba2ab'),heat=G.h('heat','rgba(255,120,40,0)','rgba(255,120,40,.35)'),heat2=G.h('heat2','rgba(255,120,40,.35)','rgba(255,120,40,0)');
+  const panel=(pts,hf)=>{let s='<polygon points="'+pts+'" fill="'+rad+'" stroke="#5d636c"/><polygon points="'+pts+'" fill="'+hf+'"/>';const [x1,y1,x2,y2,x3,y3,x4,y4]=pts;
+   for(let i=1;i<8;i++){const t=i/8;s+='<line x1="'+n1(x1+(x2-x1)*t)+'" y1="'+n1(y1+(y2-y1)*t)+'" x2="'+n1(x4+(x3-x4)*t)+'" y2="'+n1(y4+(y3-y4)*t)+'" stroke="#8a9099" stroke-width="1"/>'}return s};
+  let s=G.sh(80,226,50)+'<path d="M60 230V196M100 230V204" stroke="#5d636c" stroke-width="3"/>'+panel([30,112,126,136,126,206,30,194],heat)
+   +G.sh(400,226,50)+'<path d="M380 230V204M420 230V196" stroke="#5d636c" stroke-width="3"/>'+panel([354,136,450,112,450,194,354,206],heat2);
+  s+='<path d="M126 176H200M280 176H354" stroke="'+met+'" stroke-width="6"/><path d="M126 186H200M280 186H354" stroke="#7d838c" stroke-width="3"/>';
+  s+=G.sh(240,234,120)+'<rect x="196" y="128" width="88" height="62" fill="'+met+'" stroke="#3a3830"/><ellipse cx="240" cy="128" rx="44" ry="14" fill="'+G.r('cap','#ffffff','#c9ced5','#6f757e')+'" stroke="#3a3830"/><rect x="196" y="148" width="88" height="10" fill="'+G.hz()+'"/>'
+   +'<circle cx="214" cy="124" r="2.6" fill="#ff5a3a"/><circle cx="266" cy="124" r="2.6" fill="#ff5a3a"/><circle cx="240" cy="118" r="10" fill="'+G.glow('red','#ff5a3a')+'"/>';
+  s+='<path d="M112 234Q140 176 240 172Q340 176 368 234Z" fill="'+heap+'"/><path d="M124 226Q150 186 210 177" stroke="#fff" stroke-width="2" fill="none" opacity=".2"/>';
+  const cx=240,cy=208,P=(a,r)=>n1(cx+r*Math.cos(a*Math.PI/180))+' '+n1(cy+r*Math.sin(a*Math.PI/180));
+  s+='<circle cx="'+cx+'" cy="'+cy+'" r="13" fill="#f2c230" stroke="#1c1c1c" stroke-width="1.5"/>';
+  for(const a of [-90,30,150])s+='<path d="M'+P(a-30,3.6)+'L'+P(a-30,10)+'A10 10 0 0 1 '+P(a+30,10)+'L'+P(a+30,3.6)+'A3.6 3.6 0 0 0 '+P(a-30,3.6)+'Z" fill="#1c1c1c"/>';
+  s+='<circle cx="'+cx+'" cy="'+cy+'" r="2.2" fill="#1c1c1c"/>';
+  for(let x=30;x<470;x+=22)s+='<line x1="'+x+'" y1="246" x2="'+x+'" y2="256" stroke="#d8d3c6" stroke-width="1.6"/>';
+  return s+'<path d="M30 248H468" stroke="#d8d3c6" stroke-width=".8" opacity=".7"/>'}
+};
 /* ===== COLONIES AND DATABASE OVERVIEWS ===== */
 const COLPAGES=['Inner Planets','Middle Planets','Outer Planets'];
 const colPageOf=l=>{const r=l.p||l.k;return ['mercury','venus','earth','mars','belt'].includes(r)?0:['jupiter','saturn'].includes(r)?1:2};let colPage=0;
@@ -886,7 +1039,7 @@ function dbData(){
  for(const r in RN){const c=CAT.find(c=>c.r.includes(r)),by=Object.keys(B).filter(k=>B[k].out&&B[k].out[r]!==undefined).map(k=>B[k].n),us=Object.keys(B).filter(k=>B[k].inp&&B[k].inp[r]!==undefined).map(k=>B[k].n),cn=Object.keys(B).filter(k=>B[k].c&&B[k].c[r]).map(k=>B[k].n),at=lk.filter(k=>(LOCD[k].res||{})[r]>0).map(k=>LOCD[k].n);
   E.res.push({n:RN[r],i:ico(r),d:'',f:[['Category',c?c.n:'-'],['Weight',WT.res[r]+' t per unit'],['Produced by',dbLst(by)],['Consumed by',dbLst(us)],['Used to build',dbLst(cn)],['Found at',at.length>8?at.slice(0,8).join(', ')+' and '+(at.length-8)+' more':dbLst(at)]]})}
  for(const k in B){const b=B[k],st=STAFF[k];
-  E.bld.push({n:b.n,i:'<span class="tile t-'+k+'" style="width:22px;height:22px;font-size:14px">'+b.g+'</span>',d:b.d||'',f:[['Cost',cost(b.c)],['Build time',dur(b.t)],['Power',(b.p>0?'+':'')+b.p],['Staff',st?st.min+' '+JOBN[st.job].toLowerCase()+' to run, '+st.full+' for full crew':'none'],['Requires',b.tech?T[b.tech].n:'nothing']]})}
+  E.bld.push({k,n:b.n,i:'<span class="tile t-'+k+'" style="width:22px;height:22px;font-size:14px">'+b.g+'</span>',d:b.d||'',f:[['Cost',cost(b.c)],['Build time',dur(b.t)],['Power',(b.p>0?'+':'')+b.p],['Staff',st?st.min+' '+JOBN[st.job].toLowerCase()+' to run, '+st.full+' for full crew':'none'],['Requires',b.tech?T[b.tech].n:'nothing']]})}
  for(const k in T){if(T[k].gen||(S&&S.sv&&!visT(k)))continue;const t=T[k],un=Object.keys(B).filter(x=>B[x].tech===k).map(x=>B[x].n).concat(Object.keys(M).filter(x=>M[x].tech===k).map(x=>M[x].n));
   E.tech.push({n:t.n,i:ico('research'),d:t.d||'',f:[['Category',tcn(k)],['Research cost',t.rp+' points up front, '+t.rp+' days'],['Requires',dbLst(t.req.map(r=>T[r].n))],['Unlocks',dbLst(un)]]})}
  for(const t of SHIPTYPES){const pr=t.k==='probe';
@@ -899,7 +1052,7 @@ function dbData(){
 const DBTABS=[['loc','Locations'],['res','Resources'],['bld','Buildings'],['tech','Technologies'],['ship','Starships'],['col','Colonists']];
 function dbHtml(){const E=dbData();let h='';
  const tabs=DBTABS.map(t=>'<button data-dt="'+t[0]+'" aria-pressed="'+(dbTab===t[0])+'">'+t[1]+' ('+E[t[0]].length+')</button>').join('');
- h=E[dbTab].map(x=>'<details class="dbe"><summary><span class="ci">'+x.i+'</span>'+esc(x.n)+'</summary><div class="dbb">'+(x.k&&dbTab==='loc'?'<div class="pvw"><div class="sbg">'+sceneHtml(x.k)+'</div></div>':'')+(x.d?'<p>'+esc(x.d)+'</p>':'')+'<dl>'+x.f.map(f=>'<dt>'+f[0]+'</dt><dd>'+esc(f[1])+'</dd>').join('')+'</dl></div></details>').join('');
+ h=E[dbTab].map(x=>'<details class="dbe"><summary><span class="ci">'+x.i+'</span>'+esc(x.n)+'</summary><div class="dbb">'+(x.k&&dbTab==='loc'?'<div class="pvw"><div class="sbg">'+sceneHtml(x.k)+'</div></div>':'')+(x.k&&dbTab==='bld'?'<div class="pvw art">'+artSvg(x.k)+'</div>':'')+(x.d?'<p>'+esc(x.d)+'</p>':'')+'<dl>'+x.f.map(f=>'<dt>'+f[0]+'</dt><dd>'+esc(f[1])+'</dd>').join('')+'</dl></div></details>').join('');
  return [tabs,h]}
 /* ===== STARSHIPS OVERVIEW DATA: pager, parts, ship types ===== */
 let tovFilter=null;const shipTab={};const SHIPS_PER=12;let shipFilter=null,shipPage=0;
