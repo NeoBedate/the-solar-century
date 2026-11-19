@@ -895,6 +895,16 @@ function artSvg(k){const f=ART[k];if(!f)return '';
   /* y of an arch from (x0,yb) over control height c to (x0+w,yb), at x */
   arch:(x0,w,yb,c,x)=>{const t=(x-x0)/w;return n1((1-t)*(1-t)*yb+2*t*(1-t)*c+t*t*yb)}};
  defs.push('<filter id="'+p+'bl" x="-20%" y="-100%" width="140%" height="300%"><feGaussianBlur stdDeviation="2.2"/></filter>');
+ defs.push('<filter id="'+p+'gl" x="-100%" y="-100%" width="300%" height="300%"><feGaussianBlur stdDeviation="2.4"/></filter>');
+ /* shared sci-fi materials: hl light ceramic hull, dk graphite, mt metal; lt a glowing light strip, bk a beacon, pad a landing pad with edge lights, grid lines across a quad */
+ Object.assign(G,{gl:u('gl'),hl:G.h('hl','#f4f7fb','#c3cad4','#7a8492','#454c58'),dk:G.h('dk','#5e6876','#363d4a','#1b1f28'),mt:G.h('mt','#eef1f5','#a9afb9','#5d636c'),
+  lt:(x,y,w,h,c)=>{const a='x="'+n1(x)+'" y="'+n1(y)+'" width="'+n1(w)+'" height="'+n1(h)+'" fill="'+c+'"';return '<rect '+a+' filter="'+u('gl')+'"/><rect '+a+'/>'},
+  bk:(x,y,r,c)=>'<circle cx="'+x+'" cy="'+y+'" r="'+n1(r*2.6)+'" fill="'+c+'" opacity=".55" filter="'+u('gl')+'"/><circle cx="'+x+'" cy="'+y+'" r="'+r+'" fill="'+c+'"/>',
+  pad:(cx,w,y)=>{let o=G.sh(cx,y+9,w*.5)+'<polygon points="'+[cx-w/2+6,y-3,cx+w/2-6,y-3,cx+w/2,y+2,cx-w/2,y+2].map(n1)+'" fill="#a3abb6"/><polygon points="'+[cx-w/2,y+2,cx+w/2,y+2,cx+w/2-5,y+9,cx-w/2+5,y+9].map(n1)+'" fill="#2b313b"/>';
+   for(let x=cx-w/2+12;x<cx+w/2-8;x+=22)o+=G.lt(x-1.5,y+4.5,3,2,'#5ff0ff');return o},
+  grid:(q,nu,nv,c,op)=>{const L=(a,b,t)=>[n1(a[0]+(b[0]-a[0])*t),n1(a[1]+(b[1]-a[1])*t)],A=[q[0],q[1]],B2=[q[2],q[3]],C=[q[4],q[5]],D=[q[6],q[7]];let z='';
+   for(let i=1;i<nu;i++)z+='M'+L(A,B2,i/nu)+'L'+L(D,C,i/nu);for(let j=1;j<nv;j++)z+='M'+L(A,D,j/nv)+'L'+L(B2,C,j/nv);
+   return '<path d="'+z+'" stroke="'+c+'" stroke-width=".7" opacity="'+op+'" fill="none"/>'}});
  let s='<rect width="480" height="200" fill="'+G.v('sky','#000','#02040d','#0a0f2c')+'"/>';
  for(let i=0;i<55;i++){const r=rnd()<.12?1.3:.5+rnd()*.5;s+='<circle cx="'+n1(rnd()*480)+'" cy="'+n1(rnd()*170)+'" r="'+r.toFixed(2)+'" fill="#fff" opacity="'+(.3+rnd()*.65).toFixed(2)+'"/>'}
  s+='<circle cx="410" cy="44" r="24" fill="'+G.glow('eg','#5aa8ff')+'" opacity=".45"/><circle cx="410" cy="44" r="15" fill="'+G.r('earth','#c9e8ff','#4f8ff0','#1d4fae','#0b2460')+'"/>'
@@ -908,124 +918,101 @@ function artSvg(k){const f=ART[k];if(!f)return '';
   s+='<ellipse cx="'+x+'" cy="'+y+'" rx="'+(r+2)+'" ry="'+n1(r*.24+1.5)+'" fill="#b9b3a2"/><ellipse cx="'+(x+1)+'" cy="'+n1(y+.6)+'" rx="'+r+'" ry="'+n1(r*.2+1)+'" fill="#4e4a41"/><path d="M'+n1(x-r*.2)+' '+n1(y+r*.2)+'h'+n1(r*.9)+'" stroke="#a7a190" stroke-width="1" opacity=".6"/>';
  const b=f(G);
  return '<svg viewBox="0 0 480 270" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="'+esc(B[k].n)+'"><defs>'+defs.join('')+'</defs>'+s+b+'</svg>'}
+const ACY='#5ff0ff',AOR='#ff9a2e',AWM='#ffd98a';
 const ART={
- solar:G=>{const cell=G.v('cell','#3563cf','#17358a','#0a1a4a'),met=G.h('met','#eef1f5','#a9afb9','#5d636c');
-  const panel=(x,y,w,h,k)=>{let s='<polygon points="'+[x,y,x+w,y,x+w+k,y+h,x+k,y+h]+'" fill="'+cell+'" stroke="#d6dae1" stroke-width="1.4"/>';
-   for(let i=1;i<6;i++){const t=i/6;s+='<line x1="'+n1(x+w*t)+'" y1="'+y+'" x2="'+n1(x+k+w*t)+'" y2="'+(y+h)+'" stroke="#9cbaff" stroke-width=".6" opacity=".45"/>'}
-   for(let j=1;j<3;j++){const t=j/3;s+='<line x1="'+n1(x+k*t)+'" y1="'+n1(y+h*t)+'" x2="'+n1(x+w+k*t)+'" y2="'+n1(y+h*t)+'" stroke="#9cbaff" stroke-width=".6" opacity=".45"/>'}
-   return s+'<polygon points="'+[x+3,y+2,n1(x+w*.42),y+2,n1(x+w*.42+k*.4),n1(y+h*.4),n1(x+3+k*.4),n1(y+h*.4)]+'" fill="#fff" opacity=".14"/>'};
-  const unit=(x,top,w,h,k,gy)=>{const cx=x+w/2+k/2;return G.sh(cx+6,gy+1,w*.5)+'<rect x="'+(cx-2)+'" y="'+(top+h-4)+'" width="4" height="'+(gy-top-h+4)+'" fill="'+met+'"/><rect x="'+(cx-9)+'" y="'+(gy-3)+'" width="18" height="4" fill="#4d5159"/>'+panel(x,top,w,h,k)};
-  let s='';for(const x of [70,170,270])s+=unit(x,150,88,26,12,198);
-  for(const x of [20,146,272])s+=unit(x,168,108,40,18,240);
-  return s+'<path d="M344 238q30 9 70 0" stroke="#1d1d1d" stroke-width="2" fill="none"/>'+G.sh(432,244,24)
-   +'<rect x="410" y="212" width="44" height="32" fill="'+G.h('inv','#ebe8df','#aaa79e','#68665f')+'" stroke="#34332f"/><rect x="416" y="218" width="16" height="8" fill="#16201a"/><rect x="418" y="220" width="6" height="2" fill="#5fd68a"/><circle cx="446" cy="222" r="2.2" fill="#5fd68a"/><path d="M416 232h32M416 237h32" stroke="#5b5a55"/>'},
- mine:G=>{const met=G.h('met','#eef1f5','#a9afb9','#5d636c'),wall=G.h('wall','#ddd6c4','#a8a08c','#6c6557'),heap=G.v('heap','#b6af9b','#878070','#5c574b'),mach=G.h('mach','#ffd77a','#e39d2c','#94580e');
-  let s='<ellipse cx="78" cy="246" rx="66" ry="13" fill="#aaa391"/><ellipse cx="80" cy="247.5" rx="60" ry="10" fill="'+G.v('pit','#25231f','#4b473e')+'"/>';
-  s+=G.sh(440,238,40)+'<path d="M390 240Q432 182 478 240Z" fill="'+heap+'"/><path d="M390 240Q416 204 432 196Q422 220 420 240Z" fill="#fff" opacity=".13"/>';
-  s+=G.sh(330,232,76)+'<rect x="262" y="132" width="98" height="100" fill="'+wall+'" stroke="#3a362f"/>'
-   +'<polygon points="360,168 412,180 412,232 360,232" fill="'+G.h('lean','#9d9682','#665f51')+'" stroke="#3a362f"/>'
-   +'<polygon points="270,108 342,108 324,132 288,132" fill="'+met+'" stroke="#3a362f"/><rect x="266" y="103" width="80" height="6" fill="#d4d8de" stroke="#3a362f" stroke-width=".8"/>'
-   +'<rect x="262" y="140" width="98" height="7" fill="'+G.hz()+'"/>';
-  for(let i=0;i<4;i++)s+='<rect x="'+(272+i*21)+'" y="160" width="13" height="9" fill="#ffd27a"/><rect x="'+(272+i*21)+'" y="160" width="13" height="3" fill="#fff4cf"/>';
-  s+='<rect x="298" y="196" width="26" height="36" fill="#2b2823" stroke="#171512"/><rect x="309" y="200" width="4" height="10" fill="#ffd27a"/><rect x="372" y="152" width="8" height="22" fill="'+met+'"/><rect x="370" y="150" width="12" height="4" fill="#cfd3d9"/>'
-   +'<path d="M366 200h40M366 212h40" stroke="#4f493e"/>';
-  const a=[188,204],b2=[300,112],dx=b2[0]-a[0],dy=b2[1]-a[1],L=Math.hypot(dx,dy),nx=-dy/L*6,ny=dx/L*6;
-  s+='<path d="M232 '+n1(a[1]+(232-a[0])*dy/dx+4)+'V232M268 '+n1(a[1]+(268-a[0])*dy/dx+4)+'V232" stroke="#6b6f76" stroke-width="3"/>';
-  let z='M'+a[0]+' '+a[1];for(let i=1;i<=12;i++){const t=i/12,o=i%2?1:0;z+='L'+n1(a[0]+dx*t+nx*o)+' '+n1(a[1]+dy*t+ny*o)}
-  s+='<path d="'+z+'" stroke="#9aa0a8" stroke-width="1.2" fill="none"/><line x1="'+a[0]+'" y1="'+a[1]+'" x2="'+b2[0]+'" y2="'+b2[1]+'" stroke="#cfd3d9" stroke-width="2.4"/><line x1="'+n1(a[0]+nx)+'" y1="'+n1(a[1]+ny)+'" x2="'+n1(b2[0]+nx)+'" y2="'+n1(b2[1]+ny)+'" stroke="#7d838c" stroke-width="2"/>';
-  for(let i=1;i<10;i++){const t=i/10;s+='<ellipse cx="'+n1(a[0]+dx*t-nx*.35)+'" cy="'+n1(a[1]+dy*t-ny*.35)+'" rx="2.6" ry="1.6" fill="#8d8676"/>'}
-  s+=G.sh(170,230,52)+'<line x1="150" y1="196" x2="76" y2="224" stroke="'+mach+'" stroke-width="7" stroke-linecap="round"/>';
-  for(let i=0;i<8;i++){const t=i*Math.PI/4,x=72+Math.cos(t)*21,y=226+Math.sin(t)*21;s+='<rect x="'+n1(x-4)+'" y="'+n1(y-4)+'" width="8" height="8" fill="#5a544a" stroke="#2a2723" transform="rotate('+n1(t*57.3)+' '+n1(x)+' '+n1(y)+')"/>'}
-  s+='<circle cx="72" cy="226" r="18" fill="none" stroke="'+mach+'" stroke-width="4"/><circle cx="72" cy="226" r="5" fill="#3a3630"/><path d="M72 208V244M54 226H90" stroke="#c88a26" stroke-width="2"/>'
-   +'<rect x="118" y="214" width="96" height="18" rx="9" fill="#2c2b29"/>';
-  for(let i=0;i<6;i++)s+='<circle cx="'+(128+i*15.2)+'" cy="223" r="5.5" fill="#55534f" stroke="#1a1918"/>';
-  return s+'<rect x="128" y="182" width="74" height="34" rx="3" fill="'+mach+'" stroke="#5a3608"/><rect x="134" y="188" width="22" height="13" fill="'+G.v('cab','#9fe7ff','#2b6f8f')+'" stroke="#3a2a10"/><rect x="164" y="190" width="32" height="5" fill="'+G.hz()+'"/><rect x="186" y="170" width="6" height="14" fill="#5d636c"/><circle cx="189" cy="168" r="2.4" fill="#ff5a3a"/>'},
- ice:G=>{const met=G.h('met','#eef1f5','#a9afb9','#5d636c'),tank=G.v('tank','#ffffff','#e2edf7','#a3b8cc','#5f7386');
-  let s='<ellipse cx="186" cy="238" rx="156" ry="27" fill="#aea795"/><ellipse cx="190" cy="240.5" rx="146" ry="22" fill="'+G.v('cr','#161513','#38352f')+'"/>';
-  for(const [x,y,rx,ry,o] of [[150,246,34,5,.5],[236,239,24,4,.6],[106,236,16,3,.4],[282,246,18,3,.45],[196,252,26,4,.35]])s+='<ellipse cx="'+x+'" cy="'+y+'" rx="'+rx+'" ry="'+ry+'" fill="#cfe6ff" opacity="'+o+'"/>';
-  for(let i=0;i<14;i++)s+='<circle cx="'+n1(80+G.rnd()*220)+'" cy="'+n1(234+G.rnd()*18)+'" r=".8" fill="#fff" opacity=".9"/>';
-  s+=G.sh(214,246,40)+'<path d="M166 246L190 112L214 246" stroke="'+met+'" stroke-width="4" fill="none"/>';
-  for(let i=1;i<7;i++){const y=112+i*19,w=(y-112)*24/134;s+='<path d="M'+n1(190-w)+' '+y+'H'+n1(190+w)+(i<6?'L'+n1(190-w-3.4)+' '+(y+19):'')+'" stroke="#9aa0a8" stroke-width="1.4" fill="none"/>'}
-  s+='<rect x="181" y="104" width="18" height="10" fill="'+met+'" stroke="#3d4147"/><circle cx="190" cy="100" r="2.6" fill="#ff5a3a"/><circle cx="190" cy="100" r="7" fill="'+G.glow('red','#ff5a3a')+'"/><line x1="190" y1="114" x2="190" y2="252" stroke="#3d4147" stroke-width="2"/><rect x="180" y="226" width="20" height="14" fill="'+G.h('dbox','#d8d3c6','#8e887a')+'" stroke="#34312b"/>';
-  const cyl=(x,y,w,h)=>'<rect x="'+x+'" y="'+y+'" width="'+w+'" height="'+h+'" fill="'+tank+'"/>'+[.25,.5,.75].map(t=>'<line x1="'+n1(x+w*t)+'" y1="'+y+'" x2="'+n1(x+w*t)+'" y2="'+(y+h)+'" stroke="#7d90a3" stroke-width="1"/>').join('')+'<ellipse cx="'+(x+w)+'" cy="'+(y+h/2)+'" rx="'+n1(h*.22)+'" ry="'+h/2+'" fill="#b9c9d8" stroke="#5f7386"/><ellipse cx="'+x+'" cy="'+(y+h/2)+'" rx="'+n1(h*.22)+'" ry="'+h/2+'" fill="#f6fafd" stroke="#8ea2b6"/><rect x="'+(x+6)+'" y="'+(y+3)+'" width="'+(w-12)+'" height="3" fill="#fff" opacity=".7"/>';
-  s+=G.sh(400,232,66)+'<rect x="344" y="214" width="8" height="18" fill="#4d5159"/><rect x="430" y="214" width="8" height="18" fill="#4d5159"/>'+cyl(330,186,120,28)+cyl(342,160,96,26);
-  s+='<path d="M200 196H296V200H330" stroke="'+met+'" stroke-width="4" fill="none"/><circle cx="246" cy="196" r="3.4" fill="#d24a3a"/>'+G.sh(316,232,16)
-   +'<rect x="298" y="206" width="28" height="26" fill="'+G.h('heat','#c8c2b4','#7a7466')+'" stroke="#34312b"/><circle cx="312" cy="219" r="16" fill="'+G.glow('hot','#ff8a3a')+'"/><rect x="304" y="214" width="16" height="10" fill="#ff9a4a"/><path d="M304 217h16M304 221h16" stroke="#a8410c"/>';
+ solar:G=>{const cell=G.v('cell','#4a3aa8','#20307e','#0b1438','#1a2258');
+  const wing=p=>'<polygon points="'+p.map(n1)+'" fill="'+cell+'" stroke="#d3dbe6" stroke-width="1.2"/>'+G.grid(p,5,3,'#8fb4ff',.4)+'<polygon points="'+[p[0],p[1],(p[0]+p[2])/2,(p[1]+p[3])/2,(p[6]+p[4])/2,(p[7]+p[5])/2,p[6],p[7]].map(n1)+'" fill="#fff" opacity=".1"/>';
+  const tree=(cx,top,s,gy)=>{const h=top+28*s;let o=G.pad(cx,64*s,gy)+'<polygon points="'+[cx-5*s,gy,cx+5*s,gy,cx+2*s,h,cx-2*s,h].map(n1)+'" fill="'+G.dk+'"/>';
+   o+=wing([cx-74*s,top-10*s,cx-6,top,cx-6,top+26*s,cx-80*s,top+22*s])+wing([cx+6,top,cx+74*s,top-10*s,cx+80*s,top+22*s,cx+6,top+26*s])
+    +wing([cx-70*s,top+34*s,cx-6,top+32*s,cx-6,top+56*s,cx-60*s,top+62*s])+wing([cx+6,top+32*s,cx+70*s,top+34*s,cx+60*s,top+62*s,cx+6,top+56*s]);
+   return o+'<circle cx="'+cx+'" cy="'+n1(h)+'" r="'+n1(8*s)+'" fill="'+G.dk+'" stroke="#9aa3ae"/><circle cx="'+cx+'" cy="'+n1(h)+'" r="'+n1(4.5*s)+'" fill="none" stroke="'+ACY+'" stroke-width="'+n1(1.6*s)+'" filter="'+G.gl+'"/><circle cx="'+cx+'" cy="'+n1(h)+'" r="'+n1(4.5*s)+'" fill="none" stroke="'+ACY+'" stroke-width="'+n1(1.2*s)+'"/>'+G.lt(cx-1.5*s,gy-30*s,3*s,10*s,ACY)};
+  return tree(92,142,.72,214)+tree(388,142,.72,214)+tree(240,96,1.25,228)},
+ mine:G=>{let s='<ellipse cx="86" cy="246" rx="62" ry="12" fill="#aaa391"/><ellipse cx="88" cy="247.5" rx="56" ry="9" fill="'+G.v('pit','#1d1b18','#46423a')+'"/><ellipse cx="96" cy="246" rx="30" ry="4" fill="'+G.glow('mol','#ff7a2a')+'"/><path d="M70 247q14 3 32 0" stroke="#ffb35a" stroke-width="1.6" fill="none" filter="'+G.gl+'"/>';
+  s+=G.pad(338,140,228)+'<rect x="300" y="92" width="64" height="136" rx="32" fill="'+G.hl+'" stroke="#2a2f38"/><path d="M300 124H364M300 164H364M300 204H364" stroke="#2a2f38" stroke-width="5"/>'
+   +G.lt(310,140,44,3,ACY)+G.lt(310,180,44,3,ACY)+'<rect x="306" y="98" width="6" height="110" rx="3" fill="#fff" opacity=".45"/><path d="M332 92V70" stroke="#9aa3ae" stroke-width="2"/>'+G.bk(332,68,2.4,'#ff5a3a')
+   +'<polygon points="364,228 364,184 378,172 416,172 416,228" fill="'+G.dk+'" stroke="#11141a"/>'+G.lt(372,192,38,3,AOR)+G.lt(372,202,38,3,AOR);
+  s+='<path d="M206 206C246 206 262 202 302 202" stroke="'+G.mt+'" stroke-width="10" fill="none"/><path d="M206 206C246 206 262 202 302 202" stroke="'+ACY+'" stroke-width="1.4" fill="none" stroke-dasharray="6 8" filter="'+G.gl+'"/>';
+  for(const x of [230,258,282])s+='<path d="M'+x+' '+(x<250?205:203)+'v-'+6+'" stroke="#2a2f38" stroke-width="10" opacity=".35"/>';
+  s+=G.sh(170,234,58)+'<rect x="114" y="216" width="104" height="16" rx="8" fill="#1f232b"/>';
+  for(let i=0;i<7;i++)s+='<circle cx="'+(124+i*14)+'" cy="224" r="4" fill="#3a404b"/>';
+  s+='<polygon points="112,218 126,192 150,182 200,182 220,198 220,218" fill="'+G.hl+'" stroke="#2a2f38"/><polygon points="152,186 196,186 210,197 160,197" fill="'+G.v('cnp','#bff8ff','#2a7f9a','#0e3040')+'"/>'+G.lt(150,206,62,2.5,ACY)
+   +'<polygon points="124,200 132,196 96,236 88,234" fill="'+G.dk+'"/><circle cx="92" cy="236" r="5" fill="#2a2f38" stroke="'+AOR+'" stroke-width="1.5"/>'
+   +'<line x1="92" y1="240" x2="98" y2="247" stroke="'+AOR+'" stroke-width="3" filter="'+G.gl+'"/><line x1="92" y1="240" x2="98" y2="247" stroke="#fff3c8" stroke-width="1.2"/>';
+  for(let i=0;i<6;i++)s+='<circle cx="'+n1(96+G.rnd()*14)+'" cy="'+n1(240+G.rnd()*6)+'" r=".9" fill="#ffd27a"/>';
   return s},
- elec:G=>{const met=G.h('met','#eef1f5','#a9afb9','#5d636c'),wall=G.h('wall','#f1efe8','#c4c0b4','#7b776c');
-  const cap=(x,y,w,h,f,band,lb)=>G.sh(x+w/2+8,y+h+1,w*.8)+'<rect x="'+(x+4)+'" y="'+(y+h-8)+'" width="5" height="10" fill="#3d4147"/><rect x="'+(x+w-9)+'" y="'+(y+h-8)+'" width="5" height="10" fill="#3d4147"/><rect x="'+x+'" y="'+y+'" width="'+w+'" height="'+(h-4)+'" rx="'+w/2+'" fill="'+f+'" stroke="#3d4147"/><rect x="'+x+'" y="'+(y+h*.38)+'" width="'+w+'" height="14" fill="'+band+'"/><text x="'+(x+w/2)+'" y="'+(y+h*.38+11)+'" font-size="11" font-weight="700" fill="#fff" text-anchor="middle">'+lb+'</text><rect x="'+(x+w*.2)+'" y="'+(y+10)+'" width="4" height="'+(h-30)+'" rx="2" fill="#fff" opacity=".55"/>';
-  let s=G.sh(250,232,104)+'<rect x="140" y="150" width="196" height="82" rx="6" fill="'+wall+'" stroke="#3a372f"/><rect x="134" y="143" width="208" height="10" rx="3" fill="'+met+'" stroke="#3a372f"/>';
-  for(let x=168;x<336;x+=28)s+='<line x1="'+x+'" y1="153" x2="'+x+'" y2="232" stroke="#000" opacity=".14"/>';
-  for(let i=0;i<5;i++)s+='<rect x="'+(152+i*36)+'" y="166" width="22" height="10" fill="#8fe6ff"/><rect x="'+(152+i*36)+'" y="166" width="22" height="3" fill="#e6fbff"/>';
-  s+='<rect x="180" y="124" width="10" height="20" fill="'+met+'"/><rect x="178" y="121" width="14" height="4" fill="#d4d8de"/><rect x="298" y="130" width="8" height="14" fill="'+met+'"/><rect x="226" y="196" width="24" height="36" fill="#2b2823"/><rect x="235" y="201" width="6" height="8" fill="#8fe6ff"/><circle cx="270" cy="200" r="2.4" fill="#5fd68a"/><circle cx="280" cy="200" r="2.4" fill="#ffd24a"/>'
-   +'<path d="M0 248C60 248 112 240 150 232" stroke="#4f86c0" stroke-width="4" fill="none"/><path d="M0 246.6C60 246.6 112 238.6 150 230.6" stroke="#a9d3ff" stroke-width="1" fill="none"/>';
-  s+=cap(74,100,42,132,G.h('h2','#eef6ff','#a3c3ea','#4f6f9a','#2b4160'),'#2f6fd6','H₂')+cap(362,88,52,144,G.h('o2','#ffffff','#dde1e6','#8e949d','#4c5158'),'#d8562b','O₂');
-  return s+'<path d="M116 188H140M336 196H362" stroke="'+met+'" stroke-width="5"/><circle cx="128" cy="188" r="4" fill="#d24a3a" stroke="#5a1a12"/><circle cx="349" cy="196" r="4" fill="#d24a3a" stroke="#5a1a12"/>'},
- fact:G=>{const met=G.h('met','#eef1f5','#a9afb9','#5d636c'),x0=70,w=320,yb=168,c=96;
-  let s=G.sh(250,232,170)+'<path d="M70 232V168Q230 96 390 168V232Z" fill="'+G.v('roof','#efede6','#c1bcae','#7f7a6d')+'" stroke="#3a362f"/><path d="M70 232V168Q230 96 390 168V232Z" fill="'+G.h('lit','rgba(255,255,255,.2)','rgba(0,0,0,0)','rgba(0,0,0,.34)')+'"/>';
-  for(let x=110;x<390;x+=40)s+='<line x1="'+x+'" y1="'+G.arch(x0,w,yb,c,x)+'" x2="'+x+'" y2="232" stroke="#000" opacity=".2"/>';
-  s+='<path d="M90 160Q230 108 370 160" stroke="#fff" stroke-width="2" fill="none" opacity=".35"/>';
-  for(let x=82;x<380;x+=22)if(x<190||x>268)s+='<rect x="'+x+'" y="184" width="12" height="8" fill="#ffd27a"/><rect x="'+x+'" y="184" width="12" height="2.5" fill="#fff4cf"/>';
-  s+='<rect x="196" y="170" width="70" height="62" fill="'+G.hz()+'"/><rect x="202" y="176" width="58" height="56" fill="'+G.v('door','#ffe0a0','#f0a040','#b35e14')+'"/><rect x="214" y="206" width="20" height="26" fill="#5a3a18" opacity=".55"/><rect x="236" y="214" width="16" height="18" fill="#5a3a18" opacity=".45"/><circle cx="231" cy="220" r="40" fill="'+G.glow('dg','#ffb860')+'" opacity=".5"/>';
-  s+='<polygon points="318,128 372,104 380,112 326,136" fill="'+G.v('rad','#ffffff','#c9ced5')+'" stroke="#5d636c"/><polygon points="332,140 386,116 394,124 340,148" fill="'+G.v('rad2','#f4f6f8','#b9bec6')+'" stroke="#5d636c"/><path d="M340 124l8 7M356 117l8 7M354 136l8 7M370 129l8 7" stroke="#8a9099"/><path d="M330 138V150M350 146V154" stroke="#5d636c" stroke-width="2"/>';
-  s+=G.sh(52,232,26)+'<rect x="26" y="210" width="24" height="22" fill="'+G.h('crate','#c9a46a','#8a6a3a')+'" stroke="#3e2c14"/><rect x="48" y="218" width="20" height="14" fill="'+G.h('crate2','#b8925a','#7a5a2e')+'" stroke="#3e2c14"/><path d="M26 221h24M38 210v22" stroke="#3e2c14" opacity=".5"/>';
-  return s+'<path d="M282 232V214L300 200L318 210" stroke="#e0a020" stroke-width="5" fill="none" stroke-linejoin="round" stroke-linecap="round"/><circle cx="300" cy="200" r="3.5" fill="#3a3630"/><circle cx="282" cy="214" r="3.5" fill="#3a3630"/><rect x="276" y="228" width="14" height="4" fill="#3a3630"/><path d="M318 210l6-4M318 210l5 5" stroke="#9aa0a8" stroke-width="2"/>'},
- shop:G=>{const met=G.h('met','#eef1f5','#a9afb9','#5d636c'),wall=G.h('wall','#d7d2c6','#a19b8d','#68635a'),yel=G.h('yel','#ffdd78','#e3a524','#8c620e');
-  let s=G.sh(240,232,126)+'<rect x="110" y="150" width="240" height="82" fill="'+wall+'" stroke="#38352e"/>';
-  for(let i=0;i<4;i++){const x=110+i*60;s+='<polygon points="'+[x,150,x,124,x+60,150]+'" fill="'+G.h('saw'+i,'#c8ccd2','#7f858e')+'" stroke="#38352e"/><polygon points="'+[x,150,x,124,x+8,128,x+8,150]+'" fill="#bfe9ff"/><polygon points="'+[x,138,x,124,x+8,128,x+8,140]+'" fill="#fff" opacity=".6"/>'}
-  s+='<rect x="168" y="166" width="94" height="66" fill="'+G.v('in','#ffc070','#e07a26','#8a3a0c')+'"/><rect x="168" y="166" width="94" height="12" fill="'+G.hz()+'"/><circle cx="215" cy="208" r="44" fill="'+G.glow('ig','#ffb050')+'" opacity=".45"/>'
-   +'<rect x="182" y="208" width="44" height="24" fill="#3a2410" opacity=".85"/><circle cx="236" cy="210" r="11" fill="none" stroke="#3a2410" stroke-width="5" stroke-dasharray="4 3"/><circle cx="236" cy="210" r="4" fill="#3a2410"/>'
-   +'<rect x="286" y="198" width="22" height="34" fill="#2b2823"/><rect x="292" y="204" width="10" height="8" fill="#ffd27a"/><rect x="124" y="170" width="30" height="10" fill="#ffd27a"/><rect x="316" y="170" width="24" height="10" fill="#ffd27a"/>';
-  s+=G.sh(410,238,52)+'<path d="M364 236L374 150M448 236L438 150" stroke="'+yel+'" stroke-width="6"/><path d="M366 222L372 180L446 222L440 180" stroke="#b48018" stroke-width="1.5" fill="none"/><rect x="354" y="142" width="104" height="9" fill="'+yel+'" stroke="#5a3e08"/><rect x="398" y="150" width="20" height="9" fill="#4d4a44"/><line x1="408" y1="159" x2="408" y2="188" stroke="#2a2826" stroke-width="1.5"/><path d="M404 188h8l-4 6z" fill="#2a2826"/>'
-   +'<rect x="394" y="194" width="28" height="18" rx="2" fill="'+met+'" stroke="#3d4147"/><circle cx="401" cy="203" r="4" fill="#5d636c"/><circle cx="415" cy="203" r="4" fill="#5d636c"/>';
-  return s+G.sh(70,234,34)+'<rect x="40" y="212" width="26" height="22" fill="'+G.h('crate','#7f8fa3','#4c5868')+'" stroke="#20262e"/><rect x="66" y="220" width="30" height="14" fill="'+G.h('crate2','#c9a46a','#8a6a3a')+'" stroke="#3e2c14"/><path d="M40 223h26M53 212v22" stroke="#20262e" opacity=".5"/><g stroke="#9aa0a8" stroke-width="3"><line x1="44" y1="210" x2="92" y2="210"/><line x1="46" y1="205" x2="90" y2="205"/></g>'},
- farm:G=>{const glass=G.h('glass','rgba(215,240,255,.42)','rgba(170,215,255,.1)','rgba(110,160,210,.3)'),ins=G.v('ins','#3a1438','#1a0a1c'),grow=G.glow('grow','#ff6ad5');
-  const vault=(x,w,yb,h)=>{const c=yb-h*1.6,d='M'+x+' '+yb+'Q'+(x+w/2)+' '+n1(c)+' '+(x+w)+' '+yb+'Z';
-   let s=G.sh(x+w/2,yb+1,w*.55)+'<path d="'+d+'" fill="'+ins+'"/><ellipse cx="'+(x+w/2)+'" cy="'+(yb-h*.35)+'" rx="'+w*.5+'" ry="'+h*.55+'" fill="'+grow+'" opacity=".6"/>';
-   for(let r=0;r<3;r++){const y=yb-6-r*14;for(let px=x+7;px<x+w-6;px+=7)if(G.arch(x,w,yb,c,px)<y-6)s+='<ellipse cx="'+px+'" cy="'+y+'" rx="4.2" ry="3.2" fill="'+(px%14?'#55d872':'#2f9a48')+'"/>';
-    s+='<line x1="'+(x+5)+'" y1="'+(y+3)+'" x2="'+(x+w-5)+'" y2="'+(y+3)+'" stroke="#c9c2d6" stroke-width="1" opacity=".6"/>'}
-   s+='<path d="'+d+'" fill="'+glass+'" stroke="#dbe8f2" stroke-width="1.4"/>';
-   for(let i=1;i<6;i++){const px=x+w*i/6;s+='<line x1="'+n1(px)+'" y1="'+G.arch(x,w,yb,c,px)+'" x2="'+n1(px)+'" y2="'+yb+'" stroke="#dbe8f2" stroke-width=".9" opacity=".7"/>'}
-   let hl='';for(let t=.1;t<=.42;t+=.04){const px=x+w*t;hl+=(hl?'L':'M')+n1(px+2)+' '+n1(G.arch(x,w,yb,c,px)+4)}
-   return s+'<path d="'+hl+'" stroke="#fff" stroke-width="2.4" fill="none" opacity=".55" stroke-linecap="round" stroke-linejoin="round"/>'};
-  let s='<rect x="28" y="228" width="428" height="6" fill="'+G.h('base','#cfd3d9','#7d838c')+'"/>'+vault(36,132,230,64)+vault(178,156,230,78)+vault(344,108,230,56);
-  return s+'<rect x="166" y="212" width="14" height="12" fill="#b9bec6" stroke="#4d5159"/><rect x="332" y="214" width="14" height="10" fill="#b9bec6" stroke="#4d5159"/>'+G.sh(462,234,12)+'<rect x="452" y="196" width="20" height="38" rx="9" fill="'+G.h('wt','#ffffff','#9fb6cc','#55687a')+'" stroke="#3d4147"/><rect x="452" y="210" width="20" height="5" fill="#2f6fd6"/>'},
- lab:G=>{const met=G.h('met','#eef1f5','#a9afb9','#5d636c'),wall=G.h('wall','#f6f5f0','#cbcac2','#86857c');
-  let s=G.sh(240,232,112)+'<rect x="130" y="178" width="204" height="54" rx="12" fill="'+wall+'" stroke="#3a3830"/>';
-  for(let x=158;x<334;x+=26)s+='<line x1="'+x+'" y1="180" x2="'+x+'" y2="230" stroke="#000" opacity=".1"/>';
-  for(let i=0;i<4;i++)s+='<circle cx="'+(254+i*20)+'" cy="198" r="5.5" fill="'+G.r('pw'+i,'#e6fbff','#6fdcff','#1d7fa8')+'" stroke="#4d5159" stroke-width="1.5"/>';
-  s+='<rect x="146" y="158" width="88" height="22" fill="'+met+'" stroke="#3a3830"/><path d="M146 160A44 44 0 0 1 234 160Z" fill="'+G.r('dome','#ffffff','#d3d7de','#7b818b','#41464e')+'" stroke="#3a3830"/>'
-   +'<path d="M185 117L197 117L201 160L181 160Z" fill="#090b12"/><line x1="190" y1="150" x2="212" y2="108" stroke="'+met+'" stroke-width="8"/><circle cx="212" cy="108" r="4.5" fill="#9fe7ff" stroke="#3d4147"/>'
-   +'<rect x="150" y="200" width="22" height="32" fill="#2b2823"/><rect x="156" y="205" width="10" height="9" fill="#ffd27a"/><rect x="306" y="150" width="4" height="30" fill="#5d636c"/><circle cx="308" cy="148" r="2.6" fill="#ff5a3a"/><circle cx="308" cy="148" r="8" fill="'+G.glow('red','#ff5a3a')+'"/>';
-  s+=G.sh(388,236,30)+'<rect x="364" y="216" width="30" height="20" fill="'+G.h('cab','#d8d3c6','#8e887a')+'" stroke="#34312b"/><rect x="376" y="146" width="6" height="72" fill="'+met+'"/><g transform="rotate(-28 380 138)"><ellipse cx="380" cy="138" rx="34" ry="13" fill="'+G.v('dish','#ffffff','#bcc1c9','#6f757e')+'" stroke="#3d4147"/><ellipse cx="383" cy="135" rx="24" ry="8" fill="#000" opacity=".12"/></g><path d="M364 132L392 108M396 146L392 108" stroke="#7d838c" stroke-width="1.5"/><rect x="388" y="102" width="8" height="8" fill="#5d636c"/>'
-   +'<path d="M379 230Q360 240 334 222" stroke="#1d1d1d" stroke-width="2" fill="none"/>';
-  return s+G.sh(70,236,18)+'<path d="M58 236L70 206L82 236M70 206V236" stroke="#9aa0a8" stroke-width="1.6" fill="none"/><rect x="62" y="196" width="18" height="12" fill="'+met+'" stroke="#3d4147"/><circle cx="76" cy="202" r="2" fill="#5fd68a"/>'},
- hab:G=>{const fab=G.v('fab','#ffffff','#ece8de','#b6b0a2','#77726a'),heap=G.v('heap','#b6af9b','#878070','#5c574b');
-  let s=G.sh(70,226,40)+'<path d="M36 224A38 38 0 0 1 112 224Z" fill="'+G.r('dome','#ffffff','#e6e1d6','#a29c8e','#5f5a51')+'" stroke="#3a3830"/><path d="M50 216A26 26 0 0 1 66 192" stroke="#fff" stroke-width="2" fill="none" opacity=".6"/><circle cx="84" cy="208" r="4" fill="#ffd27a" stroke="#5e5a52"/>';
-  s+=G.sh(240,232,140)+'<rect x="104" y="146" width="250" height="64" rx="32" fill="'+fab+'" stroke="#3a3830"/>';
-  for(let x=134;x<340;x+=18)s+='<line x1="'+x+'" y1="148" x2="'+x+'" y2="208" stroke="#000" opacity=".1"/>';
-  s+='<rect x="130" y="152" width="200" height="4" rx="2" fill="#fff" opacity=".8"/>';
-  for(let x=150;x<330;x+=34)s+='<circle cx="'+x+'" cy="174" r="6.5" fill="'+G.r('port'+x,'#fff6d0','#ffc95a','#b8721a')+'" stroke="#5e5a52" stroke-width="2"/>';
-  s+='<path d="M86 234Q98 196 140 196H322Q362 196 374 234Z" fill="'+heap+'"/>';
-  for(let r=0;r<3;r++)for(let x=110+r*8;x<354-r*8;x+=16)s+='<path d="M'+x+' '+(204+r*10)+'q8-4 16 0" stroke="#5a554a" stroke-width="1" fill="none" opacity=".6"/>';
-  s+='<path d="M98 222Q110 200 140 199" stroke="#fff" stroke-width="2" fill="none" opacity=".2"/><rect x="348" y="174" width="50" height="32" rx="8" fill="'+fab+'" stroke="#3a3830"/><rect x="380" y="180" width="14" height="24" rx="2" fill="#b6b0a2" stroke="#3a3830"/><rect x="384" y="184" width="6" height="6" fill="#8fe6ff"/><circle cx="387" cy="170" r="2.4" fill="#5fd68a"/>'
-   +'<line x1="240" y1="146" x2="240" y2="118" stroke="#5d636c" stroke-width="2"/><path d="M230 120Q240 112 250 120Z" fill="#d4d8de" stroke="#5d636c"/><circle cx="240" cy="116" r="1.8" fill="#ff5a3a"/>';
-  return s+G.sh(440,244,32)+'<path d="M410 236L414 220L430 214H458L470 222V236Z" fill="'+G.h('rover','#f2f0ea','#b7b2a6','#6f6a60')+'" stroke="#3a3830"/><rect x="432" y="217" width="18" height="7" fill="#2b6f8f"/><line x1="460" y1="214" x2="460" y2="202" stroke="#5d636c" stroke-width="1.6"/><rect x="456" y="198" width="8" height="5" fill="#5d636c"/><circle cx="420" cy="238" r="6" fill="#2c2b29" stroke="#55534f" stroke-width="2"/><circle cx="440" cy="238" r="6" fill="#2c2b29" stroke="#55534f" stroke-width="2"/><circle cx="460" cy="238" r="6" fill="#2c2b29" stroke="#55534f" stroke-width="2"/>'},
- reactor:G=>{const met=G.h('met','#eef1f5','#a9afb9','#5d636c'),heap=G.v('heap','#b6af9b','#878070','#5c574b'),rad=G.v('rad','#ffffff','#d7dbe1','#9ba2ab'),heat=G.h('heat','rgba(255,120,40,0)','rgba(255,120,40,.35)'),heat2=G.h('heat2','rgba(255,120,40,.35)','rgba(255,120,40,0)');
-  const panel=(pts,hf)=>{let s='<polygon points="'+pts+'" fill="'+rad+'" stroke="#5d636c"/><polygon points="'+pts+'" fill="'+hf+'"/>';const [x1,y1,x2,y2,x3,y3,x4,y4]=pts;
-   for(let i=1;i<8;i++){const t=i/8;s+='<line x1="'+n1(x1+(x2-x1)*t)+'" y1="'+n1(y1+(y2-y1)*t)+'" x2="'+n1(x4+(x3-x4)*t)+'" y2="'+n1(y4+(y3-y4)*t)+'" stroke="#8a9099" stroke-width="1"/>'}return s};
-  let s=G.sh(80,226,50)+'<path d="M60 230V196M100 230V204" stroke="#5d636c" stroke-width="3"/>'+panel([30,112,126,136,126,206,30,194],heat)
-   +G.sh(400,226,50)+'<path d="M380 230V204M420 230V196" stroke="#5d636c" stroke-width="3"/>'+panel([354,136,450,112,450,194,354,206],heat2);
-  s+='<path d="M126 176H200M280 176H354" stroke="'+met+'" stroke-width="6"/><path d="M126 186H200M280 186H354" stroke="#7d838c" stroke-width="3"/>';
-  s+=G.sh(240,234,120)+'<rect x="196" y="128" width="88" height="62" fill="'+met+'" stroke="#3a3830"/><ellipse cx="240" cy="128" rx="44" ry="14" fill="'+G.r('cap','#ffffff','#c9ced5','#6f757e')+'" stroke="#3a3830"/><rect x="196" y="148" width="88" height="10" fill="'+G.hz()+'"/>'
-   +'<circle cx="214" cy="124" r="2.6" fill="#ff5a3a"/><circle cx="266" cy="124" r="2.6" fill="#ff5a3a"/><circle cx="240" cy="118" r="10" fill="'+G.glow('red','#ff5a3a')+'"/>';
-  s+='<path d="M112 234Q140 176 240 172Q340 176 368 234Z" fill="'+heap+'"/><path d="M124 226Q150 186 210 177" stroke="#fff" stroke-width="2" fill="none" opacity=".2"/>';
-  const cx=240,cy=208,P=(a,r)=>n1(cx+r*Math.cos(a*Math.PI/180))+' '+n1(cy+r*Math.sin(a*Math.PI/180));
-  s+='<circle cx="'+cx+'" cy="'+cy+'" r="13" fill="#f2c230" stroke="#1c1c1c" stroke-width="1.5"/>';
-  for(const a of [-90,30,150])s+='<path d="M'+P(a-30,3.6)+'L'+P(a-30,10)+'A10 10 0 0 1 '+P(a+30,10)+'L'+P(a+30,3.6)+'A3.6 3.6 0 0 0 '+P(a-30,3.6)+'Z" fill="#1c1c1c"/>';
-  s+='<circle cx="'+cx+'" cy="'+cy+'" r="2.2" fill="#1c1c1c"/>';
-  for(let x=30;x<470;x+=22)s+='<line x1="'+x+'" y1="246" x2="'+x+'" y2="256" stroke="#d8d3c6" stroke-width="1.6"/>';
-  return s+'<path d="M30 248H468" stroke="#d8d3c6" stroke-width=".8" opacity=".7"/>'}
+ ice:G=>{let s='<ellipse cx="190" cy="238" rx="156" ry="27" fill="#aea795"/><ellipse cx="194" cy="240.5" rx="146" ry="22" fill="'+G.v('cr','#151412','#36332d')+'"/>';
+  for(const [x,y,rx,ry,o] of [[150,246,34,5,.5],[236,239,24,4,.6],[106,236,16,3,.4],[282,246,18,3,.45],[196,252,26,4,.35]])s+='<ellipse cx="'+x+'" cy="'+y+'" rx="'+rx+'" ry="'+ry+'" fill="#cfe6ff" opacity="'+o+'"/>';
+  s+='<ellipse cx="190" cy="248" rx="36" ry="7" fill="'+G.glow('th','#ff8a3a')+'"/>';
+  s+=G.sh(214,246,34)+'<path d="M160 244L182 206M220 244L198 206M190 248V210" stroke="'+G.dk+'" stroke-width="4"/><polygon points="176,244 204,244 194,92 186,92" fill="'+G.hl+'" stroke="#2a2f38"/><polygon points="190,92 194,92 204,244 196,244" fill="#000" opacity=".25"/>';
+  for(const y of [124,160,196]){const w=n1(4+(y-92)*10/152);s+='<rect x="'+n1(190-w-1)+'" y="'+(y-5)+'" width="'+n1(2*w+2)+'" height="10" fill="#2a2f38"/>'+G.lt(190-w,y-1.5,2*w,3,ACY)}
+  s+=G.bk(190,88,2.6,ACY);
+  const sph=(x,y,r,i)=>G.sh(x,y+r+12,r)+'<path d="M'+(x-r*.6)+' '+(y+r*.7)+'L'+(x-r*.8)+' '+(y+r+10)+'M'+(x+r*.6)+' '+(y+r*.7)+'L'+(x+r*.8)+' '+(y+r+10)+'" stroke="'+G.dk+'" stroke-width="3"/><circle cx="'+x+'" cy="'+y+'" r="'+r+'" fill="'+G.r('sp'+i,'#ffffff','#d8e6f2','#8aa2b8','#3c4c5c')+'" stroke="#2a2f38"/><ellipse cx="'+x+'" cy="'+y+'" rx="'+r+'" ry="'+n1(r*.16)+'" fill="#2a2f38"/>'+G.lt(x-r*.6,y-1,r*.5,2,ACY)+G.lt(x+r*.15,y-1,r*.4,2,ACY);
+  s+=G.pad(392,124,232)+sph(362,196,26,0)+sph(422,206,18,1);
+  return s+'<path d="M200 200H300Q318 200 324 206H340" stroke="'+G.dk+'" stroke-width="5" fill="none"/><path d="M200 200H300Q318 200 324 206H340" stroke="'+ACY+'" stroke-width="1.2" fill="none" stroke-dasharray="5 7" filter="'+G.gl+'"/>'},
+ elec:G=>{const cap=(x,y,w,h,band,lb,i)=>G.sh(x+w/2+8,y+h+1,w*.8)+'<rect x="'+x+'" y="'+y+'" width="'+w+'" height="'+h+'" rx="'+w/2+'" fill="'+G.h('tk'+i,'#f7f9fc','#c3cbd6','#7a8492','#3c4350')+'" stroke="#2a2f38"/><rect x="'+x+'" y="'+(y+12)+'" width="'+w+'" height="6" fill="#2a2f38"/><rect x="'+x+'" y="'+(y+h-18)+'" width="'+w+'" height="6" fill="#2a2f38"/>'
+   +G.lt(x+3,y+h*.42,w-6,3,band)+'<text x="'+(x+w/2)+'" y="'+n1(y+h*.42-6)+'" font-size="11" font-weight="700" fill="#2a2f38" text-anchor="middle">'+lb+'</text><rect x="'+n1(x+w*.2)+'" y="'+(y+22)+'" width="4" height="'+(h-48)+'" rx="2" fill="#fff" opacity=".5"/>';
+  let s=G.pad(240,330,228)+'<polygon points="150,228 150,170 172,148 308,148 330,170 330,228" fill="'+G.hl+'" stroke="#2a2f38"/><polygon points="172,148 308,148 318,158 162,158" fill="'+G.dk+'"/>';
+  s+='<path d="M196 160V228M284 160V228" stroke="#000" opacity=".15"/>'+G.lt(160,176,30,3,ACY)+G.lt(290,176,30,3,ACY)+G.lt(160,184,22,3,ACY)+G.lt(298,184,22,3,ACY);
+  s+='<circle cx="240" cy="192" r="26" fill="'+G.dk+'" stroke="#11141a"/><circle cx="240" cy="192" r="18" fill="'+G.r('core','#ffffff','#bff8ff','#5ff0ff','#7a4cff','#1a0f40')+'"/><circle cx="240" cy="192" r="22" fill="none" stroke="'+ACY+'" stroke-width="2" filter="'+G.gl+'"/>';
+  for(let a=0;a<360;a+=45){const r=a*Math.PI/180;s+='<line x1="'+n1(240+Math.cos(r)*19)+'" y1="'+n1(192+Math.sin(r)*19)+'" x2="'+n1(240+Math.cos(r)*25)+'" y2="'+n1(192+Math.sin(r)*25)+'" stroke="#9aa3ae" stroke-width="1.6"/>'}
+  s+=cap(76,96,44,132,'#6fb4ff','H₂',0)+cap(360,86,52,142,AOR,'O₂',1);
+  return s+'<path d="M120 196H150M330 196H360" stroke="'+G.dk+'" stroke-width="6"/><path d="M120 196H150M330 196H360" stroke="'+ACY+'" stroke-width="1.4" stroke-dasharray="4 4" filter="'+G.gl+'"/><path d="M0 250C50 250 70 240 98 232" stroke="#4f86c0" stroke-width="4" fill="none"/><path d="M0 250C50 250 70 240 98 232" stroke="#9fd8ff" stroke-width="1.2" fill="none" filter="'+G.gl+'"/>'},
+ fact:G=>{let s=G.pad(240,360,228)+'<polygon points="70,228 70,180 96,158 384,158 410,180 410,228" fill="'+G.hl+'" stroke="#2a2f38"/><polygon points="122,158 144,134 296,134 318,158" fill="'+G.dk+'" stroke="#11141a"/><polygon points="164,134 178,118 262,118 276,134" fill="'+G.hl+'" stroke="#2a2f38"/>';
+  s+=G.lt(186,124,68,2.5,ACY)+'<path d="M96 158L70 180M384 158L410 180" stroke="#fff" opacity=".3"/>';
+  for(const x of [122,158,322,358])s+='<path d="M'+x+' 162V228" stroke="#000" opacity=".12"/>';
+  s+=G.lt(84,190,96,3,ACY)+G.lt(300,190,96,3,ACY);
+  s+='<polygon points="190,228 198,176 282,176 290,228" fill="'+G.v('bay','#0e3040','#145a70','#1d8aa0')+'" stroke="#11141a"/><polygon points="190,228 198,176 282,176 290,228" fill="'+G.glow('bg','#5ff0ff')+'" opacity=".6"/>'
+   +'<path d="M214 228V210L230 196L246 204M266 228V214L252 200L240 206" stroke="#0b1a22" stroke-width="4" fill="none" stroke-linejoin="round"/><rect x="232" y="206" width="16" height="10" fill="#0b1a22"/>'+G.lt(198,176,84,2,ACY);
+  s+=G.sh(390,232,18)+'<g><ellipse cx="392" cy="112" rx="16" ry="6" fill="'+G.hl+'" stroke="#2a2f38"/><path d="M370 108h-10M414 108h10" stroke="#9aa3ae" stroke-width="2"/><ellipse cx="358" cy="106" rx="9" ry="2" fill="#9aa3ae" opacity=".7"/><ellipse cx="426" cy="106" rx="9" ry="2" fill="#9aa3ae" opacity=".7"/></g><polygon points="386,116 398,116 414,180 370,180" fill="'+ACY+'" opacity=".08"/>'+G.bk(392,116,2,ACY);
+  const pod=(x,y,i)=>'<rect x="'+x+'" y="'+y+'" width="34" height="18" rx="9" fill="'+G.h('pod'+i,'#f7f9fc','#b7c0cc','#5d6672')+'" stroke="#2a2f38"/><rect x="'+(x+10)+'" y="'+y+'" width="5" height="18" fill="'+AOR+'"/>';
+  return s+G.sh(40,238,28)+pod(14,218,0)+pod(30,206,1)},
+ shop:G=>{let s=G.pad(236,290,228)+'<polygon points="104,228 104,172 146,128 330,128 364,162 364,228" fill="'+G.hl+'" stroke="#2a2f38"/><polygon points="146,128 330,128 340,138 138,138" fill="'+G.dk+'"/><path d="M104 172L146 128" stroke="#fff" opacity=".4" stroke-width="2"/>';
+  for(let i=0;i<3;i++){const x=180+i*44;s+='<polygon points="'+[x,128,x+8,104,x+22,104,x+16,128]+'" fill="'+G.dk+'" stroke="#11141a"/>'+G.lt(x+9,108,4,16,AOR)}
+  s+='<polygon points="168,228 180,174 292,174 304,228" fill="'+G.v('fg','#ffcf7a','#ff8a2e','#7a2a08')+'" stroke="#11141a"/><circle cx="236" cy="206" r="44" fill="'+G.glow('fgl','#ffb050')+'" opacity=".55"/>'
+   +'<circle cx="236" cy="210" r="13" fill="none" stroke="#3a1608" stroke-width="6" stroke-dasharray="5 3.4"/><circle cx="236" cy="210" r="5" fill="#3a1608"/><rect x="196" y="214" width="20" height="14" fill="#3a1608" opacity=".8"/>'+G.lt(180,174,112,2,AOR);
+  s+=G.lt(116,184,40,3,ACY)+G.lt(316,184,40,3,ACY)+G.lt(116,192,28,3,ACY);
+  s+=G.sh(420,236,28)+'<rect x="402" y="220" width="36" height="12" rx="3" fill="'+G.dk+'"/><path d="M420 222L404 176L444 150" stroke="'+G.hl+'" stroke-width="9" fill="none" stroke-linejoin="round" stroke-linecap="round"/><path d="M420 222L404 176L444 150" stroke="#2a2f38" stroke-width="1" fill="none"/>'
+   +'<circle cx="420" cy="220" r="6" fill="#2a2f38" stroke="'+ACY+'" stroke-width="1.2"/><circle cx="404" cy="176" r="5.5" fill="#2a2f38" stroke="'+ACY+'" stroke-width="1.2"/><circle cx="444" cy="150" r="5" fill="#2a2f38"/><path d="M448 152l8 6M446 146l10 2" stroke="#9aa3ae" stroke-width="2.4"/>'
+   +'<polygon points="454,156 464,152 470,160 466,170 456,170 450,164" fill="'+G.h('part','#e8eef5','#7a8492')+'" stroke="#2a2f38"/>';
+  return s},
+ farm:G=>{const glass=G.r('glass','rgba(230,248,255,.45)','rgba(170,215,255,.12)','rgba(110,160,210,.3)'),ins=G.v('ins','#3a1438','#1a0a1c'),grow=G.glow('grow','#ff6ad5');
+  const geo=(cx,yb,r)=>{const d='M'+(cx-r)+' '+yb+'A'+r+' '+r+' 0 0 1 '+(cx+r)+' '+yb+'Z';
+   let s='<path d="'+d+'" fill="'+ins+'"/><ellipse cx="'+cx+'" cy="'+n1(yb-r*.3)+'" rx="'+r+'" ry="'+n1(r*.6)+'" fill="'+grow+'" opacity=".6"/>';
+   for(let k=0;k<3;k++){const y=yb-6-k*13,hw=Math.sqrt(Math.max(0,r*r-(yb-y)*(yb-y)))-8;for(let px=cx-hw;px<=cx+hw;px+=7)s+='<ellipse cx="'+n1(px)+'" cy="'+y+'" rx="4" ry="3" fill="'+((px-cx+hw)%14<7?'#55d872':'#2f9a48')+'"/>'}
+   s+='<path d="'+d+'" fill="'+glass+'" stroke="#e2eef6" stroke-width="1.4"/>';
+   const L=[0,22.5,45,67.5,90].map(a=>{const t=a*Math.PI/180;return {y:yb-r*Math.sin(t),hw:r*Math.cos(t)}}),m=6;
+   const P=(k,i)=>[n1(cx-L[k].hw+2*L[k].hw*i/m),n1(L[k].y)];let z='';
+   for(let k=0;k<4;k++)for(let i=0;i<=m;i++){const a=P(k,i),b=P(k+1,i);z+='M'+a+'L'+b;if(i<m){const c=P(k+1,i+1);z+='M'+a+'L'+c;const e=P(k,i+1);z+='M'+a+'L'+e}}
+   return s+'<path d="'+z+'" stroke="#e2eef6" stroke-width=".8" opacity=".6" fill="none"/><path d="M'+n1(cx-r*.82)+' '+n1(yb-r*.4)+'A'+r*.9+' '+r*.9+' 0 0 1 '+n1(cx-r*.3)+' '+n1(yb-r*.86)+'" stroke="#fff" stroke-width="2.4" fill="none" opacity=".55" stroke-linecap="round"/>'};
+  return G.pad(250,420,228)+'<rect x="164" y="214" width="30" height="12" rx="6" fill="'+G.hl+'" stroke="#2a2f38"/><rect x="336" y="216" width="30" height="10" rx="5" fill="'+G.hl+'" stroke="#2a2f38"/>'+geo(110,228,62)+geo(262,228,84)+geo(406,228,50)+G.lt(150,219,10,2,ACY)+G.lt(348,220,8,2,ACY)},
+ lab:G=>{let s=G.pad(250,250,228)+'<path d="M172 228L186 190M308 228L294 190M226 228V190M254 228V190" stroke="'+G.dk+'" stroke-width="5"/><rect x="232" y="192" width="16" height="36" fill="'+G.v('lift','rgba(191,248,255,.5)','rgba(95,240,255,.15)')+'" stroke="#9aa3ae"/>'+G.lt(238,198,4,26,ACY);
+  s+='<rect x="140" y="148" width="200" height="46" rx="23" fill="'+G.hl+'" stroke="#2a2f38"/><rect x="160" y="152" width="160" height="4" rx="2" fill="#fff" opacity=".6"/>'+G.lt(170,170,140,3,ACY)+'<path d="M190 148V194M290 148V194" stroke="#000" opacity=".14"/>';
+  for(let x=162;x<320;x+=24)s+=G.lt(x,190,6,2,ACY);
+  s+='<path d="M170 150A34 34 0 0 1 238 150Z" fill="'+G.r('dome','#ffffff','#d3d9e2','#7a8492','#353b46')+'" stroke="#2a2f38"/><path d="M198 117L210 117L214 150L194 150Z" fill="#06080e"/><line x1="204" y1="146" x2="224" y2="106" stroke="'+G.mt+'" stroke-width="8"/><circle cx="224" cy="106" r="4.5" fill="'+ACY+'" stroke="#2a2f38"/>';
+  s+=G.sh(386,232,24)+'<polygon points="376,228 384,228 382,118 378,118" fill="'+G.dk+'"/><g transform="rotate(-18 380 110)"><rect x="350" y="84" width="60" height="44" fill="'+G.v('arr','#24306a','#0b1236')+'" stroke="#c9d2de" stroke-width="1.4"/>'+G.grid([350,84,410,84,410,128,350,128],6,4,ACY,.35)+'</g>'+G.bk(380,80,2.4,'#ff5a3a');
+  return s+'<path d="M380 200Q350 214 336 186" stroke="#1d1d1d" stroke-width="2" fill="none"/>'},
+ hab:G=>{const cer=G.r('cer','#ffffff','#e9edf2','#a3acb8','#4f5763');
+  const cap=(x,y,w,h,i)=>G.sh(x+w/2,228,w*.7)+'<rect x="'+x+'" y="'+y+'" width="'+w+'" height="'+h+'" rx="'+w/2+'" fill="'+G.h('c'+i,'#f7f9fc','#c3cbd6','#7a8492','#3c4350')+'" stroke="#2a2f38"/>'+G.lt(x+w/2-1.5,y+16,3,h-36,AWM)+'<rect x="'+x+'" y="'+(y+h-12)+'" width="'+w+'" height="5" fill="#2a2f38"/>';
+  let s=G.pad(240,360,228)+cap(84,140,34,88,0)+cap(366,152,32,76,1)+'<path d="M118 206H170M310 210H366" stroke="'+G.hl+'" stroke-width="12"/><path d="M118 206H170M310 210H366" stroke="#2a2f38" stroke-width="12" stroke-dasharray="2 10" opacity=".5"/>';
+  const cx=240,yb=228,r=88;s+=G.sh(cx,230,r)+'<path d="M'+(cx-r)+' '+yb+'A'+r+' '+r+' 0 0 1 '+(cx+r)+' '+yb+'Z" fill="'+cer+'" stroke="#2a2f38"/>';
+  for(const t of [-.82,-.5,-.18,.18,.5,.82])s+='<path d="M'+cx+' '+(yb-r)+'A'+n1(Math.abs(t)*r)+' '+r+' 0 0 '+(t>0?1:0)+' '+n1(cx+t*r)+' '+yb+'" stroke="#2a2f38" fill="none" opacity=".3"/>';
+  for(const a of [30,55])s+='<line x1="'+n1(cx-r*Math.cos(a*Math.PI/180))+'" y1="'+n1(yb-r*Math.sin(a*Math.PI/180))+'" x2="'+n1(cx+r*Math.cos(a*Math.PI/180))+'" y2="'+n1(yb-r*Math.sin(a*Math.PI/180))+'" stroke="#2a2f38" opacity=".3"/>';
+  s+='<path d="M'+(cx-r+10)+' 206H'+(cx+r-10)+'" stroke="'+AWM+'" stroke-width="4" stroke-dasharray="14 6" filter="'+G.gl+'"/><path d="M'+(cx-r+10)+' 206H'+(cx+r-10)+'" stroke="'+AWM+'" stroke-width="3" stroke-dasharray="14 6"/>'
+   +'<path d="M'+(cx-r*.8)+' '+(yb-r*.45)+'A'+r+' '+r+' 0 0 1 '+(cx-r*.25)+' '+(yb-r*.93)+'" stroke="#fff" stroke-width="3" fill="none" opacity=".7" stroke-linecap="round"/>'
+   +'<polygon points="222,228 226,212 254,212 258,228" fill="'+G.dk+'"/>'+G.lt(228,215,24,2,ACY)+'<path d="M240 140V118" stroke="#9aa3ae" stroke-width="2"/>'+G.bk(240,116,2.4,'#ff5a3a');
+  return s+G.sh(434,246,22)+'<polygon points="402,244 408,228 428,222 458,226 462,238 462,244" fill="'+G.hl+'" stroke="#2a2f38"/><polygon points="412,228 428,224 440,226 434,232 414,232" fill="'+G.v('rw','#bff8ff','#2a7f9a')+'"/>'+G.lt(422,238,32,2,ACY)+'<circle cx="414" cy="246" r="5" fill="#1f232b"/><circle cx="450" cy="246" r="5" fill="#1f232b"/>'},
+ reactor:G=>{const fin=p=>'<polygon points="'+p+'" fill="'+G.v('fin','#3a414e','#1b1f28')+'" stroke="#9aa3ae" stroke-width="1"/>';
+  let s=G.pad(240,330,228);const L=[204,194,66,108,50,140,200,222],R=L.map((v,i)=>i%2?v:480-v);
+  s+=fin(L)+fin(R);
+  for(let i=1;i<6;i++){const t=i/6,a=[L[0]+(L[2]-L[0])*t,L[1]+(L[3]-L[1])*t],b=[L[6]+(L[4]-L[6])*t,L[7]+(L[5]-L[7])*t];
+   for(const q of [[a,b],[[480-a[0],a[1]],[480-b[0],b[1]]]])s+='<line x1="'+n1(q[0][0])+'" y1="'+n1(q[0][1])+'" x2="'+n1(q[1][0])+'" y2="'+n1(q[1][1])+'" stroke="'+AOR+'" stroke-width="1.6" opacity="'+(1-t*.7).toFixed(2)+'" filter="'+G.gl+'"/>'}
+  s+='<polygon points="204,228 210,108 270,108 276,228" fill="'+G.hl+'" stroke="#2a2f38"/><polygon points="240,108 270,108 276,228 240,228" fill="#000" opacity=".18"/>';
+  for(const y of [128,156,184]){const w=n1(30+(y-108)*6/120);s+='<rect x="'+n1(240-w)+'" y="'+(y-7)+'" width="'+n1(2*w)+'" height="14" fill="#2a2f38"/>'+G.lt(240-w+4,y-2,2*w-8,4,'#6ab8ff')}
+  s+='<rect x="204" y="206" width="72" height="10" fill="'+G.hz()+'"/><polygon points="206,108 216,94 264,94 274,108" fill="'+G.dk+'" stroke="#11141a"/><rect x="232" y="84" width="16" height="10" fill="'+G.dk+'"/>'+G.bk(240,82,3,'#6ab8ff')+G.bk(214,100,1.8,'#ff5a3a')+G.bk(266,100,1.8,'#ff5a3a');
+  const cx=240,cy=194,P=(a,r)=>n1(cx+r*Math.cos(a*Math.PI/180))+' '+n1(cy+r*Math.sin(a*Math.PI/180));
+  s+='<circle cx="'+cx+'" cy="'+cy+'" r="7" fill="#f2c230" stroke="#1c1c1c"/>';
+  for(const a of [-90,30,150])s+='<path d="M'+P(a-30,2)+'L'+P(a-30,6)+'A6 6 0 0 1 '+P(a+30,6)+'L'+P(a+30,2)+'A2 2 0 0 0 '+P(a-30,2)+'Z" fill="#1c1c1c"/>';
+  return s}
 };
 /* ===== COLONIES AND DATABASE OVERVIEWS ===== */
 const COLPAGES=['Inner Planets','Middle Planets','Outer Planets'];
